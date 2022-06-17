@@ -23,7 +23,7 @@ email: thiago@tcpip.net.br
 description: >- # this means to ignore newlines until "baseurl:"
   Aquie é o Mundo do Faioli, vulgo/nick  0xttfx! Um pouco de Infra, um pouco de Dev, um pouco de Sec, e muitas histórias!!!.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://0xttfx.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: 0xttfx
 github_username: 0xttfx
 
