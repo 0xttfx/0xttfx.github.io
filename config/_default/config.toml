@@ -63,3 +63,6 @@ buildFuture = false
       name = 'fragmentrefs'
       type = 'fragments'
       weight = 10
+
+[params.carouselHomepage]
+  enable = false 
