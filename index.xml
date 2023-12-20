@@ -1,27 +1,32 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Só mais um SysAdmin</title>
+    <title>Blowfish</title>
     <link>https://0xttfx.github.io/</link>
-    <description>Recent content on Só mais um SysAdmin</description>
+    <description>Recent content on Blowfish</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
-    <lastBuildDate>Wed, 15 Nov 2023 20:25:31 -0300</lastBuildDate>
-    <atom:link href="https://0xttfx.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>© 2023 Thiago Torres Faioli</copyright>
+    <lastBuildDate>Wed, 15 Nov 2023 20:25:31 -0300</lastBuildDate><atom:link href="https://0xttfx.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>WhoRAM</title>
-      <link>https://0xttfx.github.io/posts/2023/11/whoram/</link>
+      <link>https://0xttfx.github.io/posts/whoram/whoram/</link>
       <pubDate>Wed, 15 Nov 2023 20:25:31 -0300</pubDate>
-      <guid>https://0xttfx.github.io/posts/2023/11/whoram/</guid>
-      <description>RAM é um hardware valioso e caro bem como a sua latência é ainda mais importante que a latência do disco. E por isso, o kernel Linux tenta ao máximo otimizar os uso da memória, fazendo uso de técnicas como compartilhando de páginas entre processos e Page Cache para melhorar a velocidade de I/O de armazenamento, armazenando um subconjunto de dados do disco na memória. O Page Cache realiza compartilhamento implícito de memória e de forma assíncrona com o armazenamento em segundo plano!</description>
+      
+      <guid>https://0xttfx.github.io/posts/whoram/whoram/</guid>
+      <description>RAM é um hardware valioso e caro bem como a sua latência é ainda mais importante que a latência do disco.</description>
+      
     </item>
+    
     <item>
       <title>IP DOK Set or Drop Sec Group AWS EC2 RDS</title>
-      <link>https://0xttfx.github.io/posts/2023/11/ip-dok-set-or-drop-sec-group-aws-ec2-rds/</link>
+      <link>https://0xttfx.github.io/posts/dokawsrds/ip-dok-awsrds/</link>
       <pubDate>Mon, 06 Nov 2023 00:00:00 +0000</pubDate>
-      <guid>https://0xttfx.github.io/posts/2023/11/ip-dok-set-or-drop-sec-group-aws-ec2-rds/</guid>
+      
+      <guid>https://0xttfx.github.io/posts/dokawsrds/ip-dok-awsrds/</guid>
       <description>DigitalOcean Kubernetes and AWS RDS Security Group</description>
+      
     </item>
+    
   </channel>
 </rss>

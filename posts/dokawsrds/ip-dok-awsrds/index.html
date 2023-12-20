@@ -95,7 +95,7 @@
     "keywords": ["DOK","AWS","RDS"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "165"
+    "wordCount": "227"
   }]
   </script>
 
@@ -481,7 +481,7 @@
 <div class="flex flex-row flex-wrap items-center">
   
   
-  <time datetime="2023-11-06 00:00:00 &#43;0000 UTC">6 November 2023</time><span class="px-2 text-primary-500">&middot;</span><span>165 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">1 min</span>
+  <time datetime="2023-11-06 00:00:00 &#43;0000 UTC">6 November 2023</time><span class="px-2 text-primary-500">&middot;</span><span>227 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">2 mins</span>
   
 
   
@@ -709,6 +709,7 @@
     <nav id="TableOfContents">
   <ul>
     <li><a href="#função">Função</a></li>
+    <li><a href="#atualizações">Atualizações</a></li>
     <li><a href="#dependências">Dependências</a></li>
     <li><a href="#executando">Executando</a></li>
     <li><a href="#automação">Automação</a></li>
@@ -726,6 +727,7 @@
     <nav id="TableOfContents">
   <ul>
     <li><a href="#função">Função</a></li>
+    <li><a href="#atualizações">Atualizações</a></li>
     <li><a href="#dependências">Dependências</a></li>
     <li><a href="#executando">Executando</a></li>
     <li><a href="#automação">Automação</a></li>
@@ -761,6 +763,29 @@
     
 </h2>
 <p>Scrip bash para descoberta de IPs de Droplets Nodes dos clusters Kubernetes e inserção destes IPs, no security group EC2 das instâncias AWS RDS.</p>
+<div id="atualizações" class="anchor"></div>
+<h2 class="relative group">Atualizações 
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
+        <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
+            style="text-decoration-line: none !important;" href="#atualiza%c3%a7%c3%b5es" aria-label="Anchor">#</a></span>        
+    
+</h2>
+<ul>
+<li>0.4v
+<ul>
+<li>Como inteválo mínimo de execução na CRON são de 60 segundos! E eu precisava executar por mais vezes por minuto
+acabei contendo o scrip dentro de um laço wile que o executa por 10 vezes com intervalo de 2 segundos</li>
+</ul>
+</li>
+<li>0.5v
+<ul>
+<li>removido laço de execução a cada 60s</li>
+<li>restruturado algumas conditional statement da inserção e remoção de IPs</li>
+<li>O diff, antes realizado globalmente, agora é realizado para cada Security Group</li>
+</ul>
+</li>
+</ul>
 <div id="dependências" class="anchor"></div>
 <h2 class="relative group">Dependências 
     <span
@@ -816,7 +841,7 @@
 <pre tabindex="0"><code>mkdir -p /usr/local/tools/log &amp;&amp; cd /usr/local/tools/ &amp;&amp; \
 git clone git@github.com:0xttfx/ip-do_aws-rds.git &amp;&amp; cd ip-*
 </code></pre><p>Não há argumentos, bastando executar o .sh</p>
-<pre tabindex="0"><code>./script-0.3.sh
+<pre tabindex="0"><code>./script-0.5.sh
 </code></pre><div id="automação" class="anchor"></div>
 <h2 class="relative group">Automação 
     <span
@@ -825,10 +850,13 @@ git clone git@github.com:0xttfx/ip-do_aws-rds.git &amp;&amp; cd ip-*
             style="text-decoration-line: none !important;" href="#automa%c3%a7%c3%a3o" aria-label="Anchor">#</a></span>        
     
 </h2>
-<p>Para automação da execução, adicione a seguinte linha na cron, para uma execução a cada 6 horas, ou modifique&hellip;
-Devido ao update dos nós dos clusters, que alteram os seus IPs, o script será executado a cada 2 mintuos, afim de evitar indisponibilidade dos sistemas.</p>
-<pre tabindex="0"><code>*/2 * * * * 	user	/usr/bin/bash -x /usr/local/tools/ip-do_aws-rds/script-0.3.sh &gt;&gt; /usr/local/tools/log/exec-script-0.3-$(date --date=&#34;today&#34; +\%d\%m\%Y_\%H\%M).log 2&gt;&amp;1
-0 0 * * *       user	find /usr/local/tools/log -type f -mtime +3 -name &#39;*.log&#39; -exec rm {} +
+<p>Para automação da execução, adicione a seguinte linha na cron
+Devido ao update dos nós dos clusters, que alteram os seus IPs, o script será executado a cada 1 mintuo!</p>
+<ul>
+<li>altere conforme sua necessidade.</li>
+</ul>
+<pre tabindex="0"><code>* * * * * 	user	/usr/bin/bash -x /usr/local/tools/ip-do_aws-rds/script-0.5.sh &gt;&gt; /usr/local/tools/log/exec-script-0.5-$(date --date=&#34;today&#34; +\%d\%m\%Y_\%H\%M\%S).log 2&gt;&amp;1
+0 0 * * *   user	find /usr/local/tools/log/ -type f -mtime +3 -name &#39;exec-*.log&#39; -exec rm {} +
 </code></pre>
         </div>
                 
