@@ -1,22 +1,84 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Blowfish</title>
-    <link>https://0xttfx.github.io/posts/dokawsrds/</link>
-    <description>Recent content on Blowfish</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
-    <copyright>© 2023 Thiago Torres Faioli</copyright>
-    <lastBuildDate>Mon, 06 Nov 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://0xttfx.github.io/posts/dokawsrds/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>IP DOK Set or Drop Sec Group AWS EC2 RDS</title>
-      <link>https://0xttfx.github.io/posts/dokawsrds/ip-dok-awsrds/</link>
-      <pubDate>Mon, 06 Nov 2023 00:00:00 +0000</pubDate>
-      
-      <guid>https://0xttfx.github.io/posts/dokawsrds/ip-dok-awsrds/</guid>
-      <description>DigitalOcean Kubernetes and AWS RDS Security Group</description>
-      
-    </item>
-    
-  </channel>
+    <channel>
+        <title>Só mais um SysAdmin</title>
+        <link>https://0xttfx.github.io/posts/dokawsrds/</link>
+        <description>Recent content on Só mais um SysAdmin</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en</language>
+        <copyright>&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/4.0/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;CC BY-NC 4.0&lt;/a&gt;</copyright>
+        <lastBuildDate>Mon, 06 Nov 2023 00:00:00 +0000</lastBuildDate>
+        <atom:link href="https://0xttfx.github.io/posts/dokawsrds/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>IP DOK Set or Drop Sec Group AWS EC2 RDS</title>
+            <link>https://0xttfx.github.io/posts/2023/11/ip-dok-set-or-drop-sec-group-aws-ec2-rds/</link>
+            <pubDate>Mon, 06 Nov 2023 00:00:00 +0000</pubDate>
+            
+            <guid>https://0xttfx.github.io/posts/2023/11/ip-dok-set-or-drop-sec-group-aws-ec2-rds/</guid>
+            <description>DigitalOcean Kubernetes and AWS RDS Security Group</description>
+            <content type="html"><![CDATA[<h1 id="ip-dok-set-or-drop-sec-group-aws-ec2-rds">IP DOK Set or Drop Sec Group AWS EC2 RDS</h1>
+<h2 id="função">Função</h2>
+<p>Scrip bash para descoberta de IPs de Droplets Nodes dos clusters Kubernetes e inserção destes IPs, no security group EC2 das instâncias AWS RDS.</p>
+<h2 id="atualizações">Atualizações</h2>
+<ul>
+<li>0.4v
+<ul>
+<li>Como inteválo mínimo de execução na CRON são de 60 segundos! E eu precisava executar por mais vezes por minuto
+acabei contendo o scrip dentro de um laço wile que o executa por 10 vezes com intervalo de 2 segundos</li>
+</ul>
+</li>
+<li>0.5v
+<ul>
+<li>removido laço de execução a cada 60s</li>
+<li>restruturado algumas conditional statement da inserção e remoção de IPs</li>
+<li>O diff, antes realizado globalmente, agora é realizado para cada Security Group</li>
+</ul>
+</li>
+</ul>
+<h2 id="dependências">Dependências</h2>
+<ul>
+<li>AWS CLI
+<ul>
+<li><a href="https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html">AWS CLI</a></li>
+<li><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/">EC2</a>
+<ul>
+<li><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/authorize-security-group-ingress.html">API authorize-security-group-ingress</a></li>
+<li><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-security-groups.html">API describe-security-groups</a></li>
+</ul>
+</li>
+<li><a href="https://docs.aws.amazon.com/cli/latest/reference/rds/">RDS</a>
+<ul>
+<li><a href="https://docs.aws.amazon.com/cli/latest/reference/rds/describe-db-instances.html">API describe-db-instances</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>DigitalOcean CLI
+<ul>
+<li><a href="https://docs.digitalocean.com/reference/doctl/how-to/install/">DO CLI</a>
+<ul>
+<li><a href="https://docs.digitalocean.com/reference/doctl/reference/compute/">API compute</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="executando">Executando</h2>
+<p>Crie diretório <code>tools</code> em  <code>/usr/local</code></p>
+<pre tabindex="0"><code>mkdir -p /usr/local/tools/log &amp;&amp; cd /usr/local/tools/ &amp;&amp; \
+git clone git@github.com:0xttfx/ip-do_aws-rds.git &amp;&amp; cd ip-*
+</code></pre><p>Não há argumentos, bastando executar o .sh</p>
+<pre tabindex="0"><code>./script-0.5.sh
+</code></pre><h2 id="automação">Automação</h2>
+<p>Para automação da execução, adicione a seguinte linha na cron
+Devido ao update dos nós dos clusters, que alteram os seus IPs, o script será executado a cada 1 mintuo! Por sua vez o scrip, que tem um tempo de execução de 5 segundos, está em um laço wile que o fará executar por 10x com intervalo de 2 segundos entre cada execução&hellip;</p>
+<ul>
+<li>altere conforme sua necessidade.</li>
+</ul>
+<pre tabindex="0"><code>* * * * * 	user	/usr/bin/bash -x /usr/local/tools/ip-do_aws-rds/script-0.5.sh &gt;&gt; /usr/local/tools/log/exec-script-0.5-$(date --date=&#34;today&#34; +\%d\%m\%Y_\%H\%M\%S).log 2&gt;&amp;1
+0 0 * * *   user	find /usr/local/tools/log/ -type f -mtime +3 -name &#39;exec-*.log&#39; -exec rm {} +
+</code></pre>]]></content>
+        </item>
+        
+    </channel>
 </rss>
