@@ -7,13 +7,23 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© 2024 Thiago Torres Faioli</copyright>
-    <lastBuildDate>Fri, 05 Jan 2024 17:43:55 -0300</lastBuildDate><atom:link href="https://0xttfx.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 06 Jan 2024 09:14:00 -0300</lastBuildDate><atom:link href="https://0xttfx.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>RTFM &amp; AleatoriedadesParaSysAdmin - Swap</title>
+      <link>https://0xttfx.github.io/posts/rtfmaleatoriedades-swap/rtfmaleatoriedadesparasysadmin-swap/</link>
+      <pubDate>Sat, 06 Jan 2024 09:14:00 -0300</pubDate>
+      
+      <guid>https://0xttfx.github.io/posts/rtfmaleatoriedades-swap/rtfmaleatoriedadesparasysadmin-swap/</guid>
+      <description>Swapping foi introduzida como um backup em disco para páginas não mapeadas.</description>
+      
+    </item>
+    
     <item>
       <title>RTFM &amp; Aleatoriedades para SysAdmin - journalctl </title>
-      <link>https://0xttfx.github.io/posts/rtfmaleatoriedades/rtfmaleatoriedadesparasysadmin-journalctl/</link>
+      <link>https://0xttfx.github.io/posts/rtfmaleatoriedades-journalctl/rtfmaleatoriedadesparasysadmin-journalctl/</link>
       <pubDate>Fri, 05 Jan 2024 17:43:55 -0300</pubDate>
       
-      <guid>https://0xttfx.github.io/posts/rtfmaleatoriedades/rtfmaleatoriedadesparasysadmin-journalctl/</guid>
+      <guid>https://0xttfx.github.io/posts/rtfmaleatoriedades-journalctl/rtfmaleatoriedadesparasysadmin-journalctl/</guid>
       <description>Para quando a lei de Murphy exerce a sua força.</description>
       
     </item>
