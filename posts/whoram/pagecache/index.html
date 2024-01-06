@@ -79,7 +79,7 @@
     "name": "Who Page Cache",
     "headline": "Who Page Cache",
     "description": "Desc Text.",
-    "abstract": "RAM é um hardware valioso e caro bem como a sua latência é ainda mais importante que a latência do disco.",
+    "abstract": "Author: Thiago Torres Faioli Data: 15 de Novembro de 2023",
     "inLanguage": "en",
     "url" : "https:\/\/0xttfx.github.io\/posts\/whoram\/pagecache\/",
     "author" : {
@@ -95,7 +95,7 @@
     "keywords": ["first"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "1804"
+    "wordCount": "1826"
   }]
   </script>
 
@@ -529,7 +529,7 @@
 <div class="flex flex-row flex-wrap items-center">
   
   
-  <time datetime="2023-11-15 20:25:31 -0300 -03">15 November 2023</time><span class="px-2 text-primary-500">&middot;</span><span>1804 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">9 mins</span>
+  <time datetime="2023-11-15 20:25:31 -0300 -03">15 November 2023</time><span class="px-2 text-primary-500">&middot;</span><span>1826 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">9 mins</span>
   
 
   
@@ -758,6 +758,18 @@
   <ul>
     <li><a href="#mas-o-que-é-page-cache">Mas o que é Page Cache</a></li>
   </ul>
+
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
 </nav>
   </div>
 </details>
@@ -771,6 +783,18 @@
     <nav id="TableOfContents">
   <ul>
     <li><a href="#mas-o-que-é-page-cache">Mas o que é Page Cache</a></li>
+  </ul>
+
+  <ul>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
   </ul>
 </nav>
   </div>
@@ -786,8 +810,10 @@
 
 
         <div class="max-w-prose mb-20">
-          <p>RAM é um hardware valioso e caro bem como a sua latência é ainda mais importante que a latência do disco. E por isso, o kernel Linux tenta ao máximo otimizar os uso da memória, fazendo uso de técnicas como compartilhando de páginas entre processos e Page Cache para melhorar a velocidade de I/O de armazenamento, armazenando um subconjunto de dados do disco na memória.
-O Page Cache realiza compartilhamento implícito de memória e de forma assíncrona com o armazenamento em segundo plano! Isso por sí só, traz ainda mais complexidade à estimativa de uso de memória por parte dos administradores!</p>
+          <p>Author: Thiago Torres Faioli
+Data: 15 de Novembro de 2023</p>
+<p>RAM é um hardware valioso e caro bem como a sua latência é ainda mais importante que a latência do disco. E por isso, o kernel Linux tenta ao máximo otimizar os uso da memória, fazendo uso de técnicas como compartilhando de páginas entre processos e Page Cache para melhorar a velocidade de I/O de armazenamento, armazenando um subconjunto de dados do disco na memória.</p>
+<p>O Page Cache realiza compartilhamento implícito de memória e de forma assíncrona com o armazenamento em segundo plano! Isso por sí só, traz ainda mais complexidade à estimativa de uso de memória por parte dos administradores!</p>
 <div id="mas-o-que-é-page-cache" class="anchor"></div>
 <h2 class="relative group">Mas o que é Page Cache 
     <span
@@ -797,14 +823,16 @@ O Page Cache realiza compartilhamento implícito de memória e de forma assíncr
     
 </h2>
 <p>o Page Cache faz parte do <a href="https://en.wikipedia.org/wiki/Virtual_file_system"   target="_blank">
-    Virtual File System - VFS</a> que é uma camada de software do núcleo que trata de todas as chamadas de sistema relacionadas a um sistema de arquivos Unix.
-Sua principal vantagem é prover uma interface genérica para diversos tipos de sistemas de arquivos. Ou seja, o VFS permite que chamadas de sistemas genéricas, tais como open( ) e read( ),possam ser executadas independentemente do sistema de arquivos usados ou do meio físico! O que implica diretamente na latência de I/O das operações de leitura e gravação.</p>
+    Virtual File System - VFS</a> que é uma camada de software do núcleo que trata de todas as chamadas de sistema relacionadas a um sistema de arquivos Unix.</p>
+<p>Sua principal vantagem é prover uma interface genérica para diversos tipos de sistemas de arquivos. Ou seja, o VFS permite que chamadas de sistemas genéricas, tais como open( ) e read( ),possam ser executadas independentemente do sistema de arquivos usados ou do meio físico! O que implica diretamente na latência de I/O das operações de leitura e gravação.</p>
+<ul>
+<li>Quando um sistema grava dados no cache, em algum momento também deve gravar esses dados no armazenamento. O tempo dessa gravação é controlado pelo que é conhecido como <em>write policy</em>, e existem duas abordagens básicas de escrita:
 <ul>
 <li>
-<p>Quando um sistema grava dados no cache, em algum momento também deve gravar esses dados no armazenamento. O tempo dessa gravação é controlado pelo que é conhecido como <em>write policy</em>, e existem duas abordagens básicas de escrita:</p>
-<ul>
-<li><em>Write-through</em>: a gravação é feita de forma síncrona tanto no cache quanto no armazenamento de apoio.</li>
-<li><em>Write-back</em>: inicialmente, a escrita é feita apenas no cache. A gravação no armazenamento de apoio é adiada até que o conteúdo modificado esteja prestes a ser substituído por outro bloco de cache.
+<p><em>Write-through</em>: a gravação é feita de forma síncrona tanto no cache quanto no armazenamento de apoio.</p>
+</li>
+<li>
+<p><em>Write-back</em>: inicialmente, a escrita é feita apenas no cache. A gravação no armazenamento de apoio é adiada até que o conteúdo modificado esteja prestes a ser substituído por outro bloco de cache.</p>
 <ul>
 <li>Nesse <a href="https://en.wikipedia.org/wiki/Cache_%28computing%29#Writing_policies"   target="_blank">
     link você pode ter mais informações sobre o algorítimo</a></li>
@@ -813,29 +841,36 @@ Sua principal vantagem é prover uma interface genérica para diversos tipos de 
 </ul>
 </li>
 </ul>
-<p>Page é a unidade de memória que o Kernel trabalha com Page Cache, e geralmente possui 4k de comprimento mínimo de armazenamento no Page Cache. Dessa forma todo I/O de arquivo está alinhado a uma quantidade específica de páginas&hellip;</p>
-<p>Até aqui, podemos entender que o Page Cache, é o principal cache de disco usado pelo kernel do Linux. Sendo utilizado ao ler ou gravar no disco; quando novas páginas são adicionadas ao cache de páginas para satisfazer as solicitações de leitura dos processos do Modo de Usuário.</p>
+<p>Page é a unidade de memória que o Kernel trabalha com Page Cache, e geralmente possui 4k de comprimento mínimo de armazenamento no Page Cache.</p>
 <ul>
-<li>
-<p>Se a página ainda não estiver no cache, uma nova entrada será adicionada ao cache e preenchida com os dados lidos do disco. Se houver memória livre suficiente, a página é mantida no cache por um período indefinido e pode então ser reutilizada por outros processos sem acessar o disco.</p>
-</li>
-<li>
-<p>Da mesma forma, antes de gravar uma página de dados em um dispositivo de bloco, o kernel verifica se a página correspondente já está incluída no cache; caso contrário, uma nova entrada é adicionada ao cache e preenchida com os dados a serem gravados no disco.</p>
+<li>Dessa forma todo I/O de arquivo está alinhado a uma quantidade específica de páginas&hellip;</li>
+</ul>
+<p>Até aqui, podemos entender que o Page Cache, é o principal cache de disco usado pelo kernel do Linux e é utilizado ao ler ou gravar no disco quando novas páginas são adicionadas ao Page Cache para satisfazer as solicitações de leitura dos processos do <em>User Mode stack</em>.</p>
 <ul>
-<li>A transferência de dados de I/O não começa imediatamente: a atualização do disco é atrasada por alguns segundos, dando assim aos processos a chance de modificar ainda mais os dados a serem gravados (em outras palavras, o kernel implementa operações de deferred write).</li>
+<li>Se a página ainda não estiver no cache, uma nova entrada será adicionada ao cache e preenchida com os dados lidos do disco.
+<ul>
+<li>Se houver memória livre suficiente, a página é mantida no cache por um período indefinido e pode então ser reutilizada por outros processos sem acessar o disco.</li>
 </ul>
 </li>
 </ul>
-<p>As páginas incluídas no Page Cache podem ser dos seguintes tipos:</p>
+<p>Da mesma forma, antes de gravar page de dados em um dispositivo de bloco, o kernel verifica se a page correspondente já está incluída no cache; caso contrário, uma nova entrada é adicionada ao cache e preenchida com os dados a serem gravados no disco.</p>
+<ul>
+<li>A transferência de dados de I/O não começa imediatamente:
+- a atualização do disco é atrasada por alguns segundos, dando assim aos processos a chance de modificar ainda mais os dados a serem gravados
+<ul>
+<li>em outras palavras, o kernel implementa operações de <em>deferred write</em></li>
+</ul>
+</li>
+</ul>
+<p>As páginas incluídas no Page Cache podem ser os seguintes tipos:</p>
 <ul>
 <li>Pages contendo dados de arquivos regulares; no Capítulo 16, descrevemos como o kernel lida com operações de leitura, gravação e mapeamento de memória neles.</li>
 <li>Pages contendo diretórios; o Linux lida com os diretórios de forma muito semelhante aos arquivos normais.</li>
-<li>Pages contendo dados lidos diretamente de arquivos de dispositivos de bloco (ignorando a camada do sistema de arquivos); o kernel os trata usando o mesmo
-conjunto de funções como para pages contendo dados de arquivos regulares.</li>
-<li>Pages contendo dados de processos do Modo Usuário que foram trocados em disco; o kernel pode ser forçado a manter-se armazenado em page cache algumas pages cujo conteúdo já foi escrito em uma área de swap.</li>
+<li>Pages contendo dados lidos diretamente de arquivos de dispositivos de bloco (ignorando a camada do sistema de arquivos); o kernel os trata usando o mesmo conjunto de funções como para pages contendo dados de arquivos regulares.</li>
+<li>Pages contendo dados de processos do <em>User Mode stack</em> que foram trocados em disco; o kernel pode forçar a manter-se armazenado em page cache algumas pages cujo conteúdo já foi escrito em uma área de swap.</li>
 <li>Pages pertencentes a arquivos de sistemas de arquivos especiais, como o sistema de arquivos especial <em>shm</em> usado para região de memória compartilhada de comunicação entre processos (IPC).</li>
 </ul>
-<p>Como podemos ver, cada page incluída no Page Cache contém dados pertencentes a algum arquivo. Este arquivo – ou mais precisamente o inode do arquivo – é chamado de page’s owner.</p>
+<p>Como podemos ver, cada page incluída no Page Cache contém dados pertencentes a algum arquivo. Este arquivo – ou mais precisamente o inode do arquivo – é chamado de <em>page’s owner</em>.</p>
 <p>Praticamente todas as operações read() e write() de arquivos dependem do Page Cache.</p>
 <ul>
 <li>a única exceção ocorre quando um processo abre um arquivo com a flag O_DIRECT definido: neste caso, o cache da página é ignorado e as transferências de dados de E/S fazem uso de buffers no espaço de endereço do modo de usuário do processo.
@@ -862,8 +897,25 @@ Para aproveitar ao máximo o cache da página, pesquisá-lo deve ser uma operaç
 </ul>
 </li>
 </ul>
-<p>A estrutura de dados principal do cache de página é o objeto address_space, uma estrutura de dados incorporada no objeto inode que possui a página.* Muitas páginas no cache podem referir-se ao mesmo proprietário, portanto, podem estar vinculadas ao mesmo objeto address_space. Este objeto também estabelece uma ligação entre as páginas do proprietário e um conjunto de métodos que operam nessas páginas. Cada descritor de página inclui dois campos chamados mapeamento e índice, que vinculam a página ao cache de páginas (consulte a seção “Descritores de páginas” no Capítulo 8). O primeiro campo aponta para o objeto address_space do inode que possui a página. O segundo campo especifica o deslocamento em unidades de tamanho de página dentro do “espaço de endereço” do proprietário, ou seja, a posição dos dados da página dentro da imagem de disco do proprietário. Esses dois campos são usados ao procurar uma página no cache de páginas. Surpreendentemente, o cache de páginas pode conter múltiplas cópias dos mesmos dados do disco. Por exemplo, o mesmo bloco de dados de 4 KB de um arquivo normal pode ser acessado das seguintes maneiras: * Ocorre uma exceção para páginas que foram trocadas. Essas páginas possuem um objeto address_space comum não incluído em nenhum inode.</p>
+<p>A estrutura de dados principal do Page Cache é o objeto <em>address_space</em>, uma estrutura de dados incorporada no objeto inode proprietário da page.</p>
+<ul>
+<li>Muitas pages no cache podem referir-se ao mesmo proprietário, portanto, podem estar vinculadas ao mesmo objeto <em>address_space</em> que  também estabelece uma ligação entre a pages do proprietários e um conjunto de métodos que operam nessas pages.</li>
+</ul>
+<p>Cada descritor de página inclui dois campos chamados mapping e index, que vinculam a page ao Page Cache</p>
+<ul>
+<li>O primeiro campo aponta para o objeto <em>address_space</em> do inode proprietário da page.</li>
+<li>O segundo campo especifica o <em>offset</em>  em unidades de <em>page-size</em> dentro do <em>addres_space</em>!
+<ul>
+<li>Ou seja: a posição dos dados da page dentro do <em>disk image</em>  proprietário.</li>
+</ul>
+</li>
+</ul>
+<p>Esses dois campos são usados ao procurar uma página no cache de páginas. Surpreendentemente, o cache de páginas pode conter múltiplas cópias dos mesmos dados do disco. Por exemplo, o mesmo bloco de dados de 4 KB de um arquivo normal pode ser acessado das seguintes maneiras: * Ocorre uma exceção para páginas que foram trocadas. Essas páginas possuem um objeto address_space comum não incluído em nenhum inode.</p>
 <p>Dessa forma vamos tentar algumas abordagens para determinar valores mais próximos do real para o consumo de memória RAM.</p>
+<blockquote>
+<p>[!NOTE]
+Referencias: Daniel P. Bovet, Marco Cesati - Understanding the Linux Kernel, Third Edition-O&rsquo;Reilly Media | Page Descriptors - Cap 8 Page Frame Management e The Page Cache - Cap 15 The Page Cache</p>
+</blockquote>
 <div id="rss-e-vsz" class="anchor"></div>
 <h1 class="relative group">RSS e VSZ 
     <span
@@ -967,13 +1019,13 @@ Para aproveitar ao máximo o cache da página, pesquisá-lo deve ser uma operaç
 <p><a href="https://lwn.net/Articles/642202/"   target="_blank">
     Nesse artigo</a> do LWN.net temos mais informações direto da fonte ;).</p>
 <div id="continua-em-breve" class="anchor"></div>
-<h1 class="relative group">Continua em breve&hellip; 
+<h5 class="relative group">Continua em breve&hellip; 
     <span
         class="absolute top-0 w-6 transition-opacity opacity-0 ltr:-left-6 rtl:-right-6 not-prose group-hover:opacity-100">
         <a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700"
             style="text-decoration-line: none !important;" href="#continua-em-breve" aria-label="Anchor">#</a></span>        
     
-</h1>
+</h5>
 
         </div>
                 
