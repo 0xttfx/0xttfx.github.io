@@ -879,8 +879,8 @@ Para aproveitar ao máximo o cache da página, pesquisá-lo deve ser uma operaç
 <p>Primeiro criamos um processo em um novo cgroup</p>
 <ul>
 <li>Rodamos o comanod <em>mtr</em> utilizando o <code>systemd-run</code> para isolá-lo num cgroup(por que sim&hellip;rs)
-<pre tabindex="0"><code>systemd-run --user -P -t -G --wait mtr 8.8.8.8
-</code></pre></li>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">systemd-run --user -P -t -G --wait mtr 8.8.8.8
+</span></span></code></pre></div></li>
 </ul>
 </li>
 <li>
@@ -889,33 +889,33 @@ Para aproveitar ao máximo o cache da página, pesquisá-lo deve ser uma operaç
 <li>Com o comando <code>ps</code> coletamos seu PID e os dados de RSS e VSZ
 <ul>
 <li>O PID do processo
-<pre tabindex="0"><code>$ ps -aux |grep -E systemd-run.*mtr | grep -v grep |awk &#39;{print $2}&#39;
-236341
-</code></pre></li>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ps -aux <span class="p">|</span>grep -E systemd-run.*mtr <span class="p">|</span> grep -v grep <span class="p">|</span>awk <span class="s1">&#39;{print $2}&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="m">236341</span>
+</span></span></code></pre></div></li>
 <li>E os dados de RSS e VSZ
-<pre tabindex="0"><code>$  ps -o rss,vsz,cmd -p $(ps -aux |grep -E systemd-run.*mtr | grep -v grep |awk &#39;{print $2}&#39;)
-  RSS    VSZ CMD
- 7168  14940 systemd-run --user -P -t -G --wait mtr 8.8.8.8
-</code></pre><ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$  ps -o rss,vsz,cmd -p <span class="k">$(</span>ps -aux <span class="p">|</span>grep -E systemd-run.*mtr <span class="p">|</span> grep -v grep <span class="p">|</span>awk <span class="s1">&#39;{print $2}&#39;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">  RSS    VSZ CMD
+</span></span><span class="line"><span class="cl"> <span class="m">7168</span>  <span class="m">14940</span> systemd-run --user -P -t -G --wait mtr 8.8.8.8
+</span></span></code></pre></div><ul>
 <li>Só a título de cuiriosidade, segue algumas formas de coverter o valor para megabytes:
-<pre tabindex="0"><code>$ echo $((7168/1024))
-7
-
-ou
-
-$ echo $((7168/1024)) |xargs -i printf &#34;%&#39;.1f MB&#34; {}
-7.0 MB
-
-ou
-
-$ numfmt --from=si --to=iec 7168K
-6.9M
-
-ou
-
-$ numfmt --from=si --to-unit=1Mi --grouping 7168K
-7
-</code></pre></li>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="k">$((</span><span class="m">7168</span><span class="o">/</span><span class="m">1024</span><span class="k">))</span>
+</span></span><span class="line"><span class="cl"><span class="m">7</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">ou
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ <span class="nb">echo</span> <span class="k">$((</span><span class="m">7168</span><span class="o">/</span><span class="m">1024</span><span class="k">))</span> <span class="p">|</span>xargs -i <span class="nb">printf</span> <span class="s2">&#34;%&#39;.1f MB&#34;</span> <span class="o">{}</span>
+</span></span><span class="line"><span class="cl">7.0 MB
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">ou
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ numfmt --from<span class="o">=</span>si --to<span class="o">=</span>iec 7168K
+</span></span><span class="line"><span class="cl">6.9M
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">ou
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ numfmt --from<span class="o">=</span>si --to-unit<span class="o">=</span>1Mi --grouping 7168K
+</span></span><span class="line"><span class="cl"><span class="m">7</span>
+</span></span></code></pre></div></li>
 </ul>
 </li>
 </ul>
@@ -927,30 +927,30 @@ $ numfmt --from=si --to-unit=1Mi --grouping 7168K
 <p>Em seguida usamos o <strong>procfs</strong> para ter mais detalhes desse uso de RAM que o RSS está apontando.</p>
 <ul>
 <li>Vamos ver o arquivo <code>smaps_rollup</code> que é uma soma das áreas de memória do <code>smaps</code> do nosso PID
-<pre tabindex="0"><code>$ cat /proc/236341/smaps_rollup 
-559517c38000-7ffe5c398000 ---p 00000000 00:00 0                          [rollup]
-Rss:                7368 kB
-Pss:                1171 kB
-Pss_Dirty:           868 kB
-Pss_Anon:            868 kB
-Pss_File:            303 kB
-Pss_Shmem:             0 kB
-Shared_Clean:       6444 kB
-Shared_Dirty:          0 kB
-Private_Clean:        56 kB
-Private_Dirty:       868 kB
-Referenced:         7368 kB
-Anonymous:           868 kB
-LazyFree:              0 kB
-AnonHugePages:         0 kB
-ShmemPmdMapped:        0 kB
-FilePmdMapped:         0 kB
-Shared_Hugetlb:        0 kB
-Private_Hugetlb:       0 kB
-Swap:                  0 kB
-SwapPss:               0 kB
-Locked:                0 kB
-</code></pre>Para as métricas listadas
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ cat /proc/236341/smaps_rollup 
+</span></span><span class="line"><span class="cl">559517c38000-7ffe5c398000 ---p <span class="m">00000000</span> 00:00 <span class="m">0</span>                          <span class="o">[</span>rollup<span class="o">]</span>
+</span></span><span class="line"><span class="cl">Rss:                <span class="m">7368</span> kB
+</span></span><span class="line"><span class="cl">Pss:                <span class="m">1171</span> kB
+</span></span><span class="line"><span class="cl">Pss_Dirty:           <span class="m">868</span> kB
+</span></span><span class="line"><span class="cl">Pss_Anon:            <span class="m">868</span> kB
+</span></span><span class="line"><span class="cl">Pss_File:            <span class="m">303</span> kB
+</span></span><span class="line"><span class="cl">Pss_Shmem:             <span class="m">0</span> kB
+</span></span><span class="line"><span class="cl">Shared_Clean:       <span class="m">6444</span> kB
+</span></span><span class="line"><span class="cl">Shared_Dirty:          <span class="m">0</span> kB
+</span></span><span class="line"><span class="cl">Private_Clean:        <span class="m">56</span> kB
+</span></span><span class="line"><span class="cl">Private_Dirty:       <span class="m">868</span> kB
+</span></span><span class="line"><span class="cl">Referenced:         <span class="m">7368</span> kB
+</span></span><span class="line"><span class="cl">Anonymous:           <span class="m">868</span> kB
+</span></span><span class="line"><span class="cl">LazyFree:              <span class="m">0</span> kB
+</span></span><span class="line"><span class="cl">AnonHugePages:         <span class="m">0</span> kB
+</span></span><span class="line"><span class="cl">ShmemPmdMapped:        <span class="m">0</span> kB
+</span></span><span class="line"><span class="cl">FilePmdMapped:         <span class="m">0</span> kB
+</span></span><span class="line"><span class="cl">Shared_Hugetlb:        <span class="m">0</span> kB
+</span></span><span class="line"><span class="cl">Private_Hugetlb:       <span class="m">0</span> kB
+</span></span><span class="line"><span class="cl">Swap:                  <span class="m">0</span> kB
+</span></span><span class="line"><span class="cl">SwapPss:               <span class="m">0</span> kB
+</span></span><span class="line"><span class="cl">Locked:                <span class="m">0</span> kB
+</span></span></code></pre></div>Para as métricas listadas
 <ul>
 <li><strong>RSS</strong> que já é nossa conhecida.</li>
 <li><strong>PSS</strong> Proportional Set Size é o compartilhamento proporcional de memória do processo. É a contagem de páginas que ele possui na memória, onde cada página é dividida pelo número de processos que a compartilham. Portanto, se um processo tiver 1.000 páginas só para ele e 1.000 compartilhadas com outro processo, seu PSS será 1.500.</li>
