@@ -95,7 +95,7 @@
     "keywords": ["first"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "895"
+    "wordCount": "907"
   }]
   </script>
 
@@ -529,7 +529,7 @@
 <div class="flex flex-row flex-wrap items-center">
   
   
-  <time datetime="2024-01-06 09:14:00 -0300 -03">6 January 2024</time><span class="px-2 text-primary-500">&middot;</span><span>895 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">5 mins</span>
+  <time datetime="2024-01-06 09:14:00 -0300 -03">6 January 2024</time><span class="px-2 text-primary-500">&middot;</span><span>907 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">5 mins</span>
   
 
   
@@ -776,28 +776,28 @@
 <ol>
 <li>Verificando se há algum swap</li>
 </ol>
-<pre tabindex="0"><code>sudo swapon --show
-</code></pre><ol start="2">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo swapon --show
+</span></span></code></pre></div><ol start="2">
 <li>Criando arquivo de swap de 2GiB</li>
 </ol>
-<pre tabindex="0"><code>sudo dd if=/dev/zero of=/swapfile count=2192 bs=1MiB
-</code></pre><ol start="3">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>/swapfile <span class="nv">count</span><span class="o">=</span><span class="m">2192</span> <span class="nv">bs</span><span class="o">=</span>1MiB
+</span></span></code></pre></div><ol start="3">
 <li>Alterando permissão do arquivo</li>
 </ol>
-<pre tabindex="0"><code>sudo chmod 600 /swapfile
-</code></pre><ol start="4">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo chmod <span class="m">600</span> /swapfile
+</span></span></code></pre></div><ol start="4">
 <li>Marcando o arquivo como um espaço de swap</li>
 </ol>
-<pre tabindex="0"><code>sudo mkswap /swapfile
-</code></pre><ol start="5">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo mkswap /swapfile
+</span></span></code></pre></div><ol start="5">
 <li>Verificando se está tudo ok</li>
 </ol>
-<pre tabindex="0"><code>sudo swapon --show
-</code></pre><ol start="6">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo swapon --show
+</span></span></code></pre></div><ol start="6">
 <li>Adicionando a linha no &lsquo;/etc/fstab&rsquo; para montagem automática</li>
 </ol>
-<pre tabindex="0"><code>echo &#39;/swapfile    none    swap    sw    0 0&#39; | sudo tee -a /etc/fstab
-</code></pre><ol start="7">
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s1">&#39;/swapfile    none    swap    sw    0 0&#39;</span> <span class="p">|</span> sudo tee -a /etc/fstab
+</span></span></code></pre></div><ol start="7">
 <li>Ajustando a configuração de Swap</li>
 </ol>
 <p>O parâmetro <code>/proc/sys/vmwappiness</code> configura a frequência com que o sistema transfere dados da RAM para o espaço de swap. Sendo um  valor entre 0 e 100 que representa uma porcentagem! Um valor baixo significa que o seu sistema Linux troca processos raramente enquanto um alto valor significa que os processos são gravados em disco imediatamente</p>
@@ -842,10 +842,10 @@
 </table>
 <p>Para um desktop, um valor de swappiness de 60 não é um valor ruim e normalmente é o valor dfault em uma distro Linux. Mas para um servidor, podemos deixá-lo mais próximo de 0, para fazer uso somente quando realmente necessário</p>
 <p>Como exemplo podemos setar para  &lsquo;10&rsquo; para que o swap seja utilizado após 90% de RAM ocupada</p>
-<pre tabindex="0"><code>sudo sysctl vm.swappiness=10
-</code></pre><p>Para garantir que esse valor irá se manter após um boot</p>
-<pre tabindex="0"><code>echo &#39;vm.swappiness=10&#39; | sudo tee -a /etc/sysctl.conf
-</code></pre><p>Mas como sempre, não há uma receita de bolo! Em determinados cenários  trocar processos de tempo de execução da RAM para o disco, deve ser evitado, noutros há vantagem&hellip; Conhecer a aplicação irá lhe guiar na configuração mais apropriada!</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo sysctl vm.swappiness<span class="o">=</span><span class="m">10</span>
+</span></span></code></pre></div><p>Para garantir que esse valor irá se manter após um boot</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s1">&#39;vm.swappiness=10&#39;</span> <span class="p">|</span> sudo tee -a /etc/sysctl.conf
+</span></span></code></pre></div><p>Mas como sempre, não há uma receita de bolo! Em determinados cenários  trocar processos de tempo de execução da RAM para o disco, deve ser evitado, noutros há vantagem&hellip; Conhecer a aplicação irá lhe guiar na configuração mais apropriada!</p>
 <ol start="8">
 <li>Ajustando a confiuração do vfs_cache_pressure</li>
 </ol>
@@ -857,10 +857,14 @@
 <li>Aumentar vfs_cache_pressure além de 100 faz com que o kernel prefira recuperar dentries e inodes.</li>
 </ul>
 <p>Podemos definir isso em um valor mais conservador como 50</p>
-<pre tabindex="0"><code>sudo sysctl vm.vfs_cache_pressure=50
-</code></pre><p>Vamos garantir que após um boot o valor permaneça</p>
-<pre tabindex="0"><code>echo &#39;vm.vfs_cache_pressure=50&#39; | sudo tee -a /etc/sysctl.conf
-</code></pre>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo sysctl vm.vfs_cache_pressure<span class="o">=</span><span class="m">50</span>
+</span></span></code></pre></div><p>Vamos garantir que após um boot o valor permaneça</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s1">&#39;vm.vfs_cache_pressure=50&#39;</span> <span class="p">|</span> sudo tee -a /etc/sysctl.conf
+</span></span></code></pre></div><ol start="9">
+<li>Agora sim! Vamos ativar o novo espaço de swapping</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo swapon /swapfile
+</span></span></code></pre></div>
         </div>
                 
         
