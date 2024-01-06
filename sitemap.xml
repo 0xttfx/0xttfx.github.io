@@ -4,13 +4,25 @@
 
   <url>
     <loc>https://0xttfx.github.io/</loc>
-    <lastmod>2024-01-06T09:14:00-03:00</lastmod>
+    <lastmod>2024-01-06T14:55:51-03:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://0xttfx.github.io/posts/</loc>
-    <lastmod>2024-01-06T09:14:00-03:00</lastmod>
+    <lastmod>2024-01-06T14:55:51-03:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://0xttfx.github.io/posts/rtfmaleatoriedades-ntcdocker/</loc>
+    <lastmod>2024-01-06T14:55:51-03:00</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://0xttfx.github.io/posts/rtfmaleatoriedades-ntcdocker/rtfmaleatoriedadesparasysadminsecopsdevopssnre-ntcdocker/</loc>
+    <lastmod>2024-01-06T14:55:51-03:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
