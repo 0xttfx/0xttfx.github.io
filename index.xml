@@ -7,7 +7,17 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© 2024 Thiago Torres Faioli</copyright>
-    <lastBuildDate>Tue, 09 Jan 2024 12:08:11 -0300</lastBuildDate><atom:link href="https://0xttfx.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 21 Jan 2024 20:30:59 -0300</lastBuildDate><atom:link href="https://0xttfx.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>RTFM&amp;AleatoriedadesParaSysAdmin OCSPStapling</title>
+      <link>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadmin-ocspstapling/</link>
+      <pubDate>Sun, 21 Jan 2024 20:30:59 -0300</pubDate>
+      
+      <guid>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadmin-ocspstapling/</guid>
+      <description>OSCP Stapling é o servidor Web (e não o navegador) obtendo resposta OCSP com status do certificado armazenando-o em cache, e esses dados são incluídos nas respostas HTTPS junto com o certificado&amp;hellip;</description>
+      
+    </item>
+    
     <item>
       <title>RTFM &amp; Aleatoriedades Para SysAdmin - Old NTP Client</title>
       <link>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadmin-oldntp/</link>
