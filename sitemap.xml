@@ -15,43 +15,25 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://0xttfx.github.io/posts/rtfmaleatoriedades-ntp/rtfmaleatoriedadesparasysadmin-oldntp/</loc>
+    <loc>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadmin-oldntp/</loc>
     <lastmod>2024-01-09T12:08:11-03:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://0xttfx.github.io/posts/rtfmaleatoriedades-ntcdocker/</loc>
+    <loc>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadminsecopsdevopssnre-ntcdocker/</loc>
     <lastmod>2024-01-06T14:55:51-03:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://0xttfx.github.io/posts/rtfmaleatoriedades-ntcdocker/rtfmaleatoriedadesparasysadminsecopsdevopssnre-ntcdocker/</loc>
-    <lastmod>2024-01-06T14:55:51-03:00</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://0xttfx.github.io/posts/rtfmaleatoriedades-swap/</loc>
+    <loc>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadmin-swap/</loc>
     <lastmod>2024-01-06T09:14:00-03:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://0xttfx.github.io/posts/rtfmaleatoriedades-swap/rtfmaleatoriedadesparasysadmin-swap/</loc>
-    <lastmod>2024-01-06T09:14:00-03:00</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://0xttfx.github.io/posts/rtfmaleatoriedades-journalctl/</loc>
-    <lastmod>2024-01-05T17:43:55-03:00</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://0xttfx.github.io/posts/rtfmaleatoriedades-journalctl/rtfmaleatoriedadesparasysadmin-journalctl/</loc>
+    <loc>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadmin-journalctl/</loc>
     <lastmod>2024-01-05T17:43:55-03:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
@@ -63,19 +45,7 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://0xttfx.github.io/posts/pagecache/pagecache/</loc>
-    <lastmod>2023-11-15T20:25:31-03:00</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://0xttfx.github.io/posts/dokawsrds/</loc>
-    <lastmod>2023-11-06T00:00:00+00:00</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://0xttfx.github.io/posts/dokawsrds/ip-dok-awsrds/</loc>
+    <loc>https://0xttfx.github.io/posts/ip-dok-awsrds/</loc>
     <lastmod>2023-11-06T00:00:00+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>

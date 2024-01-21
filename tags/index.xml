@@ -9,11 +9,51 @@
     <copyright>© 2024 Thiago Torres Faioli</copyright>
     <lastBuildDate>Tue, 09 Jan 2024 12:08:11 -0300</lastBuildDate><atom:link href="https://0xttfx.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>first</title>
-      <link>https://0xttfx.github.io/tags/first/</link>
+      <title>Linux</title>
+      <link>https://0xttfx.github.io/tags/linux/</link>
       <pubDate>Tue, 09 Jan 2024 12:08:11 -0300</pubDate>
       
+      <guid>https://0xttfx.github.io/tags/linux/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>NTP</title>
+      <link>https://0xttfx.github.io/tags/ntp/</link>
+      <pubDate>Tue, 09 Jan 2024 12:08:11 -0300</pubDate>
+      
+      <guid>https://0xttfx.github.io/tags/ntp/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>RTFM</title>
+      <link>https://0xttfx.github.io/tags/rtfm/</link>
+      <pubDate>Tue, 09 Jan 2024 12:08:11 -0300</pubDate>
+      
+      <guid>https://0xttfx.github.io/tags/rtfm/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>first</title>
+      <link>https://0xttfx.github.io/tags/first/</link>
+      <pubDate>Sat, 06 Jan 2024 14:55:51 -0300</pubDate>
+      
       <guid>https://0xttfx.github.io/tags/first/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>SystemD</title>
+      <link>https://0xttfx.github.io/tags/systemd/</link>
+      <pubDate>Fri, 05 Jan 2024 17:43:55 -0300</pubDate>
+      
+      <guid>https://0xttfx.github.io/tags/systemd/</guid>
       <description></description>
       
     </item>
