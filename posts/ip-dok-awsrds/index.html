@@ -95,7 +95,7 @@
     "keywords": ["DOK","AWS","RDS"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "281"
+    "wordCount": "325"
   }]
   </script>
 
@@ -536,7 +536,7 @@
 <div class="flex flex-row flex-wrap items-center">
   
   
-  <time datetime="2023-11-06 00:00:00 &#43;0000 UTC">6 November 2023</time><span class="px-2 text-primary-500">&middot;</span><span>281 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">2 mins</span><span class="px-2 text-primary-500">&middot;</span><span>
+  <time datetime="2023-11-06 00:00:00 &#43;0000 UTC">6 November 2023</time><span class="px-2 text-primary-500">&middot;</span><span>325 words</span><span class="px-2 text-primary-500">&middot;</span><span title="Reading time">2 mins</span><span class="px-2 text-primary-500">&middot;</span><span>
     
     <span id="views_posts/ip-dok-awsrds.md" title="views">0</span> 
     
@@ -977,6 +977,16 @@
 <li>implementado trap para melhor localização do momento e local do erro.</li>
 </ul>
 </li>
+<li>
+<p>0.7v</p>
+<ul>
+<li>Implementado arquivo PID.</li>
+<li>Modificado método de criação de array&rsquo;s específicos para uso mapfile</li>
+<li>Melhorias no filtro diff dos arquivos de IPs</li>
+<li>Melhorias nos filtros para criação de array IPs</li>
+<li>Modificado no laço aninhado de inserção e remoção de IP para melhora do parser</li>
+</ul>
+</li>
 </ul>
 <div id="dependências" class="anchor"></div>
 <h2 class="relative group">Dependências 
@@ -1042,7 +1052,7 @@
 <pre tabindex="0"><code>mkdir -p /usr/local/tools/log &amp;&amp; cd /usr/local/tools/ &amp;&amp; \
 git clone git@github.com:0xttfx/ip-do_aws-rds.git &amp;&amp; cd ip-*
 </code></pre><p>Não há argumentos, bastando executar o .sh</p>
-<pre tabindex="0"><code>./script-0.6.sh
+<pre tabindex="0"><code>./script-0.7.sh
 </code></pre><div id="automação" class="anchor"></div>
 <h2 class="relative group">Automação 
     <span
@@ -1056,7 +1066,7 @@ Devido ao update dos nós dos clusters, que alteram os seus IPs, o script será 
 <ul>
 <li>altere conforme sua necessidade.</li>
 </ul>
-<pre tabindex="0"><code>* * * * * 	user	/usr/bin/bash -x /usr/local/tools/ip-do_aws-rds/script-0.6.sh &gt;&gt; /usr/local/tools/log/exec-script-0.6-$(date --date=&#34;today&#34; +\%d\%m\%Y_\%H\%M\%S).log 2&gt;&amp;1
+<pre tabindex="0"><code>* * * * * 	user	/usr/bin/bash -x /usr/local/tools/ip-do_aws-rds/script-0.7.sh &gt;&gt; /usr/local/tools/log/exec-script-0.7-$(date --date=&#34;today&#34; +\%d\%m\%Y_\%H\%M\%S).log 2&gt;&amp;1
 0 0 * * *   user	find /usr/local/tools/log/ -type f -mtime +3 -name &#39;exec-*.log&#39; -exec rm {} +
 </code></pre>
         </div>
