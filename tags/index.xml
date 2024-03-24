@@ -7,13 +7,43 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>© 2024 Thiago Torres Faioli</copyright>
-    <lastBuildDate>Tue, 23 Jan 2024 07:03:36 -0300</lastBuildDate><atom:link href="https://0xttfx.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 23 Mar 2024 18:42:59 -0300</lastBuildDate><atom:link href="https://0xttfx.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>engineering</title>
+      <link>https://0xttfx.github.io/tags/engineering/</link>
+      <pubDate>Sat, 23 Mar 2024 18:42:59 -0300</pubDate>
+      
+      <guid>https://0xttfx.github.io/tags/engineering/</guid>
+      <description></description>
+      
+    </item>
+    
     <item>
       <title>Linux</title>
       <link>https://0xttfx.github.io/tags/linux/</link>
-      <pubDate>Tue, 23 Jan 2024 07:03:36 -0300</pubDate>
+      <pubDate>Sat, 23 Mar 2024 18:42:59 -0300</pubDate>
       
       <guid>https://0xttfx.github.io/tags/linux/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>notification infrastructure</title>
+      <link>https://0xttfx.github.io/tags/notification-infrastructure/</link>
+      <pubDate>Sat, 23 Mar 2024 18:42:59 -0300</pubDate>
+      
+      <guid>https://0xttfx.github.io/tags/notification-infrastructure/</guid>
+      <description></description>
+      
+    </item>
+    
+    <item>
+      <title>open-source</title>
+      <link>https://0xttfx.github.io/tags/open-source/</link>
+      <pubDate>Sat, 23 Mar 2024 18:42:59 -0300</pubDate>
+      
+      <guid>https://0xttfx.github.io/tags/open-source/</guid>
       <description></description>
       
     </item>
