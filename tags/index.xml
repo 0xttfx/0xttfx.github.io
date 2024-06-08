@@ -6,19 +6,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>0xttfx - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)</copyright>
-    <lastBuildDate>Fri, 07 Jun 2024 11:52:54 -0300</lastBuildDate><atom:link href="https://0xttfx.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><icon>https://0xttfx.github.io/img/icon.svg</icon>
-    
-    
-    <item>
-      <title>Linux</title>
-      <link>https://0xttfx.github.io/tags/linux/</link>
-      <pubDate>Fri, 07 Jun 2024 11:52:54 -0300</pubDate>
-      
-      <guid>https://0xttfx.github.io/tags/linux/</guid>
-      <description><![CDATA[]]></description>
-      
-    </item>
-    
+    <lastBuildDate>Sat, 23 Mar 2024 18:42:59 -0300</lastBuildDate><atom:link href="https://0xttfx.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><icon>https://0xttfx.github.io/img/icon.svg</icon>
     
     
     <item>
@@ -27,6 +15,18 @@
       <pubDate>Sat, 23 Mar 2024 18:42:59 -0300</pubDate>
       
       <guid>https://0xttfx.github.io/tags/engineering/</guid>
+      <description><![CDATA[]]></description>
+      
+    </item>
+    
+    
+    
+    <item>
+      <title>Linux</title>
+      <link>https://0xttfx.github.io/tags/linux/</link>
+      <pubDate>Sat, 23 Mar 2024 18:42:59 -0300</pubDate>
+      
+      <guid>https://0xttfx.github.io/tags/linux/</guid>
       <description><![CDATA[]]></description>
       
     </item>
