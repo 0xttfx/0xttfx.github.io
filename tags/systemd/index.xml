@@ -1,22 +1,79 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><?xml-stylesheet href="/feed_style.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="https://www.rssboard.org/media-rss">
   <channel>
     <title>SystemD on 0xttfx</title>
     <link>https://0xttfx.github.io/tags/systemd/</link>
     <description>Recent content in SystemD on 0xttfx</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <copyright>© 2024 Thiago Torres Faioli</copyright>
-    <lastBuildDate>Fri, 05 Jan 2024 17:43:55 -0300</lastBuildDate><atom:link href="https://0xttfx.github.io/tags/systemd/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>0xttfx - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)</copyright>
+    <lastBuildDate>Fri, 05 Jan 2024 17:43:55 -0300</lastBuildDate><atom:link href="https://0xttfx.github.io/tags/systemd/index.xml" rel="self" type="application/rss+xml" /><icon>https://0xttfx.github.io/img/icon.svg</icon>
+    
+    
     <item>
       <title>RTFM &amp; Aleatoriedades para SysAdmin - journalctl </title>
       <link>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadmin-journalctl/</link>
       <pubDate>Fri, 05 Jan 2024 17:43:55 -0300</pubDate>
       
       <guid>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadmin-journalctl/</guid>
-      <description>Para quando a lei de Murphy exerce a sua força.</description>
+      <description><![CDATA[<p>Para quando a lei de Murphy exerce a sua força. É nessa hora, que do seu kit MacGyver, você tira o <strong>journalctl</strong>  para identificar o que pode estar errado!</p>
+<p>Das muitas formas possíveis. Tem mais essa:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ journalctl --no-pager --since today --grep <span style="color:#f1fa8c">&#39;fail|error|fatal&#39;</span> --output json|jq
+</span></span></code></pre></div><ul>
+<li>Com a opção &ldquo;&ndash;grep&rdquo; filtramos palavras chave</li>
+<li>Com a opção &ldquo;&ndash;since&rdquo; melhoramos nossa assertividade.
+<ul>
+<li>Ex:
+<ul>
+<li>&ndash;since &ldquo;1 hour ago&rdquo;</li>
+<li>&ndash;since &ldquo;1 minutes ago&rdquo;</li>
+<li>&ndash;since &ldquo;5 seconds ago&rdquo;</li>
+<li>&ndash;since 07:00 &ndash;until &ldquo;1 hour ago&rdquo;</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Com o &ldquo;&ndash;output&rdquo; usando o formato <em>json</em>, fazemos um parser amigável pra organizarmos com <strong>jq</strong>.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ journalctl --no-pager --since today --grep <span style="color:#f1fa8c">&#39;fail|error|fatal&#39;</span> --output json|jq
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f1fa8c">&#34;_PID&#34;</span>: <span style="color:#f1fa8c">&#34;5605&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f1fa8c">&#34;_SYSTEMD_SLICE&#34;</span>: <span style="color:#f1fa8c">&#34;user-1000.slice&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f1fa8c">&#34;_SYSTEMD_USER_UNIT&#34;</span>: <span style="color:#f1fa8c">&#34;org.gnome.Shell@wayland.service&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f1fa8c">&#34;_RUNTIME_SCOPE&#34;</span>: <span style="color:#f1fa8c">&#34;system&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f1fa8c">&#34;_SYSTEMD_UNIT&#34;</span>: <span style="color:#f1fa8c">&#34;user@1000.service&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f1fa8c">&#34;__SEQNUM&#34;</span>: <span style="color:#f1fa8c">&#34;7540847&#34;</span>,
+</span></span><span style="display:flex;"><span>  ...
+</span></span><span style="display:flex;"><span>  ...
+</span></span><span style="display:flex;"><span>  <span style="color:#f1fa8c">&#34;_SYSTEMD_OWNER_UID&#34;</span>: <span style="color:#f1fa8c">&#34;1000&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f1fa8c">&#34;SYSLOG_IDENTIFIER&#34;</span>: <span style="color:#f1fa8c">&#34;google-chrome.desktop&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f1fa8c">&#34;_COMM&#34;</span>: <span style="color:#f1fa8c">&#34;cat&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f1fa8c">&#34;__MONOTONIC_TIMESTAMP&#34;</span>: <span style="color:#f1fa8c">&#34;285995139402&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f1fa8c">&#34;_CMDLINE&#34;</span>: <span style="color:#f1fa8c">&#34;cat&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f1fa8c">&#34;_BOOT_ID&#34;</span>: <span style="color:#f1fa8c">&#34;da45ccab9c404e9444444a9c51300cae&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f1fa8c">&#34;_EXE&#34;</span>: <span style="color:#f1fa8c">&#34;/usr/bin/cat&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">{</span>
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><p>Ainda é possível filtrar por algum objeto com o <em>jq</em> e quantificar as ocorrências com sort e uniq</p>
+<ul>
+<li>Talvez, alguns objetos interessantes seriam _EXE, _CMDLINE, _PID, SYSLOG_IDENTIFIER, MESSAGE&hellip;</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ journalctl --no-pager --since <span style="color:#f1fa8c">&#34;60 minutes ago&#34;</span> --grep <span style="color:#f1fa8c">&#39;fail|error|fatal&#39;</span> --output json|jq <span style="color:#f1fa8c">&#39;.SYSLOG_IDENTIFIER&#39;</span> | sort | uniq -c
+</span></span><span style="display:flex;"><span>      <span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">&#34;audit&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">&#34;cupsd&#34;</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#bd93f9">19</span> <span style="color:#f1fa8c">&#34;discord.desktop&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#bd93f9">2</span> <span style="color:#f1fa8c">&#34;fprintd&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#bd93f9">7</span> <span style="color:#f1fa8c">&#34;gnome-shell&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#bd93f9">10518</span> <span style="color:#f1fa8c">&#34;google-chrome.desktop&#34;</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#bd93f9">18</span> null
+</span></span><span style="display:flex;"><span>      <span style="color:#bd93f9">4</span> <span style="color:#f1fa8c">&#34;org.gnome.Software.desktop&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#bd93f9">173</span> <span style="color:#f1fa8c">&#34;slack.desktop&#34;</span>
+</span></span></code></pre></div>]]></description>
       
     </item>
+    
     
   </channel>
 </rss>

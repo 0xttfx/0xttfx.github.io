@@ -1,22 +1,122 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><?xml-stylesheet href="/feed_style.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="https://www.rssboard.org/media-rss">
   <channel>
     <title>AWS on 0xttfx</title>
     <link>https://0xttfx.github.io/tags/aws/</link>
     <description>Recent content in AWS on 0xttfx</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <copyright>© 2024 Thiago Torres Faioli</copyright>
-    <lastBuildDate>Mon, 06 Nov 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://0xttfx.github.io/tags/aws/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>0xttfx - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)</copyright>
+    <lastBuildDate>Mon, 06 Nov 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://0xttfx.github.io/tags/aws/index.xml" rel="self" type="application/rss+xml" /><icon>https://0xttfx.github.io/img/icon.svg</icon>
+    
+    
     <item>
       <title>IP DOK Set or Drop Sec Group AWS EC2 RDS</title>
       <link>https://0xttfx.github.io/posts/ipdo-awsrds/</link>
       <pubDate>Mon, 06 Nov 2023 00:00:00 +0000</pubDate>
       
       <guid>https://0xttfx.github.io/posts/ipdo-awsrds/</guid>
-      <description>DigitalOcean Kubernetes and AWS RDS Security Group</description>
+      <description><![CDATA[<h1 id="ipdo-awsrds">ipdo-awsrds</h1>
+<h2 id="função">Função</h2>
+<p>Scrip bash para descoberta dos IPs WAN dos DOcean Droplets e inserção em security groups EC2 das instâncias AWS RDS.</p>
+<h2 id="atualizações">Atualizações</h2>
+<ul>
+<li>v0.4
+<ul>
+<li>Como inteválo mínimo de execução na CRON são de 60 segundos! E eu precisava executar por mais vezes por minuto
+acabei contendo o scrip dentro de um laço wile que o executa por 10 vezes com intervalo de 2 segundos</li>
+</ul>
+</li>
+<li>v0.5
+<ul>
+<li>removido laço de x execuções a cada 60s</li>
+<li>restruturado algumas conditional statement da inserção e remoção de IPs</li>
+<li>O diff, antes realizado globalmente, agora é realizado para cada Security Group</li>
+</ul>
+</li>
+<li>v0.6
+<ul>
+<li>Implementado o builtin <em>set</em> com as <em>options</em> <em>errtrace, errexit, nounset e pipefail</em> para deixar o script mais criterioso quanto a erros Principalmente os de APIs 5xx sem a necessidade de fazer testes em funções, condições etc.</li>
+<li>Implementado trap para melhor localização do momento e local do erro.</li>
+</ul>
+</li>
+<li>v0.7
+<ul>
+<li>Implementado arquivo PID.</li>
+<li>Modificado método de criação de array&rsquo;s específicos para uso mapfile</li>
+<li>Melhorias no filtro diff dos arquivos de IPs</li>
+<li>Melhorias nos filtros para criação de array IPs</li>
+<li>Modificado no laço aninhado de inserção e remoção de IP para melhora do parser</li>
+</ul>
+</li>
+<li>v0.8
+<ul>
+<li>Implementado tratativa para cod error diff</li>
+<li>Implementado arquivo de diff temporário para cada sec. group verificado</li>
+<li>Implementado tratativa para cod error na criação de array usando arquivo diff temporário</li>
+<li>Implementado remoção de arquivos temporários em cada laço</li>
+</ul>
+</li>
+<li>v1.0
+<ul>
+<li>Agora sim! <strong>ipdo-awsrds</strong> agora é GA - Disponibilidade Geral!</li>
+<li>Versão estável para uso em ambiente produção.</li>
+</ul>
+</li>
+</ul>
+<h2 id="dependências">Dependências</h2>
+<ul>
+<li>AWS CLI
+<ul>
+<li><a href="https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html">AWS CLI</a></li>
+<li><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/">EC2</a>
+<ul>
+<li><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/authorize-security-group-ingress.html">API authorize-security-group-ingress</a></li>
+<li><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-security-groups.html">API describe-security-groups</a></li>
+</ul>
+</li>
+<li><a href="https://docs.aws.amazon.com/cli/latest/reference/rds/">RDS</a>
+<ul>
+<li><a href="https://docs.aws.amazon.com/cli/latest/reference/rds/describe-db-instances.html">API describe-db-instances</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>DigitalOcean CLI
+<ul>
+<li><a href="https://docs.digitalocean.com/reference/doctl/how-to/install/">DO CLI</a>
+<ul>
+<li><a href="https://docs.digitalocean.com/reference/doctl/reference/compute/">API compute</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="executando">Executando</h2>
+<p>Crie diretório <code>tools</code> e <code>tool/log</code> em  <code>/usr/local</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir -p /usr/local/tools/log <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#8be9fd;font-style:italic">cd</span> /usr/local/tools/ <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>git clone git@github.com:0xttfx/ipdo-awsrds.git
+</span></span></code></pre></div><p>Agora criamos o arquivo <em>path-tools.sh</em> em <em>/etc/profile.d/</em> para configurar o PATH para diretório <em>tools</em></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo &gt; /etc/profile.d/path-tools.sh
+</span></span></code></pre></div><p>Em seguida adicione o conteúdo:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#6272a4"># configurando PATH para incluir diretório tools caso exista.</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">if</span> <span style="color:#ff79c6">[</span> -d <span style="color:#f1fa8c">&#34;/usr/local/tools/ipdo-awsrds&#34;</span> <span style="color:#ff79c6">]</span> ; <span style="color:#ff79c6">then</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">PATH</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;</span><span style="color:#8be9fd;font-style:italic">$PATH</span><span style="color:#f1fa8c">:/usr/local/tools/ipdo-awsrds&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">fi</span>
+</span></span><span style="display:flex;"><span>Eof
+</span></span></code></pre></div><p>Para execução do script é necessário declarar o <em>user profile aws cli</em> usando a opção <strong>-u</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ipdo-awsrds -u &lt;nome&gt;
+</span></span></code></pre></div><h2 id="automação">Automação</h2>
+<p>Para automação da execução, adicione a seguinte linha na crontab do usuário(<em>crontab -e</em>) não privilégiado.
+Devido ao update, adição e remoção dos nós dos clusters, o script será executado a cada 1 mintuo!</p>
+<ul>
+<li>altere conforme sua necessidade.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>* * * * *    /usr/bin/bash -x /usr/local/tools/ipdo-awsrds -u nome &gt;&gt; /usr/local/tools/log/ipdo-awsrds-<span style="color:#ff79c6">$(</span>date --date<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;today&#34;</span> +<span style="color:#f1fa8c">\%</span>d<span style="color:#f1fa8c">\%</span>m<span style="color:#f1fa8c">\%</span>Y_<span style="color:#f1fa8c">\%</span>H<span style="color:#f1fa8c">\%</span>M<span style="color:#f1fa8c">\%</span>S<span style="color:#ff79c6">)</span>.log 2&gt;&amp;<span style="color:#bd93f9">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">0</span> <span style="color:#bd93f9">0</span> * * *    /usr/bin/find /usr/local/tools/log/ -type f -mtime +5 -name <span style="color:#f1fa8c">&#39;exec-*.log&#39;</span> -exec rm <span style="color:#ff79c6">{}</span> +
+</span></span></code></pre></div>]]></description>
       
     </item>
+    
     
   </channel>
 </rss>

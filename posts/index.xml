@@ -1,22 +1,188 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><?xml-stylesheet href="/feed_style.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="https://www.rssboard.org/media-rss">
   <channel>
     <title>0xttfx</title>
     <link>https://0xttfx.github.io/posts/</link>
     <description>Recent content on 0xttfx</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <copyright>© 2024 Thiago Torres Faioli</copyright>
-    <lastBuildDate>Sat, 23 Mar 2024 18:42:59 -0300</lastBuildDate><atom:link href="https://0xttfx.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <copyright>0xttfx - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)</copyright>
+    <lastBuildDate>Sat, 23 Mar 2024 18:42:59 -0300</lastBuildDate><atom:link href="https://0xttfx.github.io/posts/index.xml" rel="self" type="application/rss+xml" /><icon>https://0xttfx.github.io/img/icon.svg</icon>
+    
+    
     <item>
       <title>Novu Self Hosting</title>
       <link>https://0xttfx.github.io/posts/novu-self-hosting/</link>
       <pubDate>Sat, 23 Mar 2024 18:42:59 -0300</pubDate>
       
       <guid>https://0xttfx.github.io/posts/novu-self-hosting/</guid>
-      <description>Novu - The open-source notification infrastructure for developers.</description>
+      <description><![CDATA[<h1 id="novu---the-open-source-notification-infrastructure-for-developers">Novu - The open-source notification infrastructure for developers.</h1>
+<p>The objective here is to show the configuration of the .env file and the NGINX reverse proxy, which was my biggest difficulty due to the lack of essential details in the project documentation for this purpose.</p>
+<h2 id="how-does-novu-work">How Does Novu Work?</h2>
+<p>Novu is based on  two components</p>
+<ul>
+<li>An API for data exchange</li>
+<li>A panel to design notifications and their logical rules</li>
+</ul>
+<h3 id="architecture">Architecture</h3>
+<p>Novu&rsquo;s Object Communication Layer - OCL is a framework that separates communication tasks into specialized components, similar to microservices, that handle specific functions, such as messaging and data management.</p>
+<p><img src="/images/Novu/Novu_Architecture_v2.png" alt="architecture"></p>
+<h2 id="lets-go">Let&rsquo;s go</h2>
+<ul>
+<li>Clone Novu repo</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#6272a4"># Go to source folder </span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">cd</span> /usr/local/src
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># Get the code</span>
+</span></span><span style="display:flex;"><span>git clone --depth <span style="color:#bd93f9">1</span> https://github.com/novuhq/novu
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># Go to the docker folder</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">cd</span> novu/docker
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># Copy the example env file</span>
+</span></span><span style="display:flex;"><span>cp .env.example ./local/deployment/.env
+</span></span></code></pre></div><ul>
+<li>.env</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#6272a4"># Secrets</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># YOU MUST CHANGE THESE BEFORE GOING INTO PRODUCTION</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># used as a secret to verify the JWT token signature</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">JWT_SECRET</span><span style="color:#ff79c6">=</span>&lt;secret&gt;
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># used to encrypt/decrypt the provider credentials</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">STORE_ENCRYPTION_KEY</span><span style="color:#ff79c6">=</span>&lt;key&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># Host</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">HOST_NAME</span><span style="color:#ff79c6">=</span>https://novu.yourdns.com.br
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># General</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># available values &#39;dev&#39;, &#39;test&#39;, &#39;production&#39;, &#39;ci&#39;, &#39;local&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">NODE_ENV</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">local</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">MONGO_MAX_POOL_SIZE</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">500</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">MONGO_MIN_POOL_SIZE</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">100</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># MONGO USER</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">MONGO_INITDB_ROOT_USERNAME</span><span style="color:#ff79c6">=</span>root
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># MONGO PASSWORD</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">MONGO_INITDB_ROOT_PASSWORD</span><span style="color:#ff79c6">=</span>&lt;password&gt;
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">MONGO_URL</span><span style="color:#ff79c6">=</span>mongodb://root:&lt;password&gt;@mongodb:27017/novu-db?authSource<span style="color:#ff79c6">=</span>admin
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">REDIS_HOST</span><span style="color:#ff79c6">=</span>redis
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">REDIS_PASSWORD</span><span style="color:#ff79c6">=</span>&lt;password&gt;
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">REDIS_CACHE_SERVICE_HOST</span><span style="color:#ff79c6">=</span>redis
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># AWS</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">S3_LOCAL_STACK</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOST_NAME</span>:4566
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">S3_BUCKET_NAME</span><span style="color:#ff79c6">=</span>novu-local
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">S3_REGION</span><span style="color:#ff79c6">=</span>us-east-1
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">AWS_ACCESS_KEY_ID</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">test</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">AWS_SECRET_ACCESS_KEY</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">test</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># Ports</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">API_PORT</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">3000</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">REDIS_PORT</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">6379</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">REDIS_CACHE_SERVICE_PORT</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">6379</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">WS_PORT</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">3002</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># Root URL</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">REACT_APP_WS_URL</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOST_NAME</span>/ws
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># Uncomment this one when deploying Novu in the local environment</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># as Web app local Dockerfile will have to load this to be used.</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># Deployment version doesn&#39;t need as we inject it with API_ROOT_URL value.</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4">#REACT_APP_API_URL=$HOST_NAME:3000</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">API_ROOT_URL</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOST_NAME</span>/api
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">DISABLE_USER_REGISTRATION</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">false</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">FRONT_BASE_URL</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOST_NAME</span>:4200
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">WIDGET_EMBED_PATH</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOST_NAME</span>:4701/embed.umd.min.js
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">WIDGET_URL</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">$HOST_NAME</span>/widget
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># Context Paths for reverse-proxies</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">GLOBAL_CONTEXT_PATH</span><span style="color:#ff79c6">=</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">WEB_CONTEXT_PATH</span><span style="color:#ff79c6">=</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">API_CONTEXT_PATH</span><span style="color:#ff79c6">=</span>api
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">WS_CONTEXT_PATH</span><span style="color:#ff79c6">=</span>ws
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">WIDGET_CONTEXT_PATH</span><span style="color:#ff79c6">=</span>widget
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># Analytics</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">SENTRY_DSN</span><span style="color:#ff79c6">=</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># change these values</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">NEW_RELIC_APP_NAME</span><span style="color:#ff79c6">=</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">NEW_RELIC_LICENSE_KEY</span><span style="color:#ff79c6">=</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">DISABLE_USER_REGISTRATION</span><span style="color:#ff79c6">=</span>
+</span></span></code></pre></div><ul>
+<li>NGINX configuration</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-nginx" data-lang="nginx"><span style="display:flex;"><span><span style="color:#ff79c6">server</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">listen</span> <span style="color:#bd93f9">80</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">client_max_body_size</span> <span style="color:#f1fa8c">20M</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">server_name</span> <span style="color:#f1fa8c">yourdns.com.br</span> <span style="color:#f1fa8c">xxx.xxx.xxx.xxx</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">access_log</span>  <span style="color:#f1fa8c">/var/log/nginx/novu_access.log</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">error_log</span> <span style="color:#f1fa8c">/var/log/nginx/novu_error.log</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">location</span> <span style="color:#f1fa8c">/</span> {
+</span></span><span style="display:flex;"><span>			<span style="color:#ff79c6">proxy_pass</span> <span style="color:#f1fa8c">http://localhost:4200</span>;
+</span></span><span style="display:flex;"><span>			<span style="color:#ff79c6">proxy_http_version</span> <span style="color:#bd93f9">1</span><span style="color:#f1fa8c">.1</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">if</span> <span style="color:#f1fa8c">(</span><span style="color:#8be9fd;font-style:italic">$request_method</span> = <span style="color:#f1fa8c">OPTIONS)</span> {
+</span></span><span style="display:flex;"><span>              <span style="color:#ff79c6">add_header</span> <span style="color:#f1fa8c">&#39;Access-Control-Allow-Origin&#39;</span> <span style="color:#f1fa8c">&#39;*&#39;</span>;
+</span></span><span style="display:flex;"><span>              <span style="color:#ff79c6">add_header</span> <span style="color:#f1fa8c">&#39;Access-Control-Allow-Methods&#39;</span> <span style="color:#f1fa8c">&#39;GET,</span> <span style="color:#f1fa8c">POST,</span> <span style="color:#f1fa8c">PUT,</span> <span style="color:#f1fa8c">DELETE&#39;</span>;
+</span></span><span style="display:flex;"><span>              <span style="color:#ff79c6">add_header</span> <span style="color:#f1fa8c">&#39;Access-Control-Allow-Headers&#39;</span> <span style="color:#f1fa8c">&#39;Content-Type,</span> <span style="color:#f1fa8c">Authorization&#39;</span>;
+</span></span><span style="display:flex;"><span>              <span style="color:#ff79c6">return</span> <span style="color:#bd93f9">200</span>;
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">proxy_set_header</span> <span style="color:#f1fa8c">X-Forwarded-For</span> <span style="color:#8be9fd;font-style:italic">$proxy_add_x_forwarded_for</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">proxy_set_header</span> <span style="color:#f1fa8c">Host</span> <span style="color:#8be9fd;font-style:italic">$host</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">proxy_set_header</span> <span style="color:#f1fa8c">Upgrade</span> <span style="color:#8be9fd;font-style:italic">$http_upgrade</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">proxy_set_header</span> <span style="color:#f1fa8c">Connection</span> <span style="color:#f1fa8c">&#34;upgrade&#34;</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">location</span> <span style="color:#f1fa8c">/api</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">proxy_pass</span> <span style="color:#f1fa8c">http://localhost:3000/api</span>;
+</span></span><span style="display:flex;"><span>			<span style="color:#ff79c6">proxy_http_version</span> <span style="color:#bd93f9">1</span><span style="color:#f1fa8c">.1</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">add_header</span> <span style="color:#f1fa8c">&#39;Access-Control-Allow-Origin&#39;</span> <span style="color:#f1fa8c">&#39;*&#39;</span>; 
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">add_header</span> <span style="color:#f1fa8c">&#39;Access-Control-Allow-Methods&#39;</span> <span style="color:#f1fa8c">&#39;GET,</span> <span style="color:#f1fa8c">POST,</span> <span style="color:#f1fa8c">PUT,</span> <span style="color:#f1fa8c">DELETE&#39;</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">add_header</span> <span style="color:#f1fa8c">&#39;Access-Control-Allow-Headers&#39;</span> <span style="color:#f1fa8c">&#39;Content-Type,</span> <span style="color:#f1fa8c">Authorization&#39;</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">proxy_set_header</span> <span style="color:#f1fa8c">X-Forwarded-For</span> <span style="color:#8be9fd;font-style:italic">$proxy_add_x_forwarded_for</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">proxy_set_header</span> <span style="color:#f1fa8c">Host</span> <span style="color:#8be9fd;font-style:italic">$host</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">proxy_set_header</span> <span style="color:#f1fa8c">Upgrade</span> <span style="color:#8be9fd;font-style:italic">$http_upgrade</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">proxy_set_header</span> <span style="color:#f1fa8c">Connection</span> <span style="color:#f1fa8c">&#34;upgrade&#34;</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">location</span> <span style="color:#f1fa8c">/ws</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">proxy_pass</span> <span style="color:#f1fa8c">http://localhost:3002/ws</span>;
+</span></span><span style="display:flex;"><span>			<span style="color:#ff79c6">proxy_http_version</span> <span style="color:#bd93f9">1</span><span style="color:#f1fa8c">.1</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">proxy_set_header</span> <span style="color:#f1fa8c">X-Forwarded-For</span> <span style="color:#8be9fd;font-style:italic">$proxy_add_x_forwarded_for</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">proxy_set_header</span> <span style="color:#f1fa8c">Host</span> <span style="color:#8be9fd;font-style:italic">$host</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">proxy_set_header</span> <span style="color:#f1fa8c">Upgrade</span> <span style="color:#8be9fd;font-style:italic">$http_upgrade</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">proxy_set_header</span> <span style="color:#f1fa8c">Connection</span> <span style="color:#f1fa8c">&#34;upgrade&#34;</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">location</span> <span style="color:#f1fa8c">/widget</span> {
+</span></span><span style="display:flex;"><span>			<span style="color:#ff79c6">proxy_pass</span> <span style="color:#f1fa8c">http://localhost:4500/widget</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">proxy_http_version</span> <span style="color:#bd93f9">1</span><span style="color:#f1fa8c">.1</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">proxy_set_header</span> <span style="color:#f1fa8c">X-Forwarded-For</span> <span style="color:#8be9fd;font-style:italic">$proxy_add_x_forwarded_for</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">proxy_set_header</span> <span style="color:#f1fa8c">Host</span> <span style="color:#8be9fd;font-style:italic">$host</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">proxy_set_header</span> <span style="color:#f1fa8c">Upgrade</span> <span style="color:#8be9fd;font-style:italic">$http_upgrade</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">proxy_set_header</span> <span style="color:#f1fa8c">Connection</span> <span style="color:#f1fa8c">&#34;upgrade&#34;</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#ff79c6">location</span> <span style="color:#f1fa8c">/socket.io/</span> {
+</span></span><span style="display:flex;"><span>			<span style="color:#ff79c6">proxy_pass</span> <span style="color:#f1fa8c">http://localhost:3002</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">proxy_http_version</span> <span style="color:#bd93f9">1</span><span style="color:#f1fa8c">.1</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">proxy_set_header</span> <span style="color:#f1fa8c">X-Forwarded-For</span> <span style="color:#8be9fd;font-style:italic">$proxy_add_x_forwarded_for</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">proxy_set_header</span> <span style="color:#f1fa8c">Host</span> <span style="color:#8be9fd;font-style:italic">$host</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">proxy_set_header</span> <span style="color:#f1fa8c">Upgrade</span> <span style="color:#8be9fd;font-style:italic">$http_upgrade</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#ff79c6">proxy_set_header</span> <span style="color:#f1fa8c">Connection</span> <span style="color:#f1fa8c">&#34;upgrade&#34;</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># proxy_headers_hash_max_size 512;
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"># proxy_headers_hash_bucket_size 128;
+</span></span></span><span style="display:flex;"><span><span style="color:#6272a4"></span>}
+</span></span></code></pre></div><p>Now just be happy :)</p>
+]]></description>
       
     </item>
+    
+    
     
     <item>
       <title>RTFM &amp; Aleatoriedades para SysAdmin - Windows Server Troubleshooting</title>
@@ -24,9 +190,186 @@
       <pubDate>Tue, 23 Jan 2024 07:03:36 -0300</pubDate>
       
       <guid>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadmin-windowsservertroubleshooting/</guid>
-      <description>Aqui temos uma abordagem simples de identificação de causa raiz para troubleshooting em ambientes Microsoft Windows Server.</description>
+      <description><![CDATA[<p>Aqui temos uma abordagem simples de identificação de causa raiz para troubleshooting em ambientes Microsoft Windows Server.</p>
+<p>Como exemplo estou usando um problema, que a equipe Microsoft de uma multinacional, enfrentou com um produto de mercado que estava causando um alto uso de Non-Paged Pool Memory(memory leak). E que causou, durante uma rotina de madrugada, o travamento de +500 servidores&hellip;</p>
+<ul>
+<li>eu era de uma equipe multidiciplinar. responsável por virtualização, storage, backup, Unix e Linux e acabei me envolvendo pois as equipes de Segurança e Microsoft estavam apenas trocando acusações e ainda não identificado a causa raiz&hellip;</li>
+</ul>
+<h2 id="problema">Problema</h2>
+<p>Verificado que o <em>non-paged pool</em> está com tamanho anormal</p>
+<p><img src="/images/WindowsServerTroubleshooting/unknown_filename.2.png" alt="unknown_filename.2.png"></p>
+<ul>
+<li>
+<p>Conforme documentação da Microsoft, o Non-paged pool, pode ocupar até 75% da memória física.</p>
+<ul>
+<li>Porém não deve ser considerado como &ldquo;normal&rdquo; o grande uso da mesma, principalmente sem uma investigação etc&hellip;</li>
+</ul>
+</li>
+<li>
+<p>O Non-paged Pool são dados na RAM do computador usados ​​pelo kernel e pelos drivers do sistema operacional.</p>
+<ul>
+<li>Non-paged pool nunca é enviado para o disco (<a href="https://0xttfx.github.io/posts/pagecache/">Page Cache</a>)!  Sempre ficará armazenado na memória física.</li>
+</ul>
+</li>
+<li>
+<p>Conforme a minha vivência, leak de memória, é quando um programa que armazena dados no pool de memória não paginável do sistema faz &ldquo;merda&rdquo;. Simples assim!</p>
+</li>
+</ul>
+<h2 id="investigação">Investigação</h2>
+<p>Identificando o que está utilizando os <em>Pools Memory</em> no servidor Windão.</p>
+<ul>
+<li>Para o troubleshooting de Pool Memory é usada a ferramenta <a href="https://learn.microsoft.com/pt-br/windows-hardware/drivers/devtest/poolmon">PoolMon</a> que é um monitor que exibe dados que o Windão coleta sobre alocações de memória dos pools de kernel paginados e não paginados do sistema&hellip;
+<ul>
+<li>Os dados são agrupados por marca de alocação de pool que evidencia as tags que identificam o software etc&hellip;</li>
+</ul>
+</li>
+</ul>
+<p>Chega de conversa! Para tanto abra o <strong>command</strong>  ou <strong>power shell</strong> e navegue até a pasta em que o executável &ldquo;poolmon.exe&rdquo;  está localizado:</p>
+<ul>
+<li>Pode-se executar a ferramenta para que seja gerado um log:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>C:\Temp\Windows Kits\<span style="color:#bd93f9">10</span>\Tools\x64&gt; poolmon -b -n C:\Temp\log_poolmon.txt
+</span></span></code></pre></div><ul>
+<li>Ou imprimir na STDOUT:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>C:\Temp\Windows Kits\<span style="color:#bd93f9">10</span>\Tools\x64&gt; poolmon -b
+</span></span></code></pre></div><ul>
+<li>“-b” executa o aplicativo e organiza os processos em ordem de consumo.</li>
+</ul>
+<p><img src="/images/WindowsServerTroubleshooting/unknown_filename.png" alt="unknown_filename.png"></p>
+<p>Aqui conseguimos ver que no topo da lista, temos o processo com maior consumo de RAM &ldquo;<strong>5053046496</strong>&rdquo; Bytes e sua Tag é &ldquo;<strong>NFeS</strong>&rdquo;.  </p>
+<ul>
+<li>a TAG é um valor único e que é dado pela fabricante do driver.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>5053046496 / 1024 = 4.934.615,... / 1024 = 4.818,... / 1024 = 4,7...GB
+</span></span></code></pre></div><p> Com a tag em mãos, deve-se usar a ferramenta <a href="https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/findstr"><strong>findstr</strong></a> que procura por cadeia de caracteres! Dessa forma vamos tentar localizar o arquivo que possui a tag em seu conteúdo&hellip;</p>
+<ul>
+<li>Vamos em seguida acessar o diretório de drives no Windows:
+<ul>
+<li><strong>path:</strong> c:\windows\system32\drivers</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>C:\&gt; <span style="color:#8be9fd;font-style:italic">cd </span>c:\windows\system32\drivers
+</span></span></code></pre></div><ul>
+<li>E executar a tool para a busca da tag</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-powershell" data-lang="powershell"><span style="display:flex;"><span>C:\Windows\System32\drivers\&gt; findstr /m /l /s NFeS *.sys
+</span></span><span style="display:flex;"><span>C:\Windows\System32\drivers\mfeavfk.sys
+</span></span></code></pre></div><ul>
+<li>/l: pesquisa por caracteres literais</li>
+<li>/m: lista apenas resultados correspondentes</li>
+<li>/s: pesquisa recursiva</li>
+</ul>
+<p>Bingo&hellip;.\o/!</p>
+<ul>
+<li>Identificamos com sucesso um aquivo que possui a tag: &ldquo;<strong>mfeavfk.sys</strong>&rdquo;!</li>
+</ul>
+<p>Agora para tentar identificar o programa que está usando esse driver.</p>
+<ul>
+<li>Vamos usar a ferramenta <a href="https://learn.microsoft.com/pt-br/sysinternals/downloads/sigcheck"><strong>sigcheck</strong></a>  que mostra metadados como, por exemplo: o número da versão do arquivo, carimbo de data/hora e detalhes da assinatura digital etc&hellip;</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>C:\&gt; sigcheck c:\Windows\System32\drivers\mfeavfk.sys
+</span></span></code></pre></div><p><img src="/images/WindowsServerTroubleshooting/unknown_filename.1.png" alt="unknown_filename.1.png"></p>
+<p>Assim identificamos que o proprietário é o <strong>Anti-vírus McAfee</strong>.</p>
+<h2 id="sobre-o-arquivo-e-driver-identificado">Sobre o Arquivo e Driver Identificado</h2>
+<ul>
+<li>
+<p>Dados do Host afetado</p>
+<ul>
+<li>Host: Windows Server</li>
+<li>Versão: Windows Server Enterprise 2012 R2 x64</li>
+</ul>
+</li>
+<li>
+<p>Versões do produto MCAfee:</p>
+<ul>
+<li>McAfee Agent - version: 5.6.2.209</li>
+<li>McAfee Endpoint Security Plataform - version: 10.6.11910</li>
+<li>McAfee Endpoint Security Threat Prevention - version: 10.6.11910</li>
+</ul>
+</li>
+</ul>
+<h3 id="informações-relevantes">Informações relevantes</h3>
+<p>Dos processos iniciados e drivers utilizados pelo Virus Scan Enterprise no Windão:</p>
+<ul>
+<li>
+<p>O driver <strong>mfeavfk</strong>:</p>
+<ul>
+<li>é um filtro para verificação de arquivos de sistema e para manter um cache desses arquivos aferidos.
+ </li>
+</ul>
+</li>
+<li>
+<p>O arquivo <strong>mfeavfk.sys</strong>:</p>
+<ul>
+<li>é um componente de software do <strong>SYSCORE</strong> da McAfee que opera como <strong>Anti-Virus Filter Link</strong> para os produtos de segurança do McAfee.
+<ul>
+<li>O <strong>VSE</strong>( VirusScan Enterprise) através do driver <strong>mfeavfk</strong> que opera a nível de kernel, juntamente com o <strong>Microsoft Filter Manager</strong>, consegue verificar o vírus em tempo real e de forma autônoma quando arquivos são abertos ou fechados.
+<ul>
+<li>Basicamente é assim que a McAfee identifica um vírus manipulando arquivos etc&hellip;</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>MFEAVFK</strong> é um acrônimo para = McAfee For Enterprise Anti-Virus File Link Filter Driver</li>
+</ul>
+</li>
+<li>
+<p>Características</p>
+<ul>
+<li>Mfeavfk.sys não é essencial para SO e por não ser nativo do sistema causa relativamente poucos problemas.</li>
+<li>Mfeavfk.sys está localizado na pasta C:\Windows\System32\drivers</li>
+<li>O tamanho do arquivo no Windão tem em média 91.672 bytes.</li>
+<li>O driver pode ser iniciado ou parado quando feito de forma canônica.</li>
+<li>O programa não está visível no task manager.</li>
+<li>É assinado pela Verisign.</li>
+<li>Não há descrição detalhada do serviço.</li>
+<li>mfeavfk.sys parece ser um arquivo compactado. Portanto, a classificação de segurança técnica é 0% perigosa;
+<ul>
+<li><strong>no entanto</strong>: ao pesquisar reviews da comunidade a quantidade de problemas relacionados são incontáveis&hellip; :(</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Pesquisando na documentação técnica do produto, é informado pelo fabricante, que programas de backup e criptografia também usam o mesmo mecanismo:</p>
+<ul>
+<li>Por isso, conflitos e até mesmo corrompimentos de arquivos, podem ocorrer.</li>
+<li>Até mesmo quando um vírus, que possui mecanismo de proteção contra o driver &ldquo;mfeavfk&rdquo;, pode gerar problemas críticos ao tentar matar o processo que faz uso do driver etc&hellip;</li>
+</ul>
+<p>Continuando com a pesquisa, mas agora, tentando cruzar ocorrências do driver &ldquo;mfeavfk.sys&rdquo; e leaks de &ldquo;Non-Paged Pool&rdquo; na base de conhecimento McAfee e Internet:</p>
+<ul>
+<li>O primeiro matching foi certeiro!
+<ul>
+<li>Encontrei diversos casos conhecidos pela McAfee do problema que estamos enfrentando e justamente com a mesma versão de SO e Anti-Vírus 😉</li>
+<li>Segue link onde o assunto é extensivamente tratado entre clientes e suporte McAfee
+<ul>
+<li><a href="https://community.mcafee.com/t5/Endpoint-Security-ENS/Nonpaged-pool-memory-leak-mfeavfk-sys-on-multiple-windows-server/td-p/617169">Link original</a> está quebrado! Egraçado como as fabricantes desaparecem com alguns dados &hellip;
+<ul>
+<li>Mas a <a href="https://web.archive.org/web/20201028165000/https://community.mcafee.com/t5/Endpoint-Security-ENS/Nonpaged-pool-memory-leak-mfeavfk-sys-on-multiple-windows-server/td-p/617169">WayBackMachine</a> salvou uma cópia para a posteridade 😉</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/WindowsServerTroubleshooting/unknown_filename.3.png" alt="unknown_filename.3.png"></p>
+<p>Logo em seguida, repassei essa investigação para as equipes de SegInfo e Microfofy para continuidade do troubleshooting&hellip;</p>
+<p><strong>Referências</strong></p>
+<p><a href="https://kc.mcafee.com/corporate/index?page=content&amp;id=KB65784">https://kc.mcafee.com/corporate/index?page=content&amp;id=KB65784</a>
+<a href="https://www.file.net/process/mfeavfk.sys.html">https://www.file.net/process/mfeavfk.sys.html</a>
+<a href="https://support.microsoft.com/pt-br/help/177415/how-to-use-memory-pool-monitor-poolmon-exe-to-troubleshoot-kernel-mode">https://support.microsoft.com/pt-br/help/177415/how-to-use-memory-pool-monitor-poolmon-exe-to-troubleshoot-kernel-mode</a>
+<a href="https://developer.microsoft.com/pt-br/windows/hardware">https://developer.microsoft.com/pt-br/windows/hardware</a>
+<a href="https://docs.microsoft.com/en-us/sysinternals/downloads/sigcheck">https://docs.microsoft.com/en-us/sysinternals/downloads/sigcheck</a>
+<a href="https://community.mcafee.com/t5/Endpoint-Security-ENS/Nonpaged-pool-memory-leak-mfeavfk-sys-on-multiple-windows-server/td-p/617169">https://community.mcafee.com/t5/Endpoint-Security-ENS/Nonpaged-pool-memory-leak-mfeavfk-sys-on-multiple-windows-server/td-p/617169</a>
+<a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/ifs/filter-manager-concepts">https://docs.microsoft.com/en-us/windows-hardware/drivers/ifs/filter-manager-concepts</a></p>
+]]></description>
       
     </item>
+    
+    
     
     <item>
       <title>RTFM&amp;AleatoriedadesParaSysAdmin OCSPStapling</title>
@@ -34,9 +377,202 @@
       <pubDate>Sun, 21 Jan 2024 20:30:59 -0300</pubDate>
       
       <guid>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadmin-ocspstapling/</guid>
-      <description>OSCP Stapling é o servidor Web (e não o navegador) obtendo resposta OCSP com status do certificado armazenando-o em cache, e esses dados são incluídos nas respostas HTTPS junto com o certificado&amp;hellip;</description>
+      <description><![CDATA[<p>OSCP Stapling é o servidor Web (e não o navegador) obtendo resposta OCSP com status do certificado armazenando-o em cache, e esses dados são incluídos nas respostas HTTPS junto com o certificado&hellip;</p>
+<p>O   <strong>OCSP</strong> - Online Certificate Status Protocol, descrita na <a href="https://datatracker.ietf.org/doc/rfc2560">RFC 2560</a>, é um protocolo útil para determinar o status de um certificado digital X.509 <a href="https://datatracker.ietf.org/doc/html/rfc5280">RFC5280</a> sem exigir <strong>CRL</strong> - Certificate Revocation Lists  descrita na <a href="http://datatracker.ietf.org/doc/rfc2560/">RFC 2560</a> ou como complemento, pois fornece informações <em>oportunas</em> sobre o status de revogação de um certificado (<a href="https://datatracker.ietf.org/doc/rfc2459/">RFC2459 Seção 3.3</a>) que são utilizados por exemplo por transferências de fundos de alto valor ou grandes negociações de ações.</p>
+<ul>
+<li>
+<p>O cliente OCSP emite uma solicitação de status para um <em>OCSP responder</em> e suspende a aceitação do certificado em questão até que o <em>responder</em> forneça uma resposta.</p>
+</li>
+<li>
+<p>Uma OCSP request contém os seguintes dados</p>
+<ul>
+<li>versão do protocolo</li>
+<li>requisição de serviço</li>
+<li>identificador do certificado de destino</li>
+<li>extensões opcionais que PODEM ser processadas pelo OCSP Responder</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ openssl s_client -status -connect 0xttfx.github.io:443
+</span></span><span style="display:flex;"><span>CONNECTED<span style="color:#ff79c6">(</span>00000003<span style="color:#ff79c6">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">depth</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">2</span> <span style="color:#8be9fd;font-style:italic">C</span> <span style="color:#ff79c6">=</span> US, <span style="color:#8be9fd;font-style:italic">O</span> <span style="color:#ff79c6">=</span> DigiCert Inc, <span style="color:#8be9fd;font-style:italic">OU</span> <span style="color:#ff79c6">=</span> www.digicert.com, <span style="color:#8be9fd;font-style:italic">CN</span> <span style="color:#ff79c6">=</span> DigiCert Global Root CA
+</span></span><span style="display:flex;"><span>verify <span style="color:#ff79c6">return</span>:1
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">depth</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span> <span style="color:#8be9fd;font-style:italic">C</span> <span style="color:#ff79c6">=</span> US, <span style="color:#8be9fd;font-style:italic">O</span> <span style="color:#ff79c6">=</span> DigiCert Inc, <span style="color:#8be9fd;font-style:italic">CN</span> <span style="color:#ff79c6">=</span> DigiCert TLS RSA SHA256 <span style="color:#bd93f9">2020</span> CA1
+</span></span><span style="display:flex;"><span>verify <span style="color:#ff79c6">return</span>:1
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">depth</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span> <span style="color:#8be9fd;font-style:italic">C</span> <span style="color:#ff79c6">=</span> US, <span style="color:#8be9fd;font-style:italic">ST</span> <span style="color:#ff79c6">=</span> California, <span style="color:#8be9fd;font-style:italic">L</span> <span style="color:#ff79c6">=</span> San Francisco, <span style="color:#8be9fd;font-style:italic">O</span> <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;GitHub, Inc.&#34;</span>, <span style="color:#8be9fd;font-style:italic">CN</span> <span style="color:#ff79c6">=</span> *.github.io
+</span></span><span style="display:flex;"><span>verify <span style="color:#ff79c6">return</span>:1
+</span></span><span style="display:flex;"><span>OCSP response: 
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">======================================</span>
+</span></span><span style="display:flex;"><span>OCSP Response Data:
+</span></span><span style="display:flex;"><span>    OCSP Response Status: successful <span style="color:#ff79c6">(</span>0x0<span style="color:#ff79c6">)</span>
+</span></span><span style="display:flex;"><span>    Response Type: Basic OCSP Response
+</span></span><span style="display:flex;"><span>    Version: <span style="color:#bd93f9">1</span> <span style="color:#ff79c6">(</span>0x0<span style="color:#ff79c6">)</span>
+</span></span><span style="display:flex;"><span>    Responder Id: B76BA2EAA8AA848C79EAB4DA0F98B2C59576B9F4
+</span></span><span style="display:flex;"><span>    Produced At: Jan <span style="color:#bd93f9">11</span> 12:13:07 <span style="color:#bd93f9">2024</span> GMT
+</span></span><span style="display:flex;"><span>    Responses:
+</span></span><span style="display:flex;"><span>    Certificate ID:
+</span></span><span style="display:flex;"><span>      Hash Algorithm: sha1
+</span></span><span style="display:flex;"><span>      Issuer Name Hash: E4E395A229D3D4C1C31FF0980C0B4EC0098AABD8
+</span></span><span style="display:flex;"><span>      Issuer Key Hash: B76BA2EAA8AA848C79EAB4DA0F98B2C59576B9F4
+</span></span><span style="display:flex;"><span>      Serial Number: 044D72D77CDDA702DD5A67F2A23BBDD9
+</span></span><span style="display:flex;"><span>    Cert Status: good
+</span></span><span style="display:flex;"><span>    This Update: Jan <span style="color:#bd93f9">11</span> 11:57:01 <span style="color:#bd93f9">2024</span> GMT
+</span></span><span style="display:flex;"><span>    Next Update: Jan <span style="color:#bd93f9">18</span> 10:57:01 <span style="color:#bd93f9">2024</span> GMT
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Signature Algorithm: sha256WithRSAEncryption
+</span></span><span style="display:flex;"><span>    Signature Value:
+</span></span><span style="display:flex;"><span>        15:e9:8c:5a:f3:19:e5:22:9a:a1:63:7c:c6:f1:fd:18:34:f3:
+</span></span><span style="display:flex;"><span>        ea:20:2b:8c:93:63:50:29:17:99:a4:45:72:77:6b:56:8f:68:
+</span></span><span style="display:flex;"><span>        f4:78:2b:b6:b2:9d:de:09:ac:1f:df:e4:fb:7d:03:9e:7b:aa:
+</span></span><span style="display:flex;"><span>        77:ca:58:bf:4b:0a:2d:08:08:ff:ed:7a:49:03:3c:87:08:08:
+</span></span><span style="display:flex;"><span>        df:1b:be:bc:62:5a:42:fc:32:be:bb:46:7e:1b:ac:6d:a1:e8:
+</span></span><span style="display:flex;"><span>        f8:38:da:7d:bc:dd:e4:bb:1b:09:ce:e5:1e:4a:97:92:01:f4:
+</span></span><span style="display:flex;"><span>        4b:ac:2b:d0:2c:5b:14:d2:29:26:2b:a7:9d:a7:10:93:22:cc:
+</span></span><span style="display:flex;"><span>        f4:b8:11:66:a4:34:5e:35:c3:2e:0d:e7:38:0c:ae:c1:15:2f:
+</span></span><span style="display:flex;"><span>        32:f3:73:59:fb:9c:9c:6d:24:63:e5:7d:54:24:60:ed:a6:bc:
+</span></span><span style="display:flex;"><span>        6a:a1:95:49:f1:fc:29:bf:1a:92:9d:a4:a0:0d:e3:df:fd:79:
+</span></span><span style="display:flex;"><span>        76:21:76:c1:cf:cd:8e:fa:3d:89:d9:1f:be:39:1a:44:5a:1b:
+</span></span><span style="display:flex;"><span>        89:c1:ff:27:ec:37:f2:8b:ae:b2:e7:08:dd:ee:ca:c0:28:ca:
+</span></span><span style="display:flex;"><span>        9a:5b:a9:fe:df:fe:9c:94:dd:fb:1f:44:b2:6b:b3:6e:ac:c3:
+</span></span><span style="display:flex;"><span>        24:ef:1a:63:e7:3b:dd:1e:6f:29:21:a3:c0:a7:9e:c3:6a:6a:
+</span></span><span style="display:flex;"><span>        fd:a8:e1:21
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">======================================</span>
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>Certificate chain
+</span></span><span style="display:flex;"><span> <span style="color:#bd93f9">0</span> s:C <span style="color:#ff79c6">=</span> US, <span style="color:#8be9fd;font-style:italic">ST</span> <span style="color:#ff79c6">=</span> California, <span style="color:#8be9fd;font-style:italic">L</span> <span style="color:#ff79c6">=</span> San Francisco, <span style="color:#8be9fd;font-style:italic">O</span> <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;GitHub, Inc.&#34;</span>, <span style="color:#8be9fd;font-style:italic">CN</span> <span style="color:#ff79c6">=</span> *.github.io
+</span></span><span style="display:flex;"><span>   i:C <span style="color:#ff79c6">=</span> US, <span style="color:#8be9fd;font-style:italic">O</span> <span style="color:#ff79c6">=</span> DigiCert Inc, <span style="color:#8be9fd;font-style:italic">CN</span> <span style="color:#ff79c6">=</span> DigiCert TLS RSA SHA256 <span style="color:#bd93f9">2020</span> CA1
+</span></span><span style="display:flex;"><span>   a:PKEY: rsaEncryption, <span style="color:#bd93f9">2048</span> <span style="color:#ff79c6">(</span>bit<span style="color:#ff79c6">)</span>; sigalg: RSA-SHA256
+</span></span><span style="display:flex;"><span>   v:NotBefore: Feb <span style="color:#bd93f9">21</span> 00:00:00 <span style="color:#bd93f9">2023</span> GMT; NotAfter: Mar <span style="color:#bd93f9">20</span> 23:59:59 <span style="color:#bd93f9">2024</span> GMT
+</span></span><span style="display:flex;"><span> <span style="color:#bd93f9">1</span> s:C <span style="color:#ff79c6">=</span> US, <span style="color:#8be9fd;font-style:italic">O</span> <span style="color:#ff79c6">=</span> DigiCert Inc, <span style="color:#8be9fd;font-style:italic">CN</span> <span style="color:#ff79c6">=</span> DigiCert TLS RSA SHA256 <span style="color:#bd93f9">2020</span> CA1
+</span></span><span style="display:flex;"><span>   i:C <span style="color:#ff79c6">=</span> US, <span style="color:#8be9fd;font-style:italic">O</span> <span style="color:#ff79c6">=</span> DigiCert Inc, <span style="color:#8be9fd;font-style:italic">OU</span> <span style="color:#ff79c6">=</span> www.digicert.com, <span style="color:#8be9fd;font-style:italic">CN</span> <span style="color:#ff79c6">=</span> DigiCert Global Root CA
+</span></span><span style="display:flex;"><span>   a:PKEY: rsaEncryption, <span style="color:#bd93f9">2048</span> <span style="color:#ff79c6">(</span>bit<span style="color:#ff79c6">)</span>; sigalg: RSA-SHA256
+</span></span><span style="display:flex;"><span>   v:NotBefore: Apr <span style="color:#bd93f9">14</span> 00:00:00 <span style="color:#bd93f9">2021</span> GMT; NotAfter: Apr <span style="color:#bd93f9">13</span> 23:59:59 <span style="color:#bd93f9">2031</span> GMT
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>Server certificate
+</span></span><span style="display:flex;"><span>-----BEGIN CERTIFICATE-----
+</span></span><span style="display:flex;"><span>MIIHEjCCBfqgAwIBAgIQBE1y13zdpwLdWmfyoju92TANBgkqhkiG9w0BAQsFADBP
+</span></span><span style="display:flex;"><span>MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMSkwJwYDVQQDEyBE
+</span></span><span style="display:flex;"><span>aWdpQ2VydCBUTFMgUlNBIFNIQTI1NiAyMDIwIENBMTAeFw0yMzAyMjEwMDAwMDBa
+</span></span><span style="display:flex;"><span>Fw0yNDAzMjAyMzU5NTlaMGcxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9y
+</span></span><span style="display:flex;"><span>bmlhMRYwFAYDVQQHEw1TYW4gRnJhbmNpc2NvMRUwEwYDVQQKEwxHaXRIdWIsIElu
+</span></span><span style="display:flex;"><span>Yy4xFDASBgNVBAMMCyouZ2l0aHViLmlvMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A
+</span></span><span style="display:flex;"><span>MIIBCgKCAQEAuLBgDhov8bGGS2TsEZ+meb7oh/GIxbRJmxC7yq/qr75UDHhDf8p7
+</span></span><span style="display:flex;"><span>TkVbCyQp8bsj/Bmkx2xwSXZT0wkjZbJIe7Ycqgca4nka+Xpe5xb4pkrVOaPiDfdX
+</span></span><span style="display:flex;"><span>7+34CHZbUtqL0OYebi/5D5lLalLKNOGkySAz05foenfFAxAmQYJhR6KvxFY/dqI4
+</span></span><span style="display:flex;"><span>y7JwrnJ6Q8F+J6Ne1uP256UwcL0qlid6e/tA0ld3ryMSJ0I6xgtqjL26Le4/nxXu
+</span></span><span style="display:flex;"><span>YlekppVQr0OwrHa44Q7Z/1bsdFCGtR+WLNGVBeW3BWeTTp7yWjgfp49DWt48V9pI
+</span></span><span style="display:flex;"><span>elDGiDgVyJcsLOz4OQk2vRmNA1ZBZgck4wIDAQABo4ID0DCCA8wwHwYDVR0jBBgw
+</span></span><span style="display:flex;"><span>FoAUt2ui6qiqhIx56rTaD5iyxZV2ufQwHQYDVR0OBBYEFI0CHHVazcamQXhpKMP3
+</span></span><span style="display:flex;"><span>qqeYO9W7MHsGA1UdEQR0MHKCCyouZ2l0aHViLmlvgglnaXRodWIuaW+CDCouZ2l0
+</span></span><span style="display:flex;"><span>aHViLmNvbYIKZ2l0aHViLmNvbYIOd3d3LmdpdGh1Yi5jb22CFyouZ2l0aHVidXNl
+</span></span><span style="display:flex;"><span>cmNvbnRlbnQuY29tghVnaXRodWJ1c2VyY29udGVudC5jb20wDgYDVR0PAQH/BAQD
+</span></span><span style="display:flex;"><span>AgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjCBjwYDVR0fBIGHMIGE
+</span></span><span style="display:flex;"><span>MECgPqA8hjpodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vRGlnaUNlcnRUTFNSU0FT
+</span></span><span style="display:flex;"><span>SEEyNTYyMDIwQ0ExLTQuY3JsMECgPqA8hjpodHRwOi8vY3JsNC5kaWdpY2VydC5j
+</span></span><span style="display:flex;"><span>b20vRGlnaUNlcnRUTFNSU0FTSEEyNTYyMDIwQ0ExLTQuY3JsMD4GA1UdIAQ3MDUw
+</span></span><span style="display:flex;"><span>MwYGZ4EMAQICMCkwJwYIKwYBBQUHAgEWG2h0dHA6Ly93d3cuZGlnaWNlcnQuY29t
+</span></span><span style="display:flex;"><span>L0NQUzB/BggrBgEFBQcBAQRzMHEwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRp
+</span></span><span style="display:flex;"><span>Z2ljZXJ0LmNvbTBJBggrBgEFBQcwAoY9aHR0cDovL2NhY2VydHMuZGlnaWNlcnQu
+</span></span><span style="display:flex;"><span>Y29tL0RpZ2lDZXJ0VExTUlNBU0hBMjU2MjAyMENBMS0xLmNydDAJBgNVHRMEAjAA
+</span></span><span style="display:flex;"><span>MIIBfgYKKwYBBAHWeQIEAgSCAW4EggFqAWgAdwB2/4g/Crb7lVHCYcz1h7o0tKTN
+</span></span><span style="display:flex;"><span>uyncaEIKn+ZnTFo6dAAAAYZ0gHV7AAAEAwBIMEYCIQCqfmfSO8MxeeVZ/fJzqqBB
+</span></span><span style="display:flex;"><span>p+VqeRDUOUBVGyTTOn43ewIhAJT0S27mmGUlpqNiDADP+Jo8C6kYHF+7U6TY74bH
+</span></span><span style="display:flex;"><span>XHAaAHYAc9meiRtMlnigIH1HneayxhzQUV5xGSqMa4AQesF3crUAAAGGdIB1agAA
+</span></span><span style="display:flex;"><span>BAMARzBFAiEAguB+XQVANBj2MPcJzbz+LBPrkDDOEO3op52jdHUSW3ICIF0fnYdW
+</span></span><span style="display:flex;"><span>qvdtmgQNSns13pAppdQWp4/f/jerNYskI7krAHUASLDja9qmRzQP5WoC+p0w6xxS
+</span></span><span style="display:flex;"><span>ActW3SyB2bu/qznYhHMAAAGGdIB1SgAABAMARjBEAiAT/wA2qGGHSKZqBAm84z6q
+</span></span><span style="display:flex;"><span>E+dGPQZ1aCMY52pFSfcw8QIgP/SciuZG02X2mBO/miDT2hCp4y5d2sc7FE5PThyC
+</span></span><span style="display:flex;"><span>pbMwDQYJKoZIhvcNAQELBQADggEBADekGxEin/yfyWcHj6qGE5/gCB1uDI1l+wN5
+</span></span><span style="display:flex;"><span>UMZ2ujCQoKQceRMHuVoYjZdMBXGK0CIXxhmiIosD9iyEcWxV3+KZQ2Xl17e3N0zG
+</span></span><span style="display:flex;"><span>yOXx2Kd7B13ruBxQpKOO8Ez4uGpyWb5DDoretV6Pnj9aQ2SCzODedvS+phIKBmi7
+</span></span><span style="display:flex;"><span>d+FM70tNZ6/2csdrG5xIU6d/7XYYXPD2xkwkU1dX4UKmPa7h9ZPyavopcgE+twbx
+</span></span><span style="display:flex;"><span>LxoOkcXsNb/12jOV3iQSDfXDI41AgtFc694KCOjlg+UKizpemE53T5/cq37OqChP
+</span></span><span style="display:flex;"><span>qnlPyb6PYIhua/kgbH84ltba1xEDQ9i4UYfOMiJNZEzEdSfQ498<span style="color:#ff79c6">=</span>
+</span></span><span style="display:flex;"><span>-----END CERTIFICATE-----
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">subject</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">C</span> <span style="color:#ff79c6">=</span> US, <span style="color:#8be9fd;font-style:italic">ST</span> <span style="color:#ff79c6">=</span> California, <span style="color:#8be9fd;font-style:italic">L</span> <span style="color:#ff79c6">=</span> San Francisco, <span style="color:#8be9fd;font-style:italic">O</span> <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;GitHub, Inc.&#34;</span>, <span style="color:#8be9fd;font-style:italic">CN</span> <span style="color:#ff79c6">=</span> *.github.io
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">issuer</span><span style="color:#ff79c6">=</span><span style="color:#8be9fd;font-style:italic">C</span> <span style="color:#ff79c6">=</span> US, <span style="color:#8be9fd;font-style:italic">O</span> <span style="color:#ff79c6">=</span> DigiCert Inc, <span style="color:#8be9fd;font-style:italic">CN</span> <span style="color:#ff79c6">=</span> DigiCert TLS RSA SHA256 <span style="color:#bd93f9">2020</span> CA1
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>No client certificate CA names sent
+</span></span><span style="display:flex;"><span>Peer signing digest: SHA256
+</span></span><span style="display:flex;"><span>Peer signature type: RSA-PSS
+</span></span><span style="display:flex;"><span>Server Temp Key: X25519, <span style="color:#bd93f9">253</span> bits
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>SSL handshake has <span style="color:#8be9fd;font-style:italic">read</span> <span style="color:#bd93f9">4060</span> bytes and written <span style="color:#bd93f9">393</span> bytes
+</span></span><span style="display:flex;"><span>Verification: OK
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>New, TLSv1.3, Cipher is TLS_AES_128_GCM_SHA256
+</span></span><span style="display:flex;"><span>Server public key is <span style="color:#bd93f9">2048</span> bit
+</span></span><span style="display:flex;"><span>This TLS version forbids renegotiation.
+</span></span><span style="display:flex;"><span>Compression: NONE
+</span></span><span style="display:flex;"><span>Expansion: NONE
+</span></span><span style="display:flex;"><span>No ALPN negotiated
+</span></span><span style="display:flex;"><span>Early data was not sent
+</span></span><span style="display:flex;"><span>Verify <span style="color:#ff79c6">return</span> code: <span style="color:#bd93f9">0</span> <span style="color:#ff79c6">(</span>ok<span style="color:#ff79c6">)</span>
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>Post-Handshake New Session Ticket arrived:
+</span></span><span style="display:flex;"><span>SSL-Session:
+</span></span><span style="display:flex;"><span>    Protocol  : TLSv1.3
+</span></span><span style="display:flex;"><span>    Cipher    : TLS_AES_128_GCM_SHA256
+</span></span><span style="display:flex;"><span>    Session-ID: 899A5EB90A464A1A310C86986066E2FCFB68AA146C1846809043BC0C7A739186
+</span></span><span style="display:flex;"><span>    Session-ID-ctx: 
+</span></span><span style="display:flex;"><span>    Resumption PSK: B24E53F7E7FF18D18BE22EE2ACE052DD858A2226E3F6528E0166A5C90FCA50F5
+</span></span><span style="display:flex;"><span>    PSK identity: None
+</span></span><span style="display:flex;"><span>    PSK identity hint: None
+</span></span><span style="display:flex;"><span>    SRP username: None
+</span></span><span style="display:flex;"><span>    TLS session ticket lifetime hint: <span style="color:#bd93f9">3600</span> <span style="color:#ff79c6">(</span>seconds<span style="color:#ff79c6">)</span>
+</span></span><span style="display:flex;"><span>    TLS session ticket:
+</span></span><span style="display:flex;"><span>    <span style="color:#bd93f9">0000</span> - 1b bb 4f <span style="color:#bd93f9">78</span> <span style="color:#bd93f9">61</span> <span style="color:#bd93f9">17</span> <span style="color:#bd93f9">18</span> f9-dd c9 5c <span style="color:#bd93f9">55</span> da 7e <span style="color:#bd93f9">75</span> f8   ..Oxa.....<span style="color:#f1fa8c">\U</span>.~u.
+</span></span><span style="display:flex;"><span>    <span style="color:#bd93f9">0010</span> - f7 <span style="color:#bd93f9">88</span> 9b a1 <span style="color:#bd93f9">26</span> e4 5f 03-8f b7 3d b2 4f be df ac   ....&amp;._...<span style="color:#ff79c6">=</span>.O...
+</span></span><span style="display:flex;"><span>    <span style="color:#bd93f9">0020</span> - <span style="color:#bd93f9">24</span> <span style="color:#bd93f9">40</span> e5 4f <span style="color:#bd93f9">46</span> 0d <span style="color:#bd93f9">68</span> a3-e3 <span style="color:#bd93f9">93</span> <span style="color:#bd93f9">76</span> d0 5f bf 6d <span style="color:#bd93f9">11</span>   <span style="color:#8be9fd;font-style:italic">$@</span>.OF.h...v._.m.
+</span></span><span style="display:flex;"><span>    <span style="color:#bd93f9">0030</span> - 8a <span style="color:#bd93f9">31</span> <span style="color:#bd93f9">67</span> e8 <span style="color:#bd93f9">75</span> 5d 1f c2-5f <span style="color:#bd93f9">68</span> 6f e9 <span style="color:#bd93f9">27</span> 4c e1 <span style="color:#bd93f9">46</span>   .1g.u<span style="color:#ff79c6">]</span>.._ho.&#39;L.F
+</span></span><span style="display:flex;"><span>    <span style="color:#bd93f9">0040</span> - df 8c b2 <span style="color:#bd93f9">92</span> e5 6f bf 0b-48 <span style="color:#bd93f9">09</span> 1b d5 b9 <span style="color:#bd93f9">19</span> b7 9e   .....o..H.......
+</span></span><span style="display:flex;"><span>    <span style="color:#bd93f9">0050</span> - <span style="color:#bd93f9">55</span> 9c <span style="color:#bd93f9">04</span> b1 <span style="color:#bd93f9">28</span> ae 4e 90-4b 6b c7 a8 0c b1 <span style="color:#bd93f9">58</span> d2   U...<span style="color:#ff79c6">(</span>.N.Kk....X.
+</span></span><span style="display:flex;"><span>    <span style="color:#bd93f9">0060</span> - <span style="color:#bd93f9">46</span> 6a 5c 9c ca 4d ac 52-f5 <span style="color:#bd93f9">74</span> 3a <span style="color:#bd93f9">48</span> <span style="color:#bd93f9">78</span> f7 <span style="color:#bd93f9">22</span> <span style="color:#bd93f9">02</span>   Fj<span style="color:#f1fa8c">\.</span>.M.R.t:Hx.<span style="color:#f1fa8c">&#34;.
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">    0070 - b7 ab 64 78 c0 07 3a 62-d3 47 f2 51 48 2a b4 2e   ..dx..:b.G.QH*..
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">    0080 - 96 a7 df a4 cb f1 9b 42-17 a8 0f 03 ba a7 50 63   .......B......Pc
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">    0090 - 39 af 34 cd fe 3d b6 52-a1 f2 e9 53 b8 1e ee e1   9.4..=.R...S....
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">    Start Time: 1705071930
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">    Timeout   : 7200 (sec)
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">    Verify return code: 0 (ok)
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">    Extended master secret: no
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">    Max Early Data: 0
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">---
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">read R BLOCK
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">closed
+</span></span></span></code></pre></div><p>A verificação de status de revogação está disponível para o certificado de entidade final.</p>
+<ul>
+<li>o protocolo v1 sobre HTTP e o tipo de resposta básica são suportados.</li>
+</ul>
+<p>O status de revogação é verificado via OCSP quando pelo menos uma destas condições for verdadeira:</p>
+<ul>
+<li>endereço de URL de um OCSP responder é configurado.</li>
+<li>A verificação da Autoridade de Acesso à Informação (AIA) está ativada e o certificado a ser validado tem uma extensão AIA.
+<ul>
+<li>A extensão AIA deve conter um método de acesso PKIK_AD_AD_OCSP com uma URI que indica o local HTTP do Responder do OCSP.</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>[!NOTA]
+Apenas o primeiro <em>OCSP Responder</em> que é identificado na extensão AIA é consultado para o status de revogação.</p>
+</blockquote>
+<p>Quando ativado a  verificação de URL e AIA, o URL responder é consultado primeiro.</p>
+<ul>
+<li>A ordem pode ser mudada configurando o atributo da API Global Security Kit (GSKit) , GSK_OCSP_CHECK_AIA_FIRST.</li>
+<li>Consulta para um segundo responder ocorre apenas se o primeiro responder resultar em um status de revogação indeterminado.</li>
+</ul>
+<p>As sessões cliente com processamento de OCSP habilitado podem solicitar a sessão do servidor para enviar uma resposta do OCSP como parte da negociação de sessão para protocolos TLS TLSv1.3 e TLSv1.2.</p>
+<ul>
+<li>A sessão cliente processa a resposta do OCSP stapling no servidor, eliminando a necessidade do cliente consultar um do <em>OCSP responder</em> para o status de revogação de certificado.</li>
+<li>Uma sessão do servidor também deve ativar o processamento de solicitação de status do certificado, para suportar o stapling do OCSP quando solicitado por um software cliente.</li>
+</ul>
+]]></description>
       
     </item>
+    
+    
     
     <item>
       <title>RTFM &amp; Aleatoriedades Para SysAdmin - Old NTP Client</title>
@@ -44,9 +580,322 @@
       <pubDate>Tue, 09 Jan 2024 12:08:11 -0300</pubDate>
       
       <guid>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadmin-oldntp/</guid>
-      <description>Sempre existe a possibilidade de um dia aparecer um servidor com uma versão de SO não atual precisando que o NTP client seja configurado ou revisado… :)</description>
+      <description><![CDATA[<p>Sempre existe a possibilidade de um dia aparecer um servidor com uma versão de SO não atual precisando que o NTP client seja configurado ou revisado… :)</p>
+<ol>
+<li>
+<p>Instalando o serviço NTP</p>
+<ol>
+<li>Instale o pacote NTP com o utilitário yum</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ yum install ntp  -y
+</span></span></code></pre></div><ol start="2">
+<li>Em seguida liste os comandos de administração fornecidos pelo pacote npt</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>$ ntp&lt;tab&gt;&lt;tab&gt;
+</span></span><span style="display:flex;"><span>ntpd        ntpdate     ntpdc       ntp-keygen  ntpq        ntpstat     ntptime
+</span></span></code></pre></div><ol start="3">
+<li>Inicialize o serviço</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sudo service ntpd start
+</span></span><span style="display:flex;"><span>ou
+</span></span><span style="display:flex;"><span>$ sudo /etc/rc.d/init.d/ntpd start
+</span></span></code></pre></div><ol start="4">
+<li>Ao iniciar o serviço, analise em seguida os logs no /var/log/messages</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sudo tail /var/log/messages
+</span></span><span style="display:flex;"><span>ou
+</span></span><span style="display:flex;"><span>$ grep ntpd /var/log/messages
+</span></span><span style="display:flex;"><span>Jul <span style="color:#bd93f9">23</span> 13:11:51 labcentos01 yum<span style="color:#ff79c6">[</span>9343<span style="color:#ff79c6">]</span>: Installed: ntpdate-4.2.4p83.el6.centos.x86_64
+</span></span><span style="display:flex;"><span> Jul <span style="color:#bd93f9">23</span> 13:12:11 labcentos01 ntpd<span style="color:#ff79c6">[</span>9375<span style="color:#ff79c6">]</span>: ntpd  Fri Feb <span style="color:#bd93f9">22</span> 11:23:27 UTC <span style="color:#bd93f9">2013</span> <span style="color:#ff79c6">(</span>1<span style="color:#ff79c6">)</span>
+</span></span><span style="display:flex;"><span> Jul <span style="color:#bd93f9">23</span> 13:12:11 labcentos01 ntpd<span style="color:#ff79c6">[</span>9376<span style="color:#ff79c6">]</span>: <span style="color:#8be9fd;font-style:italic">precision</span> <span style="color:#ff79c6">=</span> 0.111 usec
+</span></span><span style="display:flex;"><span> Jul <span style="color:#bd93f9">23</span> 13:12:11 labcentos01 ntpd<span style="color:#ff79c6">[</span>9376<span style="color:#ff79c6">]</span>: Listening on interface <span style="color:#6272a4">#0 wildcard...</span>
+</span></span><span style="display:flex;"><span> Jul <span style="color:#bd93f9">23</span> 13:12:11 labcentos01 ntpd<span style="color:#ff79c6">[</span>9376<span style="color:#ff79c6">]</span>: Listening on interface <span style="color:#6272a4">#1 wildca...</span>
+</span></span><span style="display:flex;"><span> Jul <span style="color:#bd93f9">23</span> 13:12:11 labcentos01 ntpd<span style="color:#ff79c6">[</span>9376<span style="color:#ff79c6">]</span>: Listening on interface <span style="color:#6272a4">#2 lo, ::1...</span>
+</span></span><span style="display:flex;"><span> Jul <span style="color:#bd93f9">23</span> 13:12:11 labcentos01 ntpd<span style="color:#ff79c6">[</span>9376<span style="color:#ff79c6">]</span>: Listening on interface <span style="color:#6272a4">#3 eth0, ....</span>
+</span></span><span style="display:flex;"><span> Jul <span style="color:#bd93f9">23</span> 13:12:11 labcentos01 ntpd<span style="color:#ff79c6">[</span>9376<span style="color:#ff79c6">]</span>: Listening on interface <span style="color:#6272a4">#4 lo, 127.0....</span>
+</span></span></code></pre></div><ol start="5">
+<li>Automatize o serviço para que inicie no boot:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sudo chkconfig --level <span style="color:#bd93f9">35</span> ntpd on
+</span></span></code></pre></div></li>
+<li>
+<p>Configuração do arquivo padrão do serviço “/etc/ntp.conf”</p>
+<ol>
+<li>Segue o arquivo padrão fornecido pelo pacote de instalação:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#6272a4"># be tightened as well, but to do so would effect some of </span>
+</span></span><span style="display:flex;"><span>   <span style="color:#6272a4"># the administrative functions. </span>
+</span></span><span style="display:flex;"><span>   restrict 127.0.0.1 
+</span></span><span style="display:flex;"><span>   restrict -6 ::1 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   <span style="color:#6272a4"># Hosts on local network are less restricted. </span>
+</span></span><span style="display:flex;"><span>   <span style="color:#6272a4">#restrict 192.168.1.0 mask 255.255.255.0 nomodify notrap </span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   <span style="color:#6272a4"># Use public servers from the pool.ntp.org project. </span>
+</span></span><span style="display:flex;"><span>   <span style="color:#6272a4"># Please consider joining the pool (http://www.pool.ntp.org/join.html). </span>
+</span></span><span style="display:flex;"><span>   server 0.centos.pool.ntp.org iburst 
+</span></span><span style="display:flex;"><span>   server 1.centos.pool.ntp.org iburst 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   <span style="color:#6272a4">#broadcast 192.168.1.255 autokey        # broadcast server </span>
+</span></span><span style="display:flex;"><span>   <span style="color:#6272a4">#broadcastclient                        # broadcast client </span>
+</span></span><span style="display:flex;"><span>   <span style="color:#6272a4">#broadcast 224.0.1.1 autokey            # multicast server </span>
+</span></span><span style="display:flex;"><span>   <span style="color:#6272a4">#multicastclient 224.0.1.1              # multicast client </span>
+</span></span><span style="display:flex;"><span>   <span style="color:#6272a4">#manycastserver 239.255.254.254         # manycast server </span>
+</span></span><span style="display:flex;"><span>   <span style="color:#6272a4">#manycastclient 239.255.254.254 autokey # manycast client </span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   <span style="color:#6272a4"># Enable public key cryptography. </span>
+</span></span><span style="display:flex;"><span>   <span style="color:#6272a4">#crypto </span>
+</span></span><span style="display:flex;"><span>   includefile /etc/ntp/crypto/pw 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   <span style="color:#6272a4"># Key file containing the keys and key identifiers used when operating </span>
+</span></span><span style="display:flex;"><span>   <span style="color:#6272a4"># with symmetric key cryptography. </span>
+</span></span><span style="display:flex;"><span>   keys /etc/ntp/keys 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   <span style="color:#6272a4"># Specify the key identifiers which are trusted. </span>
+</span></span><span style="display:flex;"><span>   <span style="color:#6272a4">#trustedkey 4 8 42 </span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   <span style="color:#6272a4"># Specify the key identifier to use with the ntpdc utility. </span>
+</span></span><span style="display:flex;"><span>   <span style="color:#6272a4">#requestkey 8 </span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   <span style="color:#6272a4"># Specify the key identifier to use with the ntpq utility. </span>
+</span></span><span style="display:flex;"><span>   <span style="color:#6272a4">#controlkey 8 </span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>   <span style="color:#6272a4"># Enable writing of statistics records. </span>
+</span></span><span style="display:flex;"><span>   <span style="color:#6272a4">#statistics clockstats cryptostats loopstats peerstat</span>
+</span></span></code></pre></div><ol start="2">
+<li>Modifique as linhas “server”, substituindo pelo servidor NTP local; sendo uma linha para cada servidor&hellip; :
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>server 0.redhat.pool.ntp.org iburst 
+</span></span><span style="display:flex;"><span>server 1.redhat.pool.ntp.org iburst 
+</span></span></code></pre></div><ul>
+<li>Modificando para o NTP Brasileiro ou na LAN:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>server 192.0.2.151 iburst
+</span></span><span style="display:flex;"><span>ou
+</span></span><span style="display:flex;"><span>server a.st1.ntp.br iburst
+</span></span><span style="display:flex;"><span>ou
+</span></span><span style="display:flex;"><span>server a.ntp.br iburst
+</span></span></code></pre></div><ul>
+<li>a flag <em>iburst</em> faz com que uma saraivada de mensagens sejam trocadas para preparar os dados e ajustar o relógio por cerca de 10s.</li>
+</ul>
+</li>
+<li>Reinicie o serviço NTP</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo /etc/init.d/ntpd restart
+</span></span></code></pre></div><ol start="4">
+<li>Agora visualize como ficou o arquivo de configuração do serviço NTP:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sudo cat /etc/ntp.conf |grep -E -v <span style="color:#f1fa8c">&#34;^</span>$<span style="color:#f1fa8c">|^#&#34;</span> |nl 
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">1</span>  driftfile /var/lib/ntp/drift
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">2</span>  restrict default kod nomodify notrap nopeer noquery
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">3</span>  restrict -6 default kod nomodify notrap nopeer noquery
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">4</span>  restrict 127.0.0.1
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">5</span>  restrict -6 ::1
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">6</span>  server 192.0.2.151 iburst
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">7</span>  includefile /etc/ntp/crypto/pw
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">8</span>  keys /etc/ntp/keys
+</span></span></code></pre></div><ol start="5">
+<li>Outra opção interessante para habilitar no “ntp.conf” para a configuração cliente é a diretiva de estatísticas:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#6272a4"># estatisticas do ntp que exibe informaões de funcionamento.</span>
+</span></span><span style="display:flex;"><span>statsdir /var/log/ntpstats/
+</span></span><span style="display:flex;"><span>statistics loopstats peerstats 
+</span></span><span style="display:flex;"><span>filegen loopstats file loopstats <span style="color:#8be9fd;font-style:italic">type</span> day <span style="color:#8be9fd;font-style:italic">enable</span>
+</span></span><span style="display:flex;"><span>ilegen peerstats file peerstats <span style="color:#8be9fd;font-style:italic">type</span> day <span style="color:#8be9fd;font-style:italic">enable</span>
+</span></span></code></pre></div></li>
+<li>
+<p>Verificando se o daemon NTP está devidamente configurado e operando:</p>
+<ol>
+<li>Execute o comando “ntpq” com a opção “-c peers” que lista estatísticas dos servidores cadastrados no arquivo /etc/ntp.conf.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sudo ntpq -c pe** 
+</span></span><span style="display:flex;"><span>ou
+</span></span><span style="display:flex;"><span>$ sudo ntpq -c peers**
+</span></span></code></pre></div><ul>
+<li>se a resposta for algo parecido com a descrita abaixo, o daemon não está ativo</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>localhost.localdomain: timed out, nothing received
+</span></span><span style="display:flex;"><span>*****Request timed out**
+</span></span></code></pre></div><ul>
+<li>se a resposta for próxima da descrita abaixo, o NTP está operando:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>remote        refid           st t when poll reach delay offset <span style="color:#8be9fd;font-style:italic">jitter</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">==========================================================================</span>
+</span></span><span style="display:flex;"><span>*192.0.2.151  200.186.125.195  <span style="color:#bd93f9">2</span> u <span style="color:#bd93f9">84</span>   <span style="color:#bd93f9">1024</span> <span style="color:#bd93f9">377</span>   0.750 0.138  0.279
+</span></span></code></pre></div><ul>
+<li>Segue mais um resultado de um NTP com mais de 1 servidor de horas configurado</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>remote         refid     st  t  when  poll reach  delay	offset	<span style="color:#8be9fd;font-style:italic">jitter</span> 
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">=============================================================================</span> 
+</span></span><span style="display:flex;"><span>+a.st1.ntp.br  .ONBR.    <span style="color:#bd93f9">1</span>   u  <span style="color:#bd93f9">8</span>     64	  <span style="color:#bd93f9">1</span>      11.929 -0.405	1.353 
+</span></span><span style="display:flex;"><span>201.49.148.135  .STEP.   <span style="color:#bd93f9">16</span>  u  -     <span style="color:#bd93f9">64</span>   <span style="color:#bd93f9">0</span>      0.000  0.000 	0.000 
+</span></span><span style="display:flex;"><span>*d.st1.ntp.br  .ONBR.    <span style="color:#bd93f9">1</span>   u  <span style="color:#bd93f9">4</span>     <span style="color:#bd93f9">64</span>   <span style="color:#bd93f9">1</span>      19.496 -0.530	0.392 
+</span></span><span style="display:flex;"><span>-a.ntp.br  200.160.7.186 <span style="color:#bd93f9">2</span>   u  <span style="color:#bd93f9">4</span>     <span style="color:#bd93f9">64</span>   <span style="color:#bd93f9">1</span>      11.061 0.117	  1.151 
+</span></span><span style="display:flex;"><span>+b.ntp.br  200.20.186.76 <span style="color:#bd93f9">2</span>   u  -     <span style="color:#bd93f9">64</span>   <span style="color:#bd93f9">1</span>      14.459 -2.561	2.544
+</span></span></code></pre></div><ul>
+<li><em>stratum 16 indica servidor inoperante.</em></li>
+<li>Compreendendo cada campo
+<ul>
+<li><em>offset</em> - mostra em milissegundos o quanto a hora no servidor precisa adiantar ou se atrasar para  ficar igual a do servidor NTP  ( esses valores devem estar em milissegundos! Acima de segundos não é um bom resultado.)</li>
+<li><em>delay</em> mostra o tempo que o pacote demora para ir ao servidor e voltar para o host.</li>
+<li><em>jitter</em> mostra o quanto em milissegundos existe de variação nas medidas de deslocamento dos pacotes e, o quanto mais baixo melhor.</li>
+<li><em>reach</em> mostra o resultado em octal das últimas 8 tentativas de conexão ao servidor preferencial de horas. O valor 	esperado é  “377” que indica que as últimas tentativas obtiveram sucesso! Valores diferentes indicam falhas  ocorridas.
+<ul>
+<li>Para melhor compreensão, é  um registrador de 8 bits que vai girando para a esquerda representado na forma octal, que mostra o resultado das últimas 8 consultas à fonte de tempo: 377 = 11.111.111 significa que todas as consultas foram bem sucedidas;
+<ul>
+<li>outros número indicam falhas, por exemplo 375 = 11.111.101, indica que a penúltima consulta falhou.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><em>refid</em> mostra a referência (par do sistema) ao qual, o servidor de tempo remoto está sincronizado.</li>
+<li><em>st</em> mostra o strato da fonte de tempo.</li>
+<li><em>when</em> quanto segundos se passaram desde a última consulta à essa fonte de tempo.</li>
+<li><em>poll</em> mostra de quantos em quantos segundos essa fonte é consultada.</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li>Execute-o novamente com a opção “-c rv” para visualizar o estado da hora local</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sudo ntpq -c rv
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">assID</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span> <span style="color:#8be9fd;font-style:italic">status</span><span style="color:#ff79c6">=</span>46f4 leap_add_sec, sync_ntp, <span style="color:#bd93f9">15</span> events, event_peer/strat_chg,
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">version</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;ntpd 4.2.4p8@1.1612-o Thu Jan 10 15:17:40 UTC 2013 (1)&#34;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">processor</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;x86_64&#34;</span>, <span style="color:#8be9fd;font-style:italic">system</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;Linux/2.6.32-279.19.1.el6.x86_64&#34;</span>, <span style="color:#8be9fd;font-style:italic">leap</span><span style="color:#ff79c6">=</span>01,
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">stratum</span><span style="color:#ff79c6">=</span>3, <span style="color:#8be9fd;font-style:italic">precision</span><span style="color:#ff79c6">=</span>-24, <span style="color:#8be9fd;font-style:italic">rootdelay</span><span style="color:#ff79c6">=</span>15.668, <span style="color:#8be9fd;font-style:italic">rootdispersion</span><span style="color:#ff79c6">=</span>59.025,
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">peer</span><span style="color:#ff79c6">=</span>14178, <span style="color:#8be9fd;font-style:italic">refid</span><span style="color:#ff79c6">=</span>192.0.2.151,
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">reftime</span><span style="color:#ff79c6">=</span>d59b9d48.ef695513  Thu, Jul <span style="color:#bd93f9">25</span> <span style="color:#bd93f9">2013</span>  9:49:12.935, <span style="color:#8be9fd;font-style:italic">poll</span><span style="color:#ff79c6">=</span>10,
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">clock</span><span style="color:#ff79c6">=</span>d59ba39e.61ba5ac8  Thu, Jul <span style="color:#bd93f9">25</span> <span style="color:#bd93f9">2013</span> 10:16:14.381, <span style="color:#8be9fd;font-style:italic">state</span><span style="color:#ff79c6">=</span>4,
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">offset</span><span style="color:#ff79c6">=</span>0.073, <span style="color:#8be9fd;font-style:italic">frequency</span><span style="color:#ff79c6">=</span>7.577, <span style="color:#8be9fd;font-style:italic">jitter</span><span style="color:#ff79c6">=</span>0.051, <span style="color:#8be9fd;font-style:italic">noise</span><span style="color:#ff79c6">=</span>0.232,
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">stability</span><span style="color:#ff79c6">=</span>0.018, <span style="color:#8be9fd;font-style:italic">tai</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span>
+</span></span></code></pre></div><ul>
+<li>compreendendo os campos
+<ul>
+<li><em>version</em> mostra a versão do NTP e sua data e hora de construção.</li>
+<li><em>processor</em> mostra a versão e plataforma do hardware.</li>
+<li><em>stratum</em>  que pode ir de 1 até 15 mostra a distância que o servidor NTP usado está do o relógio de referência que transmite a hora UCT, que por sua vez está em stratum-0!
+<ul>
+<li>Lembrando que quanto mais próximo o servidor estiver do stratum-0, menos atraso ele terá em realação ao UCT; ou seja quanto menor a distância melhor&hellip; Variável “peer” ID associado ao servidor NTP preferencial.</li>
+</ul>
+</li>
+<li><em>reftime</em>  mostra a data e hora que o servidor preferencial foi atualizado pela última vez pelo seu stratum superior.</li>
+<li><em>clock</em> data e hora do dia! Aquele que foi setado/configurado no seu servidor host.</li>
+<li><em>offset</em>  deslocamento, quanto o relógio local tem de ser adiantado ou atrasado para chegar à hora certa (horaigual à do estrato 0).</li>
+<li><em>precision</em> precisão indicada com o expoente de um número base 2 Variável “rootdisperion” erro máximo da medida de offset em relação ao strato 0, em milissegundos.</li>
+<li><em>rootdelay</em> atraso ou tempo de ida e volta dos pacotes atéo strato 0, em milissegundos.</li>
+<li><em>refid</em> o par do sistema, ou principal referência.</li>
+<li><em>frequency</em> erro na freqüência do relógio local, em relação à freqüência do estrato 0, em partes por milhão (PPM).</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li>Obtendo informações separadamente de cada servidor NTP configurado! Essa forma é utilizada por exemplo para medir as informações de um servidor NTP secundário afim de tomar alguma decisão como a de substituir o servidor preferencial problemático por algum outro do pool&hellip;</li>
+</ol>
+<ul>
+<li>Primeiro liste o ID dos servidores NTP configurados com o comando “ntpq -c as”:</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sudo ntpq -c as
+</span></span><span style="display:flex;"><span>ou
+</span></span><span style="display:flex;"><span>sudo ntpq -c associations
+</span></span><span style="display:flex;"><span>ind 	assID	status  conf	reach	auth	condition	last_event	<span style="color:#8be9fd;font-style:italic">cnt</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">=====================================================================</span>
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">1</span> 	  14178	<span style="color:#bd93f9">9614</span>    yes	  yes  	none	sys.peer	reachable	   <span style="color:#bd93f9">1</span>
+</span></span></code></pre></div><ol start="4">
+<li>Depois de obtido o ID obtenha as informações do servisor NTP entrando na linha de comando da ferramenta ntpq e utilize a opção “rv” seguido do ID.</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sudo ntpq  <span style="color:#ff79c6">[</span>enter<span style="color:#ff79c6">]</span>
+</span></span><span style="display:flex;"><span>$ sudo ntpq&gt; rv <span style="color:#bd93f9">14178</span>
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">assID</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">14178</span> <span style="color:#8be9fd;font-style:italic">status</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">9614</span> reach, conf, sel_sys.peer, <span style="color:#bd93f9">1</span> event, event_reach,
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">srcadr</span><span style="color:#ff79c6">=</span>192.0.2.151, <span style="color:#8be9fd;font-style:italic">srcport</span><span style="color:#ff79c6">=</span>123, <span style="color:#8be9fd;font-style:italic">dstadr</span><span style="color:#ff79c6">=</span>192.0.2.140, <span style="color:#8be9fd;font-style:italic">dstport</span><span style="color:#ff79c6">=</span>123,
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">leap</span><span style="color:#ff79c6">=</span>00, <span style="color:#8be9fd;font-style:italic">stratum</span><span style="color:#ff79c6">=</span>2, <span style="color:#8be9fd;font-style:italic">precision</span><span style="color:#ff79c6">=</span>-23, <span style="color:#8be9fd;font-style:italic">rootdelay</span><span style="color:#ff79c6">=</span>16.342,rootdispersion<span style="color:#ff79c6">=</span>16.281, 
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">refid</span><span style="color:#ff79c6">=</span>200.186.125.195, <span style="color:#8be9fd;font-style:italic">reach</span><span style="color:#ff79c6">=</span>377, <span style="color:#8be9fd;font-style:italic">unreach</span><span style="color:#ff79c6">=</span>0,
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">hmode</span><span style="color:#ff79c6">=</span>3, <span style="color:#8be9fd;font-style:italic">pmode</span><span style="color:#ff79c6">=</span>4, <span style="color:#8be9fd;font-style:italic">hpoll</span><span style="color:#ff79c6">=</span>10, <span style="color:#8be9fd;font-style:italic">ppoll</span><span style="color:#ff79c6">=</span>10, <span style="color:#8be9fd;font-style:italic">flash</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">00</span> ok, <span style="color:#8be9fd;font-style:italic">keyid</span><span style="color:#ff79c6">=</span>0, <span style="color:#8be9fd;font-style:italic">ttl</span><span style="color:#ff79c6">=</span>0,
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">offset</span><span style="color:#ff79c6">=</span>0.345, <span style="color:#8be9fd;font-style:italic">delay</span><span style="color:#ff79c6">=</span>1.032, <span style="color:#8be9fd;font-style:italic">dispersion</span><span style="color:#ff79c6">=</span>14.833, <span style="color:#8be9fd;font-style:italic">jitter</span><span style="color:#ff79c6">=</span>0.124,
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">reftime</span><span style="color:#ff79c6">=</span>d59c0533.3051b8eb  Thu, Jul <span style="color:#bd93f9">25</span> <span style="color:#bd93f9">2013</span> 17:12:35.188,
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">org</span><span style="color:#ff79c6">=</span>d59c0552.e99941c5  Thu, Jul <span style="color:#bd93f9">25</span> <span style="color:#bd93f9">2013</span> 17:13:06.912,
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">rec</span><span style="color:#ff79c6">=</span>d59c0552.e9a47a2b  Thu, Jul <span style="color:#bd93f9">25</span> <span style="color:#bd93f9">2013</span> 17:13:06.912,
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">xmt</span><span style="color:#ff79c6">=</span>d59c0552.e95ea055  Thu, Jul <span style="color:#bd93f9">25</span> <span style="color:#bd93f9">2013</span> 17:13:06.911,
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">filtdelay</span><span style="color:#ff79c6">=</span>     1.03    1.12    1.22    1.10    0.64    1.30    1.57    1.09,
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">filtoffset</span><span style="color:#ff79c6">=</span>    0.34    0.22    0.00   -0.01    0.16   -0.41   -0.41   -0.32,
+</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">filtdisp</span><span style="color:#ff79c6">=</span>      0.00   15.38   30.75   46.11   61.50   76.85   92.22  107.58
+</span></span></code></pre></div></li>
+<li>
+<p>Caso precise gerar alguma evidência para documentação, etc&hellip; É possível gerar gráficos utilizando os logs de estatísticas  do diretório “/var/log/ntpstats”, que são:</p>
+</li>
+</ol>
+<ul>
+<li><em>loopstats</em>, que apresenta as informações do loop local, ou seja, as variáveis do sistema.</li>
+<li>formato</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#bd93f9">54475</span> 73467.286 -0.000057852 31.695 0.000015298 0.006470 <span style="color:#bd93f9">4</span>
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">54475</span> 73548.286 -0.000084064 31.688 0.000017049 0.006471 <span style="color:#bd93f9">4</span>
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">54475</span> 73682.286 -0.000077221 31.678 0.000016130 0.006988 <span style="color:#bd93f9">4</span>
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">54475</span> 73698.286 -0.000077448 31.677 0.000015103 0.006550 <span style="color:#bd93f9">4</span>
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">54475</span> 73761.286 -0.000083230 31.672 0.000014275 0.006376 <span style="color:#bd93f9">4</span>
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">54475</span> 73889.286 -0.000059100 31.665 0.000015846 0.006487 <span style="color:#bd93f9">4</span>
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">54475</span> 74004.285 -0.000045825 31.660 0.000015548 0.006324 <span style="color:#bd93f9">4</span>
+</span></span></code></pre></div><pre><code>-  campos:
+     - coluna 1: day
+     - coluna 2: second
+     - coluna 3: offset
+     - coluna 4: drift compensation
+     - coluna 5: estimed error
+     - coluna 6: stability
+     - coluna 7: polling interval
+</code></pre>
+<ul>
+<li><em>peerstats</em> que apresenta as informações de cada associação</li>
+<li>formato</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span> <span style="color:#bd93f9">54475</span> 34931.294 200.20.186.75 <span style="color:#bd93f9">9074</span> 0.009958844 0.008390600 0.000390895 0.000132755
+</span></span><span style="display:flex;"><span> <span style="color:#bd93f9">54475</span> 34931.301 200.192.232.43 f0f4 0.000348814 0.015550265 0.001120348 0.000023645
+</span></span><span style="display:flex;"><span> <span style="color:#bd93f9">54475</span> 34932.303 200.189.40.28 f0f4 0.000810708 0.017701986 0.188995109 0.000043145
+</span></span><span style="display:flex;"><span> <span style="color:#bd93f9">54475</span> 34934.286 200.160.0.28 f0d4 0.000332344 0.000271801 0.000620139 0.000037467
+</span></span><span style="display:flex;"><span> <span style="color:#bd93f9">54475</span> 34935.286 200.160.7.165 <span style="color:#bd93f9">9614</span> 0.000003557 0.000216088 0.000826694 0.000022076
+</span></span></code></pre></div><pre><code> - campos
+	 - coluna 1: day
+	 - coluna 2: second
+	 - coluna 3: address
+	 - coluna 4: status
+	 - coluna 5: offset
+	 - coluna 6: delay
+	 - coluna 7: dispersion
+	 - coluna 8: skew/variance
+</code></pre>
+<ul>
+<li>Além de poder ser usado para documentação, também fica mais fácil a leitura com o gráfico para ilustrá-lo. Excell pode ser usado&hellip;
+<ul>
+<li>Mas porque não usar terminal e <a href="http://www.gnuplot.info">gnuplot</a> :).
+<ul>
+<li>segue algumas referências: <a href="https://developer.ibm.com/tutorials/ba-cleanse-process-visualize-data-set-3/?mhsrc=ibmsearch_a&amp;mhq=gnuplot">IBM</a></li>
+</ul>
+</li>
+<li>Segue um exemplo de uso:
+<ul>
+<li>Crie um arquivo texto com um nome pretendido, com o seguinte conteúdo:</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat <span style="color:#f1fa8c">&lt;&lt;Fin&gt; /tmp/deslocamento.txt
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">set term gifset output &#39;Deslocamento.png&#39;
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">set title &#34;Deslocamento&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">plot &#34;/var/log/ntpstats/loopstats&#34; using 2:3 t&#34;deslocamento&#34; with linespoints lt rgb &#34;#d82886&#34;;
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">Fin</span>
+</span></span></code></pre></div><ul>
+<li>Estamos referenciando o arquivo loopstats e, fazendo uso das colunas 2 e 3! A coluna 2 indica o tempo, no dia, em segundos; e a coluna 3 indica o deslocamento, em milissegundos. Também estamos utilizando cores RGB declarada em <a href="http://www.colorhexa.com">hexadecimal</a>.
+<ul>
+<li>Agora geramos o gráfico</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ gnuplot /tmp/deslocamento.txt
+</span></span></code></pre></div></li>
+</ul>
+<p><img src="/images/NTP/deslocamento.png" alt="deslocamento.png"></p>
+]]></description>
       
     </item>
+    
+    
     
     <item>
       <title>RTFM &amp; Aleatoriedades Para SysAdmin, SecOps, DevOps,{S,N}RE - Network Trobleshooting Container Docker</title>
@@ -54,9 +903,107 @@
       <pubDate>Sat, 06 Jan 2024 14:55:51 -0300</pubDate>
       
       <guid>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadminsecopsdevopssnre-ntcdocker/</guid>
-      <description>O intuito desse how to é apoiar na solução de problemas rede de containers Docker</description>
+      <description><![CDATA[<p>O intuito desse how to é apoiar na solução de problemas rede de containers Docker</p>
+<h2 id="disclaimer">Disclaimer</h2>
+<p>Se caiu aqui no momento em que está tentando apagar um incendio: você está no lugar errado!</p>
+<ul>
+<li>Mas retorne depois do incendio .. ;)</li>
+</ul>
+<h2 id="requeriments">Requeriments</h2>
+<p>Para fazer um debug descente, precisamos estar familiarizados com questões básicas!</p>
+<h3 id="como-as-coisas-funfam-dabaixo-do-capô-da-containerização">Como as coisas &ldquo;funfam&rdquo; dabaixo do capô da containerização</h3>
+<p><a href="https://man7.org/linux/man-pages/man7/namespaces.7.html">Namespaces</a> Linux fornecem as tecnologias fundamentais da implementação de containers. Fornecendo isolamento de recursos globais entre processos independentes</p>
+<ul>
+<li><a href="https://lwn.net/Articles/766124/">Namespaces</a> fornece isolamento e não restrição ao hardware adjacente! Isso é papel do <a href="https://docs.kernel.org/admin-guide/cgroup-v2.html">cgroups</a></li>
+</ul>
+<p>São 8 namespaces até o momento</p>
+<ol>
+<li><a href="https://man7.org/linux/man-pages/man7/mount_namespaces.7.html">Mount</a> - Mount points
+<ul>
+<li>cria uma hierarquia de diretórios isolado do sistema de arquivos do host, visivel apenas pelo processo em execução nessa árvore de diretórios do namespace.</li>
+</ul>
+</li>
+<li><a href="https://man7.org/linux/man-pages/man7/uts_namespaces.7.html">UTS</a> - Hostname and NIS domain  name
+<ul>
+<li>cria isolamento dos identificadores  hostname e o NIS domain name que são definidos
+usando <a href="https://man7.org/linux/man-pages/man2/sethostname.2.html">sethostname(2)</a>, <a href="https://man7.org/linux/man-pages/man2/setdomainname.2.html">setdomainname(2)</a> e pode ser recuperado usando <a href="https://man7.org/linux/man-pages/man2/uname.2.html">uname(2)</a> , <a href="https://man7.org/linux/man-pages/man2/gethostname.2.html">gethostname(2)</a> e <a href="https://man7.org/linux/man-pages/man2/getdomainname.2.html">getdomainname(2)</a> .</li>
+</ul>
+</li>
+<li><a href="https://man7.org/linux/man-pages/man7/ipc_namespaces.7.html">IPC</a> - System V IPC, POSIX message queues
+<ul>
+<li>isolam  <a href="https://man7.org/linux/man-pages/man7/sysvipc.7.html">sysvipc(7)</a> - System V Objetos IPC e <a href="https://man7.org/linux/man-pages/man7/mq_overview.7.html">mq_overview(7)</a> - POSIX filas de mensagens. Dessa forma, o namespace tem seus identificadores IPC e filas de mensageria POSIX próprios, vistos apenas pelos processos  que executam nele.</li>
+</ul>
+</li>
+<li><a href="https://man7.org/linux/man-pages/man7/pid_namespaces.7.html">PID</a> - Process IDs
+<ul>
+<li>Cria espaço do número de ID do processo isolados do host. Permite que o processo containerizado faça uso do recurso bem legal, o <a href="https://www.kernel.org/doc/html/next/power/freezing-of-tasks.html">Freezing of tasks</a> que permite  suspender um conjunto de processos de um contêiner e migralos para outro container, em outro host,  enquanto os processos internos mantêm os mesmos PIDs&hellip;
+<ul>
+<li>agradeça ao Freezing tasks pelas mágicas no seu notebook ao hibernar&hellip;</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="https://man7.org/linux/man-pages/man7/network_namespaces.7.html">Network</a> - Network devices, stacks, ports,  etc.
+<ul>
+<li>fornecem isolamento dos dispositivos de rede, pilhas de protocolos IP v4 e v6, tabelas de roteamento IP, regras de firewall, os diretórios  <em>/proc/net</em> (link para <em>/proc/</em> pid <em>/net</em> ), <em>/sys/class/net</em> , arquivos em <em>/proc/sys/net</em> , soquetes etc&hellip; Bem como também dos soquetes abstratos do domain <a href="https://man7.org/linux/man-pages/man7/unix.7.html">unix(7)</a>.
+<ul>
+<li>Tanto uma interface de rede física, quanto uma <a href="https://man7.org/linux/man-pages/man4/veth.4.html">veth(4)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="https://man7.org/linux/man-pages/man7/user_namespaces.7.html">User</a> - User and group IDs
+<ul>
+<li>Faz isolamento dos recursos <a href="https://man7.org/linux/man-pages/man7/credentials.7.html">credentials(7)</a> que são os identificadores relacionados à segurança e atributos, em particular, IDs de usuário e IDs de grupo, o diretório raiz, <a href="https://man7.org/linux/man-pages/man7/keyrings.7.html">keyrings(7)</a>  e <a href="https://man7.org/linux/man-pages/man7/capabilities.7.html">capabilities(7)</a>.</li>
+</ul>
+</li>
+<li><a href="https://man7.org/linux/man-pages/man7/cgroup_namespaces.7.html">Cgroup</a> - Cgroup root directory
+<ul>
+<li>Faz o isolamento virtualizando a visão do <a href="https://man7.org/linux/man-pages/man7/cgroups.7.html">cgroups(7)</a> por um processo via /proc/pid/cgroup e /proc/pid/mountinfo. Dessa forma o namespace possui seu próprio conjunto de diretórios raiz cgroup, que são os caminhos relativos dos registros correspondentes no arquivo /proc/pid/cgroup, quando um processo cria um novo namespace usando <a href="https://man7.org/linux/man-pages/man2/clone.2.html">clone(2)</a> ou <a href="https://man7.org/linux/man-pages/man2/unshare.2.html">unshare(2)</a> com a flag <strong>CLONE_NEWCGROUP</strong>&hellip;</li>
+</ul>
+</li>
+<li><a href="https://man7.org/linux/man-pages/man7/time_namespaces.7.html">Time</a> - Boot and monotonic clocks
+<ul>
+<li>O time afeta afeta várias APIs como o <a href="https://man7.org/linux/man-pages/man2/clock_gettime.2.html">clock_gettime(2)</a>, <a href="https://man7.org/linux/man-pages/man2/clock_nanosleep.2.html">clock_nanosleep(2)</a>, <a href="https://man7.org/linux/man-pages/man2/nanosleep.2.html">nanosleep(2)</a>, <a href="https://man7.org/linux/man-pages/man2/timer_settime.2.html">timer_settime(2)</a>, <a href="https://man7.org/linux/man-pages/man2/timerfd_settime.2.html">timerfd_settime(2)</a> e /proc/uptime, fazendo a virtualização isolada dos relógios de sistema:
+<ul>
+<li><strong>CLOCK_MONOTONIC</strong> (e também <strong>CLOCK_MONOTONIC_COARSE</strong> e <strong>CLOCK_MONOTONIC_RAW</strong> ), um relógio não configurável que representa um  tempo monótono desde <strong>então</strong>(conforme descrito por POSIX - &ldquo;algun ponto não especificado no passado&rdquo;).</li>
+<li><strong>CLOCK_BOOTTIME</strong> (e também <strong>CLOCK_BOOTTIME_ALARM</strong> ), um relógio não configurável que é idêntico a <strong>CLOCK_MONOTONIC</strong> , exceto que também inclui qualquer momento em que o sistema está suspenso.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p>Dessa forma já conseguimos tridimensionalizar mentalmente que:</p>
+<ul>
+<li>A coisa toda é meio que um processo containerizado por recursos que o fazem rodar em um diretório onde existirá um sistema de arquivos, fazendo com que o processo o veja como  o uma arvore filesystem, com seus pid/gid e pilha de rede, hostname e domainname / nisdomainname bem como as chamadas IPC e relógios de sistema isolados do host hospedeiro..
+<ul>
+<li>Aqui vale lembrar que esses namespaces não são de propriedade do processo! Eles operam de forma independente
+<ul>
+<li>qualquer outro processo pode ser containerizado nesses namespaces já existentes, dessa forma compatilhando-os&hellip; E de forma independente
+<ul>
+<li>pois você pode executar um processo dentro de um namespace Network, sem que ele tenha um Mount e UTS por exemplo
+<ul>
+<li>isso é massa porque é possível usar um comando  que existe no Host, porém a execução será dentro de um namespace!
+<ul>
+<li>por isso, não é necessário instalar uma tool em um Mount de um processo containerizado para fazer teste ou debug&hellip;</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>O que nos interessa é o namespace Network! Por isso, apesar de eu explorar outros pontos, nesse nivelamento: network é o nosso foco</p>
+<h6 id="continua">continua&hellip;</h6>
+]]></description>
       
     </item>
+    
+    
     
     <item>
       <title>RTFM &amp; AleatoriedadesParaSysAdmin - Swap</title>
@@ -64,9 +1011,124 @@
       <pubDate>Sat, 06 Jan 2024 09:14:00 -0300</pubDate>
       
       <guid>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadmin-swap/</guid>
-      <description>Swapping foi introduzida como um backup em disco para páginas não mapeadas.</description>
+      <description><![CDATA[<p>Swapping foi introduzida como um backup em disco para páginas não mapeadas. E existem três tipos de páginas que devem ser tratadas pelo subsistema de swapping:</p>
+<ul>
+<li>Pages que pertencem a uma região de memória anônima de um processo (User Mode stack)</li>
+<li>Dirty pages  que pertencem a um mapeamento de memória privada de um processo</li>
+<li>Pages que pertencem a uma região de memória compartilhada IPC</li>
+</ul>
+<p>Numa &ldquo;Regular Paging&rdquo; cada entrada na &ldquo;Page Table&rdquo; inclui um sinalizador, uma &ldquo;Present flag&rdquo; e o Kernel explora esse sinalizador para sinalizar que uma página pertencente a um espaço de endereço de um processo qualquer foi &ldquo;swapped out&rdquo;! E além desse sinalizador, o Linux faz uso dos bits restantes do &ldquo;Page Table&rdquo; pra armazenar um identificador de &ldquo;swapped-out page&rdquo; que informa a localização no disco.</p>
+<p>A Principais características do subsistema swapping  são:</p>
+<ul>
+<li>Configura area swap para armazenamento de Pages que não possuem &ldquo;disk image&rdquo;.</li>
+<li>Gerencia espaço na área de swap alocando e liberando &ldquo;page slots&rdquo;.</li>
+<li>Fornece a função de &ldquo;swap out&rdquo; pages da RAM para a área de swap  e &ldquo;swap in&rdquo; pages da área de swap para RAM.</li>
+<li>Faz uso da “swapped-out page identifiers” das entradas na &ldquo;Page Table&rdquo; que foram swapped para acompanhar as posições dos dados na área de swap.</li>
+</ul>
+<p>Em suma, o swapping é o principal recurso de &ldquo;page frame reclaiming&rdquo;! E se queremos ter certeza que todos os &ldquo;page frames&rdquo; obtidos por um processo, não apenas os &ldquo;pages&rdquo; que contem &ldquo;disk image&rdquo;, possam ser recuperados pelo PFRA, devemos fazer uso do swapping&hellip;</p>
+<p>Com isso podemos deduzir que grandes áreas de swap dão poder ao Kernel para iniciar vários processos onde o total de solicitações de memória ultrapassa a quantidade de RAM física.</p>
+<p>E como na TI, nem tudo são flores, precisamos nos atentar que simular RAM em disco, nos traz um desempenho em milissegundos se comparado aos nanosegundos da RAM física ;)</p>
+<blockquote>
+<p>[!NOTE]
+<em>Referencia: Daniel P. Bovet, Marco Cesati - Understanding the Linux Kernel - Capítulo 2 - Memory Addressing e Capítulo 17 - Page Frame Reclaiming</em></p>
+</blockquote>
+<p>Agora que nivelamos a introdução sobre swapping, vamos criar um espaço de troca, do tipo arquivo, que não muda em nada quando partição em disco: a não ser o processo de particionamento de disco etc&hellip;</p>
+<ol>
+<li>Verificando se há algum swap</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo swapon --show
+</span></span></code></pre></div><ol start="2">
+<li>Criando arquivo de swap de 2GiB</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo dd <span style="color:#ff79c6">if</span><span style="color:#ff79c6">=</span>/dev/zero <span style="color:#8be9fd;font-style:italic">of</span><span style="color:#ff79c6">=</span>/swapfile <span style="color:#8be9fd;font-style:italic">count</span><span style="color:#ff79c6">=</span><span style="color:#bd93f9">2192</span> <span style="color:#8be9fd;font-style:italic">bs</span><span style="color:#ff79c6">=</span>1MiB
+</span></span></code></pre></div><ol start="3">
+<li>Alterando permissão do arquivo</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo chmod <span style="color:#bd93f9">600</span> /swapfile
+</span></span></code></pre></div><ol start="4">
+<li>Marcando o arquivo como um espaço de swap</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo mkswap /swapfile
+</span></span></code></pre></div><ol start="5">
+<li>Verificando se está tudo ok</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo swapon --show
+</span></span></code></pre></div><ol start="6">
+<li>Adicionando a linha no &lsquo;/etc/fstab&rsquo; para montagem automática</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#39;/swapfile    none    swap    sw    0 0&#39;</span> | sudo tee -a /etc/fstab
+</span></span></code></pre></div><ol start="7">
+<li>Ajustando a configuração de Swap</li>
+</ol>
+<p>O parâmetro <code>/proc/sys/vmwappiness</code> configura a frequência com que o sistema transfere dados da RAM para o espaço de swap. Sendo um  valor entre 0 e 100 que representa uma porcentagem! Um valor baixo significa que o seu sistema Linux troca processos raramente enquanto um alto valor significa que os processos são gravados em disco imediatamente</p>
+<ul>
+<li>Com valores próximos de zero, o kernel não irá transferir dados para o  disco a menos que seja absolutamente necessário.</li>
+<li>Lembre-se, as  interações com o arquivo de swap são “dispendiosas”! Pois são mais lentas que as interações com a RAM.</li>
+<li>Valores que estão mais próximos de 100 irão tentar colocar mais dados  no swap em um esforço para manter mais espaço da RAM livre.
+<ul>
+<li>Dependendo  do perfil de memória de seus aplicativos ou do motivo pelo qual você  está usando o seu servidor, isso pode ser melhor em alguns casos.</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Swappiness: 60</td>
+<td>Swap a partir de 40% de uso de RAM.</td>
+</tr>
+<tr>
+<td>Swappiness: 40</td>
+<td>Swap a partir de 60% de uso de RAM.</td>
+</tr>
+<tr>
+<td>Swappiness: 20</td>
+<td>Swap a partir de 80% de uso de RAM.</td>
+</tr>
+<tr>
+<td>Swappiness: 10.</td>
+<td>Swap a partir de 90% de uso de RAM.</td>
+</tr>
+<tr>
+<td>Swappiness: 1</td>
+<td>Swap a partir de 99% de uso de RAM.</td>
+</tr>
+</tbody>
+</table>
+<p>Para um desktop, um valor de swappiness de 60 não é um valor ruim e normalmente é o valor dfault em uma distro Linux. Mas para um servidor, podemos deixá-lo mais próximo de 0, para fazer uso somente quando realmente necessário</p>
+<p>Como exemplo podemos setar para  &lsquo;10&rsquo; para que o swap seja utilizado após 90% de RAM ocupada</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo sysctl vm.swappiness<span style="color:#ff79c6">=</span><span style="color:#bd93f9">10</span>
+</span></span></code></pre></div><p>Para garantir que esse valor irá se manter após um boot</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#39;vm.swappiness=10&#39;</span> | sudo tee -a /etc/sysctl.conf
+</span></span></code></pre></div><p>Mas como sempre, não há uma receita de bolo! Em determinados cenários  trocar processos de tempo de execução da RAM para o disco, deve ser evitado, noutros há vantagem&hellip; Conhecer a aplicação irá lhe guiar na configuração mais apropriada!</p>
+<ol start="8">
+<li>Ajustando a confiuração do vfs_cache_pressure</li>
+</ol>
+<p>Esta opção controla a tendência do kernel de recuperar a memória que é usada para cache de diretórios e objetos inode.</p>
+<ul>
+<li>No valor padrão de vfs_cache_pressure=100, o kernel tentará recuperar dentries e inodes a uma taxa &ldquo;justa&rdquo; em relação ao pagecache e à recuperação do swapcache.</li>
+<li>Diminuir vfs_cache_pressure faz com que o kernel prefira manter os caches dentry e inode.</li>
+<li>Quando vfs_cache_pressure=0, o kernel nunca recuperará dentries e inodes devido à pressão de memória e isso pode levar facilmente a condições de falta de memória.</li>
+<li>Aumentar vfs_cache_pressure além de 100 faz com que o kernel prefira recuperar dentries e inodes.</li>
+</ul>
+<p>Podemos definir isso em um valor mais conservador como 50</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo sysctl vm.vfs_cache_pressure<span style="color:#ff79c6">=</span><span style="color:#bd93f9">50</span>
+</span></span></code></pre></div><p>Vamos garantir que após um boot o valor permaneça</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#39;vm.vfs_cache_pressure=50&#39;</span> | sudo tee -a /etc/sysctl.conf
+</span></span></code></pre></div><ol start="9">
+<li>Agora sim! Vamos ativar o novo espaço de swapping</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo swapon /swapfile
+</span></span></code></pre></div>]]></description>
       
     </item>
+    
+    
     
     <item>
       <title>RTFM &amp; Aleatoriedades para SysAdmin - journalctl </title>
@@ -74,9 +1136,66 @@
       <pubDate>Fri, 05 Jan 2024 17:43:55 -0300</pubDate>
       
       <guid>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadmin-journalctl/</guid>
-      <description>Para quando a lei de Murphy exerce a sua força.</description>
+      <description><![CDATA[<p>Para quando a lei de Murphy exerce a sua força. É nessa hora, que do seu kit MacGyver, você tira o <strong>journalctl</strong>  para identificar o que pode estar errado!</p>
+<p>Das muitas formas possíveis. Tem mais essa:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ journalctl --no-pager --since today --grep <span style="color:#f1fa8c">&#39;fail|error|fatal&#39;</span> --output json|jq
+</span></span></code></pre></div><ul>
+<li>Com a opção &ldquo;&ndash;grep&rdquo; filtramos palavras chave</li>
+<li>Com a opção &ldquo;&ndash;since&rdquo; melhoramos nossa assertividade.
+<ul>
+<li>Ex:
+<ul>
+<li>&ndash;since &ldquo;1 hour ago&rdquo;</li>
+<li>&ndash;since &ldquo;1 minutes ago&rdquo;</li>
+<li>&ndash;since &ldquo;5 seconds ago&rdquo;</li>
+<li>&ndash;since 07:00 &ndash;until &ldquo;1 hour ago&rdquo;</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Com o &ldquo;&ndash;output&rdquo; usando o formato <em>json</em>, fazemos um parser amigável pra organizarmos com <strong>jq</strong>.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ journalctl --no-pager --since today --grep <span style="color:#f1fa8c">&#39;fail|error|fatal&#39;</span> --output json|jq
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">{</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f1fa8c">&#34;_PID&#34;</span>: <span style="color:#f1fa8c">&#34;5605&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f1fa8c">&#34;_SYSTEMD_SLICE&#34;</span>: <span style="color:#f1fa8c">&#34;user-1000.slice&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f1fa8c">&#34;_SYSTEMD_USER_UNIT&#34;</span>: <span style="color:#f1fa8c">&#34;org.gnome.Shell@wayland.service&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f1fa8c">&#34;_RUNTIME_SCOPE&#34;</span>: <span style="color:#f1fa8c">&#34;system&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f1fa8c">&#34;_SYSTEMD_UNIT&#34;</span>: <span style="color:#f1fa8c">&#34;user@1000.service&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f1fa8c">&#34;__SEQNUM&#34;</span>: <span style="color:#f1fa8c">&#34;7540847&#34;</span>,
+</span></span><span style="display:flex;"><span>  ...
+</span></span><span style="display:flex;"><span>  ...
+</span></span><span style="display:flex;"><span>  <span style="color:#f1fa8c">&#34;_SYSTEMD_OWNER_UID&#34;</span>: <span style="color:#f1fa8c">&#34;1000&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f1fa8c">&#34;SYSLOG_IDENTIFIER&#34;</span>: <span style="color:#f1fa8c">&#34;google-chrome.desktop&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f1fa8c">&#34;_COMM&#34;</span>: <span style="color:#f1fa8c">&#34;cat&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f1fa8c">&#34;__MONOTONIC_TIMESTAMP&#34;</span>: <span style="color:#f1fa8c">&#34;285995139402&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f1fa8c">&#34;_CMDLINE&#34;</span>: <span style="color:#f1fa8c">&#34;cat&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f1fa8c">&#34;_BOOT_ID&#34;</span>: <span style="color:#f1fa8c">&#34;da45ccab9c404e9444444a9c51300cae&#34;</span>,
+</span></span><span style="display:flex;"><span>  <span style="color:#f1fa8c">&#34;_EXE&#34;</span>: <span style="color:#f1fa8c">&#34;/usr/bin/cat&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">{</span>
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>...
+</span></span></code></pre></div><p>Ainda é possível filtrar por algum objeto com o <em>jq</em> e quantificar as ocorrências com sort e uniq</p>
+<ul>
+<li>Talvez, alguns objetos interessantes seriam _EXE, _CMDLINE, _PID, SYSLOG_IDENTIFIER, MESSAGE&hellip;</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ journalctl --no-pager --since <span style="color:#f1fa8c">&#34;60 minutes ago&#34;</span> --grep <span style="color:#f1fa8c">&#39;fail|error|fatal&#39;</span> --output json|jq <span style="color:#f1fa8c">&#39;.SYSLOG_IDENTIFIER&#39;</span> | sort | uniq -c
+</span></span><span style="display:flex;"><span>      <span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">&#34;audit&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#bd93f9">1</span> <span style="color:#f1fa8c">&#34;cupsd&#34;</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#bd93f9">19</span> <span style="color:#f1fa8c">&#34;discord.desktop&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#bd93f9">2</span> <span style="color:#f1fa8c">&#34;fprintd&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#bd93f9">7</span> <span style="color:#f1fa8c">&#34;gnome-shell&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#bd93f9">10518</span> <span style="color:#f1fa8c">&#34;google-chrome.desktop&#34;</span>
+</span></span><span style="display:flex;"><span>     <span style="color:#bd93f9">18</span> null
+</span></span><span style="display:flex;"><span>      <span style="color:#bd93f9">4</span> <span style="color:#f1fa8c">&#34;org.gnome.Software.desktop&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#bd93f9">173</span> <span style="color:#f1fa8c">&#34;slack.desktop&#34;</span>
+</span></span></code></pre></div>]]></description>
       
     </item>
+    
+    
     
     <item>
       <title>Who Page Cache</title>
@@ -84,9 +1203,437 @@
       <pubDate>Wed, 15 Nov 2023 20:25:31 -0300</pubDate>
       
       <guid>https://0xttfx.github.io/posts/pagecache/</guid>
-      <description>RAM é um hardware valioso e caro bem como a sua latência é ainda mais importante que a latência do disco.</description>
+      <description><![CDATA[<p>RAM é um hardware valioso e caro bem como a sua latência é ainda mais importante que a latência do disco. E por isso, o kernel Linux tenta ao máximo otimizar os uso da memória, fazendo uso de técnicas como compartilhando de páginas entre processos e Page Cache para melhorar a velocidade de I/O de armazenamento, armazenando um subconjunto de dados do disco na memória.</p>
+<p>O Page Cache realiza compartilhamento implícito de memória e de forma assíncrona com o armazenamento em segundo plano! Isso por sí só, traz ainda mais complexidade à estimativa de uso de memória por parte dos administradores!</p>
+<h2 id="mas-o-que-é-page-cache">Mas o que é Page Cache</h2>
+<p>o Page Cache faz parte do <a href="https://en.wikipedia.org/wiki/Virtual_file_system">Virtual File System - VFS</a> que é uma camada de software do núcleo que trata de todas as chamadas de sistema relacionadas a um sistema de arquivos Unix.</p>
+<p>Sua principal vantagem é prover uma interface genérica para diversos tipos de sistemas de arquivos. Ou seja, o VFS permite que chamadas de sistemas genéricas, tais como open( ) e read( ),possam ser executadas independentemente do sistema de arquivos usados ou do meio físico! O que implica diretamente na latência de I/O das operações de leitura e gravação.</p>
+<ul>
+<li>Quando um sistema grava dados no cache, em algum momento também deve gravar esses dados no armazenamento. O tempo dessa gravação é controlado pelo que é conhecido como <em>write policy</em>, e existem duas abordagens básicas de escrita:
+<ul>
+<li>
+<p><em>Write-through</em>: a gravação é feita de forma síncrona tanto no cache quanto no armazenamento de apoio.</p>
+</li>
+<li>
+<p><em>Write-back</em>: inicialmente, a escrita é feita apenas no cache. A gravação no armazenamento de apoio é adiada até que o conteúdo modificado esteja prestes a ser substituído por outro bloco de cache.</p>
+<ul>
+<li>Nesse <a href="https://en.wikipedia.org/wiki/Cache_%28computing%29#Writing_policies">link você pode ter mais informações sobre o algorítimo</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Page é a unidade de memória que o Kernel trabalha com Page Cache, e geralmente possui 4k de comprimento mínimo de armazenamento no Page Cache.</p>
+<ul>
+<li>Dessa forma todo I/O de arquivo está alinhado a uma quantidade específica de páginas&hellip;</li>
+</ul>
+<p>Até aqui, podemos entender que o Page Cache, é o principal cache de disco usado pelo kernel do Linux e é utilizado ao ler ou gravar no disco quando novas páginas são adicionadas ao Page Cache para satisfazer as solicitações de leitura dos processos do <em>User Mode stack</em>.</p>
+<ul>
+<li>Se a página ainda não estiver no cache, uma nova entrada será adicionada ao cache e preenchida com os dados lidos do disco.
+<ul>
+<li>Se houver memória livre suficiente, a página é mantida no cache por um período indefinido e pode então ser reutilizada por outros processos sem acessar o disco.</li>
+</ul>
+</li>
+</ul>
+<p>Da mesma forma, antes de gravar page de dados em um dispositivo de bloco, o kernel verifica se a page correspondente já está incluída no cache; caso contrário, uma nova entrada é adicionada ao cache e preenchida com os dados a serem gravados no disco.</p>
+<ul>
+<li>A transferência de dados de I/O não começa imediatamente:
+- a atualização do disco é atrasada por alguns segundos, dando assim aos processos a chance de modificar ainda mais os dados a serem gravados
+<ul>
+<li>em outras palavras, o kernel implementa operações de <em>deferred write</em></li>
+</ul>
+</li>
+</ul>
+<p>As páginas incluídas no Page Cache podem ser os seguintes tipos:</p>
+<ul>
+<li>Pages contendo dados de arquivos regulares; no Capítulo 16, descrevemos como o kernel lida com operações de leitura, gravação e mapeamento de memória neles.</li>
+<li>Pages contendo diretórios; o Linux lida com os diretórios de forma muito semelhante aos arquivos normais.</li>
+<li>Pages contendo dados lidos diretamente de arquivos de dispositivos de bloco (ignorando a camada do sistema de arquivos); o kernel os trata usando o mesmo conjunto de funções como para pages contendo dados de arquivos regulares.</li>
+<li>Pages contendo dados de processos do <em>User Mode stack</em> que foram trocados em disco; o kernel pode forçar a manter-se armazenado em page cache algumas pages cujo conteúdo já foi escrito em uma área de swap.</li>
+<li>Pages pertencentes a arquivos de sistemas de arquivos especiais, como o sistema de arquivos especial <em>shm</em> usado para região de memória compartilhada de comunicação entre processos (IPC).</li>
+</ul>
+<p>Como podemos ver, cada page incluída no Page Cache contém dados pertencentes a algum arquivo. Este arquivo – ou mais precisamente o inode do arquivo – é chamado de <em>page’s owner</em>.</p>
+<p>Praticamente todas as operações read() e write() de arquivos dependem do Page Cache.</p>
+<ul>
+<li>a única exceção ocorre quando um processo abre um arquivo com a flag O_DIRECT definido: neste caso, o cache da página é ignorado e as transferências de dados de E/S fazem uso de buffers no espaço de endereço do modo de usuário do processo.
+<ul>
+<li>Várias aplicações database fazem uso da flag O_DIRECT pra que assim possam faze uso do próprio algorítimo de caching&hellip;</li>
+</ul>
+</li>
+</ul>
+<p>Os projetistas do kernel implementaram o Page Cache para atender a dois requisitos principais:</p>
+<ul>
+<li>Localizar rapidamente um page específica contendo dados relativos a um determinado proprietário.
+Para aproveitar ao máximo o cache da página, pesquisá-lo deve ser uma operação muito rápida.</li>
+<li>Acompanhar como cada page do cache deve ser tratada ao ler ou escrever seu conteúdo.
+<ul>
+<li>Por exemplo, a leitura de uma page de um arquivo regular, ou de um arquivo de dispositivo de bloco ou de uma área de swap, deve ser realizada de diferentes maneiras, portanto o kernel deve selecionar a operação adequada dependendo do proprietário da página.</li>
+</ul>
+</li>
+</ul>
+<p>A unidade de informação mantida no page cache é, obviamente, uma página inteira de dados.</p>
+<ul>
+<li>uma página não contém necessariamente blocos de disco fisicamente adjacentes, portanto ela não pode ser identificada por um número de dispositivo e um número de bloco.
+<ul>
+<li>Em vez disso, uma página no Page Cache é identificada por um proprietário e por um índice nos dados do proprietário – geralmente, um inode e um offset dentro do arquivo correspondente.</li>
+</ul>
+</li>
+</ul>
+<p>A estrutura de dados principal do Page Cache é o objeto <em>address_space</em>, uma estrutura de dados incorporada no objeto inode proprietário da page.</p>
+<ul>
+<li>Muitas pages no cache podem referir-se ao mesmo proprietário, portanto, podem estar vinculadas ao mesmo objeto <em>address_space</em> que  também estabelece uma ligação entre a pages do proprietários e um conjunto de métodos que operam nessas pages.
+<ul>
+<li>Aqui uma uma exceção ocorre para páginas que foram trocadas. Essas páginas possuem um objeto address_space comum não incluído em nenhum inode.</li>
+</ul>
+</li>
+</ul>
+<p>Cada descritor de página inclui dois campos chamados mapping e index, que vinculam a page ao Page Cache</p>
+<ul>
+<li>O primeiro campo aponta para o objeto <em>address_space</em> do inode proprietário da page.</li>
+<li>O segundo campo especifica o <em>offset</em>  em unidades de <em>page-size</em> dentro do <em>addres_space</em>!
+<ul>
+<li>Ou seja: a posição dos dados da page dentro do <em>disk image</em>  proprietário.</li>
+</ul>
+</li>
+</ul>
+<p>Esses dois campos são usados ao procurar uma página no cache de páginas.</p>
+<p>Magitécnicamente, o cache de páginas pode conter múltiplas cópias dos mesmos dados do disco. Por exemplo, o mesmo bloco de dados de 4 KB de um arquivo normal pode ser acessado das seguintes maneiras:</p>
+<ul>
+<li>Lendo o arquivo; os dados são incluídos em uma page pertencente ao inode do arquivo normal.</li>
+<li>Lendo o bloco do arquivo do dispositivo (partição do disco) que hospeda o arquivo;
+<ul>
+<li>os dados são incluídos em uma page pertencente ao <em>master inode</em> do arquivo do dispositivo de bloco.</li>
+</ul>
+</li>
+</ul>
+<p>Por isso, os dados de um disco aparecem em duas pages diferentes cada uma referenciada por um objeto address_space diferente&hellip;</p>
+<p>Abaixo temos a tabela com os campos de um objeto <em>adress_space</em></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>struct inode *</td>
+<td>host</td>
+<td>Pointer to the inode hosting this object, if any</td>
+</tr>
+<tr>
+<td>struct radix_tree_root</td>
+<td>page_tree</td>
+<td>Root of radix tree identifying the owner’s pages</td>
+</tr>
+<tr>
+<td>spinlock_t</td>
+<td>tree_lock</td>
+<td>Spin lock protecting the radix tree</td>
+</tr>
+<tr>
+<td>unsigned int</td>
+<td>i_mmap_writable</td>
+<td>Number of shared memory mappings in the address space</td>
+</tr>
+<tr>
+<td>struct prio_tree_root</td>
+<td>i_mmap</td>
+<td>Root of the radix priority search tree</td>
+</tr>
+<tr>
+<td>struct list_head</td>
+<td>i_mmap_nonlinear</td>
+<td>List of non-linear memory regions in the address space</td>
+</tr>
+<tr>
+<td>spinlock_t</td>
+<td>i_mmap_lock</td>
+<td>Spin lock protecting the radix priority search tree</td>
+</tr>
+<tr>
+<td>unsigned int</td>
+<td>truncate_count</td>
+<td>Sequence counter used when truncating the file</td>
+</tr>
+<tr>
+<td>unsigned long</td>
+<td>nrpages</td>
+<td>Total number of owner’s pages</td>
+</tr>
+<tr>
+<td>unsigned long</td>
+<td>writeback_index</td>
+<td>Page index of the last write-back operation on the owner’s pages</td>
+</tr>
+<tr>
+<td>struct address_space_ operations *</td>
+<td>a_ops</td>
+<td>Methods that operate on the owner’s pages</td>
+</tr>
+<tr>
+<td>unsigned long</td>
+<td>flags</td>
+<td>Error bits and memory allocator flag</td>
+</tr>
+<tr>
+<td>struct backing_dev_info *</td>
+<td>backing_dev_info</td>
+<td>Pointer to the backing_dev_info of the block device holding the data of this owner</td>
+</tr>
+<tr>
+<td>spinlock_t</td>
+<td>private_lock</td>
+<td>Usually, spin lock used when managing the private_list list</td>
+</tr>
+<tr>
+<td>struct list head</td>
+<td>private_list</td>
+<td>Usually, a list of dirty buffers of indirect blocks associated with the inode</td>
+</tr>
+<tr>
+<td>struct address_space *</td>
+<td>assoc_mapping</td>
+<td>Usually, pointer to the address_space object of the block device including the indirect blocks</td>
+</tr>
+</tbody>
+</table>
+<p>Se o owner de uma page  no page cache for um arquivo, o objeto <em>address_space</em> será inserido no campo i_data de um objeto VFS inode.</p>
+<ul>
+<li>O campo <em>i_mapping</em> do inode sempre aponta para o objeto <em>address_space</em> do proprietário das pages que contêm os dados do inode.
+<ul>
+<li>O campo <em>host</em> do objeto <em>address_space</em> aponta para o objeto inode no qual o descriptor está embutido&hellip;</li>
+</ul>
+</li>
+</ul>
+<p>Por isso, se uma page pertence a um arquivo armazenado em um sistema de arquivos Ext3,</p>
+<ul>
+<li>o proprietário da page é o inode do arquivo e o objeto <em>address_space</em> correspondente é armazenado no campo <em>i_data</em> do objeto VFS inode.
+<ul>
+<li>O campo <em>i_mapping</em> do inode aponta para o campo <em>i_data</em> do mesmo inode, e o campo <em>host</em> do objeto <em>address_space</em> aponta para o mesmo inode&hellip;</li>
+</ul>
+</li>
+</ul>
+<p>Mas como sempre: A &ldquo;treta&rdquo; está sempre presente na TI&hellip; :)</p>
+<p>Se uma page contém dados, lidos de um arquivo de dispositivo de bloco(onde está o dado bruto(RAW)),  o objeto <em>address_space</em> é incorporado no <em>master inode</em> do arquivo no sistema de arquivos especial <em>bdev</em> associado ao dispositivo de bloco.</p>
+<ul>
+<li>Por isso, o campo <em>i_mapping</em> de um inode de um arquivo de dispositivo de bloco, aponta para o objeto <em>address_space</em> embutido no <em>master inode</em>
+<ul>
+<li>da mesma forma, o campo <em>host</em> do objeto <em>address_space</em> aponta também para o <em>master idone</em>
+<ul>
+<li>dessa forma, todas as pages contendo dados lidos de um dispositivo de bloco possuem o mesmo objeto <em>address_space</em>,
+<ul>
+<li>mesmo que tenham sido acessadas de arquivos de dispositivos de bloco diferentes</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Os campos <em>i_mmap</em>, <em>i_mmap_writable</em>, <em>i_mmap_nonlinear</em> e <em>i_mmap_lock</em> referem-se ao mapeamento de memória e ao mapeamento reverso.</p>
+<p>O campo <em>backing_dev_info</em> aponta o descritor <em>backing_dev_info</em> associado ao dispositivo de bloco que armazena os dados do proprietário.</p>
+<ul>
+<li>a estrutura <em>backing_dev_info</em> geralmente é incorporada no descritor da fila de solicitações do dispositivo de bloco.</li>
+</ul>
+<p>O campo <em>private_list</em> é o cabeçalho de uma lista genérica que pode ser usada livremente pelo sistema de arquivos para seus propósitos específicos.</p>
+<ul>
+<li>O Ext2 faz uso desse campo coletar os buffers sujos de blocos “indiretos” associados ao inode.
+<ul>
+<li>&ldquo;buffers sujos&rdquo; são dados ainda não escritos em disco.</li>
+<li>Quando uma operação força o inode a ser gravado em disco, o kernel também libera todos os buffers nesta lista.</li>
+</ul>
+</li>
+</ul>
+<p>Um campo crucial do objeto <em>address_space</em> é <em>a_ops</em>.</p>
+<ul>
+<li>ele aponta para uma tabela do tipo <em>address_space_operations</em> contendo os métodos que definem como as pages dos proprietários são tratadas.
+<ul>
+<li>Os métodos mais importantes são:
+<ul>
+<li>readpage</li>
+<li>writepage</li>
+<li>prepare_write</li>
+<li>commit_write</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Os métodos vinculam os proprietários do objetos inode  aos drivers de baixo nível que acessam os dispositivos físicos.</p>
+<ul>
+<li>Por exemplo:
+<ul>
+<li>a função que implementa o método <em>readpage</em> para um inode de um arquivo regular, sabe localizar as posições no dispositivo de disco físico dos blocos correspondentes a cada page do arquivo&hellip;</li>
+</ul>
+</li>
+</ul>
+<p>Abaixo podemos ver a tabela de métodos do <em>address_space</em></p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>writepage</td>
+<td>Write operation (from the page to the owner’s disk image)</td>
+</tr>
+<tr>
+<td>readpage</td>
+<td>Read operation (from the owner’s disk image to the page)</td>
+</tr>
+<tr>
+<td>sync_page</td>
+<td>Start the I/O data transfer of already scheduled operations on owner’s pages</td>
+</tr>
+<tr>
+<td>writepages</td>
+<td>Write back to disk a given number of dirty owner’s pages</td>
+</tr>
+<tr>
+<td>set_page_dirty</td>
+<td>Set an owner’s page as dirty</td>
+</tr>
+<tr>
+<td>readpages</td>
+<td>Read a list of owner’s pages from disk</td>
+</tr>
+<tr>
+<td>prepare_write</td>
+<td>Prepare a write operation (used by disk-based filesystems)</td>
+</tr>
+<tr>
+<td>commit_write</td>
+<td>Complete a write operation (used by disk-based filesystems)</td>
+</tr>
+<tr>
+<td>bmap</td>
+<td>Get a logical block number from a file block index</td>
+</tr>
+<tr>
+<td>invalidatepage</td>
+<td>Invalidate owner’s pages (used when truncating the file)</td>
+</tr>
+<tr>
+<td>releasepage</td>
+<td>Used by journaling filesystems to prepare the release of a page</td>
+</tr>
+<tr>
+<td>direct_IO</td>
+<td>Direct I/O transfer of the owner’s pages (bypassing the page cache)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>[!NOTE]
+Referencias: Daniel P. Bovet, Marco Cesati - Understanding the Linux Kernel, Third Edition-O&rsquo;Reilly Media | Page Descriptors - Cap 8, Block Device Drivers - Cap 14 , The Page Cache - Cap 15, Accessing Files - Cap 16 , Page Frame Reclaiming - Cap 17 , The Ext2 and Ext3 Filesystems - Cap 18.</p>
+</blockquote>
+<p>Até aqui já conseguimos entender que o mecanismo de cachear arquivos em memória de forma transparente, independente de se estar mapeando algo em memória, lendo ou escrevendo em disco, deixam as coisas um pouco mais complicadas para um administrador inexperiente ao tentar obter uma aferição de consumo de memória&hellip;</p>
+<p>Por isso, vamos tentar algumas abordagens para determinar valores mais próximos do real para o consumo de memória RAM.</p>
+<h1 id="rss-e-vsz">RSS e VSZ</h1>
+<p>Vamos começar tendo como referencia o <strong>VSZ</strong> que é o tamanho da memória virtual que o Linux concedeu a um processo. Mas não necessariamente o processo está usando o valor informado. Um dos motivos são programas com funções para realizar determinadas tarefas, mas só as carregam na RAM, quando necessário. Bem como também a paginação por demanda do Linux, que só carrega páginas na memória quando o aplicativo tenta usá-las&hellip;  Por isso a leitura que devemos fazer do valor é: <em>memória se carregadas todas as suas funções e bibliotecas na memória física.</em></p>
+<p>Já <strong>RSS</strong>, é o tamanho do conjunto residente. É a quantidade de RAM que o processo no momento para carregar as suas páginas. Ainda assim não podemos tomar essa informação como concreta, devido as bibliotecas compartilhadas torna-se um  valor impreciso por superestimativa&hellip;</p>
+<ol>
+<li>
+<p>Primeiro criamos um processo em um novo cgroup</p>
+<ul>
+<li>Rodamos o comanod <em>mtr</em> utilizando o <code>systemd-run</code> para isolá-lo num cgroup(por que sim&hellip;rs)
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>systemd-run --user -P -t -G --wait mtr 8.8.8.8
+</span></span></code></pre></div></li>
+</ul>
+</li>
+<li>
+<p>Em seguida coletamos o seu PID e verificamos os valores de RSS e VSZ</p>
+<ul>
+<li>Com o comando <code>ps</code> coletamos seu PID e os dados de RSS e VSZ
+<ul>
+<li>O PID do processo
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ ps -aux |grep -E systemd-run.*mtr | grep -v grep |awk <span style="color:#f1fa8c">&#39;{print $2}&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">236341</span>
+</span></span></code></pre></div></li>
+<li>E os dados de RSS e VSZ
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$  ps -o rss,vsz,cmd -p <span style="color:#ff79c6">$(</span>ps -aux |grep -E systemd-run.*mtr | grep -v grep |awk <span style="color:#f1fa8c">&#39;{print $2}&#39;</span><span style="color:#ff79c6">)</span>
+</span></span><span style="display:flex;"><span>  RSS    VSZ CMD
+</span></span><span style="display:flex;"><span> <span style="color:#bd93f9">7168</span>  <span style="color:#bd93f9">14940</span> systemd-run --user -P -t -G --wait mtr 8.8.8.8
+</span></span></code></pre></div><ul>
+<li>Só a título de cuiriosidade, segue algumas formas de coverter o valor para megabytes:
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ <span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#ff79c6">$((</span><span style="color:#bd93f9">7168</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1024</span><span style="color:#ff79c6">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">7</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ou
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ <span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#ff79c6">$((</span><span style="color:#bd93f9">7168</span><span style="color:#ff79c6">/</span><span style="color:#bd93f9">1024</span><span style="color:#ff79c6">))</span> |xargs -i <span style="color:#8be9fd;font-style:italic">printf</span> <span style="color:#f1fa8c">&#34;%&#39;.1f MB&#34;</span> <span style="color:#ff79c6">{}</span>
+</span></span><span style="display:flex;"><span>7.0 MB
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ou
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ numfmt --from<span style="color:#ff79c6">=</span>si --to<span style="color:#ff79c6">=</span>iec 7168K
+</span></span><span style="display:flex;"><span>6.9M
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ou
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ numfmt --from<span style="color:#ff79c6">=</span>si --to-unit<span style="color:#ff79c6">=</span>1Mi --grouping 7168K
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">7</span>
+</span></span></code></pre></div></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Podemos ver que o processo está consumindo <strong>7168 Kilobytes</strong>.</p>
+</li>
+<li>
+<p>Em seguida usamos o <strong>procfs</strong> para ter mais detalhes desse uso de RAM que o RSS está apontando.</p>
+<ul>
+<li>Vamos ver o arquivo <code>smaps_rollup</code> que é uma soma das áreas de memória do <code>smaps</code> do nosso PID
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ cat /proc/236341/smaps_rollup 
+</span></span><span style="display:flex;"><span>559517c38000-7ffe5c398000 ---p <span style="color:#bd93f9">00000000</span> 00:00 <span style="color:#bd93f9">0</span>                          <span style="color:#ff79c6">[</span>rollup<span style="color:#ff79c6">]</span>
+</span></span><span style="display:flex;"><span>Rss:                <span style="color:#bd93f9">7368</span> kB
+</span></span><span style="display:flex;"><span>Pss:                <span style="color:#bd93f9">1171</span> kB
+</span></span><span style="display:flex;"><span>Pss_Dirty:           <span style="color:#bd93f9">868</span> kB
+</span></span><span style="display:flex;"><span>Pss_Anon:            <span style="color:#bd93f9">868</span> kB
+</span></span><span style="display:flex;"><span>Pss_File:            <span style="color:#bd93f9">303</span> kB
+</span></span><span style="display:flex;"><span>Pss_Shmem:             <span style="color:#bd93f9">0</span> kB
+</span></span><span style="display:flex;"><span>Shared_Clean:       <span style="color:#bd93f9">6444</span> kB
+</span></span><span style="display:flex;"><span>Shared_Dirty:          <span style="color:#bd93f9">0</span> kB
+</span></span><span style="display:flex;"><span>Private_Clean:        <span style="color:#bd93f9">56</span> kB
+</span></span><span style="display:flex;"><span>Private_Dirty:       <span style="color:#bd93f9">868</span> kB
+</span></span><span style="display:flex;"><span>Referenced:         <span style="color:#bd93f9">7368</span> kB
+</span></span><span style="display:flex;"><span>Anonymous:           <span style="color:#bd93f9">868</span> kB
+</span></span><span style="display:flex;"><span>LazyFree:              <span style="color:#bd93f9">0</span> kB
+</span></span><span style="display:flex;"><span>AnonHugePages:         <span style="color:#bd93f9">0</span> kB
+</span></span><span style="display:flex;"><span>ShmemPmdMapped:        <span style="color:#bd93f9">0</span> kB
+</span></span><span style="display:flex;"><span>FilePmdMapped:         <span style="color:#bd93f9">0</span> kB
+</span></span><span style="display:flex;"><span>Shared_Hugetlb:        <span style="color:#bd93f9">0</span> kB
+</span></span><span style="display:flex;"><span>Private_Hugetlb:       <span style="color:#bd93f9">0</span> kB
+</span></span><span style="display:flex;"><span>Swap:                  <span style="color:#bd93f9">0</span> kB
+</span></span><span style="display:flex;"><span>SwapPss:               <span style="color:#bd93f9">0</span> kB
+</span></span><span style="display:flex;"><span>Locked:                <span style="color:#bd93f9">0</span> kB
+</span></span></code></pre></div>Para as métricas listadas
+<ul>
+<li><strong>RSS</strong> que já é nossa conhecida.</li>
+<li><strong>PSS</strong> Proportional Set Size é o compartilhamento proporcional de memória do processo. É a contagem de páginas que ele possui na memória, onde cada página é dividida pelo número de processos que a compartilham. Portanto, se um processo tiver 1.000 páginas só para ele e 1.000 compartilhadas com outro processo, seu PSS será 1.500.</li>
+<li><strong>Shared_Clean</strong> aqui vemos que nosso processo usa cache de página. E representa o maior uso da memória. No arquivo <em>smaps</em>, conseguimos ver todas as bibliotecas compartilhadas que foram abertas com mmap() e residem no Page Cache.</li>
+<li><strong>Shared_Dirty</strong> quando o processo grava em arquivos com mmap(), esta linha mostra a quantidade de memória suja do cache de página ainda não salva.</li>
+<li><strong>Referenced</strong> é a quantidade de memória referenciada ou acessada até o momento. O valor é sempre igual ou próximo RSS.</li>
+<li><strong>Anonymous</strong> mostra a quantidade de memória que não pertence a nenhum arquivo.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p>Até qui podemos ver que, embora o comando PS e Top nos mostre um RSS de 7MiB, a maior parte de seu RSS está oculto no cache de página e que quando ficarem inativas por um tempo, essas páginas, serão removidas da RAM pelo kernel.</p>
+<p><a href="https://lwn.net/Articles/642202/">Nesse artigo</a> do LWN.net temos mais informações direto da fonte ;).</p>
+<h5 id="continua-em-breve">Continua em breve&hellip;</h5>
+]]></description>
       
     </item>
+    
+    
     
     <item>
       <title>IP DOK Set or Drop Sec Group AWS EC2 RDS</title>
@@ -94,9 +1641,108 @@
       <pubDate>Mon, 06 Nov 2023 00:00:00 +0000</pubDate>
       
       <guid>https://0xttfx.github.io/posts/ipdo-awsrds/</guid>
-      <description>DigitalOcean Kubernetes and AWS RDS Security Group</description>
+      <description><![CDATA[<h1 id="ipdo-awsrds">ipdo-awsrds</h1>
+<h2 id="função">Função</h2>
+<p>Scrip bash para descoberta dos IPs WAN dos DOcean Droplets e inserção em security groups EC2 das instâncias AWS RDS.</p>
+<h2 id="atualizações">Atualizações</h2>
+<ul>
+<li>v0.4
+<ul>
+<li>Como inteválo mínimo de execução na CRON são de 60 segundos! E eu precisava executar por mais vezes por minuto
+acabei contendo o scrip dentro de um laço wile que o executa por 10 vezes com intervalo de 2 segundos</li>
+</ul>
+</li>
+<li>v0.5
+<ul>
+<li>removido laço de x execuções a cada 60s</li>
+<li>restruturado algumas conditional statement da inserção e remoção de IPs</li>
+<li>O diff, antes realizado globalmente, agora é realizado para cada Security Group</li>
+</ul>
+</li>
+<li>v0.6
+<ul>
+<li>Implementado o builtin <em>set</em> com as <em>options</em> <em>errtrace, errexit, nounset e pipefail</em> para deixar o script mais criterioso quanto a erros Principalmente os de APIs 5xx sem a necessidade de fazer testes em funções, condições etc.</li>
+<li>Implementado trap para melhor localização do momento e local do erro.</li>
+</ul>
+</li>
+<li>v0.7
+<ul>
+<li>Implementado arquivo PID.</li>
+<li>Modificado método de criação de array&rsquo;s específicos para uso mapfile</li>
+<li>Melhorias no filtro diff dos arquivos de IPs</li>
+<li>Melhorias nos filtros para criação de array IPs</li>
+<li>Modificado no laço aninhado de inserção e remoção de IP para melhora do parser</li>
+</ul>
+</li>
+<li>v0.8
+<ul>
+<li>Implementado tratativa para cod error diff</li>
+<li>Implementado arquivo de diff temporário para cada sec. group verificado</li>
+<li>Implementado tratativa para cod error na criação de array usando arquivo diff temporário</li>
+<li>Implementado remoção de arquivos temporários em cada laço</li>
+</ul>
+</li>
+<li>v1.0
+<ul>
+<li>Agora sim! <strong>ipdo-awsrds</strong> agora é GA - Disponibilidade Geral!</li>
+<li>Versão estável para uso em ambiente produção.</li>
+</ul>
+</li>
+</ul>
+<h2 id="dependências">Dependências</h2>
+<ul>
+<li>AWS CLI
+<ul>
+<li><a href="https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html">AWS CLI</a></li>
+<li><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/">EC2</a>
+<ul>
+<li><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/authorize-security-group-ingress.html">API authorize-security-group-ingress</a></li>
+<li><a href="https://docs.aws.amazon.com/cli/latest/reference/ec2/describe-security-groups.html">API describe-security-groups</a></li>
+</ul>
+</li>
+<li><a href="https://docs.aws.amazon.com/cli/latest/reference/rds/">RDS</a>
+<ul>
+<li><a href="https://docs.aws.amazon.com/cli/latest/reference/rds/describe-db-instances.html">API describe-db-instances</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>DigitalOcean CLI
+<ul>
+<li><a href="https://docs.digitalocean.com/reference/doctl/how-to/install/">DO CLI</a>
+<ul>
+<li><a href="https://docs.digitalocean.com/reference/doctl/reference/compute/">API compute</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="executando">Executando</h2>
+<p>Crie diretório <code>tools</code> e <code>tool/log</code> em  <code>/usr/local</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>mkdir -p /usr/local/tools/log <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#8be9fd;font-style:italic">cd</span> /usr/local/tools/ <span style="color:#ff79c6">&amp;&amp;</span> <span style="color:#f1fa8c">\
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"></span>git clone git@github.com:0xttfx/ipdo-awsrds.git
+</span></span></code></pre></div><p>Agora criamos o arquivo <em>path-tools.sh</em> em <em>/etc/profile.d/</em> para configurar o PATH para diretório <em>tools</em></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo &gt; /etc/profile.d/path-tools.sh
+</span></span></code></pre></div><p>Em seguida adicione o conteúdo:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#6272a4"># configurando PATH para incluir diretório tools caso exista.</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">if</span> <span style="color:#ff79c6">[</span> -d <span style="color:#f1fa8c">&#34;/usr/local/tools/ipdo-awsrds&#34;</span> <span style="color:#ff79c6">]</span> ; <span style="color:#ff79c6">then</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">PATH</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;</span><span style="color:#8be9fd;font-style:italic">$PATH</span><span style="color:#f1fa8c">:/usr/local/tools/ipdo-awsrds&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">fi</span>
+</span></span><span style="display:flex;"><span>Eof
+</span></span></code></pre></div><p>Para execução do script é necessário declarar o <em>user profile aws cli</em> usando a opção <strong>-u</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ipdo-awsrds -u &lt;nome&gt;
+</span></span></code></pre></div><h2 id="automação">Automação</h2>
+<p>Para automação da execução, adicione a seguinte linha na crontab do usuário(<em>crontab -e</em>) não privilégiado.
+Devido ao update, adição e remoção dos nós dos clusters, o script será executado a cada 1 mintuo!</p>
+<ul>
+<li>altere conforme sua necessidade.</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>* * * * *    /usr/bin/bash -x /usr/local/tools/ipdo-awsrds -u nome &gt;&gt; /usr/local/tools/log/ipdo-awsrds-<span style="color:#ff79c6">$(</span>date --date<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;today&#34;</span> +<span style="color:#f1fa8c">\%</span>d<span style="color:#f1fa8c">\%</span>m<span style="color:#f1fa8c">\%</span>Y_<span style="color:#f1fa8c">\%</span>H<span style="color:#f1fa8c">\%</span>M<span style="color:#f1fa8c">\%</span>S<span style="color:#ff79c6">)</span>.log 2&gt;&amp;<span style="color:#bd93f9">1</span>
+</span></span><span style="display:flex;"><span><span style="color:#bd93f9">0</span> <span style="color:#bd93f9">0</span> * * *    /usr/bin/find /usr/local/tools/log/ -type f -mtime +5 -name <span style="color:#f1fa8c">&#39;exec-*.log&#39;</span> -exec rm <span style="color:#ff79c6">{}</span> +
+</span></span></code></pre></div>]]></description>
       
     </item>
+    
     
   </channel>
 </rss>
