@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><?xml-stylesheet href="/feed_style.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="https://www.rssboard.org/media-rss">
   <channel>
     <title>engineering on 0xttfx</title>
-    <link>https://0xttfx.github.io/tags/engineering/</link>
+    <link>https://0xttfx.tcpip.net.br/tags/engineering/</link>
     <description>Recent content in engineering on 0xttfx</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <copyright>0xttfx - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)</copyright>
-    <lastBuildDate>Sat, 23 Mar 2024 18:42:59 -0300</lastBuildDate><atom:link href="https://0xttfx.github.io/tags/engineering/index.xml" rel="self" type="application/rss+xml" /><icon>https://0xttfx.github.io/img/icon.svg</icon>
+    <copyright>Running on [OpenBSD](https://openbsd.org) and [httpd](https://man.openbsd.org/httpd.8) |  [0xttfx](https://0xttfx.tcpip.net.br) - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)</copyright>
+    <lastBuildDate>Sat, 23 Mar 2024 18:42:59 -0300</lastBuildDate><atom:link href="https://0xttfx.tcpip.net.br/tags/engineering/index.xml" rel="self" type="application/rss+xml" /><icon>https://0xttfx.tcpip.net.br/logo.svg</icon>
     
     
     <item>
       <title>Novu Self Hosting</title>
-      <link>https://0xttfx.github.io/posts/novu-self-hosting/</link>
+      <link>https://0xttfx.tcpip.net.br/posts/novu-self-hosting/</link>
       <pubDate>Sat, 23 Mar 2024 18:42:59 -0300</pubDate>
       
-      <guid>https://0xttfx.github.io/posts/novu-self-hosting/</guid>
+      <guid>https://0xttfx.tcpip.net.br/posts/novu-self-hosting/</guid>
       <description><![CDATA[<h1 id="novu---the-open-source-notification-infrastructure-for-developers">Novu - The open-source notification infrastructure for developers.</h1>
 <p>The objective here is to show the configuration of the .env file and the NGINX reverse proxy, which was my biggest difficulty due to the lack of essential details in the project documentation for this purpose.</p>
 <h2 id="how-does-novu-work">How Does Novu Work?</h2>
