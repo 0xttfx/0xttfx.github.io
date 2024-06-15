@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><?xml-stylesheet href="/feed_style.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="https://www.rssboard.org/media-rss">
   <channel>
     <title>Linux on 0xttfx</title>
-    <link>https://0xttfx.tcpip.net.br/tags/linux/</link>
+    <link>https://0xttfx.github.io/tags/linux/</link>
     <description>Recent content in Linux on 0xttfx</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Running on [OpenBSD](https://openbsd.org) and [httpd](https://man.openbsd.org/httpd.8) |  [0xttfx](https://0xttfx.tcpip.net.br) - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)</copyright>
-    <lastBuildDate>Sat, 23 Mar 2024 18:42:59 -0300</lastBuildDate><atom:link href="https://0xttfx.tcpip.net.br/tags/linux/index.xml" rel="self" type="application/rss+xml" /><icon>https://0xttfx.tcpip.net.br/logo.svg</icon>
+    <lastBuildDate>Sat, 23 Mar 2024 18:42:59 -0300</lastBuildDate><atom:link href="https://0xttfx.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" /><icon>https://0xttfx.github.io/logo.svg</icon>
     
     
     <item>
       <title>Novu Self Hosting</title>
-      <link>https://0xttfx.tcpip.net.br/posts/novu-self-hosting/</link>
+      <link>https://0xttfx.github.io/posts/novu-self-hosting/</link>
       <pubDate>Sat, 23 Mar 2024 18:42:59 -0300</pubDate>
       
-      <guid>https://0xttfx.tcpip.net.br/posts/novu-self-hosting/</guid>
+      <guid>https://0xttfx.github.io/posts/novu-self-hosting/</guid>
       <description><![CDATA[<h1 id="novu---the-open-source-notification-infrastructure-for-developers">Novu - The open-source notification infrastructure for developers.</h1>
 <p>The objective here is to show the configuration of the .env file and the NGINX reverse proxy, which was my biggest difficulty due to the lack of essential details in the project documentation for this purpose.</p>
 <h2 id="how-does-novu-work">How Does Novu Work?</h2>
@@ -186,10 +186,10 @@
     
     <item>
       <title>RTFM &amp; Aleatoriedades para SysAdmin - Windows Server Troubleshooting</title>
-      <link>https://0xttfx.tcpip.net.br/posts/rtfmaleatoriedadesparasysadmin-windowsservertroubleshooting/</link>
+      <link>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadmin-windowsservertroubleshooting/</link>
       <pubDate>Tue, 23 Jan 2024 07:03:36 -0300</pubDate>
       
-      <guid>https://0xttfx.tcpip.net.br/posts/rtfmaleatoriedadesparasysadmin-windowsservertroubleshooting/</guid>
+      <guid>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadmin-windowsservertroubleshooting/</guid>
       <description><![CDATA[<p>Aqui temos uma abordagem simples de identificação de causa raiz para troubleshooting em ambientes Microsoft Windows Server.</p>
 <p>Como exemplo estou usando um problema, que a equipe Microsoft de uma multinacional, enfrentou com um produto de mercado que estava causando um alto uso de Non-Paged Pool Memory(memory leak). E que causou, durante uma rotina de madrugada, o travamento de +500 servidores&hellip;</p>
 <ul>
@@ -373,10 +373,10 @@
     
     <item>
       <title>RTFM&amp;AleatoriedadesParaSysAdmin OCSPStapling</title>
-      <link>https://0xttfx.tcpip.net.br/posts/rtfmaleatoriedadesparasysadmin-ocspstapling/</link>
+      <link>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadmin-ocspstapling/</link>
       <pubDate>Sun, 21 Jan 2024 20:30:59 -0300</pubDate>
       
-      <guid>https://0xttfx.tcpip.net.br/posts/rtfmaleatoriedadesparasysadmin-ocspstapling/</guid>
+      <guid>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadmin-ocspstapling/</guid>
       <description><![CDATA[<p>OSCP Stapling é o servidor Web (e não o navegador) obtendo resposta OCSP com status do certificado armazenando-o em cache, e esses dados são incluídos nas respostas HTTPS junto com o certificado&hellip;</p>
 <p>O   <strong>OCSP</strong> - Online Certificate Status Protocol, descrita na <a href="https://datatracker.ietf.org/doc/rfc2560">RFC 2560</a>, é um protocolo útil para determinar o status de um certificado digital X.509 <a href="https://datatracker.ietf.org/doc/html/rfc5280">RFC5280</a> sem exigir <strong>CRL</strong> - Certificate Revocation Lists  descrita na <a href="http://datatracker.ietf.org/doc/rfc2560/">RFC 2560</a> ou como complemento, pois fornece informações <em>oportunas</em> sobre o status de revogação de um certificado (<a href="https://datatracker.ietf.org/doc/rfc2459/">RFC2459 Seção 3.3</a>) que são utilizados por exemplo por transferências de fundos de alto valor ou grandes negociações de ações.</p>
 <ul>
@@ -576,10 +576,10 @@ Apenas o primeiro <em>OCSP Responder</em> que é identificado na extensão AIA �
     
     <item>
       <title>RTFM &amp; Aleatoriedades Para SysAdmin - Old NTP Client</title>
-      <link>https://0xttfx.tcpip.net.br/posts/rtfmaleatoriedadesparasysadmin-oldntp/</link>
+      <link>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadmin-oldntp/</link>
       <pubDate>Tue, 09 Jan 2024 12:08:11 -0300</pubDate>
       
-      <guid>https://0xttfx.tcpip.net.br/posts/rtfmaleatoriedadesparasysadmin-oldntp/</guid>
+      <guid>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadmin-oldntp/</guid>
       <description><![CDATA[<p>Sempre existe a possibilidade de um dia aparecer um servidor com uma versão de SO não atual precisando que o NTP client seja configurado ou revisado… :)</p>
 <ol>
 <li>
@@ -899,10 +899,10 @@ Apenas o primeiro <em>OCSP Responder</em> que é identificado na extensão AIA �
     
     <item>
       <title>RTFM &amp; Aleatoriedades para SysAdmin - journalctl </title>
-      <link>https://0xttfx.tcpip.net.br/posts/rtfmaleatoriedadesparasysadmin-journalctl/</link>
+      <link>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadmin-journalctl/</link>
       <pubDate>Fri, 05 Jan 2024 17:43:55 -0300</pubDate>
       
-      <guid>https://0xttfx.tcpip.net.br/posts/rtfmaleatoriedadesparasysadmin-journalctl/</guid>
+      <guid>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadmin-journalctl/</guid>
       <description><![CDATA[<p>Para quando a lei de Murphy exerce a sua força. É nessa hora, que do seu kit MacGyver, você tira o <strong>journalctl</strong>  para identificar o que pode estar errado!</p>
 <p>Das muitas formas possíveis. Tem mais essa:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ journalctl --no-pager --since today --grep <span style="color:#f1fa8c">&#39;fail|error|fatal&#39;</span> --output json|jq

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><?xml-stylesheet href="/feed_style.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="https://www.rssboard.org/media-rss">
   <channel>
     <title>SystemD on 0xttfx</title>
-    <link>https://0xttfx.tcpip.net.br/tags/systemd/</link>
+    <link>https://0xttfx.github.io/tags/systemd/</link>
     <description>Recent content in SystemD on 0xttfx</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Running on [OpenBSD](https://openbsd.org) and [httpd](https://man.openbsd.org/httpd.8) |  [0xttfx](https://0xttfx.tcpip.net.br) - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)</copyright>
-    <lastBuildDate>Fri, 05 Jan 2024 17:43:55 -0300</lastBuildDate><atom:link href="https://0xttfx.tcpip.net.br/tags/systemd/index.xml" rel="self" type="application/rss+xml" /><icon>https://0xttfx.tcpip.net.br/logo.svg</icon>
+    <lastBuildDate>Fri, 05 Jan 2024 17:43:55 -0300</lastBuildDate><atom:link href="https://0xttfx.github.io/tags/systemd/index.xml" rel="self" type="application/rss+xml" /><icon>https://0xttfx.github.io/logo.svg</icon>
     
     
     <item>
       <title>RTFM &amp; Aleatoriedades para SysAdmin - journalctl </title>
-      <link>https://0xttfx.tcpip.net.br/posts/rtfmaleatoriedadesparasysadmin-journalctl/</link>
+      <link>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadmin-journalctl/</link>
       <pubDate>Fri, 05 Jan 2024 17:43:55 -0300</pubDate>
       
-      <guid>https://0xttfx.tcpip.net.br/posts/rtfmaleatoriedadesparasysadmin-journalctl/</guid>
+      <guid>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadmin-journalctl/</guid>
       <description><![CDATA[<p>Para quando a lei de Murphy exerce a sua força. É nessa hora, que do seu kit MacGyver, você tira o <strong>journalctl</strong>  para identificar o que pode estar errado!</p>
 <p>Das muitas formas possíveis. Tem mais essa:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ journalctl --no-pager --since today --grep <span style="color:#f1fa8c">&#39;fail|error|fatal&#39;</span> --output json|jq

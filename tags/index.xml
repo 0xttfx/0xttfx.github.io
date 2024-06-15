@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><?xml-stylesheet href="/feed_style.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="https://www.rssboard.org/media-rss">
   <channel>
     <title>Tags on 0xttfx</title>
-    <link>https://0xttfx.tcpip.net.br/tags/</link>
+    <link>https://0xttfx.github.io/tags/</link>
     <description>Recent content in Tags on 0xttfx</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Running on [OpenBSD](https://openbsd.org) and [httpd](https://man.openbsd.org/httpd.8) |  [0xttfx](https://0xttfx.tcpip.net.br) - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)</copyright>
-    <lastBuildDate>Sat, 23 Mar 2024 18:42:59 -0300</lastBuildDate><atom:link href="https://0xttfx.tcpip.net.br/tags/index.xml" rel="self" type="application/rss+xml" /><icon>https://0xttfx.tcpip.net.br/logo.svg</icon>
+    <lastBuildDate>Sat, 23 Mar 2024 18:42:59 -0300</lastBuildDate><atom:link href="https://0xttfx.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><icon>https://0xttfx.github.io/logo.svg</icon>
     
     
     <item>
       <title>engineering</title>
-      <link>https://0xttfx.tcpip.net.br/tags/engineering/</link>
+      <link>https://0xttfx.github.io/tags/engineering/</link>
       <pubDate>Sat, 23 Mar 2024 18:42:59 -0300</pubDate>
       
-      <guid>https://0xttfx.tcpip.net.br/tags/engineering/</guid>
+      <guid>https://0xttfx.github.io/tags/engineering/</guid>
       <description><![CDATA[]]></description>
       
     </item>
@@ -23,10 +23,10 @@
     
     <item>
       <title>Linux</title>
-      <link>https://0xttfx.tcpip.net.br/tags/linux/</link>
+      <link>https://0xttfx.github.io/tags/linux/</link>
       <pubDate>Sat, 23 Mar 2024 18:42:59 -0300</pubDate>
       
-      <guid>https://0xttfx.tcpip.net.br/tags/linux/</guid>
+      <guid>https://0xttfx.github.io/tags/linux/</guid>
       <description><![CDATA[]]></description>
       
     </item>
@@ -35,10 +35,10 @@
     
     <item>
       <title>notification infrastructure</title>
-      <link>https://0xttfx.tcpip.net.br/tags/notification-infrastructure/</link>
+      <link>https://0xttfx.github.io/tags/notification-infrastructure/</link>
       <pubDate>Sat, 23 Mar 2024 18:42:59 -0300</pubDate>
       
-      <guid>https://0xttfx.tcpip.net.br/tags/notification-infrastructure/</guid>
+      <guid>https://0xttfx.github.io/tags/notification-infrastructure/</guid>
       <description><![CDATA[]]></description>
       
     </item>
@@ -47,10 +47,10 @@
     
     <item>
       <title>open-source</title>
-      <link>https://0xttfx.tcpip.net.br/tags/open-source/</link>
+      <link>https://0xttfx.github.io/tags/open-source/</link>
       <pubDate>Sat, 23 Mar 2024 18:42:59 -0300</pubDate>
       
-      <guid>https://0xttfx.tcpip.net.br/tags/open-source/</guid>
+      <guid>https://0xttfx.github.io/tags/open-source/</guid>
       <description><![CDATA[]]></description>
       
     </item>
@@ -59,10 +59,10 @@
     
     <item>
       <title>TLS</title>
-      <link>https://0xttfx.tcpip.net.br/tags/tls/</link>
+      <link>https://0xttfx.github.io/tags/tls/</link>
       <pubDate>Sun, 21 Jan 2024 20:30:59 -0300</pubDate>
       
-      <guid>https://0xttfx.tcpip.net.br/tags/tls/</guid>
+      <guid>https://0xttfx.github.io/tags/tls/</guid>
       <description><![CDATA[]]></description>
       
     </item>
@@ -71,10 +71,10 @@
     
     <item>
       <title>NTP</title>
-      <link>https://0xttfx.tcpip.net.br/tags/ntp/</link>
+      <link>https://0xttfx.github.io/tags/ntp/</link>
       <pubDate>Tue, 09 Jan 2024 12:08:11 -0300</pubDate>
       
-      <guid>https://0xttfx.tcpip.net.br/tags/ntp/</guid>
+      <guid>https://0xttfx.github.io/tags/ntp/</guid>
       <description><![CDATA[]]></description>
       
     </item>
@@ -83,10 +83,10 @@
     
     <item>
       <title>RTFM</title>
-      <link>https://0xttfx.tcpip.net.br/tags/rtfm/</link>
+      <link>https://0xttfx.github.io/tags/rtfm/</link>
       <pubDate>Tue, 09 Jan 2024 12:08:11 -0300</pubDate>
       
-      <guid>https://0xttfx.tcpip.net.br/tags/rtfm/</guid>
+      <guid>https://0xttfx.github.io/tags/rtfm/</guid>
       <description><![CDATA[]]></description>
       
     </item>
@@ -95,10 +95,10 @@
     
     <item>
       <title>first</title>
-      <link>https://0xttfx.tcpip.net.br/tags/first/</link>
+      <link>https://0xttfx.github.io/tags/first/</link>
       <pubDate>Sat, 06 Jan 2024 14:55:51 -0300</pubDate>
       
-      <guid>https://0xttfx.tcpip.net.br/tags/first/</guid>
+      <guid>https://0xttfx.github.io/tags/first/</guid>
       <description><![CDATA[]]></description>
       
     </item>
@@ -107,10 +107,10 @@
     
     <item>
       <title>SystemD</title>
-      <link>https://0xttfx.tcpip.net.br/tags/systemd/</link>
+      <link>https://0xttfx.github.io/tags/systemd/</link>
       <pubDate>Fri, 05 Jan 2024 17:43:55 -0300</pubDate>
       
-      <guid>https://0xttfx.tcpip.net.br/tags/systemd/</guid>
+      <guid>https://0xttfx.github.io/tags/systemd/</guid>
       <description><![CDATA[]]></description>
       
     </item>
@@ -119,10 +119,10 @@
     
     <item>
       <title>AWS</title>
-      <link>https://0xttfx.tcpip.net.br/tags/aws/</link>
+      <link>https://0xttfx.github.io/tags/aws/</link>
       <pubDate>Mon, 06 Nov 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://0xttfx.tcpip.net.br/tags/aws/</guid>
+      <guid>https://0xttfx.github.io/tags/aws/</guid>
       <description><![CDATA[]]></description>
       
     </item>
@@ -131,10 +131,10 @@
     
     <item>
       <title>DOK</title>
-      <link>https://0xttfx.tcpip.net.br/tags/dok/</link>
+      <link>https://0xttfx.github.io/tags/dok/</link>
       <pubDate>Mon, 06 Nov 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://0xttfx.tcpip.net.br/tags/dok/</guid>
+      <guid>https://0xttfx.github.io/tags/dok/</guid>
       <description><![CDATA[]]></description>
       
     </item>
@@ -143,10 +143,10 @@
     
     <item>
       <title>RDS</title>
-      <link>https://0xttfx.tcpip.net.br/tags/rds/</link>
+      <link>https://0xttfx.github.io/tags/rds/</link>
       <pubDate>Mon, 06 Nov 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://0xttfx.tcpip.net.br/tags/rds/</guid>
+      <guid>https://0xttfx.github.io/tags/rds/</guid>
       <description><![CDATA[]]></description>
       
     </item>

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><?xml-stylesheet href="/feed_style.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="https://www.rssboard.org/media-rss">
   <channel>
     <title>DOK on 0xttfx</title>
-    <link>https://0xttfx.tcpip.net.br/tags/dok/</link>
+    <link>https://0xttfx.github.io/tags/dok/</link>
     <description>Recent content in DOK on 0xttfx</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>Running on [OpenBSD](https://openbsd.org) and [httpd](https://man.openbsd.org/httpd.8) |  [0xttfx](https://0xttfx.tcpip.net.br) - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)</copyright>
-    <lastBuildDate>Mon, 06 Nov 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://0xttfx.tcpip.net.br/tags/dok/index.xml" rel="self" type="application/rss+xml" /><icon>https://0xttfx.tcpip.net.br/logo.svg</icon>
+    <lastBuildDate>Mon, 06 Nov 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://0xttfx.github.io/tags/dok/index.xml" rel="self" type="application/rss+xml" /><icon>https://0xttfx.github.io/logo.svg</icon>
     
     
     <item>
       <title>IP DOK Set or Drop Sec Group AWS EC2 RDS</title>
-      <link>https://0xttfx.tcpip.net.br/posts/ipdo-awsrds/</link>
+      <link>https://0xttfx.github.io/posts/ipdo-awsrds/</link>
       <pubDate>Mon, 06 Nov 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://0xttfx.tcpip.net.br/posts/ipdo-awsrds/</guid>
+      <guid>https://0xttfx.github.io/posts/ipdo-awsrds/</guid>
       <description><![CDATA[<h1 id="ipdo-awsrds">ipdo-awsrds</h1>
 <h2 id="função">Função</h2>
 <p>Scrip bash para descoberta dos IPs WAN dos DOcean Droplets e inserção em security groups EC2 das instâncias AWS RDS.</p>
