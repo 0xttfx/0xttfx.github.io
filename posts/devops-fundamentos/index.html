@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html class="" lang="en"><head>
+    
+    <meta name="robots" content="noai, noimageai">
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+
+    <link
+    rel="icon"
+    href='/favicon.png'
+/>
+<link
+    rel="shortcut icon"
+    href='/favicon.ico'
+    type="image/x-icon"
+/>
+<link
+    rel="apple-touch-icon"
+    href='/apple-touch-icon.png'
+/>
+
+    <link
+        rel="icon"
+        href='/logo.svg'
+        type="image/svg+xml"
+    />
+
+<title>
+        
+            DevOps Fundamentos  &ndash;
+        
+        0xttfx
+    </title>
+
+    
+    <link href="/symbols-nerd-font/symbols-nerd-font.css" rel="stylesheet" integrity="sha512-lydow8GLOLlYNOtHlksNCmGWWCBsbIEtikXpHzfWqx78HLlyQZHOzyLwPpKol4Th6aCwLUXOfODVYgwrd3nwKQ=="/>
+    <link href="/jetbrains-mono/jetbrains-mono.css" rel="stylesheet" integrity="sha512-tJxlgL6v1Y7kFf+qB8SloaAMKnOAw6WouknxXtIjkBux9Y/9aX81EUWOJO8c/3l98DmjG8brr4to7zaez606Fg=="/>
+
+    
+        <link rel="stylesheet" href="https://latest.cactus.chat/style.css" type="text/css">
+    
+    
+    <link type="text/css" rel="stylesheet" href=https://0xttfx.github.io/css/styles.abbd6311bb4b6ca58f8e7398140529245ae0f6428b759fcd830742eee2619eabb900ba9914a9affb82aa9a16a9b9ea727bb315315a976a0db0e7513a5f12c504.css integrity="sha512-q71jEbtLbKWPjnOYFAUpJFrg9kKLdZ/NgwdC7uJhnqu5ALqZFKmv&#43;4Kqmhapuepye7MVMVqXag2w51E6XxLFBA==" />
+<meta name="author" content="Thiago T Faioli" />
+
+    
+    
+        <meta name="description" content="nt] O DevOps é mais do que apenas equipes de desenvolvimento e operações trabalhando juntas. É mais do que ferramentas e práticas. O DevOps é uma forma de pensar, uma mudança cultural, em que as equipes adotam novas formas de trabalhar.
+Na cultura de DevOps, os desenvolvedores se aproximam dos usuários, obtendo uma compreensão melhor dos requisitos e necessidades deles.
+As equipes de operações se envolvem no processo de desenvolvimento e adicionam requisitos de manutenção e necessidades do cliente." />
+    
+
+<meta property="og:site_name"
+    content='0xttfx' />
+
+    <meta property="og:title" content="DevOps Fundamentos" />
+    <meta property="og:type" content="article" />
+    
+    <meta
+        property="article:author" content="Thiago T Faioli" />
+    <meta
+        property="article:published_time"
+        content='2024-05-07T02:31:50Z-0300' />
+    
+    <meta property="og:url" content="https://0xttfx.github.io/posts/devops-fundamentos/" />
+    
+    
+    <meta property="og:image"
+        content="https://0xttfx.github.io/icon512.png" />
+    
+        <meta property="og:description" content="Princípios [!important] O DevOps é mais do que apenas equipes de desenvolvimento e operações trabalhando juntas. É mais do que ferramentas e práticas. O DevOps " />
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:domain"
+      content='0xttfx.github.io'
+/>
+<meta property="twitter:url" content="https://0xttfx.github.io/posts/devops-fundamentos/" />
+
+
+    <meta name="twitter:title" content="DevOps Fundamentos" />
+    
+    
+    
+    <meta name="twitter:image"
+        content="https://0xttfx.github.io/icon512.png" />
+    
+        <meta name="twitter:description" content="Princípios [!important] O DevOps é mais do que apenas equipes de desenvolvimento e operações trabalhando juntas. É mais do que ferramentas e práticas. O DevOps " />
+    
+
+<link rel="manifest" href="/manifest/index.json" />
+</head>
+
+
+<body>
+        <div id="baseContainer"><header class="">
+<div class="titleAndSearchContainer">
+        <div id="titleContainer">
+            
+                <a class="unstyledLink" href="/">
+                    <img src='/logo.svg' alt='Logo'/>
+                </a>
+            
+            <div class="rightOfLogo">
+                <div class="titleAndHamburger">
+                    <h1>
+                        <a class="unstyledLink" href="/">0xttfx</a>
+                        
+                    </h1>
+                    
+                </div>
+                <div id="wide_nav"><nav>
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts/">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://0xttfx.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+            <li><a href="https://cv0xttfx.tcpip.net.br">CV</a></li>
+        
+        
+            <li><a href="/tags/">Tags</a></li>
+        
+        
+    </ul>
+</nav>
+</div>
+            </div>
+        </div>
+        <div class="search">
+    <input id="searchbar" type="text" placeholder='Search' />
+    <span class="nerdlink" onclick="newSearch();">&#xf002;</span>
+</div>
+<script>
+    function newSearch() {
+        let term = searchbar.value.trim();
+        if (!term) return;
+        location.href = `/search/?q=${term}`;
+    }
+    searchbar.onkeyup = (ev) => {if (ev.keyCode == 13) newSearch()};
+</script>
+
+    </div>
+    <div id="links">
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="/index.xml">
+    
+    
+        &#xf09e;
+    
+    <span>
+        RSS
+    </span>
+</a>
+
+        
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://discord.gg/jMztSAgJ">
+    
+    
+        &#xfb6e;
+    
+    <span>
+        
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="thiago@tcpip.net.br">
+    
+    
+        &#xf6ed;
+    
+    <span>
+        
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://github.com/0xttfx">
+    
+    
+        &#xf09b;
+    
+    <span>
+        
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://instagram.com/0xttfx">
+    
+    
+        &#xf16d;
+    
+    <span>
+        
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://linkedin.com/in/thiagofaioli">
+    
+    
+        &#xf0e1;
+    
+    <span>
+        
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://t.me/0xttfx">
+    
+    
+        &#xf2c6;
+    
+    <span>
+        
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://twitter.com/0xttfx">
+    
+    
+        &#xf099;
+    
+    <span>
+        
+    </span>
+</a>
+
+    </div>
+    
+
+</header>
+<div id="contentContainer">
+                <div id="content">
+                    <main>
+<article class="card single">
+    
+        <h1>DevOps Fundamentos</h1>
+    
+    
+        <p class="date">
+            <span title='Date'> </span>
+    2024-05-07
+
+</p>
+    
+    
+    
+    <div class="articleToc">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#princípios">Princípios</a></li>
+    <li><a href="#história">História</a></li>
+    <li><a href="#benefícios">Benefícios</a></li>
+    <li><a href="#cultura">Cultura</a></li>
+    <li><a href="#estrutura-devops">Estrutura DevOps</a>
+      <ul>
+        <li><a href="#framework-calms">Framework CALMS</a></li>
+        <li><a href="#topologias-de-equipe"><strong>Topologias de equipe</strong></a></li>
+        <li><a href="#métricas-dora"><strong>Métricas DORA</strong></a></li>
+      </ul>
+    </li>
+    <li><a href="#livros">livros</a></li>
+  </ul>
+</nav>
+    <hr />
+</div>
+
+    <div><h1 id="princípios">Princípios</h1>
+<p><img src="/images/DevOps-Fundamentos/Untitled.png" alt="Untitled.png"></p>
+<blockquote>
+<p>[!important]
+O DevOps é mais do que apenas equipes de desenvolvimento e operações trabalhando juntas. É mais do que ferramentas e práticas. O DevOps é uma forma de pensar, uma mudança cultural, em que as equipes adotam novas formas de trabalhar.</p>
+</blockquote>
+<p>Na cultura de DevOps, os desenvolvedores se aproximam dos usuários, obtendo uma compreensão melhor dos requisitos e necessidades deles.</p>
+<p>As equipes de operações se envolvem no processo de desenvolvimento e adicionam requisitos de manutenção e necessidades do cliente.</p>
+<p>Ela também envolve aderir aos princípios essenciais a seguir, que ajudam as equipes a oferecer aplicativos e serviços:</p>
+<ul>
+<li>em um ritmo mais rápido</li>
+<li>com maior qualidade de código</li>
+<li>e melhor qualidade de vida ;)</li>
+</ul>
+<p>São 5 os princípios fundamentais do modelo DevOps</p>
+<ul>
+<li>
+<p><strong>Colaboração</strong></p>
+<p>A principal premissa por trás do DevOps é a colaboração. As equipes de desenvolvimento e operações se unem em uma equipe funcional que se comunica, compartilha feedback e colabora durante todo o ciclo de desenvolvimento e implementação. Muitas vezes, quer dizer que as equipes de desenvolvimento e operações se fundem em uma única equipe que trabalha em todo o ciclo de vida do aplicativo.</p>
+<p>Os membros de uma equipe de DevOps são responsáveis por garantir entregas de qualidade em cada faceta do produto, levando a um desenvolvimento mais &ldquo;full stack&rdquo;, em que as equipes têm as responsabilidades completas de back-end e front-end de um recurso ou produto. As equipes vão ser as donas de um recurso ou projeto durante todo o ciclo de vida, da ideia até a entrega. O nível aprimorado de investimento e atenção da equipe leva a uma produção de maior qualidade.</p>
+</li>
+<li>
+<p><strong>Automação</strong></p>
+<p>Uma prática essencial do DevOps é automatizar o máximo possível o ciclo de vida do desenvolvimento do software, dando aos desenvolvedores mais tempo para escrever código e desenvolver novos recursos. A automação é um elemento crucial de um pipeline de IC/CD e ajuda a reduzir erros humanos e aumentar a produtividade da equipe. Com processos automatizados, as equipes obtêm melhoria contínua com tempos de iteração curtos, o que permite responder com mais rapidez aos comentários dos clientes.</p>
+</li>
+<li>
+<p><strong>Implementação contínua</strong></p>
+<p>A melhoria contínua foi estabelecida como um elemento básico das práticas ágeis, bem como da fabricação lean e Kata de melhoria. É a prática de se concentrar na experimentação, minimizar o desperdício e otimizar a velocidade, o custo e a facilidade de entrega. A melhoria contínua também está ligada à entrega contínua, permitindo que as equipes de DevOps enviem atualizações constantes que melhoram a eficiência dos sistemas de software. O pipeline constante de novas versões significa que as equipes promovem com consistência mudanças de código que eliminam o desperdício, melhoram a eficiência do desenvolvimento e trazem mais valor ao cliente.</p>
+</li>
+<li>
+<p><strong>Ação voltada ao cliente</strong></p>
+<p>As equipes de DevOps usam ciclos curtos de feedback com clientes e usuários finais para desenvolver produtos e serviços centrados nas necessidades do usuário. As práticas de DevOps permitem coleta e resposta rápidas ao feedback do usuário por meio do uso de monitoramento em tempo real e implementação rápida. As equipes obtêm visibilidade imediata de como os usuários ativos interagem com um sistema de software e usam os dados para desenvolver melhorias adicionais.</p>
+</li>
+<li>
+<p><strong>Criar com o final em mente</strong></p>
+<p>Esse princípio envolve entender as necessidades dos clientes e criar produtos ou serviços que resolvam problemas reais. As equipes não devem &ldquo;criar uma bolha&rdquo; ou um software com base em suposições sobre como os consumidores vão usar o software. Como alternativa, as equipes de DevOps devem ter uma compreensão holística do produto, da criação à implementação.</p>
+</li>
+</ul>
+<h1 id="história">História</h1>
+<p>O movimento do DevOps começou por volta de 2007</p>
+<ul>
+<li>
+<p>Foi num momento em que as operações de TI e comunidades de desenvolvimento de software levantaram preocupações sobre:</p>
+<ul>
+<li>Um modelo de desenvolvimento de software além do tradicional!</li>
+<li>O fato de que mesmo as metodologias ágeis terem sido adotadas para melhorar a colaboração: as melhorias ficaram restritas somente nas equipes de desenvolvimento.</li>
+<li>E ao fato de que mesmo a infraestrutura sempre apoiando os desenvolvedores em fases necessárias as equipes Infra/Operação e Produto/Dev não tinha alinhamentos trabalhando assim de forma ineficientes</li>
+</ul>
+</li>
+</ul>
+<p>Dessa forma a solução dada foi o modelo <strong>DevOps</strong></p>
+<ul>
+<li>Que na prática é a evolução dos métodos Ágeis, mas com a crucial evolução:
+<ul>
+<li>A conexão das equipes de Operação e Desenvolvimento
+<ul>
+<li>O DevOps reúne as habilidades, os processos e as ferramentas das equipes de desenvolvimento e operações para que trabalhem em conjunto!</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="benefícios">Benefícios</h1>
+<p>Podemos simplificar de forma bem clara 3 benefícios centrais do DevOps:</p>
+<ul>
+<li>benefícios técnicos,
+<ul>
+<li>Complexidade reduzida, entrega contínua e Resolução de problemas mais ágeis! Além de código de alta qualidade com mais rapidez com muito menos stress das equipes ;)</li>
+</ul>
+</li>
+<li>benefícios culturais
+<ul>
+<li>Equipes mais produtivas e eficientes devido a melhor qualidade de vida e usuários/clientes mais satisfeitos como consequência natural</li>
+</ul>
+</li>
+<li>benefícios de negócios.
+<ul>
+<li>Melhor colaboração e maior confiança entre os membros das equipes, resultando assim em entregas mais ágeis num ambiente operacional mais estável</li>
+</ul>
+</li>
+</ul>
+<h1 id="cultura">Cultura</h1>
+<p>O DevOps traz uma mudança cultural muito forte onde as equipes trabalham amparadas por métodos de:</p>
+<ul>
+<li>engenharia de software,</li>
+<li>fluxo de trabalho</li>
+<li>conjunto de ferramentas</li>
+</ul>
+<p>O que de forma operacional coloca num único nível de importância: arquitetura, design e desenvolvimento!</p>
+<p>As equipes passam a ter uma maior compreensão dos requisitos e necessidades dos usuários.</p>
+<p>Os valores da transparência, comunicação e colaboração se elevam consideravelmente entre as equipes.</p>
+<h1 id="estrutura-devops">Estrutura DevOps</h1>
+<h2 id="framework-calms">Framework CALMS</h2>
+<p>CALMS foi compartilhado pela primeira vez por Jez Humble no <strong>The DevOps Handbook.</strong> E o significado da sigla é:</p>
+<ul>
+<li>Cultura</li>
+<li>Automação</li>
+<li>Simplicidade</li>
+<li>Medição</li>
+<li>Compartilhamento</li>
+</ul>
+<h2 id="topologias-de-equipe"><strong>Topologias de equipe</strong></h2>
+<p>No livro, <a href="https://www.amazon.com/dp/B07VWYNGCQ?plink=vFQ5MJYpTDzGies3&amp;ref=adblp13nvvxx_0_1_ti">“Team Topologies”</a>, Matthew Skelton e Manuel Pais definem quatro tipos fundamentais de equipes e o conceito de “mudança de fluxo”.</p>
+<p>Entendendo o conceito do livro fica fácil entender porque não funciona colocar “DevOps” no nome da equipe ou no cargo para criar uma “Equipe de DevOps” ou um “Engenheiro de DevOps”.</p>
+<p>Mas sim, em vez disso, as topologias de equipe ajudam a entender como suas práticas e ferramentas que se encaixam no quadro geral. Por isso primeiro passo para uma transformação de DevOps é identificar a estrutura organizacional em vigor e a partir dela idealizar a implementação do modelo DevOps.</p>
+<h2 id="métricas-dora"><strong>Métricas DORA</strong></h2>
+<p>Os profissionais confiam em quatro métricas principais, desenvolvidas pela DORA, para medir a eficácia das práticas de DevOps.</p>
+<ul>
+<li><strong>Tempo de espera para alterações: qual é o tempo de espera</strong> para alterações de código desde o momento em que o código é verificado até o ponto em que ele é liberado para produção?</li>
+<li><strong>Frequência de implementação:</strong> com que frequência e com que rapidez você lança para produção?</li>
+<li><strong>Tempo de restauração do serviço:</strong> quando um incidente é detectado, quanto tempo leva para corrigir e restaurar o serviço?</li>
+<li><strong>Taxa de falha de alteração:</strong> com que frequência ocorrem falhas de implementação na produção que exigem correção ou rollback imediatos?</li>
+</ul>
+<p>No projeto DORA, existe uma check rápido para medir o desempenho de entrega de software de equipe em menos de um minuto! E pode apoiar na implementação das métricas DORA ao comparar o resultado com de outras empresas no setor …</p>
+<blockquote>
+<p>[!info] DORA | DevOps Quick Check
+DevOps Research and Assessment (DORA) is a long running research program that seeks to understand the capabilities that drive software delivery and operations performance.
+<a href="https://dora.dev/quickcheck/">https://dora.dev/quickcheck/</a></p>
+</blockquote>
+<p>A equipe de pesquisa DORA, também criou o Four Keys que permite coletar dados de seu ambiente de desenvolvimento (como GitHub ou GitLab) e compilá-los em um painel que exibe essas métricas principais</p>
+<ul>
+<li>Ele é desenhado para funcionar sem modificações em cloud GCP! Porém podemos fazer algumas modificações para fazer uso com outros fornecedores&hellip;</li>
+</ul>
+<p><a href="https://github.com/dora-team/fourkeys">https://github.com/dora-team/fourkeys</a></p>
+<blockquote>
+<p>[!info] DORA 2022 Accelerate State of DevOps Report now out | Google Cloud Blog
+Security-enhancing DevOps practices are broadly adopted, this year’s DORA Accelerate State of DevOps Report found, but that’s not the whole story.
+<a href="https://cloud.google.com/blog/products/devops-sre/dora-2022-accelerate-state-of-devops-report-now-out">https://cloud.google.com/blog/products/devops-sre/dora-2022-accelerate-state-of-devops-report-now-out</a></p>
+</blockquote>
+<blockquote>
+<p>[!info] Use Four Keys metrics like change failure rate to measure your DevOps performance | Google Cloud Blog
+Learn how the Four Keys open source project lets you gauge your DevOps performance according to DORA metrics.
+<a href="https://cloud.google.com/blog/products/devops-sre/using-the-four-keys-to-measure-your-devops-performance">https://cloud.google.com/blog/products/devops-sre/using-the-four-keys-to-measure-your-devops-performance</a></p>
+</blockquote>
+<blockquote>
+<p>[!info] Medição do DevOps: recursos de gerenciamento visual  |  Recursos de DevOps  |  Google Cloud
+<a href="https://cloud.google.com/architecture/devops/devops-measurement-visual-management?hl=pt-br">https://cloud.google.com/architecture/devops/devops-measurement-visual-management?hl=pt-br</a></p>
+</blockquote>
+<h1 id="livros">livros</h1>
+<ul>
+<li><strong>O Projeto Fênix</strong>
+<ul>
+<li><strong>POR KEVIN BEHR, GENE KIM E GEORGE SPAFFORD</strong></li>
+</ul>
+</li>
+</ul>
+<p>Criado por alguns dos nomes mais influentes do DevOps, este livro conta a história familiar de uma equipe de TI trabalhando com outras equipes da empresa para agregar valor.</p>
+<p><a href="https://www.amazon.com/dp/B00VATFAMI?plink=X05H5K1dDS3nLFtY&amp;ref=adblp13nvvxx_0_1_ti">Saiba mais</a></p>
+<ul>
+<li><strong>O Projeto Unicórnio</strong>
+<ul>
+<li><em>POR GENE KIM</em>*</li>
+</ul>
+</li>
+</ul>
+<p>A sequência de “The Phoenix Project”, este livro conta a história de fazer o trabalho da perspectiva de um desenvolvedor de software.</p>
+<p><a href="https://www.amazon.com/dp/B0812C82T9?plink=1fMbUAVvPrxjdCaS&amp;ref=adblp13nvvxx_0_0_ti">Saiba mais</a></p>
+<ul>
+<li><strong>O Manual do DevOps</strong>
+<ul>
+<li><strong>POR GENE KIM, PATRICK DEBOIS, JOHN WILLIS E JEZ HUMBLE</strong></li>
+</ul>
+</li>
+</ul>
+<p>Como uma continuação dos livros orientados por narrativas, “O Projeto Fênix” e “O Projeto Unicórnio”, este livro oferece conselhos mais práticos para alcançar agilidade, confiabilidade e segurança de qualidade internacional em empresas de tecnologia.</p>
+<p><a href="https://www.amazon.com/dp/B0767N1MM2?plink=3bLPfZu84xYkLKdf&amp;ref=adblp13nvvxx_0_2_ti">Saiba mais</a></p>
+<ul>
+<li><strong>Accelerate</strong>
+<ul>
+<li><strong>POR NICOLE FORSGREN, JEZ HUMBLE E GENE KIM</strong></li>
+</ul>
+</li>
+</ul>
+<p>Os autores apresentam os resultados da pesquisa com análises rigorosas sobre a construção e o dimensionamento de empresas de tecnologia de alto desempenho.</p>
+<p><a href="https://www.amazon.com/dp/B07BMBYHXL?plink=LG7z8TSNaJPkXuoS&amp;ref=adblp13nvvxx_0_0_ti">Saiba mais</a></p>
+<ul>
+<li><strong>Effective DevOps</strong>
+<ul>
+<li><strong>POR JENNIFER DAVIS E RYN DANIELS</strong></li>
+</ul>
+</li>
+</ul>
+<p>Muitas empresas se concentram em trazer mais ferramentas para impulsionar a transformação de DevOps, mas o “DevOps eficaz” vai além das ferramentas para lidar com a transformação cultural necessária para impulsionar a adoção.</p>
+<p><a href="https://www.amazon.com/Effective-DevOps-Building-Collaboration-Affinity/dp/1491926309/#ace-7448806443">Saiba mais</a></p>
+<ul>
+<li><strong>Project to Product</strong>
+<ul>
+<li><strong>POR MIK KERSTEN</strong></li>
+</ul>
+</li>
+</ul>
+<p>Para sobreviver e prosperar no clima atual, as empresas devem se destacar na entrega de software em larga escala. O Dr. Mik Kersten apresenta o Flow Framework para ajudar as empresas a se tornarem inovadoras centradas em produtos.</p>
+<p><a href="https://www.amazon.com/Project-Product-Survive-Disruption-Framework-ebook/dp/B07F3DJMZ1/">Saiba mais</a></p>
+</div>
+</article>
+
+
+
+
+<script type="text/javascript" src="https://latest.cactus.chat/cactus.js"></script>
+
+<div id="ficurinia-cactus-comments"></div>
+
+<script>
+initComments({
+    node: document.getElementById("ficurinia-cactus-comments"),
+    defaultHomeserverUrl: 'https:\/\/matrix.cactus.chat:8448',
+    serverName: 'cactus.chat',
+    siteName: "0xttfx.tcpip.net.br",
+    commentSectionId: "b7540afcffe7dc78589fa24b31b82c33"
+})
+</script>
+
+
+
+                    </main><footer>
+    <hr />
+
+<p><small>
+        2024 &copy; Running on <a href="https://openbsd.org">OpenBSD</a> and <a href="https://man.openbsd.org/httpd.8">httpd</a> |  <a href="https://0xttfx.tcpip.net.br">0xttfx</a> - <a href="https://spdx.org/licenses/BSD-3-Clause">BSD-3-Clause</a>
+    </small></p>
+    <p><small>
+        
+    </small></p>
+</footer>
+</div>
+            </div>
+        </div>
+    
+        <script
+            async
+            defer
+            data-domain="example.com"
+            src="https://something.com/..."
+        ></script>
+    
+
+
+    
+        <script
+            async
+            defer
+            data-website-id="example-tracking-code"
+            src="https://something.com/..."
+        ></script>
+    
+
+
+</body>
+</html>

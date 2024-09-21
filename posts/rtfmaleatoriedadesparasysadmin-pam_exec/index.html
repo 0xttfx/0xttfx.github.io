@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html class="" lang="en"><head>
+    
+    <meta name="robots" content="noai, noimageai">
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+
+    <link
+    rel="icon"
+    href='/favicon.png'
+/>
+<link
+    rel="shortcut icon"
+    href='/favicon.ico'
+    type="image/x-icon"
+/>
+<link
+    rel="apple-touch-icon"
+    href='/apple-touch-icon.png'
+/>
+
+    <link
+        rel="icon"
+        href='/logo.svg'
+        type="image/svg+xml"
+    />
+
+<title>
+        
+            RTFM&amp;AleatoriedadesParaSysAdmin PAM_exec  &ndash;
+        
+        0xttfx
+    </title>
+
+    
+    <link href="/symbols-nerd-font/symbols-nerd-font.css" rel="stylesheet" integrity="sha512-lydow8GLOLlYNOtHlksNCmGWWCBsbIEtikXpHzfWqx78HLlyQZHOzyLwPpKol4Th6aCwLUXOfODVYgwrd3nwKQ=="/>
+    <link href="/jetbrains-mono/jetbrains-mono.css" rel="stylesheet" integrity="sha512-tJxlgL6v1Y7kFf+qB8SloaAMKnOAw6WouknxXtIjkBux9Y/9aX81EUWOJO8c/3l98DmjG8brr4to7zaez606Fg=="/>
+
+    
+    
+    <link type="text/css" rel="stylesheet" href=https://0xttfx.github.io/css/styles.abbd6311bb4b6ca58f8e7398140529245ae0f6428b759fcd830742eee2619eabb900ba9914a9affb82aa9a16a9b9ea727bb315315a976a0db0e7513a5f12c504.css integrity="sha512-q71jEbtLbKWPjnOYFAUpJFrg9kKLdZ/NgwdC7uJhnqu5ALqZFKmv&#43;4Kqmhapuepye7MVMVqXag2w51E6XxLFBA==" />
+<meta name="author" content="Thiago T Faioli" />
+
+    
+        <meta name="keywords" content='Linux' />
+    
+    
+        <meta name="description" content="Desc Text." />
+    
+
+<meta property="og:site_name"
+    content='0xttfx' />
+
+    <meta property="og:title" content="RTFM&amp;AleatoriedadesParaSysAdmin PAM_exec" />
+    <meta property="og:type" content="article" />
+    
+    <meta
+        property="article:author" content="Thiago T Faioli" />
+    <meta
+        property="article:published_time"
+        content='2024-09-20T23:51:45Z-0300' />
+    
+        
+            <meta property="article:tag" content="Linux" />
+        
+    
+    <meta property="og:url" content="https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadmin-pam_exec/" />
+    
+    
+    <meta property="og:image"
+        content="https://0xttfx.github.io/icon512.png" />
+    
+        <meta property="og:description" content="Desc Text." />
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:domain"
+      content='0xttfx.github.io'
+/>
+<meta property="twitter:url" content="https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadmin-pam_exec/" />
+
+
+    <meta name="twitter:title" content="RTFM&amp;AleatoriedadesParaSysAdmin PAM_exec" />
+    
+    
+    
+    <meta name="twitter:image"
+        content="https://0xttfx.github.io/icon512.png" />
+    
+        <meta name="twitter:description" content="Desc Text." />
+    
+
+<link rel="manifest" href="/manifest/index.json" />
+</head>
+
+
+<body>
+        <div id="baseContainer"><header class="">
+<div class="titleAndSearchContainer">
+        <div id="titleContainer">
+            
+                <a class="unstyledLink" href="/">
+                    <img src='/logo.svg' alt='Logo'/>
+                </a>
+            
+            <div class="rightOfLogo">
+                <div class="titleAndHamburger">
+                    <h1>
+                        <a class="unstyledLink" href="/">0xttfx</a>
+                        
+                    </h1>
+                    
+                </div>
+                <div id="wide_nav"><nav>
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts/">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://0xttfx.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+            <li><a href="https://cv0xttfx.tcpip.net.br">CV</a></li>
+        
+        
+            <li><a href="/tags/">Tags</a></li>
+        
+        
+    </ul>
+</nav>
+</div>
+            </div>
+        </div>
+        <div class="search">
+    <input id="searchbar" type="text" placeholder='Search' />
+    <span class="nerdlink" onclick="newSearch();">&#xf002;</span>
+</div>
+<script>
+    function newSearch() {
+        let term = searchbar.value.trim();
+        if (!term) return;
+        location.href = `/search/?q=${term}`;
+    }
+    searchbar.onkeyup = (ev) => {if (ev.keyCode == 13) newSearch()};
+</script>
+
+    </div>
+    <div id="links">
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="/index.xml">
+    
+    
+        &#xf09e;
+    
+    <span>
+        RSS
+    </span>
+</a>
+
+        
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://discord.gg/jMztSAgJ">
+    
+    
+        &#xfb6e;
+    
+    <span>
+        
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="thiago@tcpip.net.br">
+    
+    
+        &#xf6ed;
+    
+    <span>
+        
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://github.com/0xttfx">
+    
+    
+        &#xf09b;
+    
+    <span>
+        
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://instagram.com/0xttfx">
+    
+    
+        &#xf16d;
+    
+    <span>
+        
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://linkedin.com/in/thiagofaioli">
+    
+    
+        &#xf0e1;
+    
+    <span>
+        
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://t.me/0xttfx">
+    
+    
+        &#xf2c6;
+    
+    <span>
+        
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://twitter.com/0xttfx">
+    
+    
+        &#xf099;
+    
+    <span>
+        
+    </span>
+</a>
+
+    </div>
+    
+
+</header>
+<div id="contentContainer">
+                <div id="content">
+                    <main>
+<article class="card single">
+    
+        <h1>RTFM&amp;AleatoriedadesParaSysAdmin PAM_exec</h1>
+    
+    
+        <p class="date">
+            <span title='Date'> </span>
+    2024-09-20
+
+</p>
+    
+    
+    
+    
+    <div><h1 id="pam---módulo-pam_exec-para-execução-de-comando-externo">PAM - módulo pam_exec para execução de comando externo</h1>
+<p>Estou participando de um projeto, onde sou o ponto focal para Infra, de uma equipe composta por profissionais de países e empresas diferentes! E fui abordado por um Dev, com o seguinte pedido:</p>
+<blockquote>
+<p><em>Você consegue criar uma forma de, eu mesmo, fazer o restart da instância secundária do PGSQL do ambiente stage ? Sem me dar acesso ao servidor Linux para rodar um comando! E que seja simples para não gerar uma demanda de projeto para Infra etc&hellip;</em></p>
+</blockquote>
+<ul>
+<li><em>Naturalmente: perguntei o motivo! E prefiro não entrar na questão&hellip;</em></li>
+</ul>
+<p>Em detrimento do projeto e ambiente: minha diretiva principal também é apoiar com soluções que resolvam bloqueios da equipe!</p>
+<p>Dito isso! Veio de imediato em minha mente:</p>
+<ul>
+<li>posso criar um conta de sistema! Dessa forma não há um shell válido para login
+<ul>
+<li>com diretório home apenas para o subdiretório ~/.ssh, para armazenar o authorized_keys com a chaves públicas
+<ul>
+<li>e numa tentativa de login via ssh, onde a chave pública for validada: um <code>systemctl restart ...</code> é então executado.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>seguido a ideia, de usar ssh, acho que é possível duas abordagens:
+<ul>
+<li>usando o módulo <a href="https://man7.org/linux/man-pages/man8/pam_exec.8.html">pam_exec</a> do <a href="https://man7.org/linux/man-pages/man8/PAM.8.html">PAM</a>! Configurado no arquivo de configuração PAM para o SSH: <code>/etc/pam.d/sshd</code></li>
+<li>usando o bloco condicional <a href="https://man7.org/linux/man-pages/man5/sshd_config.5.html#DESCRIPTION">Match</a> do <a href="https://man7.org/linux/man-pages/man8/sshd.8.html">SSHD</a> para usar o <a href="https://man7.org/linux/man-pages/man5/sshd_config.5.html">ForceCommand</a></li>
+</ul>
+</li>
+</ul>
+<p>Como há muito tempo não brinco com o PAM. Optei por ele!</p>
+<ul>
+<li>
+<p>porém, deixo claro que: não me veio nenhuma outra ideia de como aplicar tecnicamente no Linux! Então, é um favor que você me faz, criticar o que proponho aqui! ;)</p>
+</li>
+<li>
+<p>Conta de sistema</p>
+</li>
+</ul>
+<p>Criando uma conta de sistema que será de uso compartilhado, caso algum outro Dev queira fazer uso também. Para tanto, criaremos também o diretório home para armazenar o subdiretório ~/.ssh para armazenar as chaves públicas SSH.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>useradd -r -s /usr/sbin/nologin -m -c <span style="color:#f1fa8c">&#39;user para restart pgsql&#39;</span> restartpg <span style="color:#ff79c6">&amp;&amp;</span> getent passwd restartpg 
+</span></span><span style="display:flex;"><span>restartpg:x:995:986:user para restart pgsql:/home/restartpg:/usr/sbin/nologin
+</span></span></code></pre></div><ul>
+<li>/etc/ssh/sshd_config</li>
+</ul>
+<ol>
+<li>Porque não precaver&hellip;</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cp /etc/ssh/sshd_config<span style="color:#ff79c6">{</span>,.BKP<span style="color:#ff79c6">}</span>
+</span></span></code></pre></div><ol start="2">
+<li>Garanta que o PAM esteja habilitado!</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#6272a4"># Set this to &#39;yes&#39; to enable PAM authentication, account processing,</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># and session processing. If this is enabled, PAM authentication will</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># be allowed through the KbdInteractiveAuthentication and</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># PasswordAuthentication.  Depending on your PAM configuration,</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># PAM authentication via KbdInteractiveAuthentication may bypass</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># the setting of &#34;PermitRootLogin yes</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># If you just want the PAM account and session checks to run without</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># PAM authentication, then enable this but set PasswordAuthentication</span>
+</span></span><span style="display:flex;"><span><span style="color:#6272a4"># and KbdInteractiveAuthentication to &#39;no&#39;.</span>
+</span></span><span style="display:flex;"><span>UsePAM yes
+</span></span></code></pre></div><ul>
+<li>/etc/pam.d/sshd</li>
+</ul>
+<ol>
+<li>Não custa nada fazer um backup do arquivo ;)</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cp /etc/pam.d/sshd<span style="color:#ff79c6">{</span>,.BKP<span style="color:#ff79c6">}</span>
+</span></span></code></pre></div><ol start="2">
+<li>Em seguida inserimos nossa configuração</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cat <span style="color:#f1fa8c">&lt;&lt;EoF &gt;&gt; /etc/pam.d/sshd 
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"># TCPIP ME - @faioli 10/09/24
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c"># reboot postgresql by specific user
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">session    optional     pam_exec.so type=open_session debug log=/var/log/sshpamexec.sh.log seteuid /usr/local/bin/sshpamexec.sh
+</span></span></span><span style="display:flex;"><span><span style="color:#f1fa8c">EoF</span>
+</span></span></code></pre></div><ul>
+<li>/usr/local/bin/sshpamexec.sh</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>  <span style="color:#6272a4">#!/usr/bin/env bash</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6272a4">##</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6272a4"># Autor: Thiago Torres Faioli - A.K.A: 0xttfx - thiago@tcpip.net.br</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6272a4"># Função: reiniciar instância PGSQL usando conta de sistema sem shell</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6272a4"># válido que numa tentativa de login via ssh, onde a chave pública for</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6272a4"># validada o comando `systemctl restart ...` é então executado.</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6272a4">##</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6272a4"># Versão: 0.1</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6272a4"># Data: 10 de Setembro de 2024</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6272a4"># Licença: SPDX-License-Identifier: BSD-3-Clause</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6272a4">#####################################################################</span>
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#6272a4"># funcao para log</span>
+</span></span><span style="display:flex;"><span>  _log_msg<span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">local</span> <span style="color:#8be9fd;font-style:italic">msg</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;</span><span style="color:#8be9fd;font-style:italic">$1</span><span style="color:#f1fa8c">&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">local</span> <span style="color:#8be9fd;font-style:italic">tstamp</span><span style="color:#ff79c6">=</span><span style="color:#ff79c6">$(</span>date +<span style="color:#f1fa8c">&#34;%d-%m-%Y %H:%M:%S&#34;</span><span style="color:#ff79c6">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34;[</span><span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">tstamp</span><span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">] </span><span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">msg</span><span style="color:#f1fa8c">}</span><span style="color:#f1fa8c">&#34;</span> &gt;&gt; /var/log/sshpamexec.log
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">}</span>
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#6272a4"># funcão de restart e status do pgsql</span>
+</span></span><span style="display:flex;"><span>  _restartpg <span style="color:#ff79c6">(){</span>
+</span></span><span style="display:flex;"><span>    /usr/bin/systemctl restart postgresql@16-main.service
+</span></span><span style="display:flex;"><span>    _log_msg <span style="color:#f1fa8c">&#34;</span><span style="color:#ff79c6">$(</span>/usr/bin/systemctl status postgresql@16-main.service --no-pager<span style="color:#ff79c6">)</span><span style="color:#f1fa8c">&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">}</span>
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#6272a4"># variável com parser do fingerprint associado ao último login ssh do usuário restartpg </span>
+</span></span><span style="display:flex;"><span>  <span style="color:#8be9fd;font-style:italic">fprint</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;</span><span style="color:#ff79c6">$(</span>cat /var/log/auth.log |grep -iA1 <span style="color:#f1fa8c">&#34;accepted publickey&#34;</span>|grep -B1 restartpg |grep -oE SHA.*$|/usr/bin/tail -n1<span style="color:#ff79c6">)</span><span style="color:#f1fa8c">&#34;</span>
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#6272a4"># varoável com arquivo temporário criado para armazenar lista de fingerprit</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6272a4"># do arquivo authorized_keys do usuário restartpg </span>
+</span></span><span style="display:flex;"><span>  <span style="color:#8be9fd;font-style:italic">filelfp</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;</span><span style="color:#ff79c6">$(</span>mktemp /tmp/listakeyfp-XXX<span style="color:#ff79c6">)</span><span style="color:#f1fa8c">&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#6272a4"># inserindo lista de fingerprints </span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">for</span> pubkey_file in /home/restartpg/.ssh/authorized_keys; <span style="color:#ff79c6">do</span>
+</span></span><span style="display:flex;"><span>    ssh-keygen -lf <span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">pubkey_file</span><span style="color:#f1fa8c">}</span> -E sha256
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">done</span> &gt; <span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">filelfp</span><span style="color:#f1fa8c">}</span> 
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  <span style="color:#6272a4"># variárel com parser identificando o fingerprint</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#8be9fd;font-style:italic">loginfp</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;</span><span style="color:#ff79c6">$(</span>/usr/bin/grep <span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">fprint</span><span style="color:#f1fa8c">}</span> <span style="color:#f1fa8c">${</span><span style="color:#8be9fd;font-style:italic">filelfp</span><span style="color:#f1fa8c">}</span>| /usr/bin/awk <span style="color:#f1fa8c">&#39;{print $3,$2}&#39;</span><span style="color:#ff79c6">)</span><span style="color:#f1fa8c">&#34;</span>
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  _usr_parser <span style="color:#ff79c6">(){</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">[</span> <span style="color:#f1fa8c">&#34;</span><span style="color:#8be9fd;font-style:italic">$PAM_USER</span><span style="color:#f1fa8c">&#34;</span> <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#34;restartpg&#34;</span> <span style="color:#ff79c6">]</span>; <span style="color:#ff79c6">then</span>
+</span></span><span style="display:flex;"><span>    _log_msg <span style="color:#f1fa8c">&#34;- - - -&#34;</span>
+</span></span><span style="display:flex;"><span>    _log_msg <span style="color:#f1fa8c">&#34;Usuário </span><span style="color:#8be9fd;font-style:italic">$PAM_USER</span><span style="color:#f1fa8c"> reinicando instância PGSQL&#34;</span>
+</span></span><span style="display:flex;"><span>    _log_msg <span style="color:#f1fa8c">&#34;Executado por: </span><span style="color:#8be9fd;font-style:italic">$loginfp</span><span style="color:#f1fa8c">&#34;</span> 
+</span></span><span style="display:flex;"><span>    _log_msg <span style="color:#f1fa8c">&#34;-&#34;</span>
+</span></span><span style="display:flex;"><span>    _restartpg
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">else</span> 
+</span></span><span style="display:flex;"><span>    _log_msg <span style="color:#f1fa8c">&#34;- - - -&#34;</span>
+</span></span><span style="display:flex;"><span>    _log_msg <span style="color:#f1fa8c">&#34;Usuário </span><span style="color:#8be9fd;font-style:italic">$PAM_USER</span><span style="color:#f1fa8c">! Script </span><span style="color:#8be9fd;font-style:italic">$0</span><span style="color:#f1fa8c"> ignorado.&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">fi</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#ff79c6">}</span> 
+</span></span><span style="display:flex;"><span>  _usr_parser
+</span></span><span style="display:flex;"><span>  rm -f <span style="color:#8be9fd;font-style:italic">$filelfp</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#8be9fd;font-style:italic">exit</span> <span style="color:#bd93f9">0</span>
+</span></span></code></pre></div><ul>
+<li>Testando</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ ssh -l restartpg srvpgsql1.dns.com
+</span></span><span style="display:flex;"><span>Last login: Wed Sep <span style="color:#bd93f9">11</span> 13:24:40 <span style="color:#bd93f9">2024</span> from ???.??.???.???
+</span></span><span style="display:flex;"><span>This account is currently not available
+</span></span><span style="display:flex;"><span>Connection to srvpgsql1.dns.com <span style="color:#8be9fd;font-style:italic">exit</span> closed.
+</span></span></code></pre></div><ul>
+<li>/var/log/sshpamexec.log</li>
+</ul>
+<p>Esse será o log gerado das operações</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>tail -30 /var/log/sshpamexec.log
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">[</span>11-09-2024 11:12:32<span style="color:#ff79c6">]</span> - - - -
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">[</span>11-09-2024 11:12:32<span style="color:#ff79c6">]</span> Usuário treta! Script /usr/local/bin/sshpamexec.sh ignorado.
+</span></span><span style="display:flex;"><span>*** Wed Sep <span style="color:#bd93f9">11</span> 13:24:37 <span style="color:#bd93f9">2024</span>
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">[</span>11-09-2024 13:24:37<span style="color:#ff79c6">]</span> - - - -
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">[</span>11-09-2024 13:24:37<span style="color:#ff79c6">]</span> Usuário restartpg reinicando instância PGSQL
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">[</span>11-09-2024 13:24:37<span style="color:#ff79c6">]</span> Executado por: ltorvalds@tcpip.net.br SHA256:nADfsdJgYyN8UFsfsdfdwer3rf3r33dwe3eiO+QVwZE
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">[</span>11-09-2024 13:24:37<span style="color:#ff79c6">]</span> -
+</span></span><span style="display:flex;"><span><span style="color:#ff79c6">[</span>11-09-2024 13:24:40<span style="color:#ff79c6">]</span> ● postgresql@16-main.service - PostgreSQL Cluster 16-main
+</span></span><span style="display:flex;"><span>     Loaded: loaded <span style="color:#ff79c6">(</span>/usr/lib/systemd/system/postgresql@.service; enabled-runtime; preset: enabled<span style="color:#ff79c6">)</span>
+</span></span><span style="display:flex;"><span>     Active: active <span style="color:#ff79c6">(</span>running<span style="color:#ff79c6">)</span> since Wed 2024-09-11 13:24:40 -03; 10ms ago
+</span></span><span style="display:flex;"><span>    Process: <span style="color:#bd93f9">38251</span> <span style="color:#8be9fd;font-style:italic">ExecStart</span><span style="color:#ff79c6">=</span>/usr/bin/pg_ctlcluster --skip-systemctl-redirect 16-main start <span style="color:#ff79c6">(</span><span style="color:#8be9fd;font-style:italic">code</span><span style="color:#ff79c6">=</span>exited, <span style="color:#8be9fd;font-style:italic">status</span><span style="color:#ff79c6">=</span>0/SUCCESS<span style="color:#ff79c6">)</span>
+</span></span><span style="display:flex;"><span>   Main PID: <span style="color:#bd93f9">38257</span> <span style="color:#ff79c6">(</span>postgres<span style="color:#ff79c6">)</span>
+</span></span><span style="display:flex;"><span>      Tasks: <span style="color:#bd93f9">6</span> <span style="color:#ff79c6">(</span>limit: 4657<span style="color:#ff79c6">)</span>
+</span></span><span style="display:flex;"><span>     Memory: 53.4M <span style="color:#ff79c6">(</span>peak: 62.3M<span style="color:#ff79c6">)</span>
+</span></span><span style="display:flex;"><span>        CPU: 303ms
+</span></span><span style="display:flex;"><span>     CGroup: /system.slice/system-postgresql.slice/postgresql@16-main.service
+</span></span><span style="display:flex;"><span>             ├─38257 /usr/lib/postgresql/16/bin/postgres -D /var/lib/postgresql/16/main -c <span style="color:#8be9fd;font-style:italic">config_file</span><span style="color:#ff79c6">=</span>/etc/postgresql/16/main/postgresql.conf
+</span></span><span style="display:flex;"><span>             ├─38258 <span style="color:#f1fa8c">&#34;postgres: 16/main: checkpointer &#34;</span>
+</span></span><span style="display:flex;"><span>             ├─38259 <span style="color:#f1fa8c">&#34;postgres: 16/main: background writer &#34;</span>
+</span></span><span style="display:flex;"><span>             ├─38261 <span style="color:#f1fa8c">&#34;postgres: 16/main: walwriter &#34;</span>
+</span></span><span style="display:flex;"><span>             ├─38262 <span style="color:#f1fa8c">&#34;postgres: 16/main: autovacuum launcher &#34;</span>
+</span></span><span style="display:flex;"><span>             └─38263 <span style="color:#f1fa8c">&#34;postgres: 16/main: logical replication launcher &#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Sep <span style="color:#bd93f9">11</span> 13:24:37 stg-ccp-pgsql1 systemd<span style="color:#ff79c6">[</span>1<span style="color:#ff79c6">]</span>: Starting postgresql@16-main.service - PostgreSQL Cluster 16-main...
+</span></span><span style="display:flex;"><span>Sep <span style="color:#bd93f9">11</span> 13:24:40 stg-ccp-pgsql1 systemd<span style="color:#ff79c6">[</span>1<span style="color:#ff79c6">]</span>: Started postgresql@16-main.service - PostgreSQL Cluster 16-main.
+</span></span></code></pre></div></div>
+</article>
+
+    <hr />
+    <p class="articleTagsContainer">
+        <span> </span>
+        <strong>Tags:</strong>
+        
+            <a
+                
+                href="/tags/linux/">#Linux</a>
+        
+    </p>
+
+
+
+
+
+
+                    </main><footer>
+    <hr />
+
+<p><small>
+        2024 &copy; Running on <a href="https://openbsd.org">OpenBSD</a> and <a href="https://man.openbsd.org/httpd.8">httpd</a> |  <a href="https://0xttfx.tcpip.net.br">0xttfx</a> - <a href="https://spdx.org/licenses/BSD-3-Clause">BSD-3-Clause</a>
+    </small></p>
+    <p><small>
+        
+    </small></p>
+</footer>
+</div>
+            </div>
+        </div>
+    
+        <script
+            async
+            defer
+            data-domain="example.com"
+            src="https://something.com/..."
+        ></script>
+    
+
+
+    
+        <script
+            async
+            defer
+            data-website-id="example-tracking-code"
+            src="https://something.com/..."
+        ></script>
+    
+
+
+</body>
+</html>
