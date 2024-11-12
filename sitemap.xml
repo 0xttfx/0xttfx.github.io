@@ -3,18 +3,39 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://0xttfx.github.io/</loc>
-    <lastmod>2024-09-21T00:47:01-03:00</lastmod>
+    <lastmod>2024-11-12T18:07:52-03:00</lastmod>
   </url><url>
     <loc>https://0xttfx.github.io/posts/</loc>
-    <lastmod>2024-09-21T00:47:01-03:00</lastmod>
+    <lastmod>2024-11-12T18:07:52-03:00</lastmod>
+  </url><url>
+    <loc>https://0xttfx.github.io/tags/ddos/</loc>
+    <lastmod>2024-11-12T18:07:52-03:00</lastmod>
+  </url><url>
+    <loc>https://0xttfx.github.io/tags/dos/</loc>
+    <lastmod>2024-11-12T18:07:52-03:00</lastmod>
+  </url><url>
+    <loc>https://0xttfx.github.io/tags/firewall/</loc>
+    <lastmod>2024-11-12T18:07:52-03:00</lastmod>
+  </url><url>
+    <loc>https://0xttfx.github.io/tags/openbsd/</loc>
+    <lastmod>2024-11-12T18:07:52-03:00</lastmod>
+  </url><url>
+    <loc>https://0xttfx.github.io/tags/pf/</loc>
+    <lastmod>2024-11-12T18:07:52-03:00</lastmod>
+  </url><url>
+    <loc>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadminsecopsdevopssnre-firewall/</loc>
+    <lastmod>2024-11-12T18:07:52-03:00</lastmod>
+  </url><url>
+    <loc>https://0xttfx.github.io/tags/seginfo/</loc>
+    <lastmod>2024-11-12T18:07:52-03:00</lastmod>
+  </url><url>
+    <loc>https://0xttfx.github.io/tags/</loc>
+    <lastmod>2024-11-12T18:07:52-03:00</lastmod>
   </url><url>
     <loc>https://0xttfx.github.io/tags/linux/</loc>
     <lastmod>2024-09-21T00:47:01-03:00</lastmod>
   </url><url>
     <loc>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadmin-udev_keychron/</loc>
-    <lastmod>2024-09-21T00:47:01-03:00</lastmod>
-  </url><url>
-    <loc>https://0xttfx.github.io/tags/</loc>
     <lastmod>2024-09-21T00:47:01-03:00</lastmod>
   </url><url>
     <loc>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadmin-pam_exec/</loc>
@@ -32,16 +53,7 @@
     <loc>https://0xttfx.github.io/posts/cybersecurity-dos-ddos-udp-flood/</loc>
     <lastmod>2024-05-09T00:38:46-03:00</lastmod>
   </url><url>
-    <loc>https://0xttfx.github.io/tags/ddos/</loc>
-    <lastmod>2024-05-09T00:38:46-03:00</lastmod>
-  </url><url>
-    <loc>https://0xttfx.github.io/tags/dos/</loc>
-    <lastmod>2024-05-09T00:38:46-03:00</lastmod>
-  </url><url>
     <loc>https://0xttfx.github.io/tags/engineering/</loc>
-    <lastmod>2024-05-09T00:38:46-03:00</lastmod>
-  </url><url>
-    <loc>https://0xttfx.github.io/tags/firewall/</loc>
     <lastmod>2024-05-09T00:38:46-03:00</lastmod>
   </url><url>
     <loc>https://0xttfx.github.io/tags/freebsd/</loc>
@@ -54,12 +66,6 @@
     <lastmod>2024-05-09T00:38:46-03:00</lastmod>
   </url><url>
     <loc>https://0xttfx.github.io/tags/nftables/</loc>
-    <lastmod>2024-05-09T00:38:46-03:00</lastmod>
-  </url><url>
-    <loc>https://0xttfx.github.io/tags/openbsd/</loc>
-    <lastmod>2024-05-09T00:38:46-03:00</lastmod>
-  </url><url>
-    <loc>https://0xttfx.github.io/tags/pf/</loc>
     <lastmod>2024-05-09T00:38:46-03:00</lastmod>
   </url><url>
     <loc>https://0xttfx.github.io/posts/devops-fundamentos/</loc>

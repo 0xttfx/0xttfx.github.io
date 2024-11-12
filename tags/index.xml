@@ -5,8 +5,80 @@
     <description>Recent content in Tags on 0xttfx</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <copyright>Running on [OpenBSD](https://openbsd.org) and [httpd](https://man.openbsd.org/httpd.8) |  [0xttfx](https://0xttfx.tcpip.net.br) - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)</copyright>
-    <lastBuildDate>Sat, 21 Sep 2024 00:47:01 -0300</lastBuildDate><atom:link href="https://0xttfx.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><icon>https://0xttfx.github.io/logo.svg</icon>
+    <copyright>0xttfx - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)</copyright>
+    <lastBuildDate>Tue, 12 Nov 2024 18:07:52 -0300</lastBuildDate><atom:link href="https://0xttfx.github.io/tags/index.xml" rel="self" type="application/rss+xml" /><icon>https://0xttfx.github.io/img/icon.svg</icon>
+    
+    
+    <item>
+      <title>ddos</title>
+      <link>https://0xttfx.github.io/tags/ddos/</link>
+      <pubDate>Tue, 12 Nov 2024 18:07:52 -0300</pubDate>
+      
+      <guid>https://0xttfx.github.io/tags/ddos/</guid>
+      <description><![CDATA[]]></description>
+      
+    </item>
+    
+    
+    
+    <item>
+      <title>dos</title>
+      <link>https://0xttfx.github.io/tags/dos/</link>
+      <pubDate>Tue, 12 Nov 2024 18:07:52 -0300</pubDate>
+      
+      <guid>https://0xttfx.github.io/tags/dos/</guid>
+      <description><![CDATA[]]></description>
+      
+    </item>
+    
+    
+    
+    <item>
+      <title>firewall</title>
+      <link>https://0xttfx.github.io/tags/firewall/</link>
+      <pubDate>Tue, 12 Nov 2024 18:07:52 -0300</pubDate>
+      
+      <guid>https://0xttfx.github.io/tags/firewall/</guid>
+      <description><![CDATA[]]></description>
+      
+    </item>
+    
+    
+    
+    <item>
+      <title>openbsd</title>
+      <link>https://0xttfx.github.io/tags/openbsd/</link>
+      <pubDate>Tue, 12 Nov 2024 18:07:52 -0300</pubDate>
+      
+      <guid>https://0xttfx.github.io/tags/openbsd/</guid>
+      <description><![CDATA[]]></description>
+      
+    </item>
+    
+    
+    
+    <item>
+      <title>pf</title>
+      <link>https://0xttfx.github.io/tags/pf/</link>
+      <pubDate>Tue, 12 Nov 2024 18:07:52 -0300</pubDate>
+      
+      <guid>https://0xttfx.github.io/tags/pf/</guid>
+      <description><![CDATA[]]></description>
+      
+    </item>
+    
+    
+    
+    <item>
+      <title>SegInfo</title>
+      <link>https://0xttfx.github.io/tags/seginfo/</link>
+      <pubDate>Tue, 12 Nov 2024 18:07:52 -0300</pubDate>
+      
+      <guid>https://0xttfx.github.io/tags/seginfo/</guid>
+      <description><![CDATA[]]></description>
+      
+    </item>
+    
     
     
     <item>
@@ -34,47 +106,11 @@
     
     
     <item>
-      <title>ddos</title>
-      <link>https://0xttfx.github.io/tags/ddos/</link>
-      <pubDate>Thu, 09 May 2024 00:38:46 -0300</pubDate>
-      
-      <guid>https://0xttfx.github.io/tags/ddos/</guid>
-      <description><![CDATA[]]></description>
-      
-    </item>
-    
-    
-    
-    <item>
-      <title>dos</title>
-      <link>https://0xttfx.github.io/tags/dos/</link>
-      <pubDate>Thu, 09 May 2024 00:38:46 -0300</pubDate>
-      
-      <guid>https://0xttfx.github.io/tags/dos/</guid>
-      <description><![CDATA[]]></description>
-      
-    </item>
-    
-    
-    
-    <item>
       <title>engineering</title>
       <link>https://0xttfx.github.io/tags/engineering/</link>
       <pubDate>Thu, 09 May 2024 00:38:46 -0300</pubDate>
       
       <guid>https://0xttfx.github.io/tags/engineering/</guid>
-      <description><![CDATA[]]></description>
-      
-    </item>
-    
-    
-    
-    <item>
-      <title>firewall</title>
-      <link>https://0xttfx.github.io/tags/firewall/</link>
-      <pubDate>Thu, 09 May 2024 00:38:46 -0300</pubDate>
-      
-      <guid>https://0xttfx.github.io/tags/firewall/</guid>
       <description><![CDATA[]]></description>
       
     </item>
@@ -123,30 +159,6 @@
       <pubDate>Thu, 09 May 2024 00:38:46 -0300</pubDate>
       
       <guid>https://0xttfx.github.io/tags/nftables/</guid>
-      <description><![CDATA[]]></description>
-      
-    </item>
-    
-    
-    
-    <item>
-      <title>openbsd</title>
-      <link>https://0xttfx.github.io/tags/openbsd/</link>
-      <pubDate>Thu, 09 May 2024 00:38:46 -0300</pubDate>
-      
-      <guid>https://0xttfx.github.io/tags/openbsd/</guid>
-      <description><![CDATA[]]></description>
-      
-    </item>
-    
-    
-    
-    <item>
-      <title>pf</title>
-      <link>https://0xttfx.github.io/tags/pf/</link>
-      <pubDate>Thu, 09 May 2024 00:38:46 -0300</pubDate>
-      
-      <guid>https://0xttfx.github.io/tags/pf/</guid>
       <description><![CDATA[]]></description>
       
     </item>

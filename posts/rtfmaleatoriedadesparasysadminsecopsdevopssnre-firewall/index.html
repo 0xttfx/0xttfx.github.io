@@ -1,21 +1,306 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><?xml-stylesheet href="/feed_style.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="https://www.rssboard.org/media-rss">
-  <channel>
-    <title>ddos on 0xttfx</title>
-    <link>https://0xttfx.github.io/tags/ddos/</link>
-    <description>Recent content in ddos on 0xttfx</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
-    <copyright>0xttfx - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)</copyright>
-    <lastBuildDate>Tue, 12 Nov 2024 18:07:52 -0300</lastBuildDate><atom:link href="https://0xttfx.github.io/tags/ddos/index.xml" rel="self" type="application/rss+xml" /><icon>https://0xttfx.github.io/img/icon.svg</icon>
+<!DOCTYPE html>
+<html class="" lang="en"><head>
+    
+    <meta name="robots" content="noai, noimageai">
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=7" />
+
+    <link
+    rel="icon"
+    href='/favicon.png'
+/>
+<link
+    rel="shortcut icon"
+    href='/favicon.ico'
+    type="image/x-icon"
+/>
+<link
+    rel="apple-touch-icon"
+    href='/apple-touch-icon.png'
+/>
+
+<title>
+        
+            RTFM &amp; Aleatoriedades para SysAdmin, SecOps, DevOps, {SN}RE - Firewall  &ndash;
+        
+        0xttfx
+    </title>
+
+    
+    <link href="/symbols-nerd-font/symbols-nerd-font.css" rel="stylesheet" integrity="sha512-lydow8GLOLlYNOtHlksNCmGWWCBsbIEtikXpHzfWqx78HLlyQZHOzyLwPpKol4Th6aCwLUXOfODVYgwrd3nwKQ=="/>
+    <link href="/jetbrains-mono/jetbrains-mono.css" rel="stylesheet" integrity="sha512-tJxlgL6v1Y7kFf+qB8SloaAMKnOAw6WouknxXtIjkBux9Y/9aX81EUWOJO8c/3l98DmjG8brr4to7zaez606Fg=="/>
+
     
     
-    <item>
-      <title>RTFM &amp; Aleatoriedades para SysAdmin, SecOps, DevOps, {SN}RE - Firewall</title>
-      <link>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadminsecopsdevopssnre-firewall/</link>
-      <pubDate>Tue, 12 Nov 2024 18:07:52 -0300</pubDate>
-      
-      <guid>https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadminsecopsdevopssnre-firewall/</guid>
-      <description><![CDATA[<h1 id="firewall-policy">Firewall Policy</h1>
+    <link type="text/css" rel="stylesheet" href=https://0xttfx.github.io/css/styles.abbd6311bb4b6ca58f8e7398140529245ae0f6428b759fcd830742eee2619eabb900ba9914a9affb82aa9a16a9b9ea727bb315315a976a0db0e7513a5f12c504.css integrity="sha512-q71jEbtLbKWPjnOYFAUpJFrg9kKLdZ/NgwdC7uJhnqu5ALqZFKmv&#43;4Kqmhapuepye7MVMVqXag2w51E6XxLFBA==" />
+<meta name="author" content="Thiago T Faioli" />
+
+    
+        <meta name="keywords" content='DDoS, DoS, Firewall, OpenBSD, PF, SegInfo' />
+    
+    
+        <meta name="description" content="Requisitos mínimos para um firewall tecnicamente descente e profissional." />
+    
+
+<meta property="og:site_name"
+    content='0xttfx' />
+
+    <meta property="og:title" content="RTFM &amp; Aleatoriedades para SysAdmin, SecOps, DevOps, {SN}RE - Firewall" />
+    <meta property="og:type" content="article" />
+    
+    <meta
+        property="article:author" content="Thiago T Faioli" />
+    <meta
+        property="article:published_time"
+        content='2024-11-12T18:07:52Z-0300' />
+    
+        
+            <meta property="article:tag" content="DDoS" />
+        
+            <meta property="article:tag" content="DoS" />
+        
+            <meta property="article:tag" content="Firewall" />
+        
+            <meta property="article:tag" content="OpenBSD" />
+        
+            <meta property="article:tag" content="PF" />
+        
+            <meta property="article:tag" content="SegInfo" />
+        
+    
+    <meta property="og:url" content="https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadminsecopsdevopssnre-firewall/" />
+    
+    
+    <meta property="og:image"
+        content="https://0xttfx.github.io/img/icon.svg" />
+    
+        <meta property="og:description" content="Requisitos mínimos para um firewall tecnicamente descente e profissional." />
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:domain"
+      content='0xttfx.github.io'
+/>
+<meta property="twitter:url" content="https://0xttfx.github.io/posts/rtfmaleatoriedadesparasysadminsecopsdevopssnre-firewall/" />
+
+
+    <meta name="twitter:title" content="RTFM &amp; Aleatoriedades para SysAdmin, SecOps, DevOps, {SN}RE - Firewall" />
+    
+    
+    
+    <meta name="twitter:image"
+        content="https://0xttfx.github.io/img/icon.svg" />
+    
+        <meta name="twitter:description" content="Requisitos mínimos para um firewall tecnicamente descente e profissional." />
+    
+
+<link rel="manifest" href="/manifest/index.json" />
+</head>
+
+
+<body>
+        <div id="baseContainer"><header class="">
+<div class="titleAndSearchContainer">
+        <div id="titleContainer">
+            
+                <a class="unstyledLink" href="/">
+                    <img src='/logo.svg' alt='Logo'/>
+                </a>
+            
+            <div class="rightOfLogo">
+                <div class="titleAndHamburger">
+                    <h1>
+                        <a class="unstyledLink" href="/">0xttfx</a>
+                        
+                    </h1>
+                    
+                </div>
+                <div id="wide_nav"><nav>
+    
+    <ul id="main-nav">
+        <li><a href="/">Home</a></li>
+        
+            <li><a href="/posts/">Posts</a></li>
+        
+        
+        
+        
+        
+            <li><a href="https://0xttfx.github.io/pages/about/">
+                About
+            </a></li>
+        
+        
+        
+            <li><a href="/tags/">Tags</a></li>
+        
+        
+    </ul>
+</nav>
+</div>
+            </div>
+        </div>
+        <div class="search">
+    <input id="searchbar" type="text" placeholder='Search' />
+    <span class="nerdlink" onclick="newSearch();">&#xf002;</span>
+</div>
+<script>
+    function newSearch() {
+        let term = searchbar.value.trim();
+        if (!term) return;
+        location.href = `/search/?q=${term}`;
+    }
+    searchbar.onkeyup = (ev) => {if (ev.keyCode == 13) newSearch()};
+</script>
+
+    </div>
+    <div id="links">
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="/index.xml">
+    
+    
+        &#xf09e;
+    
+    <span>
+        RSS
+    </span>
+</a>
+
+        
+        <a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://discord.gg/jMztSAgJ">
+    
+    
+        &#xfb6e;
+    
+    <span>
+        Discord
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="thiago.faioli@bsd.com.br">
+    
+    
+        &#xf6ed;
+    
+    <span>
+        Email
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://github.com/0xttfx">
+    
+    
+        &#xf09b;
+    
+    <span>
+        GitHub
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://instagram.com/0xttfx">
+    
+    
+        &#xf16d;
+    
+    <span>
+        Instagram
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://linkedin.com/in/thiagofaioli">
+    
+    
+        &#xf0e1;
+    
+    <span>
+        Linkedin
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://t.me/0xttfx">
+    
+    
+        &#xf2c6;
+    
+    <span>
+        Telegram
+    </span>
+</a>
+<a
+    
+        rel="noreferrer"
+    
+    target="_blank"
+    class="nerdlink"
+    href="https://twitter.com/0xttfx">
+    
+    
+        &#xf099;
+    
+    <span>
+        X
+    </span>
+</a>
+
+    </div>
+    
+
+</header>
+<div id="contentContainer">
+                <div id="content">
+                    <main>
+<article class="card single">
+    
+        <h1>RTFM &amp; Aleatoriedades para SysAdmin, SecOps, DevOps, {SN}RE - Firewall</h1>
+    
+    
+        <p class="date">
+            <span title='Date'> </span>
+    2024-11-12
+
+</p>
+    
+    
+    
+    
+    <div><h1 id="firewall-policy">Firewall Policy</h1>
 <p>Em 2016 eu fiz participei do curso <a href="https://www.freebsdbrasil.com.br/treinamento/treinamentos-ssa.html">FreeBSD S.S.A</a> na <a href="https://www.freebsdbrasil.com.br">FreeBSD brasil</a> que sem sombra de dúvidas foi um dos <strong>raros treinamentos</strong> que de fato entregou conhecimento e me fez avançar de diversas formas no gerenciamento de redes, roteamento e segurança complexos de forma KISS.</p>
 <blockquote>
 <p>[!TIP]
@@ -266,249 +551,59 @@ Ambiente de teste:</p>
 </ul>
 </li>
 </ul>
-]]></description>
-      
-    </item>
-    
-    
-    
-    <item>
-      <title>Cybersecurity DoS DDoS UDP Flood</title>
-      <link>https://0xttfx.github.io/posts/cybersecurity-dos-ddos-udp-flood/</link>
-      <pubDate>Thu, 09 May 2024 00:38:46 -0300</pubDate>
-      
-      <guid>https://0xttfx.github.io/posts/cybersecurity-dos-ddos-udp-flood/</guid>
-      <description><![CDATA[<p>Um ataque DDoS UDP flood é uma forma de ataque distribuído de negação de serviço que explora serviços vulneráveis na Internet que utilizam o protocolo UDP - User Datagram Protocol para inundar um alvo com uma grande quantidade de tráfego de pacotes UDP. E como cada novo pacote UDP recebido pelo servidor, consome recursos computacionais, rapidamente o servidor vai consumindo seus recursos devido a sobrecarga até exaurir o poder computacional o impedindo de processar e responder requisições normais dos usuários, ficando indisponível.</p>
-<p><img src="/images/DDoSUDPflood/UDPflood.drawio.svg" alt="UDPflood.drawio"></p>
-<h3 id="funcionamento">Funcionamento</h3>
-<ol>
-<li>
-<p><strong>Inundação UDP</strong>: o atacante fazendo uso de uma botnet envia uma grande quantidade de pacotes UDP contra um alvo.</p>
-</li>
-<li>
-<p><strong>IP Spoofing</strong>: o endereço IP de origem dos pacotes UDP são falsificados para impedir a identificação da origem do ataque.</p>
-</li>
-<li>
-<p><strong>Amplificação de tráfego</strong>: também é aplicado a técnica de amplificação para aumentar o impacto do ataque. Dependendo do serviço vulnerável na Internet, usado pelo atacante, uma pequena requisição UDP irá gerar um resposta com grande quantidade de dados que será encaminhado para o alvo, aumentando ainda mais a sobrecarga na infraestrutura.</p>
-</li>
-<li>
-<p><strong>Sobrecarga dos recursos</strong>: devido a arquitetura do protocolo, a infraestrutura do alvo fica rapidamente sobrecarregada com a quantidade massiva de pacotes UDP recebidos, gerando assim indisponibilidade do serviço para usuários legítimos.</p>
-</li>
-</ol>
-<h3 id="características">Características</h3>
-<ul>
-<li>
-<p><strong>Poder do ataque</strong>: o ataque é relativamente simples de ser realizado e requer poucos recursos do lado do atacante, já que é apenas uma questão de enviar uma grande quantidade de pacotes falsificados.</p>
-</li>
-<li>
-<p><strong>Dificuldade de Rastreamento</strong>: devido ao IP spoofing, rastrear a origem do ataque e aplicar mitigação direcionada fica bem difícil.</p>
-</li>
-<li>
-<p><strong>Impacto na disponibilidade</strong>: é o objetivo do ataque torná-lo inacessível para usuários legítimos.</p>
-</li>
-</ul>
-<h3 id="mitigação">Mitigação</h3>
-<ul>
-<li><strong>Filtragem de pacotes</strong>: implementar filtros de pacotes para bloquear ou limitar o tráfego UDP suspeito.</li>
-<li><strong>Detecção de Amplificação</strong>: identificar e corrigir vulnerabilidades em serviços que podem ser explorados para amplificar tráfego.</li>
-<li><strong>Implementação de limites de taxa</strong>: configurar limites de taxa para o tráfego UDP.</li>
-<li><strong>Análise de tráfego</strong>: monitorar o tráfego de rede para identificar padrões suspeitos de tráfego UDP para medidas de mitigação proativas.</li>
-<li><strong>Serviços de proteção DDoS</strong>: considerar o uso de serviços de proteção DDoS de provedores CDN e segurança que podem detectar e mitigar ataques em tempo real.</li>
-<li><strong>Atualização e patches de segurança</strong>: manter sistemas e serviços atualizados com as últimas correções de segurança para mitigar vulnerabilidades conhecidas que podem ser exploradas em ataques.</li>
-</ul>
-<p>Os ataques DDoS UDP flood representam uma ameaça significativa para a disponibilidade de serviços online e podem ser difíceis de mitigar devido à sua natureza distribuída e à facilidade de execução. A implementação de uma combinação de técnicas de mitigação ainda é a melhor forma de reduzir o impacto desses ataques e manter a disponibilidade dos serviços.</p>
-<h4 id="firewalls">Firewalls.</h4>
-<p>Algumas técnicas possíveis</p>
-<h5 id="nftables">nftables</h5>
-<h6 id="limitação-de-taxa-de-pacotes">Limitação de taxa de pacotes</h6>
-<p>Limitar a taxa de pacotes UDP por origem ou destino reduz a intensidade do ataque.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nft add table ip filter
-</span></span><span style="display:flex;"><span>nft add chain ip filter input <span style="color:#ff79c6">{</span> <span style="color:#8be9fd;font-style:italic">type</span> filter hook input priority <span style="color:#bd93f9">0</span> <span style="color:#f1fa8c">\;</span> <span style="color:#ff79c6">}</span>
-</span></span><span style="display:flex;"><span>nft add rule ip filter input udp limit rate 50/second burst <span style="color:#bd93f9">100</span> packets accept
-</span></span><span style="display:flex;"><span>nft add rule ip filter input udp limit rate over 50/second drop
-</span></span></code></pre></div><ul>
-<li><code>add table ip filter</code>:  cria uma <a href="https://wiki.nftables.org/wiki-nftables/index.php/Configuring_tables#Adding_tables">tabela</a> chamada &ldquo;filter&rdquo; de <a href="https://wiki.nftables.org/wiki-nftables/index.php/Nftables_families">família de endereço</a> &ldquo;ip&rdquo;.</li>
-<li><code>add chain ip filter input { type filter hook input priority 0 \; }</code>: adiciona a <a href="https://wiki.nftables.org/wiki-nftables/index.php/Configuring_chains#Adding_base_chains">cadeia</a> base &ldquo;input&rdquo; na tabela &ldquo;filter&rdquo; fazemos um filtro no <a href="https://wiki.nftables.org/wiki-nftables/index.php/Netfilter_hooks">gancho input</a> com <a href="https://wiki.nftables.org/wiki-nftables/index.php/Configuring_chains#Base_chain_priority">prioridade</a> 0.</li>
-<li><code>add rule ip filter input ip protocol udp limit rate 50/second burst 100 packets accept</code>: serão aceitos pacotes com taxa abaixo de 50 por segundo com um burst(pico) de 100 pacotes.</li>
-<li><code>add rule ip filter input ip protocol udp limit rate over 50/second burst 100 packets drop</code>: pacotes acima do limite de taxa serão descartados.</li>
-</ul>
-<h6 id="filtragem-de-portas-e-pacotes">Filtragem de portas e pacotes</h6>
-<p>Bloquear portas incomuns.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nft add rule ip filter input ip protocol udp dport 0-1023 drop
-</span></span></code></pre></div><ul>
-<li><code>udp dport 0-1023 drop</code>: descarta pacotes destinados ao intervalo de portas (aqui como exemplo usamos as reservadas).</li>
-</ul>
-<h6 id="rastreamento-de-conexão">Rastreamento de conexão</h6>
-<p>O rastreamento de conexão ajuda a identificar e bloquear pacotes que não fazem parte de um padrão esperado. Apesar do UTP não ser orientado a conexão, o sistema &ldquo;ct&rdquo; trata a transação como uma única conexão rastreada baseada na origem+destino de endereço IP e portas enquanto ela passa pelas funções hook do ct. Por exemplo: o comando host dispara uma query para um servidor DNS criando o &ldquo;ctinfo&rdquo; &ldquo;<a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/netfilter/nf_conntrack_common.h#L17">IP_CT_NEW</a>&rdquo;! E e quando o pacotes alcança a função hook &ldquo;<a href="https://github.com/torvalds/linux/blob/master/net/netfilter/nf_conntrack_core.c#L1151">help+config</a>&rdquo; o status é &ldquo;<a href="https://github.com/torvalds/linux/blob/master/net/netfilter/nf_conntrack_core.c#L1214">IPS_CONFIRMED</a>&rdquo; e o timeout de 30s e o rastreamento da conexão é adicionado na tabela ct&hellip; Quando o servidor DNS responde a query o sistema reconhece que as características desses pacotes coincidem com a conexão salva na tabela e que ainda está dentro do timeout configurado e então o &ldquo;ctinfo&rdquo; é configurado para &ldquo;IP_CT_ESTABLISHED_REPLY&rdquo; e o &ldquo;status&rdquo; para &ldquo;<a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/netfilter/nf_conntrack_common.h#L48">IPS_SEEN_REPLY</a>&rdquo; e o timeout é configurado para 30s novamente e se não ocorrer mais nenhum pacote de ambos os hosts, o &ldquo;status&rdquo; é configurado para  &ldquo;<a href="https://github.com/torvalds/linux/blob/master/include/uapi/linux/netfilter/nf_conntrack_common.h#L85">IPS_DYING</a>&rdquo;</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nft add rule ip filter input ip protocol udp ct state new,established accept
-</span></span><span style="display:flex;"><span>nft add rule ip filter input ip protocol udp ct state invalid drop
-</span></span></code></pre></div><ul>
-<li><code>udp ct state new,established accept</code>: aceita conexões novas e estabelecidas.</li>
-<li><code>udp ct state invalid drop</code>: descarta pacotes considerados inválidos.</li>
-</ul>
-<h6 id="filtragem-de-pacotes-anômalos-e-fragmentados">Filtragem de pacotes anômalos e fragmentados</h6>
-<p>Pacotes com cabeçalhos ou tamanho inconsistentes podem indicar um ataque.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nft add rule ip filter input ip protocol udp ip length <span style="color:#bd93f9">0</span> drop
-</span></span><span style="display:flex;"><span>nft add rule ip filter input ip protocol udp ip length 512-65535 drop
-</span></span><span style="display:flex;"><span>nft add rule ip filter input ip frag-off !<span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0</span> ip protocol udp drop
-</span></span></code></pre></div><ul>
-<li><code>udp ip length 0 drop</code>: descarta pacotes com tamanho zero.</li>
-<li><code>udp ip length 512-65535 drop</code>: descarta pacotes com tamanho acima de 512 bytes.</li>
-<li><code>ip frag-off != 0 ip protocol udp drop</code>: descartar pacotes IP fragmentados para evitar a recomposição de pacotes maliciosos.</li>
-</ul>
-<h6 id="filtragem-de-redes-e-ip-suspeitos">Filtragem de redes e IP suspeitos</h6>
-<p>Se você identificar fontes de ataques conhecidas, pode criar listas de bloqueio para impedir tráfego desses endereços.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>nft add <span style="color:#8be9fd;font-style:italic">set</span> ip filter block_ips <span style="color:#ff79c6">{</span><span style="color:#8be9fd;font-style:italic">type</span> ipv4_address <span style="color:#f1fa8c">\;</span> timeout 6h <span style="color:#f1fa8c">\;</span> comment <span style="color:#f1fa8c">\&#34;</span>descarta pacotes desses sources<span style="color:#f1fa8c">\&#34;</span> <span style="color:#f1fa8c">\;</span> <span style="color:#ff79c6">}</span>
-</span></span><span style="display:flex;"><span>nft add rule ip filter input ip saddr @block_ips drop
-</span></span><span style="display:flex;"><span>nft add element ip filter block_ips <span style="color:#ff79c6">{</span> ?.?.?.?, ?.?.?.?/? <span style="color:#ff79c6">}</span>
-</span></span></code></pre></div><ul>
-<li><code>add set ip filter block_ips {type ipv4_address \;timeout 6h \;}</code>: cria o <a href="https://wiki.nftables.org/wiki-nftables/index.php/Sets#Named_sets">conjunto</a> &ldquo;block_ips&rdquo; do tipo &ldquo;ipv4_address&rdquo; na tabela &ldquo;filter&rdquo; com para armazenar endereços IP e que serão removidos após 6 horas.</li>
-<li><code>add rule ip saddr @block_ips drop</code>: aplica a regra a pacotes cujo endereço de origem esteja no conjunto &ldquo;blocked_ips&rdquo; descartando-os.</li>
-<li><code>add element ip filter block_ips { ?.?.?.?, ?.?.?.?/? }</code>: adicionando IP&rsquo;s e blocos CIDR ao conjunto &ldquo;block_ips&rdquo;.</li>
-</ul>
-<h5 id="ipfw">ipfw</h5>
-<h6 id="habilitar-e-limitar-o--log">Habilitar e limitar o  log</h6>
-<p>Limitar registros de logs de regras para minimizar ocupação de recursos.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sysrc <span style="color:#8be9fd;font-style:italic">firewall_logging</span><span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;YES&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#8be9fd;font-style:italic">echo</span> <span style="color:#f1fa8c">&#34;net.inet.ip.fw.verbose_limit=6&#34;</span> &gt;&gt; /etc/sysctl.conf
-</span></span></code></pre></div><ul>
-<li><code>firewall_logging=&quot;YES&quot;</code>: habilitando log</li>
-<li><code>&quot;net.inet.ip.fw.verbose_limit=6&quot;</code>: limitando o número de vezes que a regra é logada por tentativa de conexão.</li>
-</ul>
-<h6 id="limitação-de-taxa-de-pacotes-1">Limitação de taxa de pacotes</h6>
-<p>Limitar a taxa de pacotes UDP por origem ou destino reduz a intensidade do ataque.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>ipfw add <span style="color:#bd93f9">090</span> check-state
-</span></span><span style="display:flex;"><span>ipfw add <span style="color:#bd93f9">100</span> deny limit src-addr 100/s log udp from any to any
-</span></span></code></pre></div><ul>
-<li><code>check-state</code>: verifica o estado das conexões para permitir tráfego de conexões estabelecidas ou relacionadas.</li>
-<li><code>deny limit src-addr 100/s log udp from any to any</code>: limita a 100 pacotes por segundo por endereço IP e rejeita pacotes excedentes.</li>
-</ul>
-<h6 id="filtragem-de-portas">Filtragem de portas</h6>
-<p>Bloquear portas incomuns.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>ipfw add <span style="color:#bd93f9">200</span> deny log udp from any to any dst-port 0-1234
-</span></span></code></pre></div><ul>
-<li><code>deny log udp from any to any dst-port 0-1234</code>: loga e bloqueia intervalo de portas de destino (aqui como exemplo usamos as reservadas).</li>
-</ul>
-<h6 id="rastreamento-de-estado">Rastreamento de estado</h6>
-<p>O rastreamento de estado permite que o firewall diferencie conexões legítimas de atividades suspeitas.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>ipfw add <span style="color:#bd93f9">300</span> allow udp from any to any keep-state
-</span></span></code></pre></div><ul>
-<li><code>allow udp from any to any keep-state</code>: cria regra UDP dinâmica que corresponde ao tráfego bidirecional entre os endereços e portas de origem e destino para permitir tráfego UDP relacionado.</li>
-</ul>
-<h6 id="filtragem-de-pacotes-anômalos-e-fragmentados-1">Filtragem de pacotes anômalos e fragmentados</h6>
-<p>Pacotes com cabeçalhos ou tamanho inconsistentes podem indicar um ataque.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ipfw add <span style="color:#bd93f9">400</span> deny udp from any to any frag
-</span></span><span style="display:flex;"><span>ipfw add <span style="color:#bd93f9">500</span> deny udp from any to any iplen 512-65535
-</span></span></code></pre></div><ul>
-<li><code>add 400 deny udp from any to any frag</code>: nega todos os pacotes fragmentados para o protocolo UDP.</li>
-<li><code>deny udp from any to any iplen 512-65535</code>: descartar pacotes com tamanho maior que 512 bytes, indicando amplificação ou fragmentação maliciosa.</li>
-</ul>
-<h6 id="uso-de-tabelas-para-bloquear-endereços-ip">Uso de Tabelas para Bloquear Endereços IP</h6>
-<p>Outra técnica é usar tabelas para bloquear endereços IP suspeitos.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>ipfw table <span style="color:#bd93f9">1</span> create <span style="color:#8be9fd;font-style:italic">type</span> addr
-</span></span><span style="display:flex;"><span>ipfw table <span style="color:#bd93f9">1</span> add ?.?.?.?/?
-</span></span><span style="display:flex;"><span>ipfw add <span style="color:#bd93f9">600</span> deny all from table<span style="color:#ff79c6">(</span>1<span style="color:#ff79c6">)</span> to any
-</span></span></code></pre></div><ul>
-<li><code>ipfw table 1 create type addr</code>: cria tabela para armazenar endereços IP que podem ser usados para rastreio.</li>
-<li><code>ipfw table 1 add ?.?.?.?/?</code>: adiciona IP ou bloco de endereços à tabela para bloqueio.</li>
-<li><code>ipfw add 600 deny all from table(1) to any</code>: Bloqueia pacotes de endereços IP que estão na tabela &ldquo;1&rdquo;.</li>
-</ul>
-<h5 id="pf">PF</h5>
-<h6 id="limitação-de-taxa-de-pacotes-2">Limitação de taxa de pacotes</h6>
-<p>Limitar a taxa de pacotes UDP por origem ou destino reduz a intensidade do ataque.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>table block_ip persist
-</span></span><span style="display:flex;"><span>pass in proto udp from any to any port any keep state <span style="color:#ff79c6">(</span>max 10, max-src-conn-rate 5/second, overload block_ip flush<span style="color:#ff79c6">)</span>
-</span></span><span style="display:flex;"><span>block in quick from block_ip
-</span></span></code></pre></div><ul>
-<li><code>table block_ip persist</code>: cria uma tabela para armazenar endereços IP que não respeitaram o limite imposto pela regra.</li>
-<li><code>pass in proto udp from any to any port any keep state (max 10, max-src-conn-rate 5/second, overload block_ip flush)</code>:  mantem o estado de até 10 conexões por endereço IP, limitando a taxa de conexões para 5 por segundo e quando o limite é excedido, o endereço é adicionado na tabela <code>block_ip</code> além de todas as conexões desse endereços serem removidas.</li>
-<li><code>block in quick from block_ip</code>: Bloqueia rapidamente qualquer tráfego de endereços na tabela <code>&lt;blocked_ips&gt;</code>. A opção <code>quick</code> garante que a regra seja aplicada imediatamente, sem continuar verificando regras subsequentes.</li>
-</ul>
-<h6 id="rastreamento-de-estado-1">Rastreamento de estado</h6>
-<p>O controle de estados permite que o firewall mantenha o rastreamento das conexões ativas, permitindo identificar tráfego anômalo. Você pode definir regras para permitir apenas tráfego com um estado válido.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>pass in proto udp from any to any keep state
-</span></span><span style="display:flex;"><span>block in proto udp from any to any keep state <span style="color:#ff79c6">(</span>no-state<span style="color:#ff79c6">)</span>
-</span></span></code></pre></div><ul>
-<li><code>pass out proto udp from any to any keep state</code>: permite tráfego que faz parte de conexões estabelecidas ou relacionadas.</li>
-<li><code>block in proto udp from any to any keep state (no-state)</code>: bloqueia tráfego que não pertence a conexões válidas</li>
-</ul>
-<h6 id="bloqueio-de-ip">Bloqueio de IP</h6>
-<p>Podemos criar uma nova tabela ou fazer uso da tabela já criada para bloquear IPs suspeitos.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span><span style="color:#6272a4"># Adiciona um endereço IP à tabela</span>
-</span></span><span style="display:flex;"><span>table block_ip add ?.?.?.?
-</span></span></code></pre></div><ul>
-<li><code>table block_ip add ?.?.?.?</code>: adiciona um endereço IP na tabela block_ip para bloqueio.</li>
-</ul>
-<h6 id="filtragem-por-portas">Filtragem por Portas</h6>
-<p>Outra técnica é bloquear portas específicas que possam ser usadas para ataques ou analisar o conteúdo dos pacotes para detectar padrões suspeitos.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>block in proto udp from any to any port <span style="color:#bd93f9">53</span>
-</span></span></code></pre></div><ul>
-<li><code>block in proto udp from any to any port 53</code>: bloqueia pacotes UDP destinados à portas ou range de portas específicas.</li>
-</ul>
-<h6 id="filtragem-de-pacotes-anômalos-e-fragmentados-2">Filtragem de pacotes anômalos e fragmentados</h6>
-<p>Pacotes com características anormais ou malformados ou tamanho inconsistentes podem indicar um ataque.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>block in quick proto udp from any to any port any tagged DOIDAO_UDP_SIZE iplen 512-65535
-</span></span><span style="display:flex;"><span>block in quick proto udp from any to any frag
-</span></span></code></pre></div><ul>
-<li><code>tagged DOIDAO_UDP_SIZE iplen 512-65535</code>: descartar pacotes com tamanho maior que 512 bytes, que indicam também pacotes amplificados.</li>
-<li><code>block in quick proto udp from any to any frag</code>: descarta pacotes fragmentados para prevenir amplificação por fragmentação.</li>
-</ul>
-<h5 id="iptables">iptables</h5>
-<h6 id="limitar-a-taxa-de-pacotes">Limitar a taxa de pacotes</h6>
-<p>Limitar a taxa de pacotes UDP por origem ou destino reduz a intensidade do ataque.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>iptables -A INPUT -p udp -m limit --limit 100/sec --limit-burst <span style="color:#bd93f9">200</span> -j ACCEPT
-</span></span></code></pre></div><ul>
-<li><code>-p udp</code>: especifica pacotes UDP.</li>
-<li><code>-m limit</code>: módulo de limitação de taxa.</li>
-<li><code>--limit 100/sec</code>: limita a 100 pacotes por segundo.</li>
-<li><code>--limit-burst 200</code>: permite um pico (burst) de até 200 pacotes antes de aplicar a limitação.</li>
-<li><code>-j ACCEPT</code>: Aceita pacotes que atendem a esse critério.</li>
-</ul>
-<h6 id="bloquear-de-portas">Bloquear de portas</h6>
-<p>Bloquear portas incomuns.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>iptables -A INPUT -p udp --dport 0:1023 -j DROP
-</span></span></code></pre></div><ul>
-<li><code>--dport 0:1023</code>: intervalo de portas de destino (aqui como exemplo usamos as reservadas).</li>
-<li><code>-j DROP</code>: Descarte pacotes que atendem a esse critério.</li>
-</ul>
-<h6 id="rastreamento-de-conexão-1">Rastreamento de conexão</h6>
-<p>O rastreamento de conexão ajuda a identificar e bloquear pacotes que não fazem parte de um padrão esperado.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>iptables -A INPUT -p udp -m state --state NEW,ESTABLISHED,RELATED -j ACCEPT
-</span></span><span style="display:flex;"><span>iptables -A INPUT -p udp -m state --state INVALID -j DROP
-</span></span></code></pre></div><ul>
-<li><code>-m state</code>: módulo de estado para rastreamento de conexão.</li>
-<li><code>--state NEW,ESTABLISHED</code>: conexões novas e estabelecidas..</li>
-<li><code>-j ACCEPT</code>: aceita pacotes que atendem a esse critério.</li>
-<li><code>--state INVALID</code>: descartar pacotes considerados inválidos ou não solicitados</li>
-</ul>
-<h6 id="filtragem-de-pacotes-anômalos-e-fragmentados-3">Filtragem de pacotes anômalos e fragmentados</h6>
-<p>Pacotes com cabeçalhos inconsistentes podem indicar um ataque.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>iptables -A INPUT -p udp --length <span style="color:#bd93f9">0</span> -j DROP
-</span></span><span style="display:flex;"><span>iptables -A INPUT -p udp -m length --length 512-65535 -j DROP
-</span></span><span style="display:flex;"><span>iptables -A INPUT -p udp -f -j DROP
-</span></span></code></pre></div><ul>
-<li><code>--length 0 -j DROP</code>: descarta pacotes com comprimento zero, indicando anomalia.</li>
-<li><code>-m length --length 512-65535 -j DROP</code>: descarta pacotes com tamanho maior que 512 bytes, indicando pacotes amplificados ou malformados.</li>
-<li><code>-f -j DROP</code>: filtra pacotes fragmentados para evitar recomposição.</li>
-</ul>
-<h6 id="filtragem-de-redes-e-ip-suspeitos-1">Filtragem de redes e IP suspeitos</h6>
-<p>Se você identificar fontes de ataques conhecidas, pode criar listas de bloqueio para impedir tráfego desses endereços ou blocos de endereço.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>iptables -A INPUT -s 0.0.0.0/0 -j DROP
-</span></span></code></pre></div><ul>
-<li><code>0.0.0.0/0</code>: endereço ou blocos de endereço (CIDR)</li>
-<li><code>-s</code>: Define a origem do pacote.</li>
-<li><code>-j DROP</code>: descarte pacotes dessa origem.</li>
-</ul>
-<h5 id="considerações">Considerações</h5>
-<ul>
-<li>Antes de aplicar essas regras em um ambiente de produção, teste cuidadosamente para garantir que não afetem tráfegos legítimos da infraestrutura.</li>
-<li>Monitore seu sistema após aplicar novas regras para detectar comportamentos inesperados ou interrupções.</li>
-<li>A combinação dessas técnicas ajuda a criar uma defesa robusta contra ataques DDoS UDP flood e manter a disponibilidade do serviço mesmo diante de tráfego malicioso</li>
-</ul>
-]]></description>
-      
-    </item>
-    
-    
-  </channel>
-</rss>
+</div>
+</article>
+
+    <hr />
+    <p class="articleTagsContainer">
+        <span> </span>
+        <strong>Tags:</strong>
+        
+            <a
+                
+                href="/tags/ddos/">#DDoS</a>
+        
+            <a
+                
+                href="/tags/dos/">#DoS</a>
+        
+            <a
+                
+                href="/tags/firewall/">#Firewall</a>
+        
+            <a
+                
+                href="/tags/openbsd/">#OpenBSD</a>
+        
+            <a
+                
+                href="/tags/pf/">#PF</a>
+        
+            <a
+                
+                href="/tags/seginfo/">#SegInfo</a>
+        
+    </p>
+
+
+
+
+
+
+                    </main><footer>
+    <hr />
+
+<p><small>
+        2024 &copy; 0xttfx - <a href="https://spdx.org/licenses/BSD-3-Clause">BSD-3-Clause</a>
+    </small></p>
+    <p><small>
+        
+    </small></p>
+</footer>
+</div>
+            </div>
+        </div>
+
+
+</body>
+</html>
