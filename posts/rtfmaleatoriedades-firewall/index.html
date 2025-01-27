@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="en">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <title>RTFM &amp; Aleatoriedades - Firewall - 0xttfx</title><meta name="author" content="Faioli a.k.a 0xttfx">
+<meta name="description" content="Requisitos mínimos para um firewall profissional."><meta name="keywords" content='PF, OpenBSD, Firewall, DoS, DDoS, SegInfo'>
+  <meta itemprop="name" content="RTFM & Aleatoriedades - Firewall">
+  <meta itemprop="description" content="Requisitos mínimos para um firewall profissional.">
+  <meta itemprop="datePublished" content="2024-11-12T18:07:52-03:00">
+  <meta itemprop="dateModified" content="2025-01-27T11:46:26-03:00">
+  <meta itemprop="wordCount" content="3167">
+  <meta itemprop="image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
+  <meta itemprop="keywords" content="PF,OpenBSD,Firewall,DoS,DDoS,SegInfo"><meta property="og:url" content="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-firewall/">
+  <meta property="og:site_name" content="0xttfx">
+  <meta property="og:title" content="RTFM & Aleatoriedades - Firewall">
+  <meta property="og:description" content="Requisitos mínimos para um firewall profissional.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-11-12T18:07:52-03:00">
+    <meta property="article:modified_time" content="2025-01-27T11:46:26-03:00">
+    <meta property="article:tag" content="PF">
+    <meta property="article:tag" content="OpenBSD">
+    <meta property="article:tag" content="Firewall">
+    <meta property="article:tag" content="DoS">
+    <meta property="article:tag" content="DDoS">
+    <meta property="article:tag" content="SegInfo">
+    <meta property="og:image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
+  <meta name="twitter:title" content="RTFM & Aleatoriedades - Firewall">
+  <meta name="twitter:description" content="Requisitos mínimos para um firewall profissional.">
+      <meta name="twitter:site" content="@0xttfx">
+<meta name="twitter:creator" content="@0xttfx" /><meta name="application-name" content="0xttfx">
+<meta name="apple-mobile-web-app-title" content="0xttfx"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" type="text/html" href="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-firewall/" title="RTFM &amp; Aleatoriedades - Firewall - 0xttfx" /><link rel="prev" type="text/html" href="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-udev_keychron/" title="RTFM &amp; Aleatoriedades - UDEV_Keychron" /><link rel="next" type="text/html" href="http://0xttfx.tcpip.net.br/posts/rtfmrandomness-lokik8s-fetchinglargelogs/" title="RTFM &amp; Randomness Loki K8s - Fetching Large Logs" /><link rel="alternate" type="text/markdown" href="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-firewall/index.md" title="RTFM & Aleatoriedades - Firewall - 0xttfx"><link rel="stylesheet" href="/css/style.min.5fb8636ad8f7ce85ece8cfd1b583385644991297bcabe889a9ed87d9b420dde6722873df084bf070d186b7e8f42529ece5312c08b3912ec100416517af236f51.css" integrity="sha512-X7hjatj3zoXs6M/RtYM4VkSZEpe8q+iJqe2H2bQg3eZyKHPfCEvwcNGGt+j0JSns5TEsCLORLsEAQWUXryNvUQ=="><link rel="preload" href="/lib/fontawesome-free/all.min.e47b37745d8010f92934047b5223876dafa545224d78cd840a4c31508c42d50fc52f27064db35aa565c1e2d3fcf3d9394f926ef1fb386f53f9cff881e2731f49.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.e47b37745d8010f92934047b5223876dafa545224d78cd840a4c31508c42d50fc52f27064db35aa565c1e2d3fcf3d9394f926ef1fb386f53f9cff881e2731f49.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="></noscript><link rel="preload" href="/lib/animate/animate.min.738daa4d2c3fc0f677ff92c1cc3f81c397fb6d2176a31a2eeb011bf88fe5a9e68a57914321f32fbd1a7bef6cb88dc24b2ae1943a96c931d83f053979d1f25803.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw==" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/animate/animate.min.738daa4d2c3fc0f677ff92c1cc3f81c397fb6d2176a31a2eeb011bf88fe5a9e68a57914321f32fbd1a7bef6cb88dc24b2ae1943a96c931d83f053979d1f25803.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw=="></noscript><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "RTFM \u0026 Aleatoriedades - Firewall",
+    "inLanguage": "en",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http:\/\/0xttfx.tcpip.net.br\/posts\/rtfmaleatoriedades-firewall\/"
+    },"genre": "posts","keywords": "PF, OpenBSD, Firewall, DoS, DDoS, SegInfo","wordcount":  3167 ,
+    "url": "http:\/\/0xttfx.tcpip.net.br\/posts\/rtfmaleatoriedades-firewall\/","datePublished": "2024-11-12T18:07:52-03:00","dateModified": "2025-01-27T11:46:26-03:00","license": "Running on [OpenBSD](https://openbsd.org) and [httpd](https://man.openbsd.org/httpd.8) |  [0xttfx](https://0xttfx.tcpip.net.br) - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)","publisher": {
+      "@type": "Organization",
+      "name": ""},"author": {
+        "@type": "Person",
+        "name": "Faioli a.k.a 0xttfx"
+      },"description": "Requisitos mínimos para um firewall profissional."
+  }
+  </script><script src="/js/head/color-scheme.min.e4582484625e45df8e4adbb4cc376382a2cba293ce791cf7e64b7d91903cb3c5ca0e91d3f65981dd654cffb16766c9ba00adc5f156d21c61355858e9efc36d60.js" integrity="sha512-5FgkhGJeRd+OStu0zDdjgqLLopPOeRz35kt9kZA8s8XKDpHT9lmB3WVM/7FnZsm6AK3F8VbSHGE1WFjp78NtYA=="></script></head>
+  <body data-header-desktop="sticky" data-header-mobile="auto"><div class="wrapper" data-page-style="normal"><header class="desktop animate__faster" id="header-desktop">
+  <div class="header-wrapper">
+    <div class="header-title">
+      <a href="/" title="0xttfx"><img loading="lazy" src="/images/logo.svg" alt="0xttfx" data-title="0xttfx" width="26" height="26" class="logo" style="background: url(/images/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}"/><span class="header-title-text">0xTTFX</span></a><span class="header-subtitle"></span></div>
+    <nav>
+      <ul class="menu"><li class="menu-item">
+              <a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> Archives</a></li><li class="menu-item">
+              <a class="menu-link" href="/pages/about"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> About</a></li><li class="menu-item">
+              <a class="menu-link" href="https://cv0xttfx.tcpip.net.br" rel="noopener noreferrer" target="_blank"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> CV</a></li><li class="menu-item">
+              <a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> Tags</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+            <input type="text" placeholder="Search titles or contents ..." id="search-input-desktop">
+            <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+              <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+            </a>
+            <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+              <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+            </a>
+            <span class="search-button search-loading" id="search-loading-desktop">
+              <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+            </span>
+          </li><li class="menu-item theme-switch" title="Switch Theme">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header><header class="mobile animate__faster" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title="0xttfx"><img loading="lazy" src="/images/logo.svg" alt="0xttfx" data-title="0xttfx" width="26" height="26" class="logo" style="background: url(/images/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}"/><span class="header-title-text">0xTTFX</span></a><span class="header-subtitle"></span></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li class="search-wrapper">
+            <div class="search mobile" id="search-mobile">
+              <input type="text" placeholder="Search titles or contents ..." id="search-input-mobile">
+              <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+              </a>
+              <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+              </a>
+              <span class="search-button search-loading" id="search-loading-mobile">
+                <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+              </span>
+            </div>
+            <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+              Cancel
+            </a>
+          </li><li class="menu-item"><a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> Archives</a></li><li class="menu-item"><a class="menu-link" href="/pages/about"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> About</a></li><li class="menu-item"><a class="menu-link" href="https://cv0xttfx.tcpip.net.br" rel="noopener noreferrer" target="_blank"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> CV</a></li><li class="menu-item"><a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> Tags</a></li><li class="menu-item menu-system">
+          <span class="menu-system-item theme-switch" title="Switch Theme"><i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i></span></li>
+      </ul>
+    </nav>
+  </div>
+</header><div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+  </div>
+  <div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+  </div><main class="container"><aside class="aside-collection animate__animated animate__fadeIn animate__faster" aria-label="Collections"></aside>
+
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>RTFM &amp; Aleatoriedades - Firewall</span>
+      </h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/0xttfx" title="Author"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><i class="fa-solid fa-user-circle" aria-hidden="true"></i>
+    Faioli a.k.a 0xttfx</a></span></div><div class="post-meta-line"><span title="published on 2024-11-12 18:07:52"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2024-11-12">2024-11-12</time></span>&nbsp;<span title="Updated on 2025-01-27 11:46:26"><i class="fa-regular fa-calendar-check fa-fw me-1" aria-hidden="true"></i><time datetime="2025-01-27">2025-01-27</time></span>&nbsp;<span title="3167 words"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>About 3200 words</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>15 minutes</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="RTFM &amp; Aleatoriedades - Firewall"><i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;views
+          </span>&nbsp;</div>
+    </div><div class="details toc" id="toc-static" data-kept="false">
+        <div class="details-summary toc-title">
+          <span>Contents</span>
+          <span><i class="details-icon fa-solid fa-angle-right" aria-hidden="true"></i></span>
+        </div>
+        <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#firewall">Firewall</a></li>
+    <li><a href="#nist-special-publications">NIST Special Publications</a></li>
+    <li><a href="#ambiente">Ambiente</a></li>
+    <li><a href="#ruleset">Ruleset</a></li>
+  </ul>
+</nav></div>
+      </div><div class="content" id="content"><h2 id="firewall" class="heading-element"><span>Firewall</span>
+  <a href="#firewall" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><p>Em 2016 eu participei do curso <a href="https://www.freebsdbrasil.com.br/treinamento/treinamentos-ssa.html"target="_blank" rel="external nofollow noopener noreferrer">FreeBSD S.S.A</a> na <a href="https://www.freebsdbrasil.com.br"target="_blank" rel="external nofollow noopener noreferrer">FreeBSD brasil</a> que sem sombra de dúvidas foi um dos <strong>raros treinamentos</strong> que de fato entregou conhecimento e me fez avançar de diversas formas no gerenciamento de redes, roteamento e segurança complexos de forma KISS.</p>
+<div class="alert alert-tip"><p class="alert-title"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path d="M8 1.5c-2.363.0-4 1.69-4 3.75.0.984.424 1.625.984 2.304l.214.253c.223.264.47.556.673.848.284.411.537.896.621 1.49a.75.75.0 01-1.484.211c-.04-.282-.163-.547-.37-.847a8.456 8.456.0 00-.542-.68c-.084-.1-.173-.205-.268-.32C3.201 7.75 2.5 6.766 2.5 5.25 2.5 2.31 4.863.0 8 0s5.5 2.31 5.5 5.25c0 1.516-.701 2.5-1.328 3.259-.095.115-.184.22-.268.319-.207.245-.383.453-.541.681-.208.3-.33.565-.37.847a.751.751.0 01-1.485-.212c.084-.593.337-1.078.621-1.489.203-.292.45-.584.673-.848.075-.088.147-.173.213-.253.561-.679.985-1.32.985-2.304.0-2.06-1.637-3.75-4-3.75zM5.75 12h4.5a.75.75.0 010 1.5h-4.5a.75.75.0 010-1.5zM6 15.25a.75.75.0 01.75-.75h2.5a.75.75.0 010 1.5h-2.5A.75.75.0 016 15.25z"/></svg>Tip</p><p>SSA - Server and System Systems Administration.
+December 2016.
+FreeBSD Brasil LTDA.
+<a href="https://www.freebsdbrasil.com.br/treinamento/certificacao-validar-certificados.html"target="_blank" rel="external nofollow noopener noreferrer">Certificado Número: 011245</a>.</p></div><p>Como reflexo do conhecimento adquirido. A atenção aos requisitos mínimos, necessários para conceber um firewall tecnicamente descente, profissional e em conformidade com os requisitos do projeto: tornaram-se mandatórios!</p>
+<p>E para esse fim, como apoio e referência</p>
+<ul>
+<li><a href="https://csrc.nist.gov/pubs/sp/800/41/r1/final"target="_blank" rel="external nofollow noopener noreferrer">NIST SP 800-41 Rev 1 - Guidelines on Firewalls and Firewall Policy</a>.</li>
+<li><a href="https://www.nist.gov/cyberframework"target="_blank" rel="external nofollow noopener noreferrer">NIST Cybersecurity Framework - CSF</a></li>
+<li><a href="https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final"target="_blank" rel="external nofollow noopener noreferrer">NIST SP 800-53 Rev 5 - Diretrizes sobre firewalls e política de firewall</a></li>
+</ul>
+<p>E para melhor embasamento, e expansão do próprio conhecimento sobre as possibilidades e o mais importante: no processo cognitivo para a solução de problemas. Indico fortemente conhecer padrões de conformidade em segurança que fazem uso do NIST:</p>
+<ul>
+<li>
+<p><a href="https://www.hhs.gov/hipaa/index.html"target="_blank" rel="external nofollow noopener noreferrer">HIPAA</a><a href="https://csrc.nist.gov/glossary/term/payment_card_industry_data_security_standard"target="_blank" rel="external nofollow noopener noreferrer">NIST</a> é uma Lei de Portabilidade e Responsabilidade de Seguros de Saúde dos EUA (HIPAA) que regula como as informações de saúde são tratadas e protegidas para garantir a proteção das informações de saúde através de controles e práticas de segurança para informações eletrônicas de saúde. E que regulamenta organizações: <code>covered entities</code> - provedores de saúde, planos de saúde e câmaras de compensação de saúde; <code>business associates</code> - empresas de cobrança, fornecedores de registro eletrônico de saúde (RES), consultores ou provedores de TI.</p>
+</li>
+<li>
+<p><a href="https://csrc.nist.gov/glossary/term/PII"target="_blank" rel="external nofollow noopener noreferrer">Personally Identifiable Information - PII</a> que são quaisquer dados que possam ser usados para identificar alguém e que direta ou indiretamente se vinculam a uma pessoa. Qual empresa não coleta, armazena e processa PII nos dias de hoje? É claro que é uma definição americana! A GPDR UE tem outra definição: dados pessoais. Mas o importante é o arcabouço cognitivo de estar atendo ao métodos de proteger esses dados pessoais etc.</p>
+</li>
+<li>
+<p><a href="https://www.pcisecuritystandards.org/document_library/"target="_blank" rel="external nofollow noopener noreferrer">Payment Card Industry - PCI</a> <a href="https://csrc.nist.gov/glossary/term/pci_dss"target="_blank" rel="external nofollow noopener noreferrer">NIST</a> é um conjunto de políticas de segurança para os dados do portador do cartão. Organizações que processam transações financeiras com cartões de crédito, débito e pré-pago estão sujeitas aos requisitos de conformidade com PCI.</p>
+</li>
+<li>
+<p><a href="https://www.cisa.gov/topics/cyber-threats-and-advisories/federal-information-security-modernization-act"target="_blank" rel="external nofollow noopener noreferrer">Federal Information Security Modernization Act - FISMA</a> <a href="https://csrc.nist.gov/topics/laws-and-regulations/laws/FISMA"target="_blank" rel="external nofollow noopener noreferrer">NIST</a> é uma legislação dos Estados Unidos que define uma estrutura de diretrizes e padrões de segurança para proteger as operações de tecnologia da informação do governo contra ameaças cibernéticas. Essa estrutura de gerenciamento de risco foi assinada como lei como parte do Electronic Government Act de 2002, posteriormente atualizadas e alteradas em 2014.
+Ela exige de agências federais o desenvolvimento, documentação e implementação de programas de infosec para proteger informações sensíveis e confidenciais. O ato também descreve as responsabilidades do National Institute of Standards and Technology - NIST e do Office of Management and Budget (OMB).</p>
+</li>
+<li>
+<p><a href="https://www.iso.org/standard/27001"target="_blank" rel="external nofollow noopener noreferrer">ISO/IEC 27001:2022</a> é um norma de segurança de informações reconhecida internacionalmente, desenvolvida pelo órgão de certificação <a href="https://www.iso.org/"target="_blank" rel="external nofollow noopener noreferrer">Organização Internacional de Padronização - ISO</a> e a <a href="https://iec.ch/homepage"target="_blank" rel="external nofollow noopener noreferrer">Comissão Eletrotécnica Internacional - CEI</a>. A sua versão mais recente é: ISO/IEC 27001:2022. [equivalência: SP 800-53].</p>
+</li>
+<li>
+<p><a href="">ISO/IEC 27002:2022</a> guia de melhores práticas para a implementação de controles de segurança da informação, aplicado aos controles da norma ISSO 27001:2022. [equivalência: Cybersecurity Framework - CSF e SP 800-53]</p>
+</li>
+</ul>
+<h2 id="nist-special-publications" class="heading-element"><span>NIST Special Publications</span>
+  <a href="#nist-special-publications" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><p>Estou usando como referência principal, a coleção de recomendações da subsérie de especificações técnicas <a href="https://csrc.nist.gov/publications/sp800"target="_blank" rel="external nofollow noopener noreferrer">SP 800 - Computer security</a> da  <a href="https://csrc.nist.gov/publications/sp"target="_blank" rel="external nofollow noopener noreferrer"><strong>NIST Special Publications</strong></a>.</p>
+<p>O <a href="https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-53r5.pdf"target="_blank" rel="external nofollow noopener noreferrer">NIST SP 800-53 Rev 5</a> que também faz referência ao <a href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-41r1.pdf"target="_blank" rel="external nofollow noopener noreferrer">SP 800-41 Rev 1</a> como um documento para atingir conformidade em um firewall. Tem várias referências a firewall no terceiro capítulo e seguintes seções:</p>
+<ul>
+<li>Terceiro capítulo, <strong>The Controls</strong> - SECURITY AND PRIVACY CONTROLS AND CONTROL ENHANCEMENTS.
+<ul>
+<li><strong>3.1</strong> Access Control:
+<ul>
+<li><strong>AC-3</strong> ACCESS ENFORCEMENT</li>
+<li><strong>AC-4</strong> INFORMATION FLOW ENFORCEMENT</li>
+<li><strong>AC-6</strong> LEAST PRIVILEGE</li>
+</ul>
+</li>
+<li><strong>3.5</strong> CONFIGURATION MANAGEMENT
+<ul>
+<li> <strong>CM-7</strong> LEAST FUNCTIONALITY</li>
+</ul>
+</li>
+<li><strong>3.8</strong> INCIDENT RESPONSE
+<ul>
+<li><strong>IR-4</strong> INCIDENT HANDLING</li>
+</ul>
+</li>
+<li><strong>3.16</strong> RISK ASSESSMENT
+<ul>
+<li>RA-10 THREAT HUNTING</li>
+</ul>
+</li>
+<li><strong>3.17</strong> SYSTEM AND SERVICES ACQUISITION
+<ul>
+<li><strong>SA-9</strong> EXTERNAL SYSTEM SERVICES</li>
+</ul>
+</li>
+<li><strong>3.18</strong> SYSTEM AND COMMUNICATIONS PROTECTION
+<ul>
+<li><strong>SC-7</strong> BOUNDARY PROTECTION</li>
+<li><strong>SC-28</strong> PROTECTION OF INFORMATION AT REST</li>
+</ul>
+</li>
+<li><strong>3.19</strong> SYSTEM AND INFORMATION INTEGRITY
+<ul>
+<li><strong>SI-3</strong> MALICIOUS CODE PROTECTION</li>
+<li><strong>SI-4</strong> SYSTEM MONITORING</li>
+<li><strong>SI-7</strong> SOFTWARE, FIRMWARE, AND INFORMATION INTEGRITY</li>
+<li><strong>SI-8</strong> SPAM PROTECTION</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>O guia <a href="https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-41r1.pdf"target="_blank" rel="external nofollow noopener noreferrer">SP 800-41 Revision 1 - Guidelines on Firewalls and Firewall Policy</a> é a minha principal referência de recomendações para garantir as melhores práticas na segurança e controle de tráfego em um firewall.</p>
+<p><strong>Seção 2 - Overview of Firewall Technologies</strong>
+Nessa seção temos a definição de diferentes tipos de Firewalls e arquitetura nas quais são melhor empregados para o controle do fluxo de tráfego de rede entre redes ou hosts que empregam diferentes posturas de segurança.</p>
+<p>Inicialmente, podemos tomar como ponto de atenção. O seguinte resumo de recomendações:</p>
+<ul>
+<li>O uso de NAT deve ser considerado uma forma de roteamento, não um tipo de firewall.
+<ul>
+<li>cuidado! Seu entendimento sobre DMZ pode ser um problema!</li>
+</ul>
+</li>
+<li>As organizações devem permitir apenas tráfego de saída que use os endereços IP de origem em uso pela organização.
+<ul>
+<li>esteja atento aos requisitos de segurança da arquitetura de redes.</li>
+</ul>
+</li>
+<li>A verificação de conformidade só é útil em um firewall quando pode bloquear a comunicação que pode ser prejudicial aos sistemas protegidos.
+<ul>
+<li>o firewall deve se basear na segurança do layout de redes sem perder flexibilidade: permitindo assim a evolução da infraestrutura.</li>
+</ul>
+</li>
+<li>Ao escolher o tipo de firewall a ser implantado, é importante decidir se o firewall precisa atuar como um proxy de aplicativo.
+<ul>
+<li>esteja atento a qual tecnologia de firewall usar observando suas capacidades de lidar com as camadas TCP/IP.</li>
+</ul>
+</li>
+<li>O gerenciamento de firewalls pessoais deve ser centralizado para ajudar a criar, distribuir e aplicar políticas de forma eficiente para todos os usuários e grupos.
+<ul>
+<li>a sobreposição de firewalls sempre gerará carga operacional e complexidade.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Seção 3 - Firewalls and Network Architectures</strong>
+Esta seção se concentra em firewalls de rede porque os outros tipos geralmente não estão relacionados a problemas de topologia de rede.</p>
+<ul>
+<li>
+<p>Em geral, um firewall deve se encaixar no layout de uma rede atual. No entanto, uma organização pode alterar sua arquitetura de rede ao mesmo tempo em que implanta um firewall como parte de uma atualização geral de segurança.</p>
+</li>
+<li>
+<p>Diferentes arquiteturas de rede comuns levam a escolhas muito diferentes sobre onde colocar um firewall, então uma organização deve avaliar qual arquitetura funciona melhor para seus objetivos de segurança.</p>
+</li>
+<li>
+<p>Se um firewall de borda tiver uma DMZ, considere quais serviços voltados para fora devem ser executados a partir da DMZ e quais devem permanecer na rede interna.</p>
+</li>
+<li>
+<p>Não confie em NATs para fornecer os benefícios dos firewalls.</p>
+</li>
+<li>
+<p>Em alguns ambientes, colocar um firewall atrás de outro pode levar a um objetivo de segurança desejado, mas, em geral, essas múltiplas camadas de firewalls podem ser problemáticas.</p>
+</li>
+</ul>
+<p><strong>Seção 4 - Firewall Policy</strong></p>
+<ul>
+<li>
+<p>4.1 - Policies based on IP Address and Protocol</p>
+</li>
+<li>
+<p>4.2 - Policies Based on Applications</p>
+</li>
+<li>
+<p>4.3 - Policies Based on User Identity</p>
+</li>
+<li>
+<p>4.4 - Policies Based on Network Activity</p>
+</li>
+<li>
+<p>Seção 5 - Firewall Planning and Implementation</p>
+<ul>
+<li>5.2.1 - Hardware and Software Installation</li>
+<li>5.2.3 - Logging and Alerts Configuration</li>
+<li>5.5 - Manage</li>
+</ul>
+</li>
+</ul>
+<h2 id="ambiente" class="heading-element"><span>Ambiente</span>
+  <a href="#ambiente" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><p>Ambiente de teste:</p>
+<ul>
+<li>Aplicações
+<ul>
+<li>httpd daemon,</li>
+<li>OpenSSH,</li>
+<li>Wireguard,</li>
+<li>Prometheus Node Exporter,</li>
+<li>Tor relay obfs4 bridge.</li>
+</ul>
+</li>
+<li>servidor
+<ul>
+<li>VPS <a href="https://www.vultr.com"target="_blank" rel="external nofollow noopener noreferrer">VULTR</a></li>
+<li>Regular Cloud Compute.</li>
+<li>1 vCPU, 1024 MB RAM, 25 GB SSD, 1.00 TB Transfer.</li>
+<li>OpenBSD 7.4 (GENERIC.MP) #1396: Sun Oct 8 09:20:40 MDT 2023.</li>
+</ul>
+</li>
+</ul>
+<p><strong>Requisitos</strong></p>
+<ul>
+<li>Políticas de segurança baseadas em endereço IP e protocolo</li>
+<li>tratar tráfego loopback e pseudo interfaces,</li>
+<li>tratar anomalias IP e por protocolo,</li>
+<li>criar limites de fluxo IP,</li>
+<li>tratar transformações e validações de pacotes,</li>
+<li>criar políticas por protocolo, serviço, host e redes,</li>
+<li>aplicar técnicas para mitigar DoS e DDoS,</li>
+<li>considerar o esgotamento de recursos computacionais.</li>
+</ul>
+<h2 id="ruleset" class="heading-element"><span>Ruleset</span>
+  <a href="#ruleset" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><p>Segue abaixo, uma sugestão de conjunto de regras de firewall <a href="https://www.openbsd.org"target="_blank" rel="external nofollow noopener noreferrer"><em>Open</em><strong>BSD</strong></a> PF - Packet Filtering.</p>
+<ul>
+<li>/etc/pf.conf</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Definições de interfaces</span>
+</span></span><span class="line"><span class="cl"><span class="nv">ext_if</span> <span class="o">=</span> <span class="s2">&#34;vio0&#34;</span>            <span class="c1"># Interface externa (WAN)</span>
+</span></span><span class="line"><span class="cl"><span class="nv">int_if</span> <span class="o">=</span> <span class="s2">&#34;vio1&#34;</span>            <span class="c1"># Interface interna (LAN)</span>
+</span></span><span class="line"><span class="cl"><span class="nv">lo_if</span> <span class="o">=</span> <span class="s2">&#34;lo0&#34;</span>       <span class="c1"># Interface loopback</span>
+</span></span><span class="line"><span class="cl"><span class="nv">wg_if</span> <span class="o">=</span> <span class="s2">&#34;wg0&#34;</span>             <span class="c1"># Interface VPN WireGuard</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Endereços IP e redes</span>
+</span></span><span class="line"><span class="cl"><span class="nv">server_ip</span> <span class="o">=</span> <span class="s2">&#34;215.230.100.124&#34;</span>  <span class="c1"># IP do servidor de aplicação</span>
+</span></span><span class="line"><span class="cl"><span class="nv">lan_net</span> <span class="o">=</span> <span class="s2">&#34;10.42.95.0/20&#34;</span>   <span class="c1"># Rede interna (LAN)</span>
+</span></span><span class="line"><span class="cl"><span class="nv">vpn_net</span> <span class="o">=</span> <span class="s2">&#34;10.0.0.0/24&#34;</span>      <span class="c1"># Rede da VPN WireGuard</span>
+</span></span><span class="line"><span class="cl"><span class="nv">srv_monit_ip</span> <span class="o">=</span> <span class="s2">&#34;0.0.0.0&#34;</span><span class="c1"># IP do servidor de monitoramento</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Portas Permitidas (HTTP, HTTPS, SSH, WireGuard, Prometheus)</span>
+</span></span><span class="line"><span class="cl"><span class="nv">allowed_ports_tcp</span> <span class="o">=</span> <span class="s2">&#34;{ 22, 80, 443, 9100, 51820, 9001, 9003 }&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">allowed_ports_udp</span> <span class="o">=</span> <span class="s2">&#34;{ domain }&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># ICMP</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># https://man.openbsd.org/icmp</span>
+</span></span><span class="line"><span class="cl"><span class="nv">icmp_types</span> <span class="o">=</span> <span class="s2">&#34;{  echoreq, echorep, unreach, timex, trace }&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#</span>
+</span></span><span class="line"><span class="cl"><span class="nv">non_routable</span> <span class="o">=</span> <span class="s2">&#34;{ 127.0.0.0/8, 192.168.0.0/16, 172.16.0.0/12, 10.0.0.0/8 , fd00::/8, fe80::/10 }&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># LOG</span>
+</span></span><span class="line"><span class="cl"><span class="nv">pflog_logfile</span><span class="o">=</span><span class="s2">&#34;/var/log/pflog&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Criando tabelas</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># https://www.openbsd.org/faq/pf/tables.html</span>
+</span></span><span class="line"><span class="cl">table &lt;trusted_admins&gt; persist file <span class="s2">&#34;/etc/trusted_admins&#34;</span>
+</span></span><span class="line"><span class="cl">table &lt;blocked_hosts&gt; persist
+</span></span><span class="line"><span class="cl">table &lt;blocked_bforce&gt; persist
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Política de Bloqueio Padrão e de Limites de Estado e Fragmentação</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Bloqueio de todo o tráfego por padrão, com permissões específicas para tráfego necessário.</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># https://www.openbsd.org/faq/pf/options.html</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Política de segurança mínima - &#34;deny all&#34;. Alinhado com o NIST SP 800-41 Revision 1, Seção 4 - Firewall Policy </span>
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> block-policy drop        <span class="c1"># Define o comportamento padrão para regras de filtro: drop - packet is silently dropped</span>
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> loginterface <span class="nv">$ext_if</span>     <span class="c1"># Loga tráfego na interface externa para auditoria</span>
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> skip on <span class="nv">$lo_if</span>           <span class="c1"># Ignora tráfego na interface loopback para desempenho</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Limita o número de estados de conexão e fragmentos permitidos para prevenir ataques DoS.</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># NIST SP 800-41, Seção 4.4 - Policies Based on Network Activity</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># https://www.openbsd.org/faq/pf/options.html</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Estabelendo limites na operação do Pf. Configurações atuais: `pfctl -s memory`.</span>
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> limit <span class="o">{</span> states 10000, frags <span class="m">5000</span> <span class="o">}</span>  <span class="c1"># frags - número máximo de entradas no pool de memória usado para remontagem de pacotes (scrub rules). O padrão é de 5000. states - número máximo de entradas no pool de memória usado para entradas de tabela de estado (regras de filtro que especificam o keep state). O padrão é 100000.</span>
+</span></span><span class="line"><span class="cl"><span class="nb">set</span> optimization normal  <span class="c1"># Configuração otimizada para tráfego em ambiente de rede: normal - adequado para quase todas as redes.</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Alinhado com a prática de &#34;deny-all&#34; na entrada e saída: exceto o permitido explicitamente.</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># https://www.openbsd.org/faq/pf/tagging.html#policy</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># https://www.openbsd.org/faq/pf/filter.html#defdeny</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Conforme NIST SP 800-41, Seção 4.1 (Política padrão de bloqueio)</span>
+</span></span><span class="line"><span class="cl">block in log all  <span class="c1"># bloqueará o tráfego de entrada em todas as interfaces em qualquer direção de qualquer lugar para qualquer lugar.</span>
+</span></span><span class="line"><span class="cl">block out log all <span class="c1"># bloqueará o tráfego de saida em todas as interfaces em qualquer direção de qualquer lugar para qualquer lugar.</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Prevenção de Anomalias IP</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Previne spoofing e anomalias de IP usando a diretiva `antispoof`.</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># https://www.openbsd.org/faq/pf/filter.html#antispoof</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Conforme NIST SP 800-41, seção 4.1.1 - IP Addresses and Other IP Characteristics</span>
+</span></span><span class="line"><span class="cl">antispoof quick <span class="k">for</span> <span class="o">{</span> <span class="nv">$ext_if</span> <span class="nv">$int_if</span> <span class="nv">$wg_if</span> <span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Bloqueio de endereços IP não roteáveis.</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Conforme NIST SP 800-41, Seção 4.1.1 - IP Addresses and Other IP Characteristics</span>
+</span></span><span class="line"><span class="cl">block drop in quick on <span class="nv">$ext_if</span> from any to <span class="nv">$non_routable</span>    <span class="c1"># Bloqueia loopback na interface externa</span>
+</span></span><span class="line"><span class="cl">block drop in quick on <span class="nv">$ext_if</span> from any to 255.255.255.255  <span class="c1"># Bloqueia broadcast global</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Loopback e Pseudo-Interfaces. Permitindo tráfego local na interface loopback para evitar tretas.</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Alinhamento com NIST SP 800-41, Seção 4.1 - Policies Based on IP Addresses and Protocols</span>
+</span></span><span class="line"><span class="cl">pass quick on <span class="nv">$lo_if</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Validação e Transformação de Pacotes (scrubbing)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Reassembla pacotes fragmentados e randomiza IDs de pacotes para prevenir ataques que exploram fragmentação.</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># https://home.nuug.no/~peter/pf/en/scrub.html</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># https://man.openbsd.org/pf.conf.5#TRAFFIC_NORMALnoISATION</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># https://man.openbsd.org/pf.conf#match</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Alinhamento com NIST SP 800-41, seção 2.1.1 - Packet Filtering </span>
+</span></span><span class="line"><span class="cl">match in all scrub <span class="o">(</span>no-df max-mss 1440<span class="o">)</span>
+</span></span><span class="line"><span class="cl">match out all scrub <span class="o">(</span>random-id<span class="o">)</span> <span class="c1"># randomização de IDs para dificultar fingerprinting de pacotes</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Permissão explícita para serviços</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># https://www.openbsd.org/faq/pf/filter.html#stateopts</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Alinhamento com NIST SP 800-41, seção 4.2 - Policies Based on Applications e 2.1.1 - Packet Filtering</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># https://www.openbsd.org/faq/pf/filter.html#stateopts</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># https://www.openbsd.org/faq/pf/filter.html#synproxy</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># bloqueando sources suspeitos</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># https://www.openbsd.org/faq/pf/tables.html</span>
+</span></span><span class="line"><span class="cl">block in quick from &lt;blocked_hosts&gt; to any
+</span></span><span class="line"><span class="cl">block in quick from &lt;blocked_bforce&gt; to any
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Limitar o tráfego ICMP</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Alinhamento com NIST SP 800-41, seção 4.1.4 - ICMP e 4.1.2 IPv6 e 4.4 - Policies Based on Network Activity</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># se os pacotes exceder 1000 por 10s, pacotes adicionais não serão processados bem como se houver mais de 1000 entradas de estados. E também, se existir mais de 100 IPs exclusivos, ou se um único IP tiver mais de 100 entradas...</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ICMP para IPv4</span>
+</span></span><span class="line"><span class="cl">pass in log on <span class="nv">$ext_if</span> inet proto icmp all from any to <span class="nv">$ext_if</span> icmp-type <span class="nv">$icmp_types</span> max-pkt-rate 1000/10 keep state <span class="o">(</span>max 1000, source-track rule, max-src-nodes 100, max-src-states 100<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ICMPv6 para IPv6</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#pass in log on $ext_if inet proto icmp all from any to $ext_if inet6 proto icmp6 max-pkt-rate 1000/10 keep state (max 1000, source-track rule, max-src-nodes 100, max-src-states 100)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># &#34;synproxy&#34; para proteger contra ataques SYN Flood ao validar pacotes antes de enviar ao servidor.</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Alinhamento com NIST SP 800-41, seção 4.2 - Policies Based on Applications e 4.4 Policies Based on Network Activity e 4.1.3 TCP and UDP</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># https://www.openbsd.org/faq/pf/filter.html#stateopts</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># https://www.openbsd.org/faq/pf/filter.html#synproxy</span>
+</span></span><span class="line"><span class="cl">pass in log on <span class="nv">$ext_if</span> proto tcp from any to <span class="nv">$ext_if</span> port <span class="m">80</span> flags S/SA synproxy state <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    <span class="o">(</span>max-src-conn 10, max-src-conn-rate 10/5, <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>     overload &lt;blocked_hosts&gt; flush<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># &#34;synproxy&#34; para proteger contra ataques SYN Flood ao validar pacotes antes de enviar ao servidor.</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Alinhamento com NIST SP 800-41, seção 4.2 - Policies Based on Applications e 4.4 Policies Based on Network Activity e 4.1.3 TCP and UDP</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># https://www.openbsd.org/faq/pf/filter.html#stateopts</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># https://www.openbsd.org/faq/pf/filter.html#synproxy</span>
+</span></span><span class="line"><span class="cl">pass in log on <span class="nv">$ext_if</span> proto tcp from any to <span class="nv">$ext_if</span> port <span class="m">443</span> flags S/SA synproxy state <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    <span class="o">(</span>max-src-conn 10, max-src-conn-rate 10/5, <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    overload &lt;blocked_hosts&gt; flush<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Limite de conexões para evitar ataques de brute force</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Alinhamento com NIST SP 800-41, seção 4.2 - Policies Based on Applications e 4.4 Policies Based on Network Activity e 4.1.3 TCP and UDP</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># https://www.openbsd.org/faq/pf/filter.html#stateopts</span>
+</span></span><span class="line"><span class="cl">pass in log on <span class="nv">$ext_if</span> proto tcp from any to <span class="nv">$ext_if</span> port <span class="m">22</span> keep state <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    <span class="o">(</span>max-src-conn 5, max-src-conn-rate 3/10, <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>     overload &lt;brute_force&gt; flush global<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Node Exporter porta 9100.</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Limite de conexões para evitar ataques de brute force</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Alinhamento com NIST SP 800-41, seção 4.2 - Policies Based on Applications e 4.4 Policies Based on Network Activity e 4.1.3 TCP and UDP</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># https://www.openbsd.org/faq/pf/filter.html#stateopts</span>
+</span></span><span class="line"><span class="cl">pass in log on <span class="nv">$ext_if</span> proto tcp from any to <span class="nv">$ext_if</span> port <span class="m">9100</span> keep state <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    <span class="o">(</span>max-src-conn 5, max-src-conn-rate 5/5, <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>     overload &lt;blocked_bforce&gt; flush<span class="o">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Tor relay obfs4 bridge</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Permite o serviço Tor nas portas 9001 e 9003.</span>
+</span></span><span class="line"><span class="cl">pass in on <span class="nv">$ext_if</span> proto tcp from any to <span class="nv">$ext_if_ip</span> port <span class="o">{</span>9001, 9003<span class="o">}</span> keep state
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># WireGuard VPN # Permite UDP na porta WireGuard. </span>
+</span></span><span class="line"><span class="cl">pass in on <span class="nv">$ext_if</span> inet proto udp from any to <span class="nv">$ext_if_ip</span> port <span class="m">51820</span> keep state
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Políticas para redes</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Define permissões e restrições para a rede interna e a rede externa (WAN).</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Alinhado com o NIST SP 800-41, 4.1 Policies Based on IP Addresses and Protocols</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Tráfego permitido entre a rede interna (LAN) e o servidor.</span>
+</span></span><span class="line"><span class="cl">pass in quick on <span class="nv">$lan_if</span> from <span class="nv">$lan_net</span> to self keep state
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Permitindo tráfego entre rede Wireguard e o servidor</span>
+</span></span><span class="line"><span class="cl">pass in on <span class="nv">$wg_if</span> from <span class="nv">$wg_net</span> to self keep state
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Permissão de tráfego de saída apenas para serviços essenciais.</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Alinhado com o NIST SP 800-41, seção 4.1.1 - IP Addresses and Other IP Characteristics 4.2 - Policies Based on Applications e 4.4 Policies Based on Network Activity e 4.1.3 TCP and UDP</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># TCP ports list</span>
+</span></span><span class="line"><span class="cl">pass out quick on <span class="nv">$wan_if</span> proto tcp from <span class="nv">$ext_if_ip</span> to any port <span class="nv">$allow_ptcp</span> keep state  
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Tor bridge</span>
+</span></span><span class="line"><span class="cl">pass out quick on <span class="nv">$wan_if</span> proto tcp from <span class="nv">$ext_if_ip</span> to any port <span class="nv">$allow_pbtor</span> keep state
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#wireguard</span>
+</span></span><span class="line"><span class="cl">pass out on egress inet from <span class="o">(</span><span class="nv">$wg_if</span>:network<span class="o">)</span> nat-to <span class="o">(</span><span class="nv">$ext_if</span>:0<span class="o">)</span> keep state
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># ICMP prove</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#pass out quick inet proto icmp all icmp-type $icmp_types</span>
+</span></span><span class="line"><span class="cl">pass out quick on <span class="nv">$ext_if</span> inet proto icmp all icmp-type <span class="nv">$icmp_types</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># DNS resolver </span>
+</span></span><span class="line"><span class="cl">pass out quick on <span class="nv">$ext_if</span> proto <span class="o">{</span> tcp udp <span class="o">}</span> from <span class="o">(</span><span class="nv">$wan_if</span><span class="o">)</span> to any port <span class="m">53</span> keep state
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Tráfego de saída da LAN para WAN.</span>
+</span></span><span class="line"><span class="cl">pass out on <span class="nv">$ext_if</span> from <span class="nv">$int_net</span> to any
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Monitoramento e Auditoria</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># https://man.openbsd.org/pflog.4</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># https://www.openbsd.org/faq/pf/logging.html</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># https://man.openbsd.org/pf.conf#match</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Log de tráfego relevante para auditoria e detecção de incidentes, conforme recomendado pelo NIST SP 800-41, Seção 5.</span>
+</span></span><span class="line"><span class="cl">match log <span class="o">(</span>all<span class="o">)</span> on <span class="nv">$ext_if</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>Nesse documento onde aplico um conjunto de regras em um SO OpenBSD e firewall PS, apesar de nem sempre existir uma seção do documento que faz referência direta ao método que está sendo aplicado em uma regra específica; ainda assim, eu tento sinalizar as seções que tratam de forma concreta ou abstrata&hellip; ;)</p>
+<p>Por fim, para o que foi proposto, conseguimos atender tecnicamente os seguintes pontos:</p>
+<ul>
+<li>Política de Bloqueio Padrão e Defesa em Profundidade
+<ul>
+<li>Todas as conexões de entrada e saída são bloqueadas por padrão para aplicar uma política de segurança mínima e alinhada ao conceito de &ldquo;defesa em profundidade&rdquo;. O NIST recomenda permitir tráfego apenas quando explicitamente autorizado.</li>
+</ul>
+</li>
+<li>Limites de Conexão e Fragmentação
+<ul>
+<li>Os limites de <code>states</code> e <code>frags</code> são configurados para evitar ataques DoS e DDoS, prevenindo o esgotamento de recursos no firewall e alinhando-se com o NIST sobre restrições de uso de estados.</li>
+</ul>
+</li>
+<li>Regras de Normalização e Scrubbing
+<ul>
+<li>A regra <code>scrub</code> assegura a reconstrução de pacotes fragmentados e previne anomalias de tráfego, alinhando-se com as recomendações do NIST sobre validação de pacotes.</li>
+</ul>
+</li>
+<li>Prevenção de spoofing, syn flood e integridade de pacotes
+<ul>
+<li>O comando <code>antispoof</code> ajuda a bloquear pacotes forjados provenientes de IPs internos e <code>synproxy</code> evitando DoS syn flood conforme o NIST recomenda a integridade de pacotes.</li>
+</ul>
+</li>
+<li>Tráfego loopback
+<ul>
+<li>O tráfego loopback é permitido para garantir a comunicação interna do sistema, seguindo as diretrizes do NIST sobre a configuração de interfaces locais.</li>
+</ul>
+</li>
+<li>Regras específicas por aplicação
+<ul>
+<li>Para SSH, HTTP/HTTPS, WireGuard, Prometheus e Tor, cada serviço possui regras de passagem individualizadas. O NIST recomenda políticas por serviço para controlar o tráfego conforme as necessidades do aplicativo. Cada regra possui limitação de taxa de conexões para prevenir ataques de força bruta e DoS.</li>
+</ul>
+</li>
+<li>Limitação de conexões ICMP
+<ul>
+<li>Limita o número de requisições ICMP permitidas por host, ajudando a mitigar possíveis abusos e ataques de DoS via ICMP. A configuração separa IPv4 e IPv6 para garantir a compatibilidade.</li>
+</ul>
+</li>
+<li>Controle e auditoria de tráfego com log
+<ul>
+<li>O <code>match log (all)</code> permite auditoria completa do tráfego de entrada e saída, alinhado ao NIST, que recomenda manter registros de incidentes para análise e conformidade.</li>
+</ul>
+</li>
+</ul>
+</div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod">
+        <span title="Updated on 2025-01-27 11:46:26">Updated on 2025-01-27&nbsp;
+                <a class="git-hash" href="https://github.com/0xttfx/commit/4df531e0d13d25c69c8c1d6007709fa90d4ef821" rel="external nofollow noopener noreferrer" target="_blank" title="commit by 0xttfx(thiago.faioli@gmail.com) 4df531e0d13d25c69c8c1d6007709fa90d4ef821: Update - novo tema FixIt"><i class="fa-solid fa-hashtag fa-fw" aria-hidden="true"></i>4df531e</a></span>
+      </div><div class="post-info-license">
+            <span><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a></span>
+          </div></div><div class="post-info-line">
+        <div class="post-info-md"><span><a href="/posts/rtfmaleatoriedades-firewall/index.md" title="Read Markdown" class="link-to-markdown">Read Markdown</a></span><span><a href="https://github.com/0xttfx/blob/main/content/posts/RTFM&amp;Aleatoriedades-Firewall.md?plain=1" title="View source"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-source">View source</a></span><span><a href="https://github.com/0xttfx/edit/main/content/posts/RTFM&amp;Aleatoriedades-Firewall.md" title="Edit this page"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-edit">Edit this page</a></span><span><a href="https://github.com/0xttfx/issues/new?title=[BUG]%20RTFM&#43;%26&#43;Aleatoriedades&#43;-&#43;Firewall&amp;body=%7cField%7cValue%7c%0A%7c-%7c-%7c%0A%7cTitle%7cRTFM&#43;%26&#43;Aleatoriedades&#43;-&#43;Firewall%7c%0A%7cURL%7chttp://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-firewall/%7c%0A%7cFilename%7chttps://github.com/0xttfx/blob/main/content/posts/RTFM&amp;Aleatoriedades-Firewall.md?plain=1%7c" title="Report issue"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-report">Report issue</a></span></div>
+        <div class="post-info-share">
+          <span><a href="javascript:void(0);" title="Share on X" data-sharer="twitter" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-firewall/" data-title="RTFM &amp; Aleatoriedades - Firewall" data-via="0xttfx" data-hashtags="PF,OpenBSD,Firewall,DoS,DDoS,SegInfo"><i class="fa-brands fa-x-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-firewall/"><i class="fa-brands fa-linkedin fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-firewall/" data-title="RTFM &amp; Aleatoriedades - Firewall" data-web><i class="fa-brands fa-whatsapp fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on Reddit" data-sharer="reddit" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-firewall/"><i class="fa-brands fa-reddit fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-firewall/" data-title="RTFM &amp; Aleatoriedades - Firewall"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  </span>
+        </div>
+      </div></div>
+
+  <div class="post-info-more">
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw me-1" aria-hidden="true"></i><a href="/tags/pf/" class="post-tag" title="Tags - PF">PF</a><a href="/tags/openbsd/" class="post-tag" title="Tags - OpenBSD">OpenBSD</a><a href="/tags/firewall/" class="post-tag" title="Tags - Firewall">Firewall</a><a href="/tags/dos/" class="post-tag" title="Tags - DoS">DoS</a><a href="/tags/ddos/" class="post-tag" title="Tags - DDoS">DDoS</a><a href="/tags/seginfo/" class="post-tag" title="Tags - SegInfo">SegInfo</a></section>
+    <section>
+      <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+    </section>
+  </div><div class="post-nav"><a href="/posts/rtfmaleatoriedades-udev_keychron/" class="post-nav-item" rel="prev" title="RTFM &amp; Aleatoriedades - UDEV_Keychron"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>RTFM &amp; Aleatoriedades - UDEV_Keychron</a><a href="/posts/rtfmrandomness-lokik8s-fetchinglargelogs/" class="post-nav-item" rel="next" title="RTFM &amp; Randomness Loki K8s - Fetching Large Logs">RTFM &amp; Randomness Loki K8s - Fetching Large Logs<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+<div id="comments"></div></article>
+
+  <aside class="toc" id="toc-auto" aria-label="Contents"><h2 class="toc-title">Contents&nbsp;<i class="toc-icon fa-solid fa-angle-down fa-fw" aria-hidden="true"></i></h2>
+      <div class="toc-content" id="toc-content-auto"></div></aside></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
+            <span itemprop="copyrightYear">2024 - 2025</span><span class="author" itemprop="copyrightHolder">
+              <a href="https://github.com/0xttfx"target="_blank" rel="external nofollow noopener noreferrer">Faioli a.k.a 0xttfx</a></span><span class="license footer-divider">BSD-3-Clause</span></div><div class="footer-line statistics"></div><div class="footer-line visitor">
+          <span id="busuanzi_container_site_uv" title='Total visitors'><i class="fa-regular fa-user fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span><span id="busuanzi_container_site_pv" class="footer-divider" title='Total visits'><i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span>
+        </div></div>
+  </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="Back to Top"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric">0%</span>
+        </div><div class="fixed-button view-comments d-none" role="button" aria-label="View Comments"><i class="fa-solid fa-comment fa-fw" aria-hidden="true"></i></div></div><div id="mask"></div><div class="reading-progress-bar" style="left: 0;top: 0;"></div><noscript>
+    <div class="noscript-warning">This website works best with JavaScript enabled.</div>
+  </noscript>
+</div><link rel="preload" href="/lib/katex/katex.min.af6f85907cdfd6ed3e4906d93a8233d91c5638859f744cd1b98c9b1a3ccaab5f231bdcda49f132f6cdfe8cca86ff33ed468affab8a9a502610a664a34f0f0cfa.css" integrity="sha512-r2+FkHzf1u0+SQbZOoIz2RxWOIWfdEzRuYybGjzKq18jG9zaSfEy9s3+jMqG/zPtRor/q4qaUCYQpmSjTw8M+g==" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/katex/katex.min.af6f85907cdfd6ed3e4906d93a8233d91c5638859f744cd1b98c9b1a3ccaab5f231bdcda49f132f6cdfe8cca86ff33ed468affab8a9a502610a664a34f0f0cfa.css" integrity="sha512-r2+FkHzf1u0+SQbZOoIz2RxWOIWfdEzRuYybGjzKq18jG9zaSfEy9s3+jMqG/zPtRor/q4qaUCYQpmSjTw8M+g=="></noscript><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.2d0f7b71a99aaff94e9624ff32a8dc42ce645a0cba433fdc091cf34735027efd1fa2db024c2f591d768f426255f17bbf3d500b7c967b0437b3979956dffa81c6.css" integrity="sha512-LQ97camar/lOliT/MqjcQs5kWgy6Qz/cCRzzRzUCfv0fotsCTC9ZHXaPQmJV8Xu/PVALfJZ7BDezl5lW3/qBxg=="><script src="/lib/autocomplete/autocomplete.min.7e654c67e741180b83f7b4d829967003fea37a5d5014f549f0a3d7f945d2b73e73e22a1dd04a7b68712c846f004232f3030d07305784fab026100af12af8f0ac.js" integrity="sha512-fmVMZ+dBGAuD97TYKZZwA/6jel1QFPVJ8KPX+UXStz5z4iod0Ep7aHEshG8AQjLzAw0HMFeE+rAmEArxKvjwrA==" defer></script><script src="/lib/fuse/fuse.min.36ac35b47de6a5abe46bd71009ce7359611935f20f74e6324058e557536f7e512d434fd723a650f87fc3dd880976a49426530b00f463fe85e56870856c50a3a1.js" integrity="sha512-Nqw1tH3mpavka9cQCc5zWWEZNfIPdOYyQFjlV1NvflEtQ0/XI6ZQ+H/D3YgJdqSUJlMLAPRj/oXlaHCFbFCjoQ==" defer></script><script src="/lib/sharer/sharer.min.94c73c706d26a452277a104d6857c0cb04e816ad61c4163b4e0a135426a7767211e0a27c952ea85e3df25aec941374e21053db0f9e7822af8a2f9c4a8a93c4e3.js" integrity="sha512-lMc8cG0mpFInehBNaFfAywToFq1hxBY7TgoTVCandnIR4KJ8lS6oXj3yWuyUE3TiEFPbD554Iq+KL5xKipPE4w==" async defer></script><script src="/lib/katex/katex.min.20da6cf7343619410c0900fbc626506c65159ea9f312f9729d5cba7aa713707378f9a4222e8f7fb9a42a7240e9749f199b7334401b3e3e4b60e29cf490492552.js" integrity="sha512-INps9zQ2GUEMCQD7xiZQbGUVnqnzEvlynVy6eqcTcHN4+aQiLo9/uaQqckDpdJ8Zm3M0QBs+Pktg4pz0kEklUg==" defer></script><script src="/lib/katex/auto-render.min.6095714e3aadb63b14ddc4af69346ab12974c1b460654345f8d1860a0b68fcc51b22f68b757433193090bb80afc8965b65cb607e5541d0f5f0f4b2e64d69b9ff.js" integrity="sha512-YJVxTjqttjsU3cSvaTRqsSl0wbRgZUNF+NGGCgto/MUbIvaLdXQzGTCQu4CvyJZbZctgflVB0PXw9LLmTWm5/w==" defer></script><script src="/lib/katex/copy-tex.min.895ad99f7d8fdb0683cd271c02584953bd0542c6d4956c9feebaa16673683a45d5884f5253e3db33f8f74a86cc464477497656fb36e96a558137311bdb7f32d6.js" integrity="sha512-iVrZn32P2waDzSccAlhJU70FQsbUlWyf7rqhZnNoOkXViE9SU+PbM/j3SobMRkR3SXZW+zbpalWBNzEb238y1g==" defer></script><script src="/lib/katex/mhchem.min.9b18cdc3fbb5948b050b4f64fee9ec703458de87c860f5456d690ff2c96b78f712dfa86de1dfce67cad1bb9c9d741dae8aa6a385370b0fcfa3ba9396b983de6e.js" integrity="sha512-mxjNw/u1lIsFC09k/unscDRY3ofIYPVFbWkP8slrePcS36ht4d/OZ8rRu5yddB2uiqajhTcLD8+jupOWuYPebg==" defer></script><script src="/lib/cookieconsent/cookieconsent.min.c975ea3858dd8c7347d46343fb510ed236efbde6c0069cc6283eba7639d47e22a560c1391c6314247a0269e1380f93d31b662c4897fa770ab2514bd0bd2d2f68.js" integrity="sha512-yXXqOFjdjHNH1GND+1EO0jbvvebABpzGKD66djnUfiKlYME5HGMUJHoCaeE4D5PTG2YsSJf6dwqyUUvQvS0vaA==" defer></script><script src="https://vercount.one/js" async defer></script><script>window.config={"code":{"copyTitle":"Copy to clipboard","editLockTitle":"Lock editable code block","editUnLockTitle":"Unlock editable code block","editable":true,"maxShownLines":10},"comment":{"enable":true,"expired":false},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/search.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":false,"isCaseSensitive":false,"location":0,"maxResultLength":10,"minMatchCharLength":2,"noResultsFound":"No results found","snippetLength":30,"threshold":0.3,"type":"fuse","useExtendedSearch":false},"version":"v0.3.17-8b402129"};</script><script src="/js/theme.min.9301245cf01fb1ba5f5c15fd31c0d1a45ee2c0db8bff20a52762e159abb3a7737d682d1cf2d148749b1501acebf5db20cb22c07cd44e89051830dcb4223992c7.js" integrity="sha512-kwEkXPAfsbpfXBX9McDRpF7iwNuL/yClJ2LhWauzp3N9aC0c8tFIdJsVAazr9dsgyyLAfNROiQUYMNy0IjmSxw==" defer></script><script>
+      window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+      gtag('config', 'G-RB8T1ZS4FX', { 'anonymize_ip': true });
+    </script><script src="https://www.googletagmanager.com/gtag/js?id=G-RB8T1ZS4FX" async></script><script async defer data-website-id="698d1689-fa78-4bfc-a0f3-9e95bcb884de" src=""  data-host-url="https://cloud.umami.is/script.js"  ></script></body>
+</html>

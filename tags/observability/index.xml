@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Observability - Tag - 0xttfx</title>
+    <link>http://0xttfx.tcpip.net.br/tags/observability/</link>
+    <description>Vicissitudes e Adjacências</description>
+    <generator>Hugo 0.142.0 &amp; FixIt v0.3.17-8b402129</generator>
+    <language>en</language>
+    <managingEditor>thiago.faioli@gmail.com (Faioli a.k.a 0xttfx)</managingEditor>
+    <webMaster>thiago.faioli@gmail.com (Faioli a.k.a 0xttfx)</webMaster>
+    <copyright>Running on [OpenBSD](https://openbsd.org) and [httpd](https://man.openbsd.org/httpd.8) |  [0xttfx](https://0xttfx.tcpip.net.br) - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)</copyright>
+    <lastBuildDate>Mon, 27 Jan 2025 11:46:26 -0300</lastBuildDate>
+    <atom:link href="http://0xttfx.tcpip.net.br/tags/observability/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>RTFM &amp; Randomness Loki K8s - Fetching Large Logs</title>
+      <link>http://0xttfx.tcpip.net.br/posts/rtfmrandomness-lokik8s-fetchinglargelogs/</link>
+      <pubDate>Sun, 24 Nov 2024 20:40:44 -0300</pubDate>
+      <guid>http://0xttfx.tcpip.net.br/posts/rtfmrandomness-lokik8s-fetchinglargelogs/</guid>
+      <description>&lt;p&gt;There are several reasons why Grafana may not be configured to break the 5000 line limit when exploring logs&amp;hellip; It is also known that we can export in several other ways. But here I will focus on solving the need to download an unexpectedly large amount of logs&amp;hellip;&lt;/p&gt;&#xA;&lt;p&gt;And for that we will make use of LogCLI: the command line interface for Grafana Loki that makes it easy to run &lt;a href=&#34;https://grafana.com/docs/loki/latest/query/&#34;target=&#34;_blank&#34; rel=&#34;external nofollow noopener noreferrer&#34;&gt;LogQL&lt;/a&gt; queries on a Loki instance.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

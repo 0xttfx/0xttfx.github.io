@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="en">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <title>RTFM &amp; Aleatoriedades - Old NTP Client - 0xttfx</title><meta name="author" content="Faioli a.k.a 0xttfx">
+<meta name="description" content="Sempre existe a possibilidade de um dia aparecer um servidor com uma versão de SO não atual precisando que o NTP client seja configurado ou revisado… :)
+Instalando o serviço NTP
+Instale o pacote NTP com o utilitário yum 1 $ yum install ntp -y Em seguida liste os comandos de administração fornecidos pelo pacote npt 1 2 $ ntp&lt;tab&gt;&lt;tab&gt; ntpd ntpdate ntpdc ntp-keygen ntpq ntpstat ntptime Inicialize o serviço 1 2 3 $ sudo service ntpd start ou $ sudo /etc/rc.d/init.d/ntpd start Ao iniciar o serviço, analise em seguida os logs no /var/log/messages 1 2 3 4 5 6 7 8 9 10 11 $ sudo tail /var/log/messages ou $ grep ntpd /var/log/messages Jul 23 13:11:51 labcentos01 yum[9343]: Installed: ntpdate-4.2.4p83.el6.centos.x86_64 Jul 23 13:12:11 labcentos01 ntpd[9375]: ntpd Fri Feb 22 11:23:27 UTC 2013 (1) Jul 23 13:12:11 labcentos01 ntpd[9376]: precision = 0.111 usec Jul 23 13:12:11 labcentos01 ntpd[9376]: Listening on interface #0 wildcard... Jul 23 13:12:11 labcentos01 ntpd[9376]: Listening on interface #1 wildca... Jul 23 13:12:11 labcentos01 ntpd[9376]: Listening on interface #2 lo, ::1... Jul 23 13:12:11 labcentos01 ntpd[9376]: Listening on interface #3 eth0, .... Jul 23 13:12:11 labcentos01 ntpd[9376]: Listening on interface #4 lo, 127.0.... Automatize o serviço para que inicie no boot: 1 $ sudo chkconfig --level 35 ntpd on Configuração do arquivo padrão do serviço “/etc/ntp.conf”
+"><meta name="keywords" content='NTP, Linux, RTFM'>
+  <meta itemprop="name" content="RTFM & Aleatoriedades - Old NTP Client">
+  <meta itemprop="description" content="Sempre existe a possibilidade de um dia aparecer um servidor com uma versão de SO não atual precisando que o NTP client seja configurado ou revisado… :)
+Instalando o serviço NTP
+Instale o pacote NTP com o utilitário yum 1 $ yum install ntp -y Em seguida liste os comandos de administração fornecidos pelo pacote npt 1 2 $ ntp&lt;tab&gt;&lt;tab&gt; ntpd ntpdate ntpdc ntp-keygen ntpq ntpstat ntptime Inicialize o serviço 1 2 3 $ sudo service ntpd start ou $ sudo /etc/rc.d/init.d/ntpd start Ao iniciar o serviço, analise em seguida os logs no /var/log/messages 1 2 3 4 5 6 7 8 9 10 11 $ sudo tail /var/log/messages ou $ grep ntpd /var/log/messages Jul 23 13:11:51 labcentos01 yum[9343]: Installed: ntpdate-4.2.4p83.el6.centos.x86_64 Jul 23 13:12:11 labcentos01 ntpd[9375]: ntpd Fri Feb 22 11:23:27 UTC 2013 (1) Jul 23 13:12:11 labcentos01 ntpd[9376]: precision = 0.111 usec Jul 23 13:12:11 labcentos01 ntpd[9376]: Listening on interface #0 wildcard... Jul 23 13:12:11 labcentos01 ntpd[9376]: Listening on interface #1 wildca... Jul 23 13:12:11 labcentos01 ntpd[9376]: Listening on interface #2 lo, ::1... Jul 23 13:12:11 labcentos01 ntpd[9376]: Listening on interface #3 eth0, .... Jul 23 13:12:11 labcentos01 ntpd[9376]: Listening on interface #4 lo, 127.0.... Automatize o serviço para que inicie no boot: 1 $ sudo chkconfig --level 35 ntpd on Configuração do arquivo padrão do serviço “/etc/ntp.conf”">
+  <meta itemprop="datePublished" content="2024-01-09T12:08:11-03:00">
+  <meta itemprop="dateModified" content="2025-01-27T11:46:26-03:00">
+  <meta itemprop="wordCount" content="1889">
+  <meta itemprop="image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
+  <meta itemprop="keywords" content="NTP,Linux,RTFM"><meta property="og:url" content="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-oldntp/">
+  <meta property="og:site_name" content="0xttfx">
+  <meta property="og:title" content="RTFM & Aleatoriedades - Old NTP Client">
+  <meta property="og:description" content="Sempre existe a possibilidade de um dia aparecer um servidor com uma versão de SO não atual precisando que o NTP client seja configurado ou revisado… :)
+Instalando o serviço NTP
+Instale o pacote NTP com o utilitário yum 1 $ yum install ntp -y Em seguida liste os comandos de administração fornecidos pelo pacote npt 1 2 $ ntp&lt;tab&gt;&lt;tab&gt; ntpd ntpdate ntpdc ntp-keygen ntpq ntpstat ntptime Inicialize o serviço 1 2 3 $ sudo service ntpd start ou $ sudo /etc/rc.d/init.d/ntpd start Ao iniciar o serviço, analise em seguida os logs no /var/log/messages 1 2 3 4 5 6 7 8 9 10 11 $ sudo tail /var/log/messages ou $ grep ntpd /var/log/messages Jul 23 13:11:51 labcentos01 yum[9343]: Installed: ntpdate-4.2.4p83.el6.centos.x86_64 Jul 23 13:12:11 labcentos01 ntpd[9375]: ntpd Fri Feb 22 11:23:27 UTC 2013 (1) Jul 23 13:12:11 labcentos01 ntpd[9376]: precision = 0.111 usec Jul 23 13:12:11 labcentos01 ntpd[9376]: Listening on interface #0 wildcard... Jul 23 13:12:11 labcentos01 ntpd[9376]: Listening on interface #1 wildca... Jul 23 13:12:11 labcentos01 ntpd[9376]: Listening on interface #2 lo, ::1... Jul 23 13:12:11 labcentos01 ntpd[9376]: Listening on interface #3 eth0, .... Jul 23 13:12:11 labcentos01 ntpd[9376]: Listening on interface #4 lo, 127.0.... Automatize o serviço para que inicie no boot: 1 $ sudo chkconfig --level 35 ntpd on Configuração do arquivo padrão do serviço “/etc/ntp.conf”">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-01-09T12:08:11-03:00">
+    <meta property="article:modified_time" content="2025-01-27T11:46:26-03:00">
+    <meta property="article:tag" content="NTP">
+    <meta property="article:tag" content="Linux">
+    <meta property="article:tag" content="RTFM">
+    <meta property="og:image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
+  <meta name="twitter:title" content="RTFM & Aleatoriedades - Old NTP Client">
+  <meta name="twitter:description" content="Sempre existe a possibilidade de um dia aparecer um servidor com uma versão de SO não atual precisando que o NTP client seja configurado ou revisado… :)
+Instalando o serviço NTP
+Instale o pacote NTP com o utilitário yum 1 $ yum install ntp -y Em seguida liste os comandos de administração fornecidos pelo pacote npt 1 2 $ ntp&lt;tab&gt;&lt;tab&gt; ntpd ntpdate ntpdc ntp-keygen ntpq ntpstat ntptime Inicialize o serviço 1 2 3 $ sudo service ntpd start ou $ sudo /etc/rc.d/init.d/ntpd start Ao iniciar o serviço, analise em seguida os logs no /var/log/messages 1 2 3 4 5 6 7 8 9 10 11 $ sudo tail /var/log/messages ou $ grep ntpd /var/log/messages Jul 23 13:11:51 labcentos01 yum[9343]: Installed: ntpdate-4.2.4p83.el6.centos.x86_64 Jul 23 13:12:11 labcentos01 ntpd[9375]: ntpd Fri Feb 22 11:23:27 UTC 2013 (1) Jul 23 13:12:11 labcentos01 ntpd[9376]: precision = 0.111 usec Jul 23 13:12:11 labcentos01 ntpd[9376]: Listening on interface #0 wildcard... Jul 23 13:12:11 labcentos01 ntpd[9376]: Listening on interface #1 wildca... Jul 23 13:12:11 labcentos01 ntpd[9376]: Listening on interface #2 lo, ::1... Jul 23 13:12:11 labcentos01 ntpd[9376]: Listening on interface #3 eth0, .... Jul 23 13:12:11 labcentos01 ntpd[9376]: Listening on interface #4 lo, 127.0.... Automatize o serviço para que inicie no boot: 1 $ sudo chkconfig --level 35 ntpd on Configuração do arquivo padrão do serviço “/etc/ntp.conf”">
+      <meta name="twitter:site" content="@0xttfx">
+<meta name="twitter:creator" content="@0xttfx" /><meta name="application-name" content="0xttfx">
+<meta name="apple-mobile-web-app-title" content="0xttfx"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" type="text/html" href="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-oldntp/" title="RTFM &amp; Aleatoriedades - Old NTP Client - 0xttfx" /><link rel="prev" type="text/html" href="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-ntcdocker/" title="RTFM &amp; Aleatoriedades - Network Trobleshooting Container Docker" /><link rel="next" type="text/html" href="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-ocspstapling/" title="RTFM &amp; Aleatoriedades - OCSPStapling" /><link rel="alternate" type="text/markdown" href="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-oldntp/index.md" title="RTFM & Aleatoriedades - Old NTP Client - 0xttfx"><link rel="stylesheet" href="/css/style.min.5fb8636ad8f7ce85ece8cfd1b583385644991297bcabe889a9ed87d9b420dde6722873df084bf070d186b7e8f42529ece5312c08b3912ec100416517af236f51.css" integrity="sha512-X7hjatj3zoXs6M/RtYM4VkSZEpe8q+iJqe2H2bQg3eZyKHPfCEvwcNGGt+j0JSns5TEsCLORLsEAQWUXryNvUQ=="><link rel="preload" href="/lib/fontawesome-free/all.min.e47b37745d8010f92934047b5223876dafa545224d78cd840a4c31508c42d50fc52f27064db35aa565c1e2d3fcf3d9394f926ef1fb386f53f9cff881e2731f49.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.e47b37745d8010f92934047b5223876dafa545224d78cd840a4c31508c42d50fc52f27064db35aa565c1e2d3fcf3d9394f926ef1fb386f53f9cff881e2731f49.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="></noscript><link rel="preload" href="/lib/animate/animate.min.738daa4d2c3fc0f677ff92c1cc3f81c397fb6d2176a31a2eeb011bf88fe5a9e68a57914321f32fbd1a7bef6cb88dc24b2ae1943a96c931d83f053979d1f25803.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw==" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/animate/animate.min.738daa4d2c3fc0f677ff92c1cc3f81c397fb6d2176a31a2eeb011bf88fe5a9e68a57914321f32fbd1a7bef6cb88dc24b2ae1943a96c931d83f053979d1f25803.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw=="></noscript><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "RTFM \u0026 Aleatoriedades - Old NTP Client",
+    "inLanguage": "en",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http:\/\/0xttfx.tcpip.net.br\/posts\/rtfmaleatoriedades-oldntp\/"
+    },"genre": "posts","keywords": "NTP, Linux, RTFM","wordcount":  1889 ,
+    "url": "http:\/\/0xttfx.tcpip.net.br\/posts\/rtfmaleatoriedades-oldntp\/","datePublished": "2024-01-09T12:08:11-03:00","dateModified": "2025-01-27T11:46:26-03:00","license": "Running on [OpenBSD](https://openbsd.org) and [httpd](https://man.openbsd.org/httpd.8) |  [0xttfx](https://0xttfx.tcpip.net.br) - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)","publisher": {
+      "@type": "Organization",
+      "name": ""},"author": {
+        "@type": "Person",
+        "name": "Faioli a.k.a 0xttfx"
+      },"description": ""
+  }
+  </script><script src="/js/head/color-scheme.min.e4582484625e45df8e4adbb4cc376382a2cba293ce791cf7e64b7d91903cb3c5ca0e91d3f65981dd654cffb16766c9ba00adc5f156d21c61355858e9efc36d60.js" integrity="sha512-5FgkhGJeRd+OStu0zDdjgqLLopPOeRz35kt9kZA8s8XKDpHT9lmB3WVM/7FnZsm6AK3F8VbSHGE1WFjp78NtYA=="></script></head>
+  <body data-header-desktop="sticky" data-header-mobile="auto"><div class="wrapper" data-page-style="normal"><header class="desktop animate__faster" id="header-desktop">
+  <div class="header-wrapper">
+    <div class="header-title">
+      <a href="/" title="0xttfx"><img loading="lazy" src="/images/logo.svg" alt="0xttfx" data-title="0xttfx" width="26" height="26" class="logo" style="background: url(/images/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}"/><span class="header-title-text">0xTTFX</span></a><span class="header-subtitle"></span></div>
+    <nav>
+      <ul class="menu"><li class="menu-item">
+              <a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> Archives</a></li><li class="menu-item">
+              <a class="menu-link" href="/pages/about"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> About</a></li><li class="menu-item">
+              <a class="menu-link" href="https://cv0xttfx.tcpip.net.br" rel="noopener noreferrer" target="_blank"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> CV</a></li><li class="menu-item">
+              <a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> Tags</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+            <input type="text" placeholder="Search titles or contents ..." id="search-input-desktop">
+            <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+              <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+            </a>
+            <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+              <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+            </a>
+            <span class="search-button search-loading" id="search-loading-desktop">
+              <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+            </span>
+          </li><li class="menu-item theme-switch" title="Switch Theme">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header><header class="mobile animate__faster" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title="0xttfx"><img loading="lazy" src="/images/logo.svg" alt="0xttfx" data-title="0xttfx" width="26" height="26" class="logo" style="background: url(/images/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}"/><span class="header-title-text">0xTTFX</span></a><span class="header-subtitle"></span></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li class="search-wrapper">
+            <div class="search mobile" id="search-mobile">
+              <input type="text" placeholder="Search titles or contents ..." id="search-input-mobile">
+              <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+              </a>
+              <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+              </a>
+              <span class="search-button search-loading" id="search-loading-mobile">
+                <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+              </span>
+            </div>
+            <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+              Cancel
+            </a>
+          </li><li class="menu-item"><a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> Archives</a></li><li class="menu-item"><a class="menu-link" href="/pages/about"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> About</a></li><li class="menu-item"><a class="menu-link" href="https://cv0xttfx.tcpip.net.br" rel="noopener noreferrer" target="_blank"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> CV</a></li><li class="menu-item"><a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> Tags</a></li><li class="menu-item menu-system">
+          <span class="menu-system-item theme-switch" title="Switch Theme"><i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i></span></li>
+      </ul>
+    </nav>
+  </div>
+</header><div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+  </div>
+  <div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+  </div><main class="container"><aside class="aside-collection animate__animated animate__fadeIn animate__faster" aria-label="Collections"></aside>
+
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>RTFM &amp; Aleatoriedades - Old NTP Client</span>
+      </h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/0xttfx" title="Author"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><i class="fa-solid fa-user-circle" aria-hidden="true"></i>
+    Faioli a.k.a 0xttfx</a></span></div><div class="post-meta-line"><span title="published on 2024-01-09 12:08:11"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2024-01-09">2024-01-09</time></span>&nbsp;<span title="Updated on 2025-01-27 11:46:26"><i class="fa-regular fa-calendar-check fa-fw me-1" aria-hidden="true"></i><time datetime="2025-01-27">2025-01-27</time></span>&nbsp;<span title="1889 words"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>About 1900 words</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>9 minutes</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="RTFM &amp; Aleatoriedades - Old NTP Client"><i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;views
+          </span>&nbsp;</div>
+    </div><div class="content" id="content"><p>Sempre existe a possibilidade de um dia aparecer um servidor com uma versão de SO não atual precisando que o NTP client seja configurado ou revisado… :)</p>
+<ol>
+<li>
+<p>Instalando o serviço NTP</p>
+<ol>
+<li>Instale o pacote NTP com o utilitário yum</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ yum install ntp  -y</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>Em seguida liste os comandos de administração fornecidos pelo pacote npt</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">$ ntp&lt;tab&gt;&lt;tab&gt;
+</span></span><span class="line"><span class="cl">ntpd        ntpdate     ntpdc       ntp-keygen  ntpq        ntpstat     ntptime</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="3">
+<li>Inicialize o serviço</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ sudo service ntpd start
+</span></span><span class="line"><span class="cl">ou
+</span></span><span class="line"><span class="cl">$ sudo /etc/rc.d/init.d/ntpd start</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="4">
+<li>Ao iniciar o serviço, analise em seguida os logs no /var/log/messages</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ sudo tail /var/log/messages
+</span></span><span class="line"><span class="cl">ou
+</span></span><span class="line"><span class="cl">$ grep ntpd /var/log/messages
+</span></span><span class="line"><span class="cl">Jul <span class="m">23</span> 13:11:51 labcentos01 yum<span class="o">[</span>9343<span class="o">]</span>: Installed: ntpdate-4.2.4p83.el6.centos.x86_64
+</span></span><span class="line"><span class="cl"> Jul <span class="m">23</span> 13:12:11 labcentos01 ntpd<span class="o">[</span>9375<span class="o">]</span>: ntpd  Fri Feb <span class="m">22</span> 11:23:27 UTC <span class="m">2013</span> <span class="o">(</span>1<span class="o">)</span>
+</span></span><span class="line"><span class="cl"> Jul <span class="m">23</span> 13:12:11 labcentos01 ntpd<span class="o">[</span>9376<span class="o">]</span>: <span class="nv">precision</span> <span class="o">=</span> 0.111 usec
+</span></span><span class="line"><span class="cl"> Jul <span class="m">23</span> 13:12:11 labcentos01 ntpd<span class="o">[</span>9376<span class="o">]</span>: Listening on interface <span class="c1">#0 wildcard...</span>
+</span></span><span class="line"><span class="cl"> Jul <span class="m">23</span> 13:12:11 labcentos01 ntpd<span class="o">[</span>9376<span class="o">]</span>: Listening on interface <span class="c1">#1 wildca...</span>
+</span></span><span class="line"><span class="cl"> Jul <span class="m">23</span> 13:12:11 labcentos01 ntpd<span class="o">[</span>9376<span class="o">]</span>: Listening on interface <span class="c1">#2 lo, ::1...</span>
+</span></span><span class="line"><span class="cl"> Jul <span class="m">23</span> 13:12:11 labcentos01 ntpd<span class="o">[</span>9376<span class="o">]</span>: Listening on interface <span class="c1">#3 eth0, ....</span>
+</span></span><span class="line"><span class="cl"> Jul <span class="m">23</span> 13:12:11 labcentos01 ntpd<span class="o">[</span>9376<span class="o">]</span>: Listening on interface <span class="c1">#4 lo, 127.0....</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="5">
+<li>Automatize o serviço para que inicie no boot:</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ sudo chkconfig --level <span class="m">35</span> ntpd on</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Configuração do arquivo padrão do serviço “/etc/ntp.conf”</p>
+<ol>
+<li>Segue o arquivo padrão fornecido pelo pacote de instalação:</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># be tightened as well, but to do so would effect some of </span>
+</span></span><span class="line"><span class="cl">   <span class="c1"># the administrative functions. </span>
+</span></span><span class="line"><span class="cl">   restrict 127.0.0.1 
+</span></span><span class="line"><span class="cl">   restrict -6 ::1 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   <span class="c1"># Hosts on local network are less restricted. </span>
+</span></span><span class="line"><span class="cl">   <span class="c1">#restrict 192.168.1.0 mask 255.255.255.0 nomodify notrap </span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   <span class="c1"># Use public servers from the pool.ntp.org project. </span>
+</span></span><span class="line"><span class="cl">   <span class="c1"># Please consider joining the pool (http://www.pool.ntp.org/join.html). </span>
+</span></span><span class="line"><span class="cl">   server 0.centos.pool.ntp.org iburst 
+</span></span><span class="line"><span class="cl">   server 1.centos.pool.ntp.org iburst 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   <span class="c1">#broadcast 192.168.1.255 autokey        # broadcast server </span>
+</span></span><span class="line"><span class="cl">   <span class="c1">#broadcastclient                        # broadcast client </span>
+</span></span><span class="line"><span class="cl">   <span class="c1">#broadcast 224.0.1.1 autokey            # multicast server </span>
+</span></span><span class="line"><span class="cl">   <span class="c1">#multicastclient 224.0.1.1              # multicast client </span>
+</span></span><span class="line"><span class="cl">   <span class="c1">#manycastserver 239.255.254.254         # manycast server </span>
+</span></span><span class="line"><span class="cl">   <span class="c1">#manycastclient 239.255.254.254 autokey # manycast client </span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   <span class="c1"># Enable public key cryptography. </span>
+</span></span><span class="line"><span class="cl">   <span class="c1">#crypto </span>
+</span></span><span class="line"><span class="cl">   includefile /etc/ntp/crypto/pw 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   <span class="c1"># Key file containing the keys and key identifiers used when operating </span>
+</span></span><span class="line"><span class="cl">   <span class="c1"># with symmetric key cryptography. </span>
+</span></span><span class="line"><span class="cl">   keys /etc/ntp/keys 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   <span class="c1"># Specify the key identifiers which are trusted. </span>
+</span></span><span class="line"><span class="cl">   <span class="c1">#trustedkey 4 8 42 </span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   <span class="c1"># Specify the key identifier to use with the ntpdc utility. </span>
+</span></span><span class="line"><span class="cl">   <span class="c1">#requestkey 8 </span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   <span class="c1"># Specify the key identifier to use with the ntpq utility. </span>
+</span></span><span class="line"><span class="cl">   <span class="c1">#controlkey 8 </span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   <span class="c1"># Enable writing of statistics records. </span>
+</span></span><span class="line"><span class="cl">   <span class="c1">#statistics clockstats cryptostats loopstats peerstat</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>Modifique as linhas “server”, substituindo pelo servidor NTP local; sendo uma linha para cada servidor&hellip; :
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">server 0.redhat.pool.ntp.org iburst 
+</span></span><span class="line"><span class="cl">server 1.redhat.pool.ntp.org iburst </span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>Modificando para o NTP Brasileiro ou na LAN:</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">server 192.0.2.151 iburst
+</span></span><span class="line"><span class="cl">ou
+</span></span><span class="line"><span class="cl">server a.st1.ntp.br iburst
+</span></span><span class="line"><span class="cl">ou
+</span></span><span class="line"><span class="cl">server a.ntp.br iburst</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>a flag <em>iburst</em> faz com que uma saraivada de mensagens sejam trocadas para preparar os dados e ajustar o relógio por cerca de 10s.</li>
+</ul>
+</li>
+<li>Reinicie o serviço NTP</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo /etc/init.d/ntpd restart</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="4">
+<li>Agora visualize como ficou o arquivo de configuração do serviço NTP:</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ sudo cat /etc/ntp.conf <span class="p">|</span>grep -E -v <span class="s2">&#34;^</span>$<span class="s2">|^#&#34;</span> <span class="p">|</span>nl 
+</span></span><span class="line"><span class="cl"><span class="m">1</span>  driftfile /var/lib/ntp/drift
+</span></span><span class="line"><span class="cl"><span class="m">2</span>  restrict default kod nomodify notrap nopeer noquery
+</span></span><span class="line"><span class="cl"><span class="m">3</span>  restrict -6 default kod nomodify notrap nopeer noquery
+</span></span><span class="line"><span class="cl"><span class="m">4</span>  restrict 127.0.0.1
+</span></span><span class="line"><span class="cl"><span class="m">5</span>  restrict -6 ::1
+</span></span><span class="line"><span class="cl"><span class="m">6</span>  server 192.0.2.151 iburst
+</span></span><span class="line"><span class="cl"><span class="m">7</span>  includefile /etc/ntp/crypto/pw
+</span></span><span class="line"><span class="cl"><span class="m">8</span>  keys /etc/ntp/keys</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="5">
+<li>Outra opção interessante para habilitar no “ntp.conf” para a configuração cliente é a diretiva de estatísticas:</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># estatisticas do ntp que exibe informaões de funcionamento.</span>
+</span></span><span class="line"><span class="cl">statsdir /var/log/ntpstats/
+</span></span><span class="line"><span class="cl">statistics loopstats peerstats 
+</span></span><span class="line"><span class="cl">filegen loopstats file loopstats <span class="nb">type</span> day <span class="nb">enable</span>
+</span></span><span class="line"><span class="cl">ilegen peerstats file peerstats <span class="nb">type</span> day enable</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Verificando se o daemon NTP está devidamente configurado e operando:</p>
+<ol>
+<li>Execute o comando “ntpq” com a opção “-c peers” que lista estatísticas dos servidores cadastrados no arquivo /etc/ntp.conf.</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ sudo ntpq -c pe** 
+</span></span><span class="line"><span class="cl">ou
+</span></span><span class="line"><span class="cl">$ sudo ntpq -c peers**</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>se a resposta for algo parecido com a descrita abaixo, o daemon não está ativo</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">localhost.localdomain: timed out, nothing received
+</span></span><span class="line"><span class="cl">*****Request timed out**</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>se a resposta for próxima da descrita abaixo, o NTP está operando:</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">remote        refid           st t when poll reach delay offset <span class="nv">jitter</span>
+</span></span><span class="line"><span class="cl"><span class="o">==========================================================================</span>
+</span></span><span class="line"><span class="cl">*192.0.2.151  200.186.125.195  <span class="m">2</span> u <span class="m">84</span>   <span class="m">1024</span> <span class="m">377</span>   0.750 0.138  0.279</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>Segue mais um resultado de um NTP com mais de 1 servidor de horas configurado</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">remote         refid     st  t  when  poll reach  delay	offset	<span class="nv">jitter</span> 
+</span></span><span class="line"><span class="cl"><span class="o">=============================================================================</span> 
+</span></span><span class="line"><span class="cl">+a.st1.ntp.br  .ONBR.    <span class="m">1</span>   u  <span class="m">8</span>     64	  <span class="m">1</span>      11.929 -0.405	1.353 
+</span></span><span class="line"><span class="cl">201.49.148.135  .STEP.   <span class="m">16</span>  u  -     <span class="m">64</span>   <span class="m">0</span>      0.000  0.000 	0.000 
+</span></span><span class="line"><span class="cl">*d.st1.ntp.br  .ONBR.    <span class="m">1</span>   u  <span class="m">4</span>     <span class="m">64</span>   <span class="m">1</span>      19.496 -0.530	0.392 
+</span></span><span class="line"><span class="cl">-a.ntp.br  200.160.7.186 <span class="m">2</span>   u  <span class="m">4</span>     <span class="m">64</span>   <span class="m">1</span>      11.061 0.117	  1.151 
+</span></span><span class="line"><span class="cl">+b.ntp.br  200.20.186.76 <span class="m">2</span>   u  -     <span class="m">64</span>   <span class="m">1</span>      14.459 -2.561	2.544</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><em>stratum 16 indica servidor inoperante.</em></li>
+<li>Compreendendo cada campo
+<ul>
+<li><em>offset</em> - mostra em milissegundos o quanto a hora no servidor precisa adiantar ou se atrasar para  ficar igual a do servidor NTP  ( esses valores devem estar em milissegundos! Acima de segundos não é um bom resultado.)</li>
+<li><em>delay</em> mostra o tempo que o pacote demora para ir ao servidor e voltar para o host.</li>
+<li><em>jitter</em> mostra o quanto em milissegundos existe de variação nas medidas de deslocamento dos pacotes e, o quanto mais baixo melhor.</li>
+<li><em>reach</em> mostra o resultado em octal das últimas 8 tentativas de conexão ao servidor preferencial de horas. O valor 	esperado é  “377” que indica que as últimas tentativas obtiveram sucesso! Valores diferentes indicam falhas  ocorridas.
+<ul>
+<li>Para melhor compreensão, é  um registrador de 8 bits que vai girando para a esquerda representado na forma octal, que mostra o resultado das últimas 8 consultas à fonte de tempo: 377 = 11.111.111 significa que todas as consultas foram bem sucedidas;
+<ul>
+<li>outros número indicam falhas, por exemplo 375 = 11.111.101, indica que a penúltima consulta falhou.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><em>refid</em> mostra a referência (par do sistema) ao qual, o servidor de tempo remoto está sincronizado.</li>
+<li><em>st</em> mostra o strato da fonte de tempo.</li>
+<li><em>when</em> quanto segundos se passaram desde a última consulta à essa fonte de tempo.</li>
+<li><em>poll</em> mostra de quantos em quantos segundos essa fonte é consultada.</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li>Execute-o novamente com a opção “-c rv” para visualizar o estado da hora local</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ sudo ntpq -c rv
+</span></span><span class="line"><span class="cl"><span class="nv">assID</span><span class="o">=</span><span class="m">0</span> <span class="nv">status</span><span class="o">=</span>46f4 leap_add_sec, sync_ntp, <span class="m">15</span> events, event_peer/strat_chg,
+</span></span><span class="line"><span class="cl"><span class="nv">version</span><span class="o">=</span><span class="s2">&#34;ntpd 4.2.4p8@1.1612-o Thu Jan 10 15:17:40 UTC 2013 (1)&#34;</span>,
+</span></span><span class="line"><span class="cl"><span class="nv">processor</span><span class="o">=</span><span class="s2">&#34;x86_64&#34;</span>, <span class="nv">system</span><span class="o">=</span><span class="s2">&#34;Linux/2.6.32-279.19.1.el6.x86_64&#34;</span>, <span class="nv">leap</span><span class="o">=</span>01,
+</span></span><span class="line"><span class="cl"><span class="nv">stratum</span><span class="o">=</span>3, <span class="nv">precision</span><span class="o">=</span>-24, <span class="nv">rootdelay</span><span class="o">=</span>15.668, <span class="nv">rootdispersion</span><span class="o">=</span>59.025,
+</span></span><span class="line"><span class="cl"><span class="nv">peer</span><span class="o">=</span>14178, <span class="nv">refid</span><span class="o">=</span>192.0.2.151,
+</span></span><span class="line"><span class="cl"><span class="nv">reftime</span><span class="o">=</span>d59b9d48.ef695513  Thu, Jul <span class="m">25</span> <span class="m">2013</span>  9:49:12.935, <span class="nv">poll</span><span class="o">=</span>10,
+</span></span><span class="line"><span class="cl"><span class="nv">clock</span><span class="o">=</span>d59ba39e.61ba5ac8  Thu, Jul <span class="m">25</span> <span class="m">2013</span> 10:16:14.381, <span class="nv">state</span><span class="o">=</span>4,
+</span></span><span class="line"><span class="cl"><span class="nv">offset</span><span class="o">=</span>0.073, <span class="nv">frequency</span><span class="o">=</span>7.577, <span class="nv">jitter</span><span class="o">=</span>0.051, <span class="nv">noise</span><span class="o">=</span>0.232,
+</span></span><span class="line"><span class="cl"><span class="nv">stability</span><span class="o">=</span>0.018, <span class="nv">tai</span><span class="o">=</span><span class="m">0</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>compreendendo os campos
+<ul>
+<li><em>version</em> mostra a versão do NTP e sua data e hora de construção.</li>
+<li><em>processor</em> mostra a versão e plataforma do hardware.</li>
+<li><em>stratum</em>  que pode ir de 1 até 15 mostra a distância que o servidor NTP usado está do o relógio de referência que transmite a hora UCT, que por sua vez está em stratum-0!
+<ul>
+<li>Lembrando que quanto mais próximo o servidor estiver do stratum-0, menos atraso ele terá em realação ao UCT; ou seja quanto menor a distância melhor&hellip; Variável “peer” ID associado ao servidor NTP preferencial.</li>
+</ul>
+</li>
+<li><em>reftime</em>  mostra a data e hora que o servidor preferencial foi atualizado pela última vez pelo seu stratum superior.</li>
+<li><em>clock</em> data e hora do dia! Aquele que foi setado/configurado no seu servidor host.</li>
+<li><em>offset</em>  deslocamento, quanto o relógio local tem de ser adiantado ou atrasado para chegar à hora certa (horaigual à do estrato 0).</li>
+<li><em>precision</em> precisão indicada com o expoente de um número base 2 Variável “rootdisperion” erro máximo da medida de offset em relação ao strato 0, em milissegundos.</li>
+<li><em>rootdelay</em> atraso ou tempo de ida e volta dos pacotes atéo strato 0, em milissegundos.</li>
+<li><em>refid</em> o par do sistema, ou principal referência.</li>
+<li><em>frequency</em> erro na freqüência do relógio local, em relação à freqüência do estrato 0, em partes por milhão (PPM).</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li>Obtendo informações separadamente de cada servidor NTP configurado! Essa forma é utilizada por exemplo para medir as informações de um servidor NTP secundário afim de tomar alguma decisão como a de substituir o servidor preferencial problemático por algum outro do pool&hellip;</li>
+</ol>
+<ul>
+<li>Primeiro liste o ID dos servidores NTP configurados com o comando “ntpq -c as”:</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ sudo ntpq -c as
+</span></span><span class="line"><span class="cl">ou
+</span></span><span class="line"><span class="cl">sudo ntpq -c associations
+</span></span><span class="line"><span class="cl">ind 	assID	status  conf	reach	auth	condition	last_event	<span class="nv">cnt</span>
+</span></span><span class="line"><span class="cl"><span class="o">=====================================================================</span>
+</span></span><span class="line"><span class="cl"><span class="m">1</span> 	  14178	<span class="m">9614</span>    yes	  yes  	none	sys.peer	reachable	   <span class="m">1</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="4">
+<li>Depois de obtido o ID obtenha as informações do servisor NTP entrando na linha de comando da ferramenta ntpq e utilize a opção “rv” seguido do ID.</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ sudo ntpq  <span class="o">[</span>enter<span class="o">]</span>
+</span></span><span class="line"><span class="cl">$ sudo ntpq&gt; rv <span class="m">14178</span>
+</span></span><span class="line"><span class="cl"><span class="nv">assID</span><span class="o">=</span><span class="m">14178</span> <span class="nv">status</span><span class="o">=</span><span class="m">9614</span> reach, conf, sel_sys.peer, <span class="m">1</span> event, event_reach,
+</span></span><span class="line"><span class="cl"><span class="nv">srcadr</span><span class="o">=</span>192.0.2.151, <span class="nv">srcport</span><span class="o">=</span>123, <span class="nv">dstadr</span><span class="o">=</span>192.0.2.140, <span class="nv">dstport</span><span class="o">=</span>123,
+</span></span><span class="line"><span class="cl"><span class="nv">leap</span><span class="o">=</span>00, <span class="nv">stratum</span><span class="o">=</span>2, <span class="nv">precision</span><span class="o">=</span>-23, <span class="nv">rootdelay</span><span class="o">=</span>16.342,rootdispersion<span class="o">=</span>16.281, 
+</span></span><span class="line"><span class="cl"><span class="nv">refid</span><span class="o">=</span>200.186.125.195, <span class="nv">reach</span><span class="o">=</span>377, <span class="nv">unreach</span><span class="o">=</span>0,
+</span></span><span class="line"><span class="cl"><span class="nv">hmode</span><span class="o">=</span>3, <span class="nv">pmode</span><span class="o">=</span>4, <span class="nv">hpoll</span><span class="o">=</span>10, <span class="nv">ppoll</span><span class="o">=</span>10, <span class="nv">flash</span><span class="o">=</span><span class="m">00</span> ok, <span class="nv">keyid</span><span class="o">=</span>0, <span class="nv">ttl</span><span class="o">=</span>0,
+</span></span><span class="line"><span class="cl"><span class="nv">offset</span><span class="o">=</span>0.345, <span class="nv">delay</span><span class="o">=</span>1.032, <span class="nv">dispersion</span><span class="o">=</span>14.833, <span class="nv">jitter</span><span class="o">=</span>0.124,
+</span></span><span class="line"><span class="cl"><span class="nv">reftime</span><span class="o">=</span>d59c0533.3051b8eb  Thu, Jul <span class="m">25</span> <span class="m">2013</span> 17:12:35.188,
+</span></span><span class="line"><span class="cl"><span class="nv">org</span><span class="o">=</span>d59c0552.e99941c5  Thu, Jul <span class="m">25</span> <span class="m">2013</span> 17:13:06.912,
+</span></span><span class="line"><span class="cl"><span class="nv">rec</span><span class="o">=</span>d59c0552.e9a47a2b  Thu, Jul <span class="m">25</span> <span class="m">2013</span> 17:13:06.912,
+</span></span><span class="line"><span class="cl"><span class="nv">xmt</span><span class="o">=</span>d59c0552.e95ea055  Thu, Jul <span class="m">25</span> <span class="m">2013</span> 17:13:06.911,
+</span></span><span class="line"><span class="cl"><span class="nv">filtdelay</span><span class="o">=</span>     1.03    1.12    1.22    1.10    0.64    1.30    1.57    1.09,
+</span></span><span class="line"><span class="cl"><span class="nv">filtoffset</span><span class="o">=</span>    0.34    0.22    0.00   -0.01    0.16   -0.41   -0.41   -0.32,
+</span></span><span class="line"><span class="cl"><span class="nv">filtdisp</span><span class="o">=</span>      0.00   15.38   30.75   46.11   61.50   76.85   92.22  107.58</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Caso precise gerar alguma evidência para documentação, etc&hellip; É possível gerar gráficos utilizando os logs de estatísticas  do diretório “/var/log/ntpstats”, que são:</p>
+</li>
+</ol>
+<ul>
+<li><em>loopstats</em>, que apresenta as informações do loop local, ou seja, as variáveis do sistema.</li>
+<li>formato</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="m">54475</span> 73467.286 -0.000057852 31.695 0.000015298 0.006470 <span class="m">4</span>
+</span></span><span class="line"><span class="cl"><span class="m">54475</span> 73548.286 -0.000084064 31.688 0.000017049 0.006471 <span class="m">4</span>
+</span></span><span class="line"><span class="cl"><span class="m">54475</span> 73682.286 -0.000077221 31.678 0.000016130 0.006988 <span class="m">4</span>
+</span></span><span class="line"><span class="cl"><span class="m">54475</span> 73698.286 -0.000077448 31.677 0.000015103 0.006550 <span class="m">4</span>
+</span></span><span class="line"><span class="cl"><span class="m">54475</span> 73761.286 -0.000083230 31.672 0.000014275 0.006376 <span class="m">4</span>
+</span></span><span class="line"><span class="cl"><span class="m">54475</span> 73889.286 -0.000059100 31.665 0.000015846 0.006487 <span class="m">4</span>
+</span></span><span class="line"><span class="cl"><span class="m">54475</span> 74004.285 -0.000045825 31.660 0.000015548 0.006324 <span class="m">4</span></span></span></code></pre></td></tr></table>
+</div>
+</div><pre><code>-  campos:
+     - coluna 1: day
+     - coluna 2: second
+     - coluna 3: offset
+     - coluna 4: drift compensation
+     - coluna 5: estimed error
+     - coluna 6: stability
+     - coluna 7: polling interval
+</code></pre>
+<ul>
+<li><em>peerstats</em> que apresenta as informações de cada associação</li>
+<li>formato</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"> <span class="m">54475</span> 34931.294 200.20.186.75 <span class="m">9074</span> 0.009958844 0.008390600 0.000390895 0.000132755
+</span></span><span class="line"><span class="cl"> <span class="m">54475</span> 34931.301 200.192.232.43 f0f4 0.000348814 0.015550265 0.001120348 0.000023645
+</span></span><span class="line"><span class="cl"> <span class="m">54475</span> 34932.303 200.189.40.28 f0f4 0.000810708 0.017701986 0.188995109 0.000043145
+</span></span><span class="line"><span class="cl"> <span class="m">54475</span> 34934.286 200.160.0.28 f0d4 0.000332344 0.000271801 0.000620139 0.000037467
+</span></span><span class="line"><span class="cl"> <span class="m">54475</span> 34935.286 200.160.7.165 <span class="m">9614</span> 0.000003557 0.000216088 0.000826694 0.000022076</span></span></code></pre></td></tr></table>
+</div>
+</div><pre><code> - campos
+	 - coluna 1: day
+	 - coluna 2: second
+	 - coluna 3: address
+	 - coluna 4: status
+	 - coluna 5: offset
+	 - coluna 6: delay
+	 - coluna 7: dispersion
+	 - coluna 8: skew/variance
+</code></pre>
+<ul>
+<li>Além de poder ser usado para documentação, também fica mais fácil a leitura com o gráfico para ilustrá-lo. Excell pode ser usado&hellip;
+<ul>
+<li>Mas porque não usar terminal e <a href="http://www.gnuplot.info"target="_blank" rel="external nofollow noopener noreferrer">gnuplot</a> :).
+<ul>
+<li>segue algumas referências: <a href="https://developer.ibm.com/tutorials/ba-cleanse-process-visualize-data-set-3/?mhsrc=ibmsearch_a&amp;mhq=gnuplot"target="_blank" rel="external nofollow noopener noreferrer">IBM</a></li>
+</ul>
+</li>
+<li>Segue um exemplo de uso:
+<ul>
+<li>Crie um arquivo texto com um nome pretendido, com o seguinte conteúdo:</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat <span class="s">&lt;&lt;Fin&gt; /tmp/deslocamento.txt
+</span></span></span><span class="line"><span class="cl"><span class="s">set term gifset output &#39;Deslocamento.png&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">set title &#34;Deslocamento&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">plot &#34;/var/log/ntpstats/loopstats&#34; using 2:3 t&#34;deslocamento&#34; with linespoints lt rgb &#34;#d82886&#34;;
+</span></span></span><span class="line"><span class="cl"><span class="s">Fin</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>Estamos referenciando o arquivo loopstats e, fazendo uso das colunas 2 e 3! A coluna 2 indica o tempo, no dia, em segundos; e a coluna 3 indica o deslocamento, em milissegundos. Também estamos utilizando cores RGB declarada em <a href="http://www.colorhexa.com"target="_blank" rel="external nofollow noopener noreferrer">hexadecimal</a>.
+<ul>
+<li>Agora geramos o gráfico</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ gnuplot /tmp/deslocamento.txt</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<p><img loading="lazy" src="/images/NTP/deslocamento.png" alt="deslocamento.png" srcset="/images/NTP/deslocamento.png?size=small, /images/NTP/deslocamento.png?size=medium 1.5x, /images/NTP/deslocamento.png?size=large 2x" data-title="deslocamento.png" style="background: url(/images/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}"/></p>
+</div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod">
+        <span title="Updated on 2025-01-27 11:46:26">Updated on 2025-01-27&nbsp;
+                <a class="git-hash" href="https://github.com/0xttfx/commit/4df531e0d13d25c69c8c1d6007709fa90d4ef821" rel="external nofollow noopener noreferrer" target="_blank" title="commit by 0xttfx(thiago.faioli@gmail.com) 4df531e0d13d25c69c8c1d6007709fa90d4ef821: Update - novo tema FixIt"><i class="fa-solid fa-hashtag fa-fw" aria-hidden="true"></i>4df531e</a></span>
+      </div><div class="post-info-license">
+            <span><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a></span>
+          </div></div><div class="post-info-line">
+        <div class="post-info-md"><span><a href="/posts/rtfmaleatoriedades-oldntp/index.md" title="Read Markdown" class="link-to-markdown">Read Markdown</a></span><span><a href="https://github.com/0xttfx/blob/main/content/posts/RTFM&amp;Aleatoriedades-OldNTP.md?plain=1" title="View source"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-source">View source</a></span><span><a href="https://github.com/0xttfx/edit/main/content/posts/RTFM&amp;Aleatoriedades-OldNTP.md" title="Edit this page"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-edit">Edit this page</a></span><span><a href="https://github.com/0xttfx/issues/new?title=[BUG]%20RTFM&#43;%26&#43;Aleatoriedades&#43;-&#43;Old&#43;NTP&#43;Client&amp;body=%7cField%7cValue%7c%0A%7c-%7c-%7c%0A%7cTitle%7cRTFM&#43;%26&#43;Aleatoriedades&#43;-&#43;Old&#43;NTP&#43;Client%7c%0A%7cURL%7chttp://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-oldntp/%7c%0A%7cFilename%7chttps://github.com/0xttfx/blob/main/content/posts/RTFM&amp;Aleatoriedades-OldNTP.md?plain=1%7c" title="Report issue"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-report">Report issue</a></span></div>
+        <div class="post-info-share">
+          <span><a href="javascript:void(0);" title="Share on X" data-sharer="twitter" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-oldntp/" data-title="RTFM &amp; Aleatoriedades - Old NTP Client" data-via="0xttfx" data-hashtags="NTP,Linux,RTFM"><i class="fa-brands fa-x-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-oldntp/"><i class="fa-brands fa-linkedin fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-oldntp/" data-title="RTFM &amp; Aleatoriedades - Old NTP Client" data-web><i class="fa-brands fa-whatsapp fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on Reddit" data-sharer="reddit" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-oldntp/"><i class="fa-brands fa-reddit fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-oldntp/" data-title="RTFM &amp; Aleatoriedades - Old NTP Client"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  </span>
+        </div>
+      </div></div>
+
+  <div class="post-info-more">
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw me-1" aria-hidden="true"></i><a href="/tags/ntp/" class="post-tag" title="Tags - NTP">NTP</a><a href="/tags/linux/" class="post-tag" title="Tags - Linux">Linux</a><a href="/tags/rtfm/" class="post-tag" title="Tags - RTFM">RTFM</a></section>
+    <section>
+      <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+    </section>
+  </div><div class="post-nav"><a href="/posts/rtfmaleatoriedades-ntcdocker/" class="post-nav-item" rel="prev" title="RTFM &amp; Aleatoriedades - Network Trobleshooting Container Docker"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>RTFM &amp; Aleatoriedades - Network Trobleshooting Container Docker</a><a href="/posts/rtfmaleatoriedades-ocspstapling/" class="post-nav-item" rel="next" title="RTFM &amp; Aleatoriedades - OCSPStapling">RTFM &amp; Aleatoriedades - OCSPStapling<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+<div id="comments"></div></article>
+
+  <aside class="toc" id="toc-auto" aria-label="Contents"></aside></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
+            <span itemprop="copyrightYear">2024 - 2025</span><span class="author" itemprop="copyrightHolder">
+              <a href="https://github.com/0xttfx"target="_blank" rel="external nofollow noopener noreferrer">Faioli a.k.a 0xttfx</a></span><span class="license footer-divider">BSD-3-Clause</span></div><div class="footer-line statistics"></div><div class="footer-line visitor">
+          <span id="busuanzi_container_site_uv" title='Total visitors'><i class="fa-regular fa-user fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span><span id="busuanzi_container_site_pv" class="footer-divider" title='Total visits'><i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span>
+        </div></div>
+  </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="Back to Top"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric">0%</span>
+        </div><div class="fixed-button view-comments d-none" role="button" aria-label="View Comments"><i class="fa-solid fa-comment fa-fw" aria-hidden="true"></i></div></div><div id="mask"></div><div class="reading-progress-bar" style="left: 0;top: 0;"></div><noscript>
+    <div class="noscript-warning">This website works best with JavaScript enabled.</div>
+  </noscript>
+</div><link rel="preload" href="/lib/katex/katex.min.af6f85907cdfd6ed3e4906d93a8233d91c5638859f744cd1b98c9b1a3ccaab5f231bdcda49f132f6cdfe8cca86ff33ed468affab8a9a502610a664a34f0f0cfa.css" integrity="sha512-r2+FkHzf1u0+SQbZOoIz2RxWOIWfdEzRuYybGjzKq18jG9zaSfEy9s3+jMqG/zPtRor/q4qaUCYQpmSjTw8M+g==" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/katex/katex.min.af6f85907cdfd6ed3e4906d93a8233d91c5638859f744cd1b98c9b1a3ccaab5f231bdcda49f132f6cdfe8cca86ff33ed468affab8a9a502610a664a34f0f0cfa.css" integrity="sha512-r2+FkHzf1u0+SQbZOoIz2RxWOIWfdEzRuYybGjzKq18jG9zaSfEy9s3+jMqG/zPtRor/q4qaUCYQpmSjTw8M+g=="></noscript><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.2d0f7b71a99aaff94e9624ff32a8dc42ce645a0cba433fdc091cf34735027efd1fa2db024c2f591d768f426255f17bbf3d500b7c967b0437b3979956dffa81c6.css" integrity="sha512-LQ97camar/lOliT/MqjcQs5kWgy6Qz/cCRzzRzUCfv0fotsCTC9ZHXaPQmJV8Xu/PVALfJZ7BDezl5lW3/qBxg=="><script src="/lib/autocomplete/autocomplete.min.7e654c67e741180b83f7b4d829967003fea37a5d5014f549f0a3d7f945d2b73e73e22a1dd04a7b68712c846f004232f3030d07305784fab026100af12af8f0ac.js" integrity="sha512-fmVMZ+dBGAuD97TYKZZwA/6jel1QFPVJ8KPX+UXStz5z4iod0Ep7aHEshG8AQjLzAw0HMFeE+rAmEArxKvjwrA==" defer></script><script src="/lib/fuse/fuse.min.36ac35b47de6a5abe46bd71009ce7359611935f20f74e6324058e557536f7e512d434fd723a650f87fc3dd880976a49426530b00f463fe85e56870856c50a3a1.js" integrity="sha512-Nqw1tH3mpavka9cQCc5zWWEZNfIPdOYyQFjlV1NvflEtQ0/XI6ZQ+H/D3YgJdqSUJlMLAPRj/oXlaHCFbFCjoQ==" defer></script><script src="/lib/sharer/sharer.min.94c73c706d26a452277a104d6857c0cb04e816ad61c4163b4e0a135426a7767211e0a27c952ea85e3df25aec941374e21053db0f9e7822af8a2f9c4a8a93c4e3.js" integrity="sha512-lMc8cG0mpFInehBNaFfAywToFq1hxBY7TgoTVCandnIR4KJ8lS6oXj3yWuyUE3TiEFPbD554Iq+KL5xKipPE4w==" async defer></script><script src="/lib/katex/katex.min.20da6cf7343619410c0900fbc626506c65159ea9f312f9729d5cba7aa713707378f9a4222e8f7fb9a42a7240e9749f199b7334401b3e3e4b60e29cf490492552.js" integrity="sha512-INps9zQ2GUEMCQD7xiZQbGUVnqnzEvlynVy6eqcTcHN4+aQiLo9/uaQqckDpdJ8Zm3M0QBs+Pktg4pz0kEklUg==" defer></script><script src="/lib/katex/auto-render.min.6095714e3aadb63b14ddc4af69346ab12974c1b460654345f8d1860a0b68fcc51b22f68b757433193090bb80afc8965b65cb607e5541d0f5f0f4b2e64d69b9ff.js" integrity="sha512-YJVxTjqttjsU3cSvaTRqsSl0wbRgZUNF+NGGCgto/MUbIvaLdXQzGTCQu4CvyJZbZctgflVB0PXw9LLmTWm5/w==" defer></script><script src="/lib/katex/copy-tex.min.895ad99f7d8fdb0683cd271c02584953bd0542c6d4956c9feebaa16673683a45d5884f5253e3db33f8f74a86cc464477497656fb36e96a558137311bdb7f32d6.js" integrity="sha512-iVrZn32P2waDzSccAlhJU70FQsbUlWyf7rqhZnNoOkXViE9SU+PbM/j3SobMRkR3SXZW+zbpalWBNzEb238y1g==" defer></script><script src="/lib/katex/mhchem.min.9b18cdc3fbb5948b050b4f64fee9ec703458de87c860f5456d690ff2c96b78f712dfa86de1dfce67cad1bb9c9d741dae8aa6a385370b0fcfa3ba9396b983de6e.js" integrity="sha512-mxjNw/u1lIsFC09k/unscDRY3ofIYPVFbWkP8slrePcS36ht4d/OZ8rRu5yddB2uiqajhTcLD8+jupOWuYPebg==" defer></script><script src="/lib/cookieconsent/cookieconsent.min.c975ea3858dd8c7347d46343fb510ed236efbde6c0069cc6283eba7639d47e22a560c1391c6314247a0269e1380f93d31b662c4897fa770ab2514bd0bd2d2f68.js" integrity="sha512-yXXqOFjdjHNH1GND+1EO0jbvvebABpzGKD66djnUfiKlYME5HGMUJHoCaeE4D5PTG2YsSJf6dwqyUUvQvS0vaA==" defer></script><script src="https://vercount.one/js" async defer></script><script>window.config={"code":{"copyTitle":"Copy to clipboard","editLockTitle":"Lock editable code block","editUnLockTitle":"Unlock editable code block","editable":true,"maxShownLines":10},"comment":{"enable":true,"expired":false},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/search.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":false,"isCaseSensitive":false,"location":0,"maxResultLength":10,"minMatchCharLength":2,"noResultsFound":"No results found","snippetLength":30,"threshold":0.3,"type":"fuse","useExtendedSearch":false},"version":"v0.3.17-8b402129"};</script><script src="/js/theme.min.9301245cf01fb1ba5f5c15fd31c0d1a45ee2c0db8bff20a52762e159abb3a7737d682d1cf2d148749b1501acebf5db20cb22c07cd44e89051830dcb4223992c7.js" integrity="sha512-kwEkXPAfsbpfXBX9McDRpF7iwNuL/yClJ2LhWauzp3N9aC0c8tFIdJsVAazr9dsgyyLAfNROiQUYMNy0IjmSxw==" defer></script><script>
+      window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+      gtag('config', 'G-RB8T1ZS4FX', { 'anonymize_ip': true });
+    </script><script src="https://www.googletagmanager.com/gtag/js?id=G-RB8T1ZS4FX" async></script><script async defer data-website-id="698d1689-fa78-4bfc-a0f3-9e95bcb884de" src=""  data-host-url="https://cloud.umami.is/script.js"  ></script></body>
+</html>

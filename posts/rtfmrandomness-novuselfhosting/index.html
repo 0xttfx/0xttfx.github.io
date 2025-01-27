@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="en">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <title>RTFM &amp; Randomness - Novu Self-Hosting - 0xttfx</title><meta name="author" content="Faioli a.k.a 0xttfx">
+<meta name="description" content="Novu self-hosted"><meta name="keywords" content='Linux, open-source, notification, infrastructure, engineering, NGINX'>
+  <meta itemprop="name" content="RTFM & Randomness - Novu Self-hosting">
+  <meta itemprop="description" content="Novu self-hosted">
+  <meta itemprop="datePublished" content="2024-03-23T18:42:59-03:00">
+  <meta itemprop="dateModified" content="2025-01-27T11:46:26-03:00">
+  <meta itemprop="wordCount" content="578">
+  <meta itemprop="image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
+  <meta itemprop="keywords" content="Linux,Open-Source,Notification,Infrastructure,Engineering,NGINX"><meta property="og:url" content="http://0xttfx.tcpip.net.br/posts/rtfmrandomness-novuselfhosting/">
+  <meta property="og:site_name" content="0xttfx">
+  <meta property="og:title" content="RTFM & Randomness - Novu Self-hosting">
+  <meta property="og:description" content="Novu self-hosted">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-03-23T18:42:59-03:00">
+    <meta property="article:modified_time" content="2025-01-27T11:46:26-03:00">
+    <meta property="article:tag" content="Linux">
+    <meta property="article:tag" content="Open-Source">
+    <meta property="article:tag" content="Notification">
+    <meta property="article:tag" content="Infrastructure">
+    <meta property="article:tag" content="Engineering">
+    <meta property="article:tag" content="NGINX">
+    <meta property="og:image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
+  <meta name="twitter:title" content="RTFM & Randomness - Novu Self-hosting">
+  <meta name="twitter:description" content="Novu self-hosted">
+      <meta name="twitter:site" content="@0xttfx">
+<meta name="twitter:creator" content="@0xttfx" /><meta name="application-name" content="0xttfx">
+<meta name="apple-mobile-web-app-title" content="0xttfx"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" type="text/html" href="http://0xttfx.tcpip.net.br/posts/rtfmrandomness-novuselfhosting/" title="RTFM &amp; Randomness - Novu Self-hosting - 0xttfx" /><link rel="prev" type="text/html" href="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-windowsservertroubleshooting/" title="RTFM &amp; Aleatoriedades - Windows Server Troubleshooting" /><link rel="next" type="text/html" href="http://0xttfx.tcpip.net.br/posts/devops-fundamentos/" title="DevOps Fundamentos" /><link rel="alternate" type="text/markdown" href="http://0xttfx.tcpip.net.br/posts/rtfmrandomness-novuselfhosting/index.md" title="RTFM & Randomness - Novu Self-hosting - 0xttfx"><link rel="stylesheet" href="/css/style.min.5fb8636ad8f7ce85ece8cfd1b583385644991297bcabe889a9ed87d9b420dde6722873df084bf070d186b7e8f42529ece5312c08b3912ec100416517af236f51.css" integrity="sha512-X7hjatj3zoXs6M/RtYM4VkSZEpe8q+iJqe2H2bQg3eZyKHPfCEvwcNGGt+j0JSns5TEsCLORLsEAQWUXryNvUQ=="><link rel="preload" href="/lib/fontawesome-free/all.min.e47b37745d8010f92934047b5223876dafa545224d78cd840a4c31508c42d50fc52f27064db35aa565c1e2d3fcf3d9394f926ef1fb386f53f9cff881e2731f49.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.e47b37745d8010f92934047b5223876dafa545224d78cd840a4c31508c42d50fc52f27064db35aa565c1e2d3fcf3d9394f926ef1fb386f53f9cff881e2731f49.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="></noscript><link rel="preload" href="/lib/animate/animate.min.738daa4d2c3fc0f677ff92c1cc3f81c397fb6d2176a31a2eeb011bf88fe5a9e68a57914321f32fbd1a7bef6cb88dc24b2ae1943a96c931d83f053979d1f25803.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw==" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/animate/animate.min.738daa4d2c3fc0f677ff92c1cc3f81c397fb6d2176a31a2eeb011bf88fe5a9e68a57914321f32fbd1a7bef6cb88dc24b2ae1943a96c931d83f053979d1f25803.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw=="></noscript><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "RTFM \u0026 Randomness - Novu Self-hosting",
+    "inLanguage": "en",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http:\/\/0xttfx.tcpip.net.br\/posts\/rtfmrandomness-novuselfhosting\/"
+    },"genre": "posts","keywords": "Linux, open-source, notification, infrastructure, engineering, NGINX","wordcount":  578 ,
+    "url": "http:\/\/0xttfx.tcpip.net.br\/posts\/rtfmrandomness-novuselfhosting\/","datePublished": "2024-03-23T18:42:59-03:00","dateModified": "2025-01-27T11:46:26-03:00","license": "Running on [OpenBSD](https://openbsd.org) and [httpd](https://man.openbsd.org/httpd.8) |  [0xttfx](https://0xttfx.tcpip.net.br) - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)","publisher": {
+      "@type": "Organization",
+      "name": ""},"author": {
+        "@type": "Person",
+        "name": "Faioli a.k.a 0xttfx"
+      },"description": "Novu self-hosted"
+  }
+  </script><script src="/js/head/color-scheme.min.e4582484625e45df8e4adbb4cc376382a2cba293ce791cf7e64b7d91903cb3c5ca0e91d3f65981dd654cffb16766c9ba00adc5f156d21c61355858e9efc36d60.js" integrity="sha512-5FgkhGJeRd+OStu0zDdjgqLLopPOeRz35kt9kZA8s8XKDpHT9lmB3WVM/7FnZsm6AK3F8VbSHGE1WFjp78NtYA=="></script></head>
+  <body data-header-desktop="sticky" data-header-mobile="auto"><div class="wrapper" data-page-style="normal"><header class="desktop animate__faster" id="header-desktop">
+  <div class="header-wrapper">
+    <div class="header-title">
+      <a href="/" title="0xttfx"><img loading="lazy" src="/images/logo.svg" alt="0xttfx" data-title="0xttfx" width="26" height="26" class="logo" style="background: url(/images/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}"/><span class="header-title-text">0xTTFX</span></a><span class="header-subtitle"></span></div>
+    <nav>
+      <ul class="menu"><li class="menu-item">
+              <a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> Archives</a></li><li class="menu-item">
+              <a class="menu-link" href="/pages/about"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> About</a></li><li class="menu-item">
+              <a class="menu-link" href="https://cv0xttfx.tcpip.net.br" rel="noopener noreferrer" target="_blank"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> CV</a></li><li class="menu-item">
+              <a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> Tags</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+            <input type="text" placeholder="Search titles or contents ..." id="search-input-desktop">
+            <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+              <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+            </a>
+            <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+              <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+            </a>
+            <span class="search-button search-loading" id="search-loading-desktop">
+              <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+            </span>
+          </li><li class="menu-item theme-switch" title="Switch Theme">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header><header class="mobile animate__faster" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title="0xttfx"><img loading="lazy" src="/images/logo.svg" alt="0xttfx" data-title="0xttfx" width="26" height="26" class="logo" style="background: url(/images/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}"/><span class="header-title-text">0xTTFX</span></a><span class="header-subtitle"></span></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li class="search-wrapper">
+            <div class="search mobile" id="search-mobile">
+              <input type="text" placeholder="Search titles or contents ..." id="search-input-mobile">
+              <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+              </a>
+              <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+              </a>
+              <span class="search-button search-loading" id="search-loading-mobile">
+                <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+              </span>
+            </div>
+            <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+              Cancel
+            </a>
+          </li><li class="menu-item"><a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> Archives</a></li><li class="menu-item"><a class="menu-link" href="/pages/about"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> About</a></li><li class="menu-item"><a class="menu-link" href="https://cv0xttfx.tcpip.net.br" rel="noopener noreferrer" target="_blank"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> CV</a></li><li class="menu-item"><a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> Tags</a></li><li class="menu-item menu-system">
+          <span class="menu-system-item theme-switch" title="Switch Theme"><i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i></span></li>
+      </ul>
+    </nav>
+  </div>
+</header><div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+  </div>
+  <div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+  </div><main class="container"><aside class="aside-collection animate__animated animate__fadeIn animate__faster" aria-label="Collections"></aside>
+
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>RTFM &amp; Randomness - Novu Self-Hosting</span>
+      </h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/0xttfx" title="Author"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><i class="fa-solid fa-user-circle" aria-hidden="true"></i>
+    Faioli a.k.a 0xttfx</a></span></div><div class="post-meta-line"><span title="published on 2024-03-23 18:42:59"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2024-03-23">2024-03-23</time></span>&nbsp;<span title="Updated on 2025-01-27 11:46:26"><i class="fa-regular fa-calendar-check fa-fw me-1" aria-hidden="true"></i><time datetime="2025-01-27">2025-01-27</time></span>&nbsp;<span title="578 words"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>About 600 words</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>3 minutes</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="RTFM &amp; Randomness - Novu Self-Hosting"><i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;views
+          </span>&nbsp;</div>
+    </div><div class="details toc" id="toc-static" data-kept="false">
+        <div class="details-summary toc-title">
+          <span>Contents</span>
+          <span><i class="details-icon fa-solid fa-angle-right" aria-hidden="true"></i></span>
+        </div>
+        <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#how-does-novu-work">How Does Novu Work?</a>
+      <ul>
+        <li><a href="#architecture">Architecture</a></li>
+      </ul>
+    </li>
+    <li><a href="#lets-go">Let&rsquo;s go</a></li>
+  </ul>
+</nav></div>
+      </div><div class="content" id="content"><h2 id="novu---the-open-source-notification-infrastructure-for-developers" class="heading-element"><span>Novu - The open-source notification infrastructure for developers.</span>
+  <a href="#novu---the-open-source-notification-infrastructure-for-developers" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><p>The objective here is to show the configuration of the .env file and the NGINX reverse proxy, which was my biggest difficulty due to the lack of essential details in the project documentation for this purpose.</p>
+<h2 id="how-does-novu-work" class="heading-element"><span>How Does Novu Work?</span>
+  <a href="#how-does-novu-work" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><p>Novu is based on  two components</p>
+<ul>
+<li>An API for data exchange</li>
+<li>A panel to design notifications and their logical rules</li>
+</ul>
+<h3 id="architecture" class="heading-element"><span>Architecture</span>
+  <a href="#architecture" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><p>Novu&rsquo;s Object Communication Layer - OCL is a framework that separates communication tasks into specialized components, similar to microservices, that handle specific functions, such as messaging and data management.</p>
+<p><img loading="lazy" src="/images/Novu/Novu_Architecture_v2.png" alt="architecture" srcset="/images/Novu/Novu_Architecture_v2.png?size=small, /images/Novu/Novu_Architecture_v2.png?size=medium 1.5x, /images/Novu/Novu_Architecture_v2.png?size=large 2x" data-title="architecture" style="background: url(/images/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}"/></p>
+<h2 id="lets-go" class="heading-element"><span>Let&rsquo;s go</span>
+  <a href="#lets-go" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><ul>
+<li>Clone Novu repo</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Go to source folder </span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /usr/local/src
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Get the code</span>
+</span></span><span class="line"><span class="cl">git clone --depth <span class="m">1</span> https://github.com/novuhq/novu
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Go to the docker folder</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> novu/docker
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Copy the example env file</span>
+</span></span><span class="line"><span class="cl">cp .env.example ./local/deployment/.env</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>.env</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Secrets</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># YOU MUST CHANGE THESE BEFORE GOING INTO PRODUCTION</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># used as a secret to verify the JWT token signature</span>
+</span></span><span class="line"><span class="cl"><span class="nv">JWT_SECRET</span><span class="o">=</span>&lt;secret&gt;
+</span></span><span class="line"><span class="cl"><span class="c1"># used to encrypt/decrypt the provider credentials</span>
+</span></span><span class="line"><span class="cl"><span class="nv">STORE_ENCRYPTION_KEY</span><span class="o">=</span>&lt;key&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Host</span>
+</span></span><span class="line"><span class="cl"><span class="nv">HOST_NAME</span><span class="o">=</span>https://novu.yourdns.com.br
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># General</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># available values &#39;dev&#39;, &#39;test&#39;, &#39;production&#39;, &#39;ci&#39;, &#39;local&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">NODE_ENV</span><span class="o">=</span><span class="nb">local</span>
+</span></span><span class="line"><span class="cl"><span class="nv">MONGO_MAX_POOL_SIZE</span><span class="o">=</span><span class="m">500</span>
+</span></span><span class="line"><span class="cl"><span class="nv">MONGO_MIN_POOL_SIZE</span><span class="o">=</span><span class="m">100</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># MONGO USER</span>
+</span></span><span class="line"><span class="cl"><span class="nv">MONGO_INITDB_ROOT_USERNAME</span><span class="o">=</span>root
+</span></span><span class="line"><span class="cl"><span class="c1"># MONGO PASSWORD</span>
+</span></span><span class="line"><span class="cl"><span class="nv">MONGO_INITDB_ROOT_PASSWORD</span><span class="o">=</span>&lt;password&gt;
+</span></span><span class="line"><span class="cl"><span class="nv">MONGO_URL</span><span class="o">=</span>mongodb://root:&lt;password&gt;@mongodb:27017/novu-db?authSource<span class="o">=</span>admin
+</span></span><span class="line"><span class="cl"><span class="nv">REDIS_HOST</span><span class="o">=</span>redis
+</span></span><span class="line"><span class="cl"><span class="nv">REDIS_PASSWORD</span><span class="o">=</span>&lt;password&gt;
+</span></span><span class="line"><span class="cl"><span class="nv">REDIS_CACHE_SERVICE_HOST</span><span class="o">=</span>redis
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># AWS</span>
+</span></span><span class="line"><span class="cl"><span class="nv">S3_LOCAL_STACK</span><span class="o">=</span><span class="nv">$HOST_NAME</span>:4566
+</span></span><span class="line"><span class="cl"><span class="nv">S3_BUCKET_NAME</span><span class="o">=</span>novu-local
+</span></span><span class="line"><span class="cl"><span class="nv">S3_REGION</span><span class="o">=</span>us-east-1
+</span></span><span class="line"><span class="cl"><span class="nv">AWS_ACCESS_KEY_ID</span><span class="o">=</span><span class="nb">test</span>
+</span></span><span class="line"><span class="cl"><span class="nv">AWS_SECRET_ACCESS_KEY</span><span class="o">=</span><span class="nb">test</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Ports</span>
+</span></span><span class="line"><span class="cl"><span class="nv">API_PORT</span><span class="o">=</span><span class="m">3000</span>
+</span></span><span class="line"><span class="cl"><span class="nv">REDIS_PORT</span><span class="o">=</span><span class="m">6379</span>
+</span></span><span class="line"><span class="cl"><span class="nv">REDIS_CACHE_SERVICE_PORT</span><span class="o">=</span><span class="m">6379</span>
+</span></span><span class="line"><span class="cl"><span class="nv">WS_PORT</span><span class="o">=</span><span class="m">3002</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Root URL</span>
+</span></span><span class="line"><span class="cl"><span class="nv">REACT_APP_WS_URL</span><span class="o">=</span><span class="nv">$HOST_NAME</span>/ws
+</span></span><span class="line"><span class="cl"><span class="c1"># Uncomment this one when deploying Novu in the local environment</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># as Web app local Dockerfile will have to load this to be used.</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Deployment version doesn&#39;t need as we inject it with API_ROOT_URL value.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#REACT_APP_API_URL=$HOST_NAME:3000</span>
+</span></span><span class="line"><span class="cl"><span class="nv">API_ROOT_URL</span><span class="o">=</span><span class="nv">$HOST_NAME</span>/api
+</span></span><span class="line"><span class="cl"><span class="nv">DISABLE_USER_REGISTRATION</span><span class="o">=</span><span class="nb">false</span>
+</span></span><span class="line"><span class="cl"><span class="nv">FRONT_BASE_URL</span><span class="o">=</span><span class="nv">$HOST_NAME</span>:4200
+</span></span><span class="line"><span class="cl"><span class="nv">WIDGET_EMBED_PATH</span><span class="o">=</span><span class="nv">$HOST_NAME</span>:4701/embed.umd.min.js
+</span></span><span class="line"><span class="cl"><span class="nv">WIDGET_URL</span><span class="o">=</span><span class="nv">$HOST_NAME</span>/widget
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Context Paths for reverse-proxies</span>
+</span></span><span class="line"><span class="cl"><span class="nv">GLOBAL_CONTEXT_PATH</span><span class="o">=</span>
+</span></span><span class="line"><span class="cl"><span class="nv">WEB_CONTEXT_PATH</span><span class="o">=</span>
+</span></span><span class="line"><span class="cl"><span class="nv">API_CONTEXT_PATH</span><span class="o">=</span>api
+</span></span><span class="line"><span class="cl"><span class="nv">WS_CONTEXT_PATH</span><span class="o">=</span>ws
+</span></span><span class="line"><span class="cl"><span class="nv">WIDGET_CONTEXT_PATH</span><span class="o">=</span>widget
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Analytics</span>
+</span></span><span class="line"><span class="cl"><span class="nv">SENTRY_DSN</span><span class="o">=</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># change these values</span>
+</span></span><span class="line"><span class="cl"><span class="nv">NEW_RELIC_APP_NAME</span><span class="o">=</span>
+</span></span><span class="line"><span class="cl"><span class="nv">NEW_RELIC_LICENSE_KEY</span><span class="o">=</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">DISABLE_USER_REGISTRATION</span><span class="o">=</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>NGINX configuration</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-nginx" data-lang="nginx"><span class="line"><span class="cl"><span class="k">server</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kn">client_max_body_size</span> <span class="s">20M</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kn">server_name</span> <span class="s">yourdns.com.br</span> <span class="s">xxx.xxx.xxx.xxx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kn">access_log</span>  <span class="s">/var/log/nginx/novu_access.log</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kn">error_log</span> <span class="s">/var/log/nginx/novu_error.log</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kn">location</span> <span class="s">/</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="kn">proxy_pass</span> <span class="s">http://localhost:4200</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="kn">proxy_http_version</span> <span class="mi">1</span><span class="s">.1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">if</span> <span class="s">(</span><span class="nv">$request_method</span> <span class="p">=</span> <span class="s">OPTIONS)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">              <span class="kn">add_header</span> <span class="s">&#39;Access-Control-Allow-Origin&#39;</span> <span class="s">&#39;*&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">              <span class="kn">add_header</span> <span class="s">&#39;Access-Control-Allow-Methods&#39;</span> <span class="s">&#39;GET,</span> <span class="s">POST,</span> <span class="s">PUT,</span> <span class="s">DELETE&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">              <span class="kn">add_header</span> <span class="s">&#39;Access-Control-Allow-Headers&#39;</span> <span class="s">&#39;Content-Type,</span> <span class="s">Authorization&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">              <span class="kn">return</span> <span class="mi">200</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-For</span> <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">proxy_set_header</span> <span class="s">Host</span> <span class="nv">$host</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">proxy_set_header</span> <span class="s">Upgrade</span> <span class="nv">$http_upgrade</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">proxy_set_header</span> <span class="s">Connection</span> <span class="s">&#34;upgrade&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kn">location</span> <span class="s">/api</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">proxy_pass</span> <span class="s">http://localhost:3000/api</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="kn">proxy_http_version</span> <span class="mi">1</span><span class="s">.1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">add_header</span> <span class="s">&#39;Access-Control-Allow-Origin&#39;</span> <span class="s">&#39;*&#39;</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">            <span class="kn">add_header</span> <span class="s">&#39;Access-Control-Allow-Methods&#39;</span> <span class="s">&#39;GET,</span> <span class="s">POST,</span> <span class="s">PUT,</span> <span class="s">DELETE&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">add_header</span> <span class="s">&#39;Access-Control-Allow-Headers&#39;</span> <span class="s">&#39;Content-Type,</span> <span class="s">Authorization&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-For</span> <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">proxy_set_header</span> <span class="s">Host</span> <span class="nv">$host</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">proxy_set_header</span> <span class="s">Upgrade</span> <span class="nv">$http_upgrade</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">proxy_set_header</span> <span class="s">Connection</span> <span class="s">&#34;upgrade&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kn">location</span> <span class="s">/ws</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">proxy_pass</span> <span class="s">http://localhost:3002/ws</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">			<span class="kn">proxy_http_version</span> <span class="mi">1</span><span class="s">.1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-For</span> <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">proxy_set_header</span> <span class="s">Host</span> <span class="nv">$host</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">proxy_set_header</span> <span class="s">Upgrade</span> <span class="nv">$http_upgrade</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">proxy_set_header</span> <span class="s">Connection</span> <span class="s">&#34;upgrade&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kn">location</span> <span class="s">/widget</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="kn">proxy_pass</span> <span class="s">http://localhost:4500/widget</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">proxy_http_version</span> <span class="mi">1</span><span class="s">.1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-For</span> <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">proxy_set_header</span> <span class="s">Host</span> <span class="nv">$host</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">proxy_set_header</span> <span class="s">Upgrade</span> <span class="nv">$http_upgrade</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">proxy_set_header</span> <span class="s">Connection</span> <span class="s">&#34;upgrade&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kn">location</span> <span class="s">/socket.io/</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">			<span class="kn">proxy_pass</span> <span class="s">http://localhost:3002</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">proxy_http_version</span> <span class="mi">1</span><span class="s">.1</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-For</span> <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">proxy_set_header</span> <span class="s">Host</span> <span class="nv">$host</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">proxy_set_header</span> <span class="s">Upgrade</span> <span class="nv">$http_upgrade</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">            <span class="kn">proxy_set_header</span> <span class="s">Connection</span> <span class="s">&#34;upgrade&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># proxy_headers_hash_max_size 512;
+</span></span></span><span class="line"><span class="cl"><span class="c1"># proxy_headers_hash_bucket_size 128;
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="p">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>Now just be happy :)</p>
+</div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod">
+        <span title="Updated on 2025-01-27 11:46:26">Updated on 2025-01-27&nbsp;
+                <a class="git-hash" href="https://github.com/0xttfx/commit/4df531e0d13d25c69c8c1d6007709fa90d4ef821" rel="external nofollow noopener noreferrer" target="_blank" title="commit by 0xttfx(thiago.faioli@gmail.com) 4df531e0d13d25c69c8c1d6007709fa90d4ef821: Update - novo tema FixIt"><i class="fa-solid fa-hashtag fa-fw" aria-hidden="true"></i>4df531e</a></span>
+      </div><div class="post-info-license">
+            <span><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a></span>
+          </div></div><div class="post-info-line">
+        <div class="post-info-md"><span><a href="/posts/rtfmrandomness-novuselfhosting/index.md" title="Read Markdown" class="link-to-markdown">Read Markdown</a></span><span><a href="https://github.com/0xttfx/blob/main/content/posts/RTFM&amp;Randomness-NovuSelfhosting.md?plain=1" title="View source"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-source">View source</a></span><span><a href="https://github.com/0xttfx/edit/main/content/posts/RTFM&amp;Randomness-NovuSelfhosting.md" title="Edit this page"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-edit">Edit this page</a></span><span><a href="https://github.com/0xttfx/issues/new?title=[BUG]%20RTFM&#43;%26&#43;Randomness&#43;-&#43;Novu&#43;Self-hosting&amp;body=%7cField%7cValue%7c%0A%7c-%7c-%7c%0A%7cTitle%7cRTFM&#43;%26&#43;Randomness&#43;-&#43;Novu&#43;Self-hosting%7c%0A%7cURL%7chttp://0xttfx.tcpip.net.br/posts/rtfmrandomness-novuselfhosting/%7c%0A%7cFilename%7chttps://github.com/0xttfx/blob/main/content/posts/RTFM&amp;Randomness-NovuSelfhosting.md?plain=1%7c" title="Report issue"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-report">Report issue</a></span></div>
+        <div class="post-info-share">
+          <span><a href="javascript:void(0);" title="Share on X" data-sharer="twitter" data-url="http://0xttfx.tcpip.net.br/posts/rtfmrandomness-novuselfhosting/" data-title="RTFM &amp; Randomness - Novu Self-Hosting" data-via="0xttfx" data-hashtags="Linux,open-source,notification,infrastructure,engineering,NGINX"><i class="fa-brands fa-x-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://0xttfx.tcpip.net.br/posts/rtfmrandomness-novuselfhosting/"><i class="fa-brands fa-linkedin fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="http://0xttfx.tcpip.net.br/posts/rtfmrandomness-novuselfhosting/" data-title="RTFM &amp; Randomness - Novu Self-Hosting" data-web><i class="fa-brands fa-whatsapp fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on Reddit" data-sharer="reddit" data-url="http://0xttfx.tcpip.net.br/posts/rtfmrandomness-novuselfhosting/"><i class="fa-brands fa-reddit fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="http://0xttfx.tcpip.net.br/posts/rtfmrandomness-novuselfhosting/" data-title="RTFM &amp; Randomness - Novu Self-Hosting"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  </span>
+        </div>
+      </div></div>
+
+  <div class="post-info-more">
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw me-1" aria-hidden="true"></i><a href="/tags/linux/" class="post-tag" title="Tags - Linux">Linux</a><a href="/tags/open-source/" class="post-tag" title="Tags - Open-Source">Open-Source</a><a href="/tags/notification/" class="post-tag" title="Tags - Notification">Notification</a><a href="/tags/infrastructure/" class="post-tag" title="Tags - Infrastructure">Infrastructure</a><a href="/tags/engineering/" class="post-tag" title="Tags - Engineering">Engineering</a><a href="/tags/nginx/" class="post-tag" title="Tags - NGINX">NGINX</a></section>
+    <section>
+      <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+    </section>
+  </div><div class="post-nav"><a href="/posts/rtfmaleatoriedades-windowsservertroubleshooting/" class="post-nav-item" rel="prev" title="RTFM &amp; Aleatoriedades - Windows Server Troubleshooting"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>RTFM &amp; Aleatoriedades - Windows Server Troubleshooting</a><a href="/posts/devops-fundamentos/" class="post-nav-item" rel="next" title="DevOps Fundamentos">DevOps Fundamentos<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+<div id="comments"></div></article>
+
+  <aside class="toc" id="toc-auto" aria-label="Contents"><h2 class="toc-title">Contents&nbsp;<i class="toc-icon fa-solid fa-angle-down fa-fw" aria-hidden="true"></i></h2>
+      <div class="toc-content" id="toc-content-auto"></div></aside></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
+            <span itemprop="copyrightYear">2024 - 2025</span><span class="author" itemprop="copyrightHolder">
+              <a href="https://github.com/0xttfx"target="_blank" rel="external nofollow noopener noreferrer">Faioli a.k.a 0xttfx</a></span><span class="license footer-divider">BSD-3-Clause</span></div><div class="footer-line statistics"></div><div class="footer-line visitor">
+          <span id="busuanzi_container_site_uv" title='Total visitors'><i class="fa-regular fa-user fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span><span id="busuanzi_container_site_pv" class="footer-divider" title='Total visits'><i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span>
+        </div></div>
+  </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="Back to Top"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric">0%</span>
+        </div><div class="fixed-button view-comments d-none" role="button" aria-label="View Comments"><i class="fa-solid fa-comment fa-fw" aria-hidden="true"></i></div></div><div id="mask"></div><div class="reading-progress-bar" style="left: 0;top: 0;"></div><noscript>
+    <div class="noscript-warning">This website works best with JavaScript enabled.</div>
+  </noscript>
+</div><link rel="preload" href="/lib/katex/katex.min.af6f85907cdfd6ed3e4906d93a8233d91c5638859f744cd1b98c9b1a3ccaab5f231bdcda49f132f6cdfe8cca86ff33ed468affab8a9a502610a664a34f0f0cfa.css" integrity="sha512-r2+FkHzf1u0+SQbZOoIz2RxWOIWfdEzRuYybGjzKq18jG9zaSfEy9s3+jMqG/zPtRor/q4qaUCYQpmSjTw8M+g==" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/katex/katex.min.af6f85907cdfd6ed3e4906d93a8233d91c5638859f744cd1b98c9b1a3ccaab5f231bdcda49f132f6cdfe8cca86ff33ed468affab8a9a502610a664a34f0f0cfa.css" integrity="sha512-r2+FkHzf1u0+SQbZOoIz2RxWOIWfdEzRuYybGjzKq18jG9zaSfEy9s3+jMqG/zPtRor/q4qaUCYQpmSjTw8M+g=="></noscript><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.2d0f7b71a99aaff94e9624ff32a8dc42ce645a0cba433fdc091cf34735027efd1fa2db024c2f591d768f426255f17bbf3d500b7c967b0437b3979956dffa81c6.css" integrity="sha512-LQ97camar/lOliT/MqjcQs5kWgy6Qz/cCRzzRzUCfv0fotsCTC9ZHXaPQmJV8Xu/PVALfJZ7BDezl5lW3/qBxg=="><script src="/lib/autocomplete/autocomplete.min.7e654c67e741180b83f7b4d829967003fea37a5d5014f549f0a3d7f945d2b73e73e22a1dd04a7b68712c846f004232f3030d07305784fab026100af12af8f0ac.js" integrity="sha512-fmVMZ+dBGAuD97TYKZZwA/6jel1QFPVJ8KPX+UXStz5z4iod0Ep7aHEshG8AQjLzAw0HMFeE+rAmEArxKvjwrA==" defer></script><script src="/lib/fuse/fuse.min.36ac35b47de6a5abe46bd71009ce7359611935f20f74e6324058e557536f7e512d434fd723a650f87fc3dd880976a49426530b00f463fe85e56870856c50a3a1.js" integrity="sha512-Nqw1tH3mpavka9cQCc5zWWEZNfIPdOYyQFjlV1NvflEtQ0/XI6ZQ+H/D3YgJdqSUJlMLAPRj/oXlaHCFbFCjoQ==" defer></script><script src="/lib/sharer/sharer.min.94c73c706d26a452277a104d6857c0cb04e816ad61c4163b4e0a135426a7767211e0a27c952ea85e3df25aec941374e21053db0f9e7822af8a2f9c4a8a93c4e3.js" integrity="sha512-lMc8cG0mpFInehBNaFfAywToFq1hxBY7TgoTVCandnIR4KJ8lS6oXj3yWuyUE3TiEFPbD554Iq+KL5xKipPE4w==" async defer></script><script src="/lib/katex/katex.min.20da6cf7343619410c0900fbc626506c65159ea9f312f9729d5cba7aa713707378f9a4222e8f7fb9a42a7240e9749f199b7334401b3e3e4b60e29cf490492552.js" integrity="sha512-INps9zQ2GUEMCQD7xiZQbGUVnqnzEvlynVy6eqcTcHN4+aQiLo9/uaQqckDpdJ8Zm3M0QBs+Pktg4pz0kEklUg==" defer></script><script src="/lib/katex/auto-render.min.6095714e3aadb63b14ddc4af69346ab12974c1b460654345f8d1860a0b68fcc51b22f68b757433193090bb80afc8965b65cb607e5541d0f5f0f4b2e64d69b9ff.js" integrity="sha512-YJVxTjqttjsU3cSvaTRqsSl0wbRgZUNF+NGGCgto/MUbIvaLdXQzGTCQu4CvyJZbZctgflVB0PXw9LLmTWm5/w==" defer></script><script src="/lib/katex/copy-tex.min.895ad99f7d8fdb0683cd271c02584953bd0542c6d4956c9feebaa16673683a45d5884f5253e3db33f8f74a86cc464477497656fb36e96a558137311bdb7f32d6.js" integrity="sha512-iVrZn32P2waDzSccAlhJU70FQsbUlWyf7rqhZnNoOkXViE9SU+PbM/j3SobMRkR3SXZW+zbpalWBNzEb238y1g==" defer></script><script src="/lib/katex/mhchem.min.9b18cdc3fbb5948b050b4f64fee9ec703458de87c860f5456d690ff2c96b78f712dfa86de1dfce67cad1bb9c9d741dae8aa6a385370b0fcfa3ba9396b983de6e.js" integrity="sha512-mxjNw/u1lIsFC09k/unscDRY3ofIYPVFbWkP8slrePcS36ht4d/OZ8rRu5yddB2uiqajhTcLD8+jupOWuYPebg==" defer></script><script src="/lib/cookieconsent/cookieconsent.min.c975ea3858dd8c7347d46343fb510ed236efbde6c0069cc6283eba7639d47e22a560c1391c6314247a0269e1380f93d31b662c4897fa770ab2514bd0bd2d2f68.js" integrity="sha512-yXXqOFjdjHNH1GND+1EO0jbvvebABpzGKD66djnUfiKlYME5HGMUJHoCaeE4D5PTG2YsSJf6dwqyUUvQvS0vaA==" defer></script><script src="https://vercount.one/js" async defer></script><script>window.config={"code":{"copyTitle":"Copy to clipboard","editLockTitle":"Lock editable code block","editUnLockTitle":"Unlock editable code block","editable":true,"maxShownLines":10},"comment":{"enable":true,"expired":false},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/search.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":false,"isCaseSensitive":false,"location":0,"maxResultLength":10,"minMatchCharLength":2,"noResultsFound":"No results found","snippetLength":30,"threshold":0.3,"type":"fuse","useExtendedSearch":false},"version":"v0.3.17-8b402129"};</script><script src="/js/theme.min.9301245cf01fb1ba5f5c15fd31c0d1a45ee2c0db8bff20a52762e159abb3a7737d682d1cf2d148749b1501acebf5db20cb22c07cd44e89051830dcb4223992c7.js" integrity="sha512-kwEkXPAfsbpfXBX9McDRpF7iwNuL/yClJ2LhWauzp3N9aC0c8tFIdJsVAazr9dsgyyLAfNROiQUYMNy0IjmSxw==" defer></script><script>
+      window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+      gtag('config', 'G-RB8T1ZS4FX', { 'anonymize_ip': true });
+    </script><script src="https://www.googletagmanager.com/gtag/js?id=G-RB8T1ZS4FX" async></script><script async defer data-website-id="698d1689-fa78-4bfc-a0f3-9e95bcb884de" src=""  data-host-url="https://cloud.umami.is/script.js"  ></script></body>
+</html>

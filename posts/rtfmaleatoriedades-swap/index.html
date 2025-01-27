@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="en">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <title>RTFM &amp; Aleatoriedades - Swap - 0xttfx</title><meta name="author" content="Faioli a.k.a 0xttfx">
+<meta name="description" content="Swapping foi introduzida como um backup em disco para páginas não mapeadas. E existem três tipos de páginas que devem ser tratadas pelo subsistema de swapping:
+Pages que pertencem a uma região de memória anônima de um processo (User Mode stack) Dirty pages que pertencem a um mapeamento de memória privada de um processo Pages que pertencem a uma região de memória compartilhada IPC Numa &ldquo;Regular Paging&rdquo; cada entrada na &ldquo;Page Table&rdquo; inclui um sinalizador, uma &ldquo;Present flag&rdquo; e o Kernel explora esse sinalizador para sinalizar que uma página pertencente a um espaço de endereço de um processo qualquer foi &ldquo;swapped out&rdquo;! E além desse sinalizador, o Linux faz uso dos bits restantes do &ldquo;Page Table&rdquo; pra armazenar um identificador de &ldquo;swapped-out page&rdquo; que informa a localização no disco.
+"><meta name="keywords" content='Linux, RAM, Disk, SWAP'>
+  <meta itemprop="name" content="RTFM & Aleatoriedades - Swap">
+  <meta itemprop="description" content="Swapping foi introduzida como um backup em disco para páginas não mapeadas. E existem três tipos de páginas que devem ser tratadas pelo subsistema de swapping:
+Pages que pertencem a uma região de memória anônima de um processo (User Mode stack) Dirty pages que pertencem a um mapeamento de memória privada de um processo Pages que pertencem a uma região de memória compartilhada IPC Numa “Regular Paging” cada entrada na “Page Table” inclui um sinalizador, uma “Present flag” e o Kernel explora esse sinalizador para sinalizar que uma página pertencente a um espaço de endereço de um processo qualquer foi “swapped out”! E além desse sinalizador, o Linux faz uso dos bits restantes do “Page Table” pra armazenar um identificador de “swapped-out page” que informa a localização no disco.">
+  <meta itemprop="datePublished" content="2024-01-06T09:14:00-03:00">
+  <meta itemprop="dateModified" content="2025-01-27T11:46:26-03:00">
+  <meta itemprop="wordCount" content="918">
+  <meta itemprop="image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
+  <meta itemprop="keywords" content="Linux,RAM,Disk,SWAP"><meta property="og:url" content="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-swap/">
+  <meta property="og:site_name" content="0xttfx">
+  <meta property="og:title" content="RTFM & Aleatoriedades - Swap">
+  <meta property="og:description" content="Swapping foi introduzida como um backup em disco para páginas não mapeadas. E existem três tipos de páginas que devem ser tratadas pelo subsistema de swapping:
+Pages que pertencem a uma região de memória anônima de um processo (User Mode stack) Dirty pages que pertencem a um mapeamento de memória privada de um processo Pages que pertencem a uma região de memória compartilhada IPC Numa “Regular Paging” cada entrada na “Page Table” inclui um sinalizador, uma “Present flag” e o Kernel explora esse sinalizador para sinalizar que uma página pertencente a um espaço de endereço de um processo qualquer foi “swapped out”! E além desse sinalizador, o Linux faz uso dos bits restantes do “Page Table” pra armazenar um identificador de “swapped-out page” que informa a localização no disco.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-01-06T09:14:00-03:00">
+    <meta property="article:modified_time" content="2025-01-27T11:46:26-03:00">
+    <meta property="article:tag" content="Linux">
+    <meta property="article:tag" content="RAM">
+    <meta property="article:tag" content="Disk">
+    <meta property="article:tag" content="SWAP">
+    <meta property="og:image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
+  <meta name="twitter:title" content="RTFM & Aleatoriedades - Swap">
+  <meta name="twitter:description" content="Swapping foi introduzida como um backup em disco para páginas não mapeadas. E existem três tipos de páginas que devem ser tratadas pelo subsistema de swapping:
+Pages que pertencem a uma região de memória anônima de um processo (User Mode stack) Dirty pages que pertencem a um mapeamento de memória privada de um processo Pages que pertencem a uma região de memória compartilhada IPC Numa “Regular Paging” cada entrada na “Page Table” inclui um sinalizador, uma “Present flag” e o Kernel explora esse sinalizador para sinalizar que uma página pertencente a um espaço de endereço de um processo qualquer foi “swapped out”! E além desse sinalizador, o Linux faz uso dos bits restantes do “Page Table” pra armazenar um identificador de “swapped-out page” que informa a localização no disco.">
+      <meta name="twitter:site" content="@0xttfx">
+<meta name="twitter:creator" content="@0xttfx" /><meta name="application-name" content="0xttfx">
+<meta name="apple-mobile-web-app-title" content="0xttfx"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" type="text/html" href="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-swap/" title="RTFM &amp; Aleatoriedades - Swap - 0xttfx" /><link rel="prev" type="text/html" href="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-journalctl/" title="RTFM &amp; Aleatoriedades para SysAdmin - journalctl " /><link rel="next" type="text/html" href="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-ntcdocker/" title="RTFM &amp; Aleatoriedades - Network Trobleshooting Container Docker" /><link rel="alternate" type="text/markdown" href="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-swap/index.md" title="RTFM & Aleatoriedades - Swap - 0xttfx"><link rel="stylesheet" href="/css/style.min.5fb8636ad8f7ce85ece8cfd1b583385644991297bcabe889a9ed87d9b420dde6722873df084bf070d186b7e8f42529ece5312c08b3912ec100416517af236f51.css" integrity="sha512-X7hjatj3zoXs6M/RtYM4VkSZEpe8q+iJqe2H2bQg3eZyKHPfCEvwcNGGt+j0JSns5TEsCLORLsEAQWUXryNvUQ=="><link rel="preload" href="/lib/fontawesome-free/all.min.e47b37745d8010f92934047b5223876dafa545224d78cd840a4c31508c42d50fc52f27064db35aa565c1e2d3fcf3d9394f926ef1fb386f53f9cff881e2731f49.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.e47b37745d8010f92934047b5223876dafa545224d78cd840a4c31508c42d50fc52f27064db35aa565c1e2d3fcf3d9394f926ef1fb386f53f9cff881e2731f49.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="></noscript><link rel="preload" href="/lib/animate/animate.min.738daa4d2c3fc0f677ff92c1cc3f81c397fb6d2176a31a2eeb011bf88fe5a9e68a57914321f32fbd1a7bef6cb88dc24b2ae1943a96c931d83f053979d1f25803.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw==" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/animate/animate.min.738daa4d2c3fc0f677ff92c1cc3f81c397fb6d2176a31a2eeb011bf88fe5a9e68a57914321f32fbd1a7bef6cb88dc24b2ae1943a96c931d83f053979d1f25803.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw=="></noscript><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "RTFM \u0026 Aleatoriedades - Swap",
+    "inLanguage": "en",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http:\/\/0xttfx.tcpip.net.br\/posts\/rtfmaleatoriedades-swap\/"
+    },"genre": "posts","keywords": "Linux, RAM, Disk, SWAP","wordcount":  918 ,
+    "url": "http:\/\/0xttfx.tcpip.net.br\/posts\/rtfmaleatoriedades-swap\/","datePublished": "2024-01-06T09:14:00-03:00","dateModified": "2025-01-27T11:46:26-03:00","license": "Running on [OpenBSD](https://openbsd.org) and [httpd](https://man.openbsd.org/httpd.8) |  [0xttfx](https://0xttfx.tcpip.net.br) - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)","publisher": {
+      "@type": "Organization",
+      "name": ""},"author": {
+        "@type": "Person",
+        "name": "Faioli a.k.a 0xttfx"
+      },"description": ""
+  }
+  </script><script src="/js/head/color-scheme.min.e4582484625e45df8e4adbb4cc376382a2cba293ce791cf7e64b7d91903cb3c5ca0e91d3f65981dd654cffb16766c9ba00adc5f156d21c61355858e9efc36d60.js" integrity="sha512-5FgkhGJeRd+OStu0zDdjgqLLopPOeRz35kt9kZA8s8XKDpHT9lmB3WVM/7FnZsm6AK3F8VbSHGE1WFjp78NtYA=="></script></head>
+  <body data-header-desktop="sticky" data-header-mobile="auto"><div class="wrapper" data-page-style="normal"><header class="desktop animate__faster" id="header-desktop">
+  <div class="header-wrapper">
+    <div class="header-title">
+      <a href="/" title="0xttfx"><img loading="lazy" src="/images/logo.svg" alt="0xttfx" data-title="0xttfx" width="26" height="26" class="logo" style="background: url(/images/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}"/><span class="header-title-text">0xTTFX</span></a><span class="header-subtitle"></span></div>
+    <nav>
+      <ul class="menu"><li class="menu-item">
+              <a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> Archives</a></li><li class="menu-item">
+              <a class="menu-link" href="/pages/about"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> About</a></li><li class="menu-item">
+              <a class="menu-link" href="https://cv0xttfx.tcpip.net.br" rel="noopener noreferrer" target="_blank"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> CV</a></li><li class="menu-item">
+              <a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> Tags</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+            <input type="text" placeholder="Search titles or contents ..." id="search-input-desktop">
+            <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+              <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+            </a>
+            <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+              <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+            </a>
+            <span class="search-button search-loading" id="search-loading-desktop">
+              <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+            </span>
+          </li><li class="menu-item theme-switch" title="Switch Theme">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header><header class="mobile animate__faster" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title="0xttfx"><img loading="lazy" src="/images/logo.svg" alt="0xttfx" data-title="0xttfx" width="26" height="26" class="logo" style="background: url(/images/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}"/><span class="header-title-text">0xTTFX</span></a><span class="header-subtitle"></span></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li class="search-wrapper">
+            <div class="search mobile" id="search-mobile">
+              <input type="text" placeholder="Search titles or contents ..." id="search-input-mobile">
+              <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+              </a>
+              <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+              </a>
+              <span class="search-button search-loading" id="search-loading-mobile">
+                <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+              </span>
+            </div>
+            <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+              Cancel
+            </a>
+          </li><li class="menu-item"><a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> Archives</a></li><li class="menu-item"><a class="menu-link" href="/pages/about"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> About</a></li><li class="menu-item"><a class="menu-link" href="https://cv0xttfx.tcpip.net.br" rel="noopener noreferrer" target="_blank"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> CV</a></li><li class="menu-item"><a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> Tags</a></li><li class="menu-item menu-system">
+          <span class="menu-system-item theme-switch" title="Switch Theme"><i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i></span></li>
+      </ul>
+    </nav>
+  </div>
+</header><div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+  </div>
+  <div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+  </div><main class="container"><aside class="aside-collection animate__animated animate__fadeIn animate__faster" aria-label="Collections"></aside>
+
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>RTFM &amp; Aleatoriedades - Swap</span>
+      </h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/0xttfx" title="Author"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><i class="fa-solid fa-user-circle" aria-hidden="true"></i>
+    Faioli a.k.a 0xttfx</a></span></div><div class="post-meta-line"><span title="published on 2024-01-06 09:14:00"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2024-01-06">2024-01-06</time></span>&nbsp;<span title="Updated on 2025-01-27 11:46:26"><i class="fa-regular fa-calendar-check fa-fw me-1" aria-hidden="true"></i><time datetime="2025-01-27">2025-01-27</time></span>&nbsp;<span title="918 words"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>About 1000 words</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>5 minutes</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="RTFM &amp; Aleatoriedades - Swap"><i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;views
+          </span>&nbsp;</div>
+    </div><div class="content" id="content"><p>Swapping foi introduzida como um backup em disco para páginas não mapeadas. E existem três tipos de páginas que devem ser tratadas pelo subsistema de swapping:</p>
+<ul>
+<li>Pages que pertencem a uma região de memória anônima de um processo (User Mode stack)</li>
+<li>Dirty pages  que pertencem a um mapeamento de memória privada de um processo</li>
+<li>Pages que pertencem a uma região de memória compartilhada IPC</li>
+</ul>
+<p>Numa &ldquo;Regular Paging&rdquo; cada entrada na &ldquo;Page Table&rdquo; inclui um sinalizador, uma &ldquo;Present flag&rdquo; e o Kernel explora esse sinalizador para sinalizar que uma página pertencente a um espaço de endereço de um processo qualquer foi &ldquo;swapped out&rdquo;! E além desse sinalizador, o Linux faz uso dos bits restantes do &ldquo;Page Table&rdquo; pra armazenar um identificador de &ldquo;swapped-out page&rdquo; que informa a localização no disco.</p>
+<p>A Principais características do subsistema swapping  são:</p>
+<ul>
+<li>Configura area swap para armazenamento de Pages que não possuem &ldquo;disk image&rdquo;.</li>
+<li>Gerencia espaço na área de swap alocando e liberando &ldquo;page slots&rdquo;.</li>
+<li>Fornece a função de &ldquo;swap out&rdquo; pages da RAM para a área de swap  e &ldquo;swap in&rdquo; pages da área de swap para RAM.</li>
+<li>Faz uso da “swapped-out page identifiers” das entradas na &ldquo;Page Table&rdquo; que foram swapped para acompanhar as posições dos dados na área de swap.</li>
+</ul>
+<p>Em suma, o swapping é o principal recurso de &ldquo;page frame reclaiming&rdquo;! E se queremos ter certeza que todos os &ldquo;page frames&rdquo; obtidos por um processo, não apenas os &ldquo;pages&rdquo; que contem &ldquo;disk image&rdquo;, possam ser recuperados pelo PFRA, devemos fazer uso do swapping&hellip;</p>
+<p>Com isso podemos deduzir que grandes áreas de swap dão poder ao Kernel para iniciar vários processos onde o total de solicitações de memória ultrapassa a quantidade de RAM física.</p>
+<p>E como na TI, nem tudo são flores, precisamos nos atentar que simular RAM em disco, nos traz um desempenho em milissegundos se comparado aos nanosegundos da RAM física ;)</p>
+<div class="alert alert-note"><p class="alert-title"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path d="M0 8a8 8 0 1116 0A8 8 0 010 8zm8-6.5a6.5 6.5.0 100 13 6.5 6.5.0 000-13zM6.5 7.75A.75.75.0 017.25 7h1a.75.75.0 01.75.75v2.75h.25a.75.75.0 010 1.5h-2a.75.75.0 010-1.5h.25v-2h-.25a.75.75.0 01-.75-.75zM8 6a1 1 0 110-2 1 1 0 010 2z"/></svg>Note</p><p><em>Referencia: Daniel P. Bovet, Marco Cesati - Understanding the Linux Kernel - Capítulo 2 - Memory Addressing e Capítulo 17 - Page Frame Reclaiming</em></p></div><p>Agora que nivelamos a introdução sobre swapping, vamos criar um espaço de troca, do tipo arquivo, que não muda em nada quando partição em disco: a não ser o processo de particionamento de disco etc&hellip;</p>
+<ol>
+<li>Verificando se há algum swap</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo swapon --show</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>Criando arquivo de swap de 2GiB</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo dd <span class="k">if</span><span class="o">=</span>/dev/zero <span class="nv">of</span><span class="o">=</span>/swapfile <span class="nv">count</span><span class="o">=</span><span class="m">2192</span> <span class="nv">bs</span><span class="o">=</span>1MiB</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="3">
+<li>Alterando permissão do arquivo</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo chmod <span class="m">600</span> /swapfile</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="4">
+<li>Marcando o arquivo como um espaço de swap</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo mkswap /swapfile</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="5">
+<li>Verificando se está tudo ok</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo swapon --show</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="6">
+<li>Adicionando a linha no &lsquo;/etc/fstab&rsquo; para montagem automática</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s1">&#39;/swapfile    none    swap    sw    0 0&#39;</span> <span class="p">|</span> sudo tee -a /etc/fstab</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="7">
+<li>Ajustando a configuração de Swap</li>
+</ol>
+<p>O parâmetro <code>/proc/sys/vmwappiness</code> configura a frequência com que o sistema transfere dados da RAM para o espaço de swap. Sendo um  valor entre 0 e 100 que representa uma porcentagem! Um valor baixo significa que o seu sistema Linux troca processos raramente enquanto um alto valor significa que os processos são gravados em disco imediatamente</p>
+<ul>
+<li>Com valores próximos de zero, o kernel não irá transferir dados para o  disco a menos que seja absolutamente necessário.</li>
+<li>Lembre-se, as  interações com o arquivo de swap são “dispendiosas”! Pois são mais lentas que as interações com a RAM.</li>
+<li>Valores que estão mais próximos de 100 irão tentar colocar mais dados  no swap em um esforço para manter mais espaço da RAM livre.
+<ul>
+<li>Dependendo  do perfil de memória de seus aplicativos ou do motivo pelo qual você  está usando o seu servidor, isso pode ser melhor em alguns casos.</li>
+</ul>
+</li>
+</ul>
+<table>
+  <thead>
+      <tr>
+          <th></th>
+          <th></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Swappiness: 60</td>
+          <td>Swap a partir de 40% de uso de RAM.</td>
+      </tr>
+      <tr>
+          <td>Swappiness: 40</td>
+          <td>Swap a partir de 60% de uso de RAM.</td>
+      </tr>
+      <tr>
+          <td>Swappiness: 20</td>
+          <td>Swap a partir de 80% de uso de RAM.</td>
+      </tr>
+      <tr>
+          <td>Swappiness: 10.</td>
+          <td>Swap a partir de 90% de uso de RAM.</td>
+      </tr>
+      <tr>
+          <td>Swappiness: 1</td>
+          <td>Swap a partir de 99% de uso de RAM.</td>
+      </tr>
+  </tbody>
+</table>
+<p>Para um desktop, um valor de swappiness de 60 não é um valor ruim e normalmente é o valor dfault em uma distro Linux. Mas para um servidor, podemos deixá-lo mais próximo de 0, para fazer uso somente quando realmente necessário</p>
+<p>Como exemplo podemos setar para  &lsquo;10&rsquo; para que o swap seja utilizado após 90% de RAM ocupada</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo sysctl vm.swappiness<span class="o">=</span><span class="m">10</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>Para garantir que esse valor irá se manter após um boot</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s1">&#39;vm.swappiness=10&#39;</span> <span class="p">|</span> sudo tee -a /etc/sysctl.conf</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Mas como sempre, não há uma receita de bolo! Em determinados cenários  trocar processos de tempo de execução da RAM para o disco, deve ser evitado, noutros há vantagem&hellip; Conhecer a aplicação irá lhe guiar na configuração mais apropriada!</p>
+<ol start="8">
+<li>Ajustando a confiuração do vfs_cache_pressure</li>
+</ol>
+<p>Esta opção controla a tendência do kernel de recuperar a memória que é usada para cache de diretórios e objetos inode.</p>
+<ul>
+<li>No valor padrão de vfs_cache_pressure=100, o kernel tentará recuperar dentries e inodes a uma taxa &ldquo;justa&rdquo; em relação ao pagecache e à recuperação do swapcache.</li>
+<li>Diminuir vfs_cache_pressure faz com que o kernel prefira manter os caches dentry e inode.</li>
+<li>Quando vfs_cache_pressure=0, o kernel nunca recuperará dentries e inodes devido à pressão de memória e isso pode levar facilmente a condições de falta de memória.</li>
+<li>Aumentar vfs_cache_pressure além de 100 faz com que o kernel prefira recuperar dentries e inodes.</li>
+</ul>
+<p>Podemos definir isso em um valor mais conservador como 50</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo sysctl vm.vfs_cache_pressure<span class="o">=</span><span class="m">50</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>Vamos garantir que após um boot o valor permaneça</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s1">&#39;vm.vfs_cache_pressure=50&#39;</span> <span class="p">|</span> sudo tee -a /etc/sysctl.conf</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="9">
+<li>Agora sim! Vamos ativar o novo espaço de swapping</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo swapon /swapfile</span></span></code></pre></td></tr></table>
+</div>
+</div></div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod">
+        <span title="Updated on 2025-01-27 11:46:26">Updated on 2025-01-27&nbsp;
+                <a class="git-hash" href="https://github.com/0xttfx/commit/4df531e0d13d25c69c8c1d6007709fa90d4ef821" rel="external nofollow noopener noreferrer" target="_blank" title="commit by 0xttfx(thiago.faioli@gmail.com) 4df531e0d13d25c69c8c1d6007709fa90d4ef821: Update - novo tema FixIt"><i class="fa-solid fa-hashtag fa-fw" aria-hidden="true"></i>4df531e</a></span>
+      </div><div class="post-info-license">
+            <span><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a></span>
+          </div></div><div class="post-info-line">
+        <div class="post-info-md"><span><a href="/posts/rtfmaleatoriedades-swap/index.md" title="Read Markdown" class="link-to-markdown">Read Markdown</a></span><span><a href="https://github.com/0xttfx/blob/main/content/posts/RTFM&amp;Aleatoriedades-Swap.md?plain=1" title="View source"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-source">View source</a></span><span><a href="https://github.com/0xttfx/edit/main/content/posts/RTFM&amp;Aleatoriedades-Swap.md" title="Edit this page"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-edit">Edit this page</a></span><span><a href="https://github.com/0xttfx/issues/new?title=[BUG]%20RTFM&#43;%26&#43;Aleatoriedades&#43;-&#43;Swap&amp;body=%7cField%7cValue%7c%0A%7c-%7c-%7c%0A%7cTitle%7cRTFM&#43;%26&#43;Aleatoriedades&#43;-&#43;Swap%7c%0A%7cURL%7chttp://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-swap/%7c%0A%7cFilename%7chttps://github.com/0xttfx/blob/main/content/posts/RTFM&amp;Aleatoriedades-Swap.md?plain=1%7c" title="Report issue"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-report">Report issue</a></span></div>
+        <div class="post-info-share">
+          <span><a href="javascript:void(0);" title="Share on X" data-sharer="twitter" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-swap/" data-title="RTFM &amp; Aleatoriedades - Swap" data-via="0xttfx" data-hashtags="Linux,RAM,Disk,SWAP"><i class="fa-brands fa-x-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-swap/"><i class="fa-brands fa-linkedin fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-swap/" data-title="RTFM &amp; Aleatoriedades - Swap" data-web><i class="fa-brands fa-whatsapp fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on Reddit" data-sharer="reddit" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-swap/"><i class="fa-brands fa-reddit fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-swap/" data-title="RTFM &amp; Aleatoriedades - Swap"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  </span>
+        </div>
+      </div></div>
+
+  <div class="post-info-more">
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw me-1" aria-hidden="true"></i><a href="/tags/linux/" class="post-tag" title="Tags - Linux">Linux</a><a href="/tags/ram/" class="post-tag" title="Tags - RAM">RAM</a><a href="/tags/disk/" class="post-tag" title="Tags - Disk">Disk</a><a href="/tags/swap/" class="post-tag" title="Tags - SWAP">SWAP</a></section>
+    <section>
+      <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+    </section>
+  </div><div class="post-nav"><a href="/posts/rtfmaleatoriedades-journalctl/" class="post-nav-item" rel="prev" title="RTFM &amp; Aleatoriedades Para SysAdmin - Journalctl "><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>RTFM &amp; Aleatoriedades Para SysAdmin - Journalctl </a><a href="/posts/rtfmaleatoriedades-ntcdocker/" class="post-nav-item" rel="next" title="RTFM &amp; Aleatoriedades - Network Trobleshooting Container Docker">RTFM &amp; Aleatoriedades - Network Trobleshooting Container Docker<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+<div id="comments"></div></article>
+
+  <aside class="toc" id="toc-auto" aria-label="Contents"></aside></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
+            <span itemprop="copyrightYear">2024 - 2025</span><span class="author" itemprop="copyrightHolder">
+              <a href="https://github.com/0xttfx"target="_blank" rel="external nofollow noopener noreferrer">Faioli a.k.a 0xttfx</a></span><span class="license footer-divider">BSD-3-Clause</span></div><div class="footer-line statistics"></div><div class="footer-line visitor">
+          <span id="busuanzi_container_site_uv" title='Total visitors'><i class="fa-regular fa-user fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span><span id="busuanzi_container_site_pv" class="footer-divider" title='Total visits'><i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span>
+        </div></div>
+  </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="Back to Top"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric">0%</span>
+        </div><div class="fixed-button view-comments d-none" role="button" aria-label="View Comments"><i class="fa-solid fa-comment fa-fw" aria-hidden="true"></i></div></div><div id="mask"></div><div class="reading-progress-bar" style="left: 0;top: 0;"></div><noscript>
+    <div class="noscript-warning">This website works best with JavaScript enabled.</div>
+  </noscript>
+</div><link rel="preload" href="/lib/katex/katex.min.af6f85907cdfd6ed3e4906d93a8233d91c5638859f744cd1b98c9b1a3ccaab5f231bdcda49f132f6cdfe8cca86ff33ed468affab8a9a502610a664a34f0f0cfa.css" integrity="sha512-r2+FkHzf1u0+SQbZOoIz2RxWOIWfdEzRuYybGjzKq18jG9zaSfEy9s3+jMqG/zPtRor/q4qaUCYQpmSjTw8M+g==" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/katex/katex.min.af6f85907cdfd6ed3e4906d93a8233d91c5638859f744cd1b98c9b1a3ccaab5f231bdcda49f132f6cdfe8cca86ff33ed468affab8a9a502610a664a34f0f0cfa.css" integrity="sha512-r2+FkHzf1u0+SQbZOoIz2RxWOIWfdEzRuYybGjzKq18jG9zaSfEy9s3+jMqG/zPtRor/q4qaUCYQpmSjTw8M+g=="></noscript><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.2d0f7b71a99aaff94e9624ff32a8dc42ce645a0cba433fdc091cf34735027efd1fa2db024c2f591d768f426255f17bbf3d500b7c967b0437b3979956dffa81c6.css" integrity="sha512-LQ97camar/lOliT/MqjcQs5kWgy6Qz/cCRzzRzUCfv0fotsCTC9ZHXaPQmJV8Xu/PVALfJZ7BDezl5lW3/qBxg=="><script src="/lib/autocomplete/autocomplete.min.7e654c67e741180b83f7b4d829967003fea37a5d5014f549f0a3d7f945d2b73e73e22a1dd04a7b68712c846f004232f3030d07305784fab026100af12af8f0ac.js" integrity="sha512-fmVMZ+dBGAuD97TYKZZwA/6jel1QFPVJ8KPX+UXStz5z4iod0Ep7aHEshG8AQjLzAw0HMFeE+rAmEArxKvjwrA==" defer></script><script src="/lib/fuse/fuse.min.36ac35b47de6a5abe46bd71009ce7359611935f20f74e6324058e557536f7e512d434fd723a650f87fc3dd880976a49426530b00f463fe85e56870856c50a3a1.js" integrity="sha512-Nqw1tH3mpavka9cQCc5zWWEZNfIPdOYyQFjlV1NvflEtQ0/XI6ZQ+H/D3YgJdqSUJlMLAPRj/oXlaHCFbFCjoQ==" defer></script><script src="/lib/sharer/sharer.min.94c73c706d26a452277a104d6857c0cb04e816ad61c4163b4e0a135426a7767211e0a27c952ea85e3df25aec941374e21053db0f9e7822af8a2f9c4a8a93c4e3.js" integrity="sha512-lMc8cG0mpFInehBNaFfAywToFq1hxBY7TgoTVCandnIR4KJ8lS6oXj3yWuyUE3TiEFPbD554Iq+KL5xKipPE4w==" async defer></script><script src="/lib/katex/katex.min.20da6cf7343619410c0900fbc626506c65159ea9f312f9729d5cba7aa713707378f9a4222e8f7fb9a42a7240e9749f199b7334401b3e3e4b60e29cf490492552.js" integrity="sha512-INps9zQ2GUEMCQD7xiZQbGUVnqnzEvlynVy6eqcTcHN4+aQiLo9/uaQqckDpdJ8Zm3M0QBs+Pktg4pz0kEklUg==" defer></script><script src="/lib/katex/auto-render.min.6095714e3aadb63b14ddc4af69346ab12974c1b460654345f8d1860a0b68fcc51b22f68b757433193090bb80afc8965b65cb607e5541d0f5f0f4b2e64d69b9ff.js" integrity="sha512-YJVxTjqttjsU3cSvaTRqsSl0wbRgZUNF+NGGCgto/MUbIvaLdXQzGTCQu4CvyJZbZctgflVB0PXw9LLmTWm5/w==" defer></script><script src="/lib/katex/copy-tex.min.895ad99f7d8fdb0683cd271c02584953bd0542c6d4956c9feebaa16673683a45d5884f5253e3db33f8f74a86cc464477497656fb36e96a558137311bdb7f32d6.js" integrity="sha512-iVrZn32P2waDzSccAlhJU70FQsbUlWyf7rqhZnNoOkXViE9SU+PbM/j3SobMRkR3SXZW+zbpalWBNzEb238y1g==" defer></script><script src="/lib/katex/mhchem.min.9b18cdc3fbb5948b050b4f64fee9ec703458de87c860f5456d690ff2c96b78f712dfa86de1dfce67cad1bb9c9d741dae8aa6a385370b0fcfa3ba9396b983de6e.js" integrity="sha512-mxjNw/u1lIsFC09k/unscDRY3ofIYPVFbWkP8slrePcS36ht4d/OZ8rRu5yddB2uiqajhTcLD8+jupOWuYPebg==" defer></script><script src="/lib/cookieconsent/cookieconsent.min.c975ea3858dd8c7347d46343fb510ed236efbde6c0069cc6283eba7639d47e22a560c1391c6314247a0269e1380f93d31b662c4897fa770ab2514bd0bd2d2f68.js" integrity="sha512-yXXqOFjdjHNH1GND+1EO0jbvvebABpzGKD66djnUfiKlYME5HGMUJHoCaeE4D5PTG2YsSJf6dwqyUUvQvS0vaA==" defer></script><script src="https://vercount.one/js" async defer></script><script>window.config={"code":{"copyTitle":"Copy to clipboard","editLockTitle":"Lock editable code block","editUnLockTitle":"Unlock editable code block","editable":true,"maxShownLines":10},"comment":{"enable":true,"expired":false},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/search.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":false,"isCaseSensitive":false,"location":0,"maxResultLength":10,"minMatchCharLength":2,"noResultsFound":"No results found","snippetLength":30,"threshold":0.3,"type":"fuse","useExtendedSearch":false},"version":"v0.3.17-8b402129"};</script><script src="/js/theme.min.9301245cf01fb1ba5f5c15fd31c0d1a45ee2c0db8bff20a52762e159abb3a7737d682d1cf2d148749b1501acebf5db20cb22c07cd44e89051830dcb4223992c7.js" integrity="sha512-kwEkXPAfsbpfXBX9McDRpF7iwNuL/yClJ2LhWauzp3N9aC0c8tFIdJsVAazr9dsgyyLAfNROiQUYMNy0IjmSxw==" defer></script><script>
+      window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+      gtag('config', 'G-RB8T1ZS4FX', { 'anonymize_ip': true });
+    </script><script src="https://www.googletagmanager.com/gtag/js?id=G-RB8T1ZS4FX" async></script><script async defer data-website-id="698d1689-fa78-4bfc-a0f3-9e95bcb884de" src=""  data-host-url="https://cloud.umami.is/script.js"  ></script></body>
+</html>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SMTP - Tag - 0xttfx</title>
+    <link>http://0xttfx.tcpip.net.br/tags/smtp/</link>
+    <description>Vicissitudes e Adjacências</description>
+    <generator>Hugo 0.142.0 &amp; FixIt v0.3.17-8b402129</generator>
+    <language>en</language>
+    <managingEditor>thiago.faioli@gmail.com (Faioli a.k.a 0xttfx)</managingEditor>
+    <webMaster>thiago.faioli@gmail.com (Faioli a.k.a 0xttfx)</webMaster>
+    <copyright>Running on [OpenBSD](https://openbsd.org) and [httpd](https://man.openbsd.org/httpd.8) |  [0xttfx](https://0xttfx.tcpip.net.br) - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)</copyright>
+    <lastBuildDate>Mon, 27 Jan 2025 11:46:26 -0300</lastBuildDate>
+    <atom:link href="http://0xttfx.tcpip.net.br/tags/smtp/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>RTFM &amp; Aleatoriedades - Email Phishing</title>
+      <link>http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-emailphishing/</link>
+      <pubDate>Sun, 08 Dec 2024 23:22:12 -0300</pubDate><author>thiago.faioli@gmail.com (Faioli a.k.a 0xttfx)</author>
+      <guid>http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-emailphishing/</guid>
+      <description>&lt;p&gt;Os e-mails phishing continuam fortes no radar de ameaças no cenário de cibersegurança. Atacantes explorando principalmente &lt;strong&gt;anexos&lt;/strong&gt; ou &lt;strong&gt;links&lt;/strong&gt; maliciosos como descrito em &lt;a href=&#34;https://attack.mitre.org/techniques/T1566/002&#34;target=&#34;_blank&#34; rel=&#34;external nofollow noopener noreferrer&#34;&gt;MITRE ATT&amp;amp;CK&lt;/a&gt; nas técnicas aplicadas para forjar comunicações legítimas para roubar credenciais, instalar malware ou realizar outros tipos de fraudes; continuam sendo executados com uma alta taxa de sucesso.&lt;/p&gt;&#xA;&lt;p&gt;Apesar do assunto já ter sido amplamente discutido na Internet! Nesse documento eu tento condensar as informações mínimas para um &lt;em&gt;Go Hose&lt;/em&gt; um pouco mais descente!rs :)&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

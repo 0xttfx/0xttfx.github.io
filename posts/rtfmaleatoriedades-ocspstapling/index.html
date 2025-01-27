@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="en">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <title>RTFM &amp; Aleatoriedades - OCSPStapling - 0xttfx</title><meta name="author" content="Faioli a.k.a 0xttfx">
+<meta name="description" content="OSCP Stapling é o servidor Web (e não o navegador) obtendo resposta OCSP com status do certificado armazenando-o em cache, e esses dados são incluídos nas respostas HTTPS junto com o certificado&hellip;
+O OCSP - Online Certificate Status Protocol, descrita na RFC 2560, é um protocolo útil para determinar o status de um certificado digital X.509 RFC5280 sem exigir CRL - Certificate Revocation Lists descrita na RFC 2560 ou como complemento, pois fornece informações oportunas sobre o status de revogação de um certificado (RFC2459 Seção 3.3) que são utilizados por exemplo por transferências de fundos de alto valor ou grandes negociações de ações.
+"><meta name="keywords" content='Linux, TLS'>
+  <meta itemprop="name" content="RTFM & Aleatoriedades - OCSPStapling">
+  <meta itemprop="description" content="OSCP Stapling é o servidor Web (e não o navegador) obtendo resposta OCSP com status do certificado armazenando-o em cache, e esses dados são incluídos nas respostas HTTPS junto com o certificado…
+O OCSP - Online Certificate Status Protocol, descrita na RFC 2560, é um protocolo útil para determinar o status de um certificado digital X.509 RFC5280 sem exigir CRL - Certificate Revocation Lists descrita na RFC 2560 ou como complemento, pois fornece informações oportunas sobre o status de revogação de um certificado (RFC2459 Seção 3.3) que são utilizados por exemplo por transferências de fundos de alto valor ou grandes negociações de ações.">
+  <meta itemprop="datePublished" content="2024-01-21T20:30:59-03:00">
+  <meta itemprop="dateModified" content="2025-01-27T11:46:26-03:00">
+  <meta itemprop="wordCount" content="1196">
+  <meta itemprop="image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
+  <meta itemprop="keywords" content="Linux,TLS"><meta property="og:url" content="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-ocspstapling/">
+  <meta property="og:site_name" content="0xttfx">
+  <meta property="og:title" content="RTFM & Aleatoriedades - OCSPStapling">
+  <meta property="og:description" content="OSCP Stapling é o servidor Web (e não o navegador) obtendo resposta OCSP com status do certificado armazenando-o em cache, e esses dados são incluídos nas respostas HTTPS junto com o certificado…
+O OCSP - Online Certificate Status Protocol, descrita na RFC 2560, é um protocolo útil para determinar o status de um certificado digital X.509 RFC5280 sem exigir CRL - Certificate Revocation Lists descrita na RFC 2560 ou como complemento, pois fornece informações oportunas sobre o status de revogação de um certificado (RFC2459 Seção 3.3) que são utilizados por exemplo por transferências de fundos de alto valor ou grandes negociações de ações.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-01-21T20:30:59-03:00">
+    <meta property="article:modified_time" content="2025-01-27T11:46:26-03:00">
+    <meta property="article:tag" content="Linux">
+    <meta property="article:tag" content="TLS">
+    <meta property="og:image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
+  <meta name="twitter:title" content="RTFM & Aleatoriedades - OCSPStapling">
+  <meta name="twitter:description" content="OSCP Stapling é o servidor Web (e não o navegador) obtendo resposta OCSP com status do certificado armazenando-o em cache, e esses dados são incluídos nas respostas HTTPS junto com o certificado…
+O OCSP - Online Certificate Status Protocol, descrita na RFC 2560, é um protocolo útil para determinar o status de um certificado digital X.509 RFC5280 sem exigir CRL - Certificate Revocation Lists descrita na RFC 2560 ou como complemento, pois fornece informações oportunas sobre o status de revogação de um certificado (RFC2459 Seção 3.3) que são utilizados por exemplo por transferências de fundos de alto valor ou grandes negociações de ações.">
+      <meta name="twitter:site" content="@0xttfx">
+<meta name="twitter:creator" content="@0xttfx" /><meta name="application-name" content="0xttfx">
+<meta name="apple-mobile-web-app-title" content="0xttfx"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" type="text/html" href="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-ocspstapling/" title="RTFM &amp; Aleatoriedades - OCSPStapling - 0xttfx" /><link rel="prev" type="text/html" href="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-oldntp/" title="RTFM &amp; Aleatoriedades - Old NTP Client" /><link rel="next" type="text/html" href="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-windowsservertroubleshooting/" title="RTFM &amp; Aleatoriedades - Windows Server Troubleshooting" /><link rel="alternate" type="text/markdown" href="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-ocspstapling/index.md" title="RTFM & Aleatoriedades - OCSPStapling - 0xttfx"><link rel="stylesheet" href="/css/style.min.5fb8636ad8f7ce85ece8cfd1b583385644991297bcabe889a9ed87d9b420dde6722873df084bf070d186b7e8f42529ece5312c08b3912ec100416517af236f51.css" integrity="sha512-X7hjatj3zoXs6M/RtYM4VkSZEpe8q+iJqe2H2bQg3eZyKHPfCEvwcNGGt+j0JSns5TEsCLORLsEAQWUXryNvUQ=="><link rel="preload" href="/lib/fontawesome-free/all.min.e47b37745d8010f92934047b5223876dafa545224d78cd840a4c31508c42d50fc52f27064db35aa565c1e2d3fcf3d9394f926ef1fb386f53f9cff881e2731f49.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.e47b37745d8010f92934047b5223876dafa545224d78cd840a4c31508c42d50fc52f27064db35aa565c1e2d3fcf3d9394f926ef1fb386f53f9cff881e2731f49.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="></noscript><link rel="preload" href="/lib/animate/animate.min.738daa4d2c3fc0f677ff92c1cc3f81c397fb6d2176a31a2eeb011bf88fe5a9e68a57914321f32fbd1a7bef6cb88dc24b2ae1943a96c931d83f053979d1f25803.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw==" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/animate/animate.min.738daa4d2c3fc0f677ff92c1cc3f81c397fb6d2176a31a2eeb011bf88fe5a9e68a57914321f32fbd1a7bef6cb88dc24b2ae1943a96c931d83f053979d1f25803.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw=="></noscript><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "RTFM \u0026 Aleatoriedades - OCSPStapling",
+    "inLanguage": "en",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http:\/\/0xttfx.tcpip.net.br\/posts\/rtfmaleatoriedades-ocspstapling\/"
+    },"genre": "posts","keywords": "Linux, TLS","wordcount":  1196 ,
+    "url": "http:\/\/0xttfx.tcpip.net.br\/posts\/rtfmaleatoriedades-ocspstapling\/","datePublished": "2024-01-21T20:30:59-03:00","dateModified": "2025-01-27T11:46:26-03:00","license": "Running on [OpenBSD](https://openbsd.org) and [httpd](https://man.openbsd.org/httpd.8) |  [0xttfx](https://0xttfx.tcpip.net.br) - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)","publisher": {
+      "@type": "Organization",
+      "name": ""},"author": {
+        "@type": "Person",
+        "name": "Faioli a.k.a 0xttfx"
+      },"description": ""
+  }
+  </script><script src="/js/head/color-scheme.min.e4582484625e45df8e4adbb4cc376382a2cba293ce791cf7e64b7d91903cb3c5ca0e91d3f65981dd654cffb16766c9ba00adc5f156d21c61355858e9efc36d60.js" integrity="sha512-5FgkhGJeRd+OStu0zDdjgqLLopPOeRz35kt9kZA8s8XKDpHT9lmB3WVM/7FnZsm6AK3F8VbSHGE1WFjp78NtYA=="></script></head>
+  <body data-header-desktop="sticky" data-header-mobile="auto"><div class="wrapper" data-page-style="normal"><header class="desktop animate__faster" id="header-desktop">
+  <div class="header-wrapper">
+    <div class="header-title">
+      <a href="/" title="0xttfx"><img loading="lazy" src="/images/logo.svg" alt="0xttfx" data-title="0xttfx" width="26" height="26" class="logo" style="background: url(/images/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}"/><span class="header-title-text">0xTTFX</span></a><span class="header-subtitle"></span></div>
+    <nav>
+      <ul class="menu"><li class="menu-item">
+              <a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> Archives</a></li><li class="menu-item">
+              <a class="menu-link" href="/pages/about"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> About</a></li><li class="menu-item">
+              <a class="menu-link" href="https://cv0xttfx.tcpip.net.br" rel="noopener noreferrer" target="_blank"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> CV</a></li><li class="menu-item">
+              <a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> Tags</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+            <input type="text" placeholder="Search titles or contents ..." id="search-input-desktop">
+            <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+              <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+            </a>
+            <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+              <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+            </a>
+            <span class="search-button search-loading" id="search-loading-desktop">
+              <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+            </span>
+          </li><li class="menu-item theme-switch" title="Switch Theme">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header><header class="mobile animate__faster" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title="0xttfx"><img loading="lazy" src="/images/logo.svg" alt="0xttfx" data-title="0xttfx" width="26" height="26" class="logo" style="background: url(/images/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}"/><span class="header-title-text">0xTTFX</span></a><span class="header-subtitle"></span></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li class="search-wrapper">
+            <div class="search mobile" id="search-mobile">
+              <input type="text" placeholder="Search titles or contents ..." id="search-input-mobile">
+              <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+              </a>
+              <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+              </a>
+              <span class="search-button search-loading" id="search-loading-mobile">
+                <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+              </span>
+            </div>
+            <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+              Cancel
+            </a>
+          </li><li class="menu-item"><a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> Archives</a></li><li class="menu-item"><a class="menu-link" href="/pages/about"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> About</a></li><li class="menu-item"><a class="menu-link" href="https://cv0xttfx.tcpip.net.br" rel="noopener noreferrer" target="_blank"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> CV</a></li><li class="menu-item"><a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> Tags</a></li><li class="menu-item menu-system">
+          <span class="menu-system-item theme-switch" title="Switch Theme"><i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i></span></li>
+      </ul>
+    </nav>
+  </div>
+</header><div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+  </div>
+  <div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+  </div><main class="container"><aside class="aside-collection animate__animated animate__fadeIn animate__faster" aria-label="Collections"></aside>
+
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>RTFM &amp; Aleatoriedades - OCSPStapling</span>
+      </h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/0xttfx" title="Author"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><i class="fa-solid fa-user-circle" aria-hidden="true"></i>
+    Faioli a.k.a 0xttfx</a></span></div><div class="post-meta-line"><span title="published on 2024-01-21 20:30:59"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2024-01-21">2024-01-21</time></span>&nbsp;<span title="Updated on 2025-01-27 11:46:26"><i class="fa-regular fa-calendar-check fa-fw me-1" aria-hidden="true"></i><time datetime="2025-01-27">2025-01-27</time></span>&nbsp;<span title="1196 words"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>About 1200 words</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>6 minutes</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="RTFM &amp; Aleatoriedades - OCSPStapling"><i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;views
+          </span>&nbsp;</div>
+    </div><div class="content" id="content"><p>OSCP Stapling é o servidor Web (e não o navegador) obtendo resposta OCSP com status do certificado armazenando-o em cache, e esses dados são incluídos nas respostas HTTPS junto com o certificado&hellip;</p>
+<p>O   <strong>OCSP</strong> - Online Certificate Status Protocol, descrita na <a href="https://datatracker.ietf.org/doc/rfc2560"target="_blank" rel="external nofollow noopener noreferrer">RFC 2560</a>, é um protocolo útil para determinar o status de um certificado digital X.509 <a href="https://datatracker.ietf.org/doc/html/rfc5280"target="_blank" rel="external nofollow noopener noreferrer">RFC5280</a> sem exigir <strong>CRL</strong> - Certificate Revocation Lists  descrita na <a href="http://datatracker.ietf.org/doc/rfc2560/"target="_blank" rel="external nofollow noopener noreferrer">RFC 2560</a> ou como complemento, pois fornece informações <em>oportunas</em> sobre o status de revogação de um certificado (<a href="https://datatracker.ietf.org/doc/rfc2459/"target="_blank" rel="external nofollow noopener noreferrer">RFC2459 Seção 3.3</a>) que são utilizados por exemplo por transferências de fundos de alto valor ou grandes negociações de ações.</p>
+<ul>
+<li>
+<p>O cliente OCSP emite uma solicitação de status para um <em>OCSP responder</em> e suspende a aceitação do certificado em questão até que o <em>responder</em> forneça uma resposta.</p>
+</li>
+<li>
+<p>Uma OCSP request contém os seguintes dados</p>
+<ul>
+<li>versão do protocolo</li>
+<li>requisição de serviço</li>
+<li>identificador do certificado de destino</li>
+<li>extensões opcionais que PODEM ser processadas pelo OCSP Responder</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ openssl s_client -status -connect 0xttfx.github.io:443
+</span></span><span class="line"><span class="cl">CONNECTED<span class="o">(</span>00000003<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="nv">depth</span><span class="o">=</span><span class="m">2</span> <span class="nv">C</span> <span class="o">=</span> US, <span class="nv">O</span> <span class="o">=</span> DigiCert Inc, <span class="nv">OU</span> <span class="o">=</span> www.digicert.com, <span class="nv">CN</span> <span class="o">=</span> DigiCert Global Root CA
+</span></span><span class="line"><span class="cl">verify <span class="k">return</span>:1
+</span></span><span class="line"><span class="cl"><span class="nv">depth</span><span class="o">=</span><span class="m">1</span> <span class="nv">C</span> <span class="o">=</span> US, <span class="nv">O</span> <span class="o">=</span> DigiCert Inc, <span class="nv">CN</span> <span class="o">=</span> DigiCert TLS RSA SHA256 <span class="m">2020</span> CA1
+</span></span><span class="line"><span class="cl">verify <span class="k">return</span>:1
+</span></span><span class="line"><span class="cl"><span class="nv">depth</span><span class="o">=</span><span class="m">0</span> <span class="nv">C</span> <span class="o">=</span> US, <span class="nv">ST</span> <span class="o">=</span> California, <span class="nv">L</span> <span class="o">=</span> San Francisco, <span class="nv">O</span> <span class="o">=</span> <span class="s2">&#34;GitHub, Inc.&#34;</span>, <span class="nv">CN</span> <span class="o">=</span> *.github.io
+</span></span><span class="line"><span class="cl">verify <span class="k">return</span>:1
+</span></span><span class="line"><span class="cl">OCSP response: 
+</span></span><span class="line"><span class="cl"><span class="o">======================================</span>
+</span></span><span class="line"><span class="cl">OCSP Response Data:
+</span></span><span class="line"><span class="cl">    OCSP Response Status: successful <span class="o">(</span>0x0<span class="o">)</span>
+</span></span><span class="line"><span class="cl">    Response Type: Basic OCSP Response
+</span></span><span class="line"><span class="cl">    Version: <span class="m">1</span> <span class="o">(</span>0x0<span class="o">)</span>
+</span></span><span class="line"><span class="cl">    Responder Id: B76BA2EAA8AA848C79EAB4DA0F98B2C59576B9F4
+</span></span><span class="line"><span class="cl">    Produced At: Jan <span class="m">11</span> 12:13:07 <span class="m">2024</span> GMT
+</span></span><span class="line"><span class="cl">    Responses:
+</span></span><span class="line"><span class="cl">    Certificate ID:
+</span></span><span class="line"><span class="cl">      Hash Algorithm: sha1
+</span></span><span class="line"><span class="cl">      Issuer Name Hash: E4E395A229D3D4C1C31FF0980C0B4EC0098AABD8
+</span></span><span class="line"><span class="cl">      Issuer Key Hash: B76BA2EAA8AA848C79EAB4DA0F98B2C59576B9F4
+</span></span><span class="line"><span class="cl">      Serial Number: 044D72D77CDDA702DD5A67F2A23BBDD9
+</span></span><span class="line"><span class="cl">    Cert Status: good
+</span></span><span class="line"><span class="cl">    This Update: Jan <span class="m">11</span> 11:57:01 <span class="m">2024</span> GMT
+</span></span><span class="line"><span class="cl">    Next Update: Jan <span class="m">18</span> 10:57:01 <span class="m">2024</span> GMT
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    Signature Algorithm: sha256WithRSAEncryption
+</span></span><span class="line"><span class="cl">    Signature Value:
+</span></span><span class="line"><span class="cl">        15:e9:8c:5a:f3:19:e5:22:9a:a1:63:7c:c6:f1:fd:18:34:f3:
+</span></span><span class="line"><span class="cl">        ea:20:2b:8c:93:63:50:29:17:99:a4:45:72:77:6b:56:8f:68:
+</span></span><span class="line"><span class="cl">        f4:78:2b:b6:b2:9d:de:09:ac:1f:df:e4:fb:7d:03:9e:7b:aa:
+</span></span><span class="line"><span class="cl">        77:ca:58:bf:4b:0a:2d:08:08:ff:ed:7a:49:03:3c:87:08:08:
+</span></span><span class="line"><span class="cl">        df:1b:be:bc:62:5a:42:fc:32:be:bb:46:7e:1b:ac:6d:a1:e8:
+</span></span><span class="line"><span class="cl">        f8:38:da:7d:bc:dd:e4:bb:1b:09:ce:e5:1e:4a:97:92:01:f4:
+</span></span><span class="line"><span class="cl">        4b:ac:2b:d0:2c:5b:14:d2:29:26:2b:a7:9d:a7:10:93:22:cc:
+</span></span><span class="line"><span class="cl">        f4:b8:11:66:a4:34:5e:35:c3:2e:0d:e7:38:0c:ae:c1:15:2f:
+</span></span><span class="line"><span class="cl">        32:f3:73:59:fb:9c:9c:6d:24:63:e5:7d:54:24:60:ed:a6:bc:
+</span></span><span class="line"><span class="cl">        6a:a1:95:49:f1:fc:29:bf:1a:92:9d:a4:a0:0d:e3:df:fd:79:
+</span></span><span class="line"><span class="cl">        76:21:76:c1:cf:cd:8e:fa:3d:89:d9:1f:be:39:1a:44:5a:1b:
+</span></span><span class="line"><span class="cl">        89:c1:ff:27:ec:37:f2:8b:ae:b2:e7:08:dd:ee:ca:c0:28:ca:
+</span></span><span class="line"><span class="cl">        9a:5b:a9:fe:df:fe:9c:94:dd:fb:1f:44:b2:6b:b3:6e:ac:c3:
+</span></span><span class="line"><span class="cl">        24:ef:1a:63:e7:3b:dd:1e:6f:29:21:a3:c0:a7:9e:c3:6a:6a:
+</span></span><span class="line"><span class="cl">        fd:a8:e1:21
+</span></span><span class="line"><span class="cl"><span class="o">======================================</span>
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">Certificate chain
+</span></span><span class="line"><span class="cl"> <span class="m">0</span> s:C <span class="o">=</span> US, <span class="nv">ST</span> <span class="o">=</span> California, <span class="nv">L</span> <span class="o">=</span> San Francisco, <span class="nv">O</span> <span class="o">=</span> <span class="s2">&#34;GitHub, Inc.&#34;</span>, <span class="nv">CN</span> <span class="o">=</span> *.github.io
+</span></span><span class="line"><span class="cl">   i:C <span class="o">=</span> US, <span class="nv">O</span> <span class="o">=</span> DigiCert Inc, <span class="nv">CN</span> <span class="o">=</span> DigiCert TLS RSA SHA256 <span class="m">2020</span> CA1
+</span></span><span class="line"><span class="cl">   a:PKEY: rsaEncryption, <span class="m">2048</span> <span class="o">(</span>bit<span class="o">)</span><span class="p">;</span> sigalg: RSA-SHA256
+</span></span><span class="line"><span class="cl">   v:NotBefore: Feb <span class="m">21</span> 00:00:00 <span class="m">2023</span> GMT<span class="p">;</span> NotAfter: Mar <span class="m">20</span> 23:59:59 <span class="m">2024</span> GMT
+</span></span><span class="line"><span class="cl"> <span class="m">1</span> s:C <span class="o">=</span> US, <span class="nv">O</span> <span class="o">=</span> DigiCert Inc, <span class="nv">CN</span> <span class="o">=</span> DigiCert TLS RSA SHA256 <span class="m">2020</span> CA1
+</span></span><span class="line"><span class="cl">   i:C <span class="o">=</span> US, <span class="nv">O</span> <span class="o">=</span> DigiCert Inc, <span class="nv">OU</span> <span class="o">=</span> www.digicert.com, <span class="nv">CN</span> <span class="o">=</span> DigiCert Global Root CA
+</span></span><span class="line"><span class="cl">   a:PKEY: rsaEncryption, <span class="m">2048</span> <span class="o">(</span>bit<span class="o">)</span><span class="p">;</span> sigalg: RSA-SHA256
+</span></span><span class="line"><span class="cl">   v:NotBefore: Apr <span class="m">14</span> 00:00:00 <span class="m">2021</span> GMT<span class="p">;</span> NotAfter: Apr <span class="m">13</span> 23:59:59 <span class="m">2031</span> GMT
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">Server certificate
+</span></span><span class="line"><span class="cl">-----BEGIN CERTIFICATE-----
+</span></span><span class="line"><span class="cl">MIIHEjCCBfqgAwIBAgIQBE1y13zdpwLdWmfyoju92TANBgkqhkiG9w0BAQsFADBP
+</span></span><span class="line"><span class="cl">MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMSkwJwYDVQQDEyBE
+</span></span><span class="line"><span class="cl">aWdpQ2VydCBUTFMgUlNBIFNIQTI1NiAyMDIwIENBMTAeFw0yMzAyMjEwMDAwMDBa
+</span></span><span class="line"><span class="cl">Fw0yNDAzMjAyMzU5NTlaMGcxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9y
+</span></span><span class="line"><span class="cl">bmlhMRYwFAYDVQQHEw1TYW4gRnJhbmNpc2NvMRUwEwYDVQQKEwxHaXRIdWIsIElu
+</span></span><span class="line"><span class="cl">Yy4xFDASBgNVBAMMCyouZ2l0aHViLmlvMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A
+</span></span><span class="line"><span class="cl">MIIBCgKCAQEAuLBgDhov8bGGS2TsEZ+meb7oh/GIxbRJmxC7yq/qr75UDHhDf8p7
+</span></span><span class="line"><span class="cl">TkVbCyQp8bsj/Bmkx2xwSXZT0wkjZbJIe7Ycqgca4nka+Xpe5xb4pkrVOaPiDfdX
+</span></span><span class="line"><span class="cl">7+34CHZbUtqL0OYebi/5D5lLalLKNOGkySAz05foenfFAxAmQYJhR6KvxFY/dqI4
+</span></span><span class="line"><span class="cl">y7JwrnJ6Q8F+J6Ne1uP256UwcL0qlid6e/tA0ld3ryMSJ0I6xgtqjL26Le4/nxXu
+</span></span><span class="line"><span class="cl">YlekppVQr0OwrHa44Q7Z/1bsdFCGtR+WLNGVBeW3BWeTTp7yWjgfp49DWt48V9pI
+</span></span><span class="line"><span class="cl">elDGiDgVyJcsLOz4OQk2vRmNA1ZBZgck4wIDAQABo4ID0DCCA8wwHwYDVR0jBBgw
+</span></span><span class="line"><span class="cl">FoAUt2ui6qiqhIx56rTaD5iyxZV2ufQwHQYDVR0OBBYEFI0CHHVazcamQXhpKMP3
+</span></span><span class="line"><span class="cl">qqeYO9W7MHsGA1UdEQR0MHKCCyouZ2l0aHViLmlvgglnaXRodWIuaW+CDCouZ2l0
+</span></span><span class="line"><span class="cl">aHViLmNvbYIKZ2l0aHViLmNvbYIOd3d3LmdpdGh1Yi5jb22CFyouZ2l0aHVidXNl
+</span></span><span class="line"><span class="cl">cmNvbnRlbnQuY29tghVnaXRodWJ1c2VyY29udGVudC5jb20wDgYDVR0PAQH/BAQD
+</span></span><span class="line"><span class="cl">AgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjCBjwYDVR0fBIGHMIGE
+</span></span><span class="line"><span class="cl">MECgPqA8hjpodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vRGlnaUNlcnRUTFNSU0FT
+</span></span><span class="line"><span class="cl">SEEyNTYyMDIwQ0ExLTQuY3JsMECgPqA8hjpodHRwOi8vY3JsNC5kaWdpY2VydC5j
+</span></span><span class="line"><span class="cl">b20vRGlnaUNlcnRUTFNSU0FTSEEyNTYyMDIwQ0ExLTQuY3JsMD4GA1UdIAQ3MDUw
+</span></span><span class="line"><span class="cl">MwYGZ4EMAQICMCkwJwYIKwYBBQUHAgEWG2h0dHA6Ly93d3cuZGlnaWNlcnQuY29t
+</span></span><span class="line"><span class="cl">L0NQUzB/BggrBgEFBQcBAQRzMHEwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRp
+</span></span><span class="line"><span class="cl">Z2ljZXJ0LmNvbTBJBggrBgEFBQcwAoY9aHR0cDovL2NhY2VydHMuZGlnaWNlcnQu
+</span></span><span class="line"><span class="cl">Y29tL0RpZ2lDZXJ0VExTUlNBU0hBMjU2MjAyMENBMS0xLmNydDAJBgNVHRMEAjAA
+</span></span><span class="line"><span class="cl">MIIBfgYKKwYBBAHWeQIEAgSCAW4EggFqAWgAdwB2/4g/Crb7lVHCYcz1h7o0tKTN
+</span></span><span class="line"><span class="cl">uyncaEIKn+ZnTFo6dAAAAYZ0gHV7AAAEAwBIMEYCIQCqfmfSO8MxeeVZ/fJzqqBB
+</span></span><span class="line"><span class="cl">p+VqeRDUOUBVGyTTOn43ewIhAJT0S27mmGUlpqNiDADP+Jo8C6kYHF+7U6TY74bH
+</span></span><span class="line"><span class="cl">XHAaAHYAc9meiRtMlnigIH1HneayxhzQUV5xGSqMa4AQesF3crUAAAGGdIB1agAA
+</span></span><span class="line"><span class="cl">BAMARzBFAiEAguB+XQVANBj2MPcJzbz+LBPrkDDOEO3op52jdHUSW3ICIF0fnYdW
+</span></span><span class="line"><span class="cl">qvdtmgQNSns13pAppdQWp4/f/jerNYskI7krAHUASLDja9qmRzQP5WoC+p0w6xxS
+</span></span><span class="line"><span class="cl">ActW3SyB2bu/qznYhHMAAAGGdIB1SgAABAMARjBEAiAT/wA2qGGHSKZqBAm84z6q
+</span></span><span class="line"><span class="cl">E+dGPQZ1aCMY52pFSfcw8QIgP/SciuZG02X2mBO/miDT2hCp4y5d2sc7FE5PThyC
+</span></span><span class="line"><span class="cl">pbMwDQYJKoZIhvcNAQELBQADggEBADekGxEin/yfyWcHj6qGE5/gCB1uDI1l+wN5
+</span></span><span class="line"><span class="cl">UMZ2ujCQoKQceRMHuVoYjZdMBXGK0CIXxhmiIosD9iyEcWxV3+KZQ2Xl17e3N0zG
+</span></span><span class="line"><span class="cl">yOXx2Kd7B13ruBxQpKOO8Ez4uGpyWb5DDoretV6Pnj9aQ2SCzODedvS+phIKBmi7
+</span></span><span class="line"><span class="cl">d+FM70tNZ6/2csdrG5xIU6d/7XYYXPD2xkwkU1dX4UKmPa7h9ZPyavopcgE+twbx
+</span></span><span class="line"><span class="cl">LxoOkcXsNb/12jOV3iQSDfXDI41AgtFc694KCOjlg+UKizpemE53T5/cq37OqChP
+</span></span><span class="line"><span class="cl">qnlPyb6PYIhua/kgbH84ltba1xEDQ9i4UYfOMiJNZEzEdSfQ498<span class="o">=</span>
+</span></span><span class="line"><span class="cl">-----END CERTIFICATE-----
+</span></span><span class="line"><span class="cl"><span class="nv">subject</span><span class="o">=</span><span class="nv">C</span> <span class="o">=</span> US, <span class="nv">ST</span> <span class="o">=</span> California, <span class="nv">L</span> <span class="o">=</span> San Francisco, <span class="nv">O</span> <span class="o">=</span> <span class="s2">&#34;GitHub, Inc.&#34;</span>, <span class="nv">CN</span> <span class="o">=</span> *.github.io
+</span></span><span class="line"><span class="cl"><span class="nv">issuer</span><span class="o">=</span><span class="nv">C</span> <span class="o">=</span> US, <span class="nv">O</span> <span class="o">=</span> DigiCert Inc, <span class="nv">CN</span> <span class="o">=</span> DigiCert TLS RSA SHA256 <span class="m">2020</span> CA1
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">No client certificate CA names sent
+</span></span><span class="line"><span class="cl">Peer signing digest: SHA256
+</span></span><span class="line"><span class="cl">Peer signature type: RSA-PSS
+</span></span><span class="line"><span class="cl">Server Temp Key: X25519, <span class="m">253</span> bits
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">SSL handshake has <span class="nb">read</span> <span class="m">4060</span> bytes and written <span class="m">393</span> bytes
+</span></span><span class="line"><span class="cl">Verification: OK
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">New, TLSv1.3, Cipher is TLS_AES_128_GCM_SHA256
+</span></span><span class="line"><span class="cl">Server public key is <span class="m">2048</span> bit
+</span></span><span class="line"><span class="cl">This TLS version forbids renegotiation.
+</span></span><span class="line"><span class="cl">Compression: NONE
+</span></span><span class="line"><span class="cl">Expansion: NONE
+</span></span><span class="line"><span class="cl">No ALPN negotiated
+</span></span><span class="line"><span class="cl">Early data was not sent
+</span></span><span class="line"><span class="cl">Verify <span class="k">return</span> code: <span class="m">0</span> <span class="o">(</span>ok<span class="o">)</span>
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">---
+</span></span><span class="line"><span class="cl">Post-Handshake New Session Ticket arrived:
+</span></span><span class="line"><span class="cl">SSL-Session:
+</span></span><span class="line"><span class="cl">    Protocol  : TLSv1.3
+</span></span><span class="line"><span class="cl">    Cipher    : TLS_AES_128_GCM_SHA256
+</span></span><span class="line"><span class="cl">    Session-ID: 899A5EB90A464A1A310C86986066E2FCFB68AA146C1846809043BC0C7A739186
+</span></span><span class="line"><span class="cl">    Session-ID-ctx: 
+</span></span><span class="line"><span class="cl">    Resumption PSK: B24E53F7E7FF18D18BE22EE2ACE052DD858A2226E3F6528E0166A5C90FCA50F5
+</span></span><span class="line"><span class="cl">    PSK identity: None
+</span></span><span class="line"><span class="cl">    PSK identity hint: None
+</span></span><span class="line"><span class="cl">    SRP username: None
+</span></span><span class="line"><span class="cl">    TLS session ticket lifetime hint: <span class="m">3600</span> <span class="o">(</span>seconds<span class="o">)</span>
+</span></span><span class="line"><span class="cl">    TLS session ticket:
+</span></span><span class="line"><span class="cl">    <span class="m">0000</span> - 1b bb 4f <span class="m">78</span> <span class="m">61</span> <span class="m">17</span> <span class="m">18</span> f9-dd c9 5c <span class="m">55</span> da 7e <span class="m">75</span> f8   ..Oxa.....<span class="se">\U</span>.~u.
+</span></span><span class="line"><span class="cl">    <span class="m">0010</span> - f7 <span class="m">88</span> 9b a1 <span class="m">26</span> e4 5f 03-8f b7 3d b2 4f be df ac   ....<span class="p">&amp;</span>._...<span class="o">=</span>.O...
+</span></span><span class="line"><span class="cl">    <span class="m">0020</span> - <span class="m">24</span> <span class="m">40</span> e5 4f <span class="m">46</span> 0d <span class="m">68</span> a3-e3 <span class="m">93</span> <span class="m">76</span> d0 5f bf 6d <span class="m">11</span>   <span class="nv">$@</span>.OF.h...v._.m.
+</span></span><span class="line"><span class="cl">    <span class="m">0030</span> - 8a <span class="m">31</span> <span class="m">67</span> e8 <span class="m">75</span> 5d 1f c2-5f <span class="m">68</span> 6f e9 <span class="m">27</span> 4c e1 <span class="m">46</span>   .1g.u<span class="o">]</span>.._ho.<span class="err">&#39;</span>L.F
+</span></span><span class="line"><span class="cl">    <span class="m">0040</span> - df 8c b2 <span class="m">92</span> e5 6f bf 0b-48 <span class="m">09</span> 1b d5 b9 <span class="m">19</span> b7 9e   .....o..H.......
+</span></span><span class="line"><span class="cl">    <span class="m">0050</span> - <span class="m">55</span> 9c <span class="m">04</span> b1 <span class="m">28</span> ae 4e 90-4b 6b c7 a8 0c b1 <span class="m">58</span> d2   U...<span class="o">(</span>.N.Kk....X.
+</span></span><span class="line"><span class="cl">    <span class="m">0060</span> - <span class="m">46</span> 6a 5c 9c ca 4d ac 52-f5 <span class="m">74</span> 3a <span class="m">48</span> <span class="m">78</span> f7 <span class="m">22</span> <span class="m">02</span>   Fj<span class="se">\.</span>.M.R.t:Hx.<span class="s2">&#34;.
+</span></span></span><span class="line"><span class="cl"><span class="s2">    0070 - b7 ab 64 78 c0 07 3a 62-d3 47 f2 51 48 2a b4 2e   ..dx..:b.G.QH*..
+</span></span></span><span class="line"><span class="cl"><span class="s2">    0080 - 96 a7 df a4 cb f1 9b 42-17 a8 0f 03 ba a7 50 63   .......B......Pc
+</span></span></span><span class="line"><span class="cl"><span class="s2">    0090 - 39 af 34 cd fe 3d b6 52-a1 f2 e9 53 b8 1e ee e1   9.4..=.R...S....
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Start Time: 1705071930
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Timeout   : 7200 (sec)
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Verify return code: 0 (ok)
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Extended master secret: no
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Max Early Data: 0
+</span></span></span><span class="line"><span class="cl"><span class="s2">---
+</span></span></span><span class="line"><span class="cl"><span class="s2">read R BLOCK
+</span></span></span><span class="line"><span class="cl"><span class="s2">closed</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>A verificação de status de revogação está disponível para o certificado de entidade final.</p>
+<ul>
+<li>o protocolo v1 sobre HTTP e o tipo de resposta básica são suportados.</li>
+</ul>
+<p>O status de revogação é verificado via OCSP quando pelo menos uma destas condições for verdadeira:</p>
+<ul>
+<li>endereço de URL de um OCSP responder é configurado.</li>
+<li>A verificação da Autoridade de Acesso à Informação (AIA) está ativada e o certificado a ser validado tem uma extensão AIA.
+<ul>
+<li>A extensão AIA deve conter um método de acesso PKIK_AD_AD_OCSP com uma URI que indica o local HTTP do Responder do OCSP.</li>
+</ul>
+</li>
+</ul>
+<div class="details admonition nota open disabled">
+  <div class="details-summary admonition-title"><i class="icon fa-fw fa-solid fa-pencil-alt" aria-hidden="true"></i>Nota</div>
+  <div class="details-content">
+    <div class="admonition-content"><p>Apenas o primeiro <em>OCSP Responder</em> que é identificado na extensão AIA é consultado para o status de revogação.</p></div>
+  </div>
+</div><p>Quando ativado a  verificação de URL e AIA, o URL responder é consultado primeiro.</p>
+<ul>
+<li>A ordem pode ser mudada configurando o atributo da API Global Security Kit (GSKit) , GSK_OCSP_CHECK_AIA_FIRST.</li>
+<li>Consulta para um segundo responder ocorre apenas se o primeiro responder resultar em um status de revogação indeterminado.</li>
+</ul>
+<p>As sessões cliente com processamento de OCSP habilitado podem solicitar a sessão do servidor para enviar uma resposta do OCSP como parte da negociação de sessão para protocolos TLS TLSv1.3 e TLSv1.2.</p>
+<ul>
+<li>A sessão cliente processa a resposta do OCSP stapling no servidor, eliminando a necessidade do cliente consultar um do <em>OCSP responder</em> para o status de revogação de certificado.</li>
+<li>Uma sessão do servidor também deve ativar o processamento de solicitação de status do certificado, para suportar o stapling do OCSP quando solicitado por um software cliente.</li>
+</ul>
+</div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod">
+        <span title="Updated on 2025-01-27 11:46:26">Updated on 2025-01-27&nbsp;
+                <a class="git-hash" href="https://github.com/0xttfx/commit/4df531e0d13d25c69c8c1d6007709fa90d4ef821" rel="external nofollow noopener noreferrer" target="_blank" title="commit by 0xttfx(thiago.faioli@gmail.com) 4df531e0d13d25c69c8c1d6007709fa90d4ef821: Update - novo tema FixIt"><i class="fa-solid fa-hashtag fa-fw" aria-hidden="true"></i>4df531e</a></span>
+      </div><div class="post-info-license">
+            <span><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a></span>
+          </div></div><div class="post-info-line">
+        <div class="post-info-md"><span><a href="/posts/rtfmaleatoriedades-ocspstapling/index.md" title="Read Markdown" class="link-to-markdown">Read Markdown</a></span><span><a href="https://github.com/0xttfx/blob/main/content/posts/RTFM&amp;Aleatoriedades-OCSPStapling.md?plain=1" title="View source"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-source">View source</a></span><span><a href="https://github.com/0xttfx/edit/main/content/posts/RTFM&amp;Aleatoriedades-OCSPStapling.md" title="Edit this page"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-edit">Edit this page</a></span><span><a href="https://github.com/0xttfx/issues/new?title=[BUG]%20RTFM&#43;%26&#43;Aleatoriedades&#43;-&#43;OCSPStapling&amp;body=%7cField%7cValue%7c%0A%7c-%7c-%7c%0A%7cTitle%7cRTFM&#43;%26&#43;Aleatoriedades&#43;-&#43;OCSPStapling%7c%0A%7cURL%7chttp://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-ocspstapling/%7c%0A%7cFilename%7chttps://github.com/0xttfx/blob/main/content/posts/RTFM&amp;Aleatoriedades-OCSPStapling.md?plain=1%7c" title="Report issue"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-report">Report issue</a></span></div>
+        <div class="post-info-share">
+          <span><a href="javascript:void(0);" title="Share on X" data-sharer="twitter" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-ocspstapling/" data-title="RTFM &amp; Aleatoriedades - OCSPStapling" data-via="0xttfx" data-hashtags="Linux,TLS"><i class="fa-brands fa-x-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-ocspstapling/"><i class="fa-brands fa-linkedin fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-ocspstapling/" data-title="RTFM &amp; Aleatoriedades - OCSPStapling" data-web><i class="fa-brands fa-whatsapp fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on Reddit" data-sharer="reddit" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-ocspstapling/"><i class="fa-brands fa-reddit fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-ocspstapling/" data-title="RTFM &amp; Aleatoriedades - OCSPStapling"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  </span>
+        </div>
+      </div></div>
+
+  <div class="post-info-more">
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw me-1" aria-hidden="true"></i><a href="/tags/linux/" class="post-tag" title="Tags - Linux">Linux</a><a href="/tags/tls/" class="post-tag" title="Tags - TLS">TLS</a></section>
+    <section>
+      <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+    </section>
+  </div><div class="post-nav"><a href="/posts/rtfmaleatoriedades-oldntp/" class="post-nav-item" rel="prev" title="RTFM &amp; Aleatoriedades - Old NTP Client"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>RTFM &amp; Aleatoriedades - Old NTP Client</a><a href="/posts/rtfmaleatoriedades-windowsservertroubleshooting/" class="post-nav-item" rel="next" title="RTFM &amp; Aleatoriedades - Windows Server Troubleshooting">RTFM &amp; Aleatoriedades - Windows Server Troubleshooting<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+<div id="comments"></div></article>
+
+  <aside class="toc" id="toc-auto" aria-label="Contents"></aside></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
+            <span itemprop="copyrightYear">2024 - 2025</span><span class="author" itemprop="copyrightHolder">
+              <a href="https://github.com/0xttfx"target="_blank" rel="external nofollow noopener noreferrer">Faioli a.k.a 0xttfx</a></span><span class="license footer-divider">BSD-3-Clause</span></div><div class="footer-line statistics"></div><div class="footer-line visitor">
+          <span id="busuanzi_container_site_uv" title='Total visitors'><i class="fa-regular fa-user fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span><span id="busuanzi_container_site_pv" class="footer-divider" title='Total visits'><i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span>
+        </div></div>
+  </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="Back to Top"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric">0%</span>
+        </div><div class="fixed-button view-comments d-none" role="button" aria-label="View Comments"><i class="fa-solid fa-comment fa-fw" aria-hidden="true"></i></div></div><div id="mask"></div><div class="reading-progress-bar" style="left: 0;top: 0;"></div><noscript>
+    <div class="noscript-warning">This website works best with JavaScript enabled.</div>
+  </noscript>
+</div><link rel="preload" href="/lib/katex/katex.min.af6f85907cdfd6ed3e4906d93a8233d91c5638859f744cd1b98c9b1a3ccaab5f231bdcda49f132f6cdfe8cca86ff33ed468affab8a9a502610a664a34f0f0cfa.css" integrity="sha512-r2+FkHzf1u0+SQbZOoIz2RxWOIWfdEzRuYybGjzKq18jG9zaSfEy9s3+jMqG/zPtRor/q4qaUCYQpmSjTw8M+g==" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/katex/katex.min.af6f85907cdfd6ed3e4906d93a8233d91c5638859f744cd1b98c9b1a3ccaab5f231bdcda49f132f6cdfe8cca86ff33ed468affab8a9a502610a664a34f0f0cfa.css" integrity="sha512-r2+FkHzf1u0+SQbZOoIz2RxWOIWfdEzRuYybGjzKq18jG9zaSfEy9s3+jMqG/zPtRor/q4qaUCYQpmSjTw8M+g=="></noscript><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.2d0f7b71a99aaff94e9624ff32a8dc42ce645a0cba433fdc091cf34735027efd1fa2db024c2f591d768f426255f17bbf3d500b7c967b0437b3979956dffa81c6.css" integrity="sha512-LQ97camar/lOliT/MqjcQs5kWgy6Qz/cCRzzRzUCfv0fotsCTC9ZHXaPQmJV8Xu/PVALfJZ7BDezl5lW3/qBxg=="><script src="/lib/autocomplete/autocomplete.min.7e654c67e741180b83f7b4d829967003fea37a5d5014f549f0a3d7f945d2b73e73e22a1dd04a7b68712c846f004232f3030d07305784fab026100af12af8f0ac.js" integrity="sha512-fmVMZ+dBGAuD97TYKZZwA/6jel1QFPVJ8KPX+UXStz5z4iod0Ep7aHEshG8AQjLzAw0HMFeE+rAmEArxKvjwrA==" defer></script><script src="/lib/fuse/fuse.min.36ac35b47de6a5abe46bd71009ce7359611935f20f74e6324058e557536f7e512d434fd723a650f87fc3dd880976a49426530b00f463fe85e56870856c50a3a1.js" integrity="sha512-Nqw1tH3mpavka9cQCc5zWWEZNfIPdOYyQFjlV1NvflEtQ0/XI6ZQ+H/D3YgJdqSUJlMLAPRj/oXlaHCFbFCjoQ==" defer></script><script src="/lib/sharer/sharer.min.94c73c706d26a452277a104d6857c0cb04e816ad61c4163b4e0a135426a7767211e0a27c952ea85e3df25aec941374e21053db0f9e7822af8a2f9c4a8a93c4e3.js" integrity="sha512-lMc8cG0mpFInehBNaFfAywToFq1hxBY7TgoTVCandnIR4KJ8lS6oXj3yWuyUE3TiEFPbD554Iq+KL5xKipPE4w==" async defer></script><script src="/lib/katex/katex.min.20da6cf7343619410c0900fbc626506c65159ea9f312f9729d5cba7aa713707378f9a4222e8f7fb9a42a7240e9749f199b7334401b3e3e4b60e29cf490492552.js" integrity="sha512-INps9zQ2GUEMCQD7xiZQbGUVnqnzEvlynVy6eqcTcHN4+aQiLo9/uaQqckDpdJ8Zm3M0QBs+Pktg4pz0kEklUg==" defer></script><script src="/lib/katex/auto-render.min.6095714e3aadb63b14ddc4af69346ab12974c1b460654345f8d1860a0b68fcc51b22f68b757433193090bb80afc8965b65cb607e5541d0f5f0f4b2e64d69b9ff.js" integrity="sha512-YJVxTjqttjsU3cSvaTRqsSl0wbRgZUNF+NGGCgto/MUbIvaLdXQzGTCQu4CvyJZbZctgflVB0PXw9LLmTWm5/w==" defer></script><script src="/lib/katex/copy-tex.min.895ad99f7d8fdb0683cd271c02584953bd0542c6d4956c9feebaa16673683a45d5884f5253e3db33f8f74a86cc464477497656fb36e96a558137311bdb7f32d6.js" integrity="sha512-iVrZn32P2waDzSccAlhJU70FQsbUlWyf7rqhZnNoOkXViE9SU+PbM/j3SobMRkR3SXZW+zbpalWBNzEb238y1g==" defer></script><script src="/lib/katex/mhchem.min.9b18cdc3fbb5948b050b4f64fee9ec703458de87c860f5456d690ff2c96b78f712dfa86de1dfce67cad1bb9c9d741dae8aa6a385370b0fcfa3ba9396b983de6e.js" integrity="sha512-mxjNw/u1lIsFC09k/unscDRY3ofIYPVFbWkP8slrePcS36ht4d/OZ8rRu5yddB2uiqajhTcLD8+jupOWuYPebg==" defer></script><script src="/lib/cookieconsent/cookieconsent.min.c975ea3858dd8c7347d46343fb510ed236efbde6c0069cc6283eba7639d47e22a560c1391c6314247a0269e1380f93d31b662c4897fa770ab2514bd0bd2d2f68.js" integrity="sha512-yXXqOFjdjHNH1GND+1EO0jbvvebABpzGKD66djnUfiKlYME5HGMUJHoCaeE4D5PTG2YsSJf6dwqyUUvQvS0vaA==" defer></script><script src="https://vercount.one/js" async defer></script><script>window.config={"code":{"copyTitle":"Copy to clipboard","editLockTitle":"Lock editable code block","editUnLockTitle":"Unlock editable code block","editable":true,"maxShownLines":10},"comment":{"enable":true,"expired":false},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/search.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":false,"isCaseSensitive":false,"location":0,"maxResultLength":10,"minMatchCharLength":2,"noResultsFound":"No results found","snippetLength":30,"threshold":0.3,"type":"fuse","useExtendedSearch":false},"version":"v0.3.17-8b402129"};</script><script src="/js/theme.min.9301245cf01fb1ba5f5c15fd31c0d1a45ee2c0db8bff20a52762e159abb3a7737d682d1cf2d148749b1501acebf5db20cb22c07cd44e89051830dcb4223992c7.js" integrity="sha512-kwEkXPAfsbpfXBX9McDRpF7iwNuL/yClJ2LhWauzp3N9aC0c8tFIdJsVAazr9dsgyyLAfNROiQUYMNy0IjmSxw==" defer></script><script>
+      window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+      gtag('config', 'G-RB8T1ZS4FX', { 'anonymize_ip': true });
+    </script><script src="https://www.googletagmanager.com/gtag/js?id=G-RB8T1ZS4FX" async></script><script async defer data-website-id="698d1689-fa78-4bfc-a0f3-9e95bcb884de" src=""  data-host-url="https://cloud.umami.is/script.js"  ></script></body>
+</html>

@@ -1,33 +1,22 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><?xml-stylesheet href="/feed_style.xsl" type="text/xsl"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="https://www.rssboard.org/media-rss">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Pages on 0xttfx</title>
-    <link>https://0xttfx.github.io/pages/</link>
-    <description>Recent content in Pages on 0xttfx</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <title>All Pages - 0xttfx</title>
+    <link>http://0xttfx.tcpip.net.br/pages/</link>
+    <description>Vicissitudes e Adjacências</description>
+    <generator>Hugo 0.142.0 &amp; FixIt v0.3.17-8b402129</generator>
     <language>en</language>
-    <copyright>0xttfx - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)</copyright>
-    <lastBuildDate>Fri, 07 Jun 2024 11:52:54 -0300</lastBuildDate><atom:link href="https://0xttfx.github.io/pages/index.xml" rel="self" type="application/rss+xml" /><icon>https://0xttfx.github.io/img/icon.svg</icon>
-    
-    
+    <managingEditor>thiago.faioli@gmail.com (Faioli a.k.a 0xttfx)</managingEditor>
+    <webMaster>thiago.faioli@gmail.com (Faioli a.k.a 0xttfx)</webMaster>
+    <copyright>Running on [OpenBSD](https://openbsd.org) and [httpd](https://man.openbsd.org/httpd.8) |  [0xttfx](https://0xttfx.tcpip.net.br) - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)</copyright>
+    <lastBuildDate>Mon, 27 Jan 2025 11:46:26 -0300</lastBuildDate>
+    <atom:link href="http://0xttfx.tcpip.net.br/pages/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>About</title>
-      <link>https://0xttfx.github.io/pages/about/</link>
+      <link>http://0xttfx.tcpip.net.br/pages/about/</link>
       <pubDate>Fri, 07 Jun 2024 11:52:54 -0300</pubDate>
-      
-      <guid>https://0xttfx.github.io/pages/about/</guid>
-      <description><![CDATA[<p>🖖</p>
-<p>Hey! I&rsquo;m Faioli, aka 0xttfx 🏴‍☠️</p>
-<p><img src="/thiago_11.png" alt="Im"></p>
-<p>After more than 25 years of experience, I think I&rsquo;m an expert in IT infrastructure, Unix and Linux systems administrator, cloud computing, platform engineer, {S,N} RE, cyber security, geek and hacker culture enthusiast</p>
-<p><img src="/logo_3.svg" alt="Logo"></p>
-<p>I also had the pleasure of being invited by the fearless friend <a href="https://area31.net.br/wiki/Usu%C3%A1rio:Coffnix">@coffinix</a> through the master <a href="https://cybernetus.com">@cybernetus</a> to be a founding member (with the train already moving under the tracks&hellip;) of <a href="https://area31.net.br">Area31 Hackerspace - Minas Gerais - Brazil</a> 🏴‍☠️</p>
-<p><img src="/Area31_2.png" alt="area31"></p>
-<p>This site is about me, unix, linux, infrastructure, cyber security, hacker culture and what I feel like talking about :)</p>
-<p>Have fun at this place and get in touch if you want&hellip;</p>
-]]></description>
-      
+      <guid>http://0xttfx.tcpip.net.br/pages/about/</guid>
+      <description>&lt;p&gt;🖖&lt;/p&gt;&#xA;&lt;p&gt;Hey! I&amp;rsquo;m Faioli, aka 0xttfx 🏴‍☠️&lt;/p&gt;&#xA;&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;http://0xttfx.tcpip.net.br/thiago_11.png&#34; alt=&#34;Im&#34; srcset=&#34;http://0xttfx.tcpip.net.br/thiago_11.png?size=small, http://0xttfx.tcpip.net.br/thiago_11.png?size=medium 1.5x, http://0xttfx.tcpip.net.br/thiago_11.png?size=large 2x&#34; data-title=&#34;Im&#34; style=&#34;--width: 144px;--aspect-ratio: 144 / 144;background: url(/images/loading.min.svg) no-repeat center;&#34; onload=&#34;this.title=this.dataset.title;for(const i of [&#39;style&#39;, &#39;data-title&#39;,&#39;onerror&#39;,&#39;onload&#39;]){this.removeAttribute(i);}this.dataset.lazyloaded=&#39;&#39;;&#34; onerror=&#34;this.title=this.dataset.title;for(const i of [&#39;style&#39;, &#39;data-title&#39;,&#39;onerror&#39;,&#39;onload&#39;]){this.removeAttribute(i);}&#34;/&gt;&lt;/p&gt;&#xA;&lt;p&gt;Enthusiast of geek and hacker culture!&lt;/p&gt;&#xA;&lt;p&gt;With over 25 years of experience in the job market, I have learned a lot from many people I have met along the way! And I am very grateful to everyone who gave me good and bad examples, who shared knowledge, who tried to bring me down, who discredited me&amp;hellip; It was, and still is: a great school where I continue to improve my skills in IT infrastructure, network troubleshooting, Unix and Linux, telecom, systems administration, virtualization, SND&amp;amp;NFV, cloud computing and, in recent years, in infrastructure as code, provisioning automation, continuous integrations, platform engineering and cybersecurity.&amp;quot;&lt;/p&gt;</description>
     </item>
-    
-    
   </channel>
 </rss>

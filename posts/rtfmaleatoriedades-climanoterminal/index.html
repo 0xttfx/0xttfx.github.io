@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="en">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <title>RTFM &amp; Aleatoriedades - Clima No Terminal - 0xttfx</title><meta name="author" content="Faioli a.k.a 0xttfx">
+<meta name="description" content="Vendo o Clima pelo Terminal"><meta name="keywords" content='Linux, CURL, Terminal, Bash, Shell,  '>
+  <meta itemprop="name" content="RTFM & Aleatoriedades - Clima No Terminal">
+  <meta itemprop="description" content="Vendo o Clima pelo Terminal">
+  <meta itemprop="datePublished" content="2025-01-22T17:13:52-03:00">
+  <meta itemprop="dateModified" content="2025-01-27T11:46:26-03:00">
+  <meta itemprop="wordCount" content="1892">
+  <meta itemprop="image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
+  <meta itemprop="keywords" content="Linux,CURL,Terminal,Bash,Shell, "><meta property="og:url" content="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-climanoterminal/">
+  <meta property="og:site_name" content="0xttfx">
+  <meta property="og:title" content="RTFM & Aleatoriedades - Clima No Terminal">
+  <meta property="og:description" content="Vendo o Clima pelo Terminal">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-01-22T17:13:52-03:00">
+    <meta property="article:modified_time" content="2025-01-27T11:46:26-03:00">
+    <meta property="article:tag" content="Linux">
+    <meta property="article:tag" content="CURL">
+    <meta property="article:tag" content="Terminal">
+    <meta property="article:tag" content="Bash">
+    <meta property="article:tag" content="Shell">
+    <meta property="article:tag" content=" ">
+    <meta property="og:image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
+  <meta name="twitter:title" content="RTFM & Aleatoriedades - Clima No Terminal">
+  <meta name="twitter:description" content="Vendo o Clima pelo Terminal">
+      <meta name="twitter:site" content="@0xttfx">
+<meta name="twitter:creator" content="@0xttfx" /><meta name="application-name" content="0xttfx">
+<meta name="apple-mobile-web-app-title" content="0xttfx"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" type="text/html" href="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-climanoterminal/" title="RTFM &amp; Aleatoriedades - Clima No Terminal - 0xttfx" /><link rel="prev" type="text/html" href="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-literaciaai/" title="RTFM &amp; Aleatoriedades - Literacia em IA" /><link rel="alternate" type="text/markdown" href="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-climanoterminal/index.md" title="RTFM & Aleatoriedades - Clima No Terminal - 0xttfx"><link rel="stylesheet" href="/css/style.min.5fb8636ad8f7ce85ece8cfd1b583385644991297bcabe889a9ed87d9b420dde6722873df084bf070d186b7e8f42529ece5312c08b3912ec100416517af236f51.css" integrity="sha512-X7hjatj3zoXs6M/RtYM4VkSZEpe8q+iJqe2H2bQg3eZyKHPfCEvwcNGGt+j0JSns5TEsCLORLsEAQWUXryNvUQ=="><link rel="preload" href="/lib/fontawesome-free/all.min.e47b37745d8010f92934047b5223876dafa545224d78cd840a4c31508c42d50fc52f27064db35aa565c1e2d3fcf3d9394f926ef1fb386f53f9cff881e2731f49.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.e47b37745d8010f92934047b5223876dafa545224d78cd840a4c31508c42d50fc52f27064db35aa565c1e2d3fcf3d9394f926ef1fb386f53f9cff881e2731f49.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="></noscript><link rel="preload" href="/lib/animate/animate.min.738daa4d2c3fc0f677ff92c1cc3f81c397fb6d2176a31a2eeb011bf88fe5a9e68a57914321f32fbd1a7bef6cb88dc24b2ae1943a96c931d83f053979d1f25803.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw==" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/animate/animate.min.738daa4d2c3fc0f677ff92c1cc3f81c397fb6d2176a31a2eeb011bf88fe5a9e68a57914321f32fbd1a7bef6cb88dc24b2ae1943a96c931d83f053979d1f25803.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw=="></noscript><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "RTFM \u0026 Aleatoriedades - Clima No Terminal",
+    "inLanguage": "en",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http:\/\/0xttfx.tcpip.net.br\/posts\/rtfmaleatoriedades-climanoterminal\/"
+    },"genre": "posts","keywords": "Linux, CURL, Terminal, Bash, Shell,  ","wordcount":  1892 ,
+    "url": "http:\/\/0xttfx.tcpip.net.br\/posts\/rtfmaleatoriedades-climanoterminal\/","datePublished": "2025-01-22T17:13:52-03:00","dateModified": "2025-01-27T11:46:26-03:00","license": "Running on [OpenBSD](https://openbsd.org) and [httpd](https://man.openbsd.org/httpd.8) |  [0xttfx](https://0xttfx.tcpip.net.br) - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)","publisher": {
+      "@type": "Organization",
+      "name": ""},"author": {
+        "@type": "Person",
+        "name": "Faioli a.k.a 0xttfx"
+      },"description": "Vendo o Clima pelo Terminal"
+  }
+  </script><script src="/js/head/color-scheme.min.e4582484625e45df8e4adbb4cc376382a2cba293ce791cf7e64b7d91903cb3c5ca0e91d3f65981dd654cffb16766c9ba00adc5f156d21c61355858e9efc36d60.js" integrity="sha512-5FgkhGJeRd+OStu0zDdjgqLLopPOeRz35kt9kZA8s8XKDpHT9lmB3WVM/7FnZsm6AK3F8VbSHGE1WFjp78NtYA=="></script></head>
+  <body data-header-desktop="sticky" data-header-mobile="auto"><div class="wrapper" data-page-style="normal"><header class="desktop animate__faster" id="header-desktop">
+  <div class="header-wrapper">
+    <div class="header-title">
+      <a href="/" title="0xttfx"><img loading="lazy" src="/images/logo.svg" alt="0xttfx" data-title="0xttfx" width="26" height="26" class="logo" style="background: url(/images/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}"/><span class="header-title-text">0xTTFX</span></a><span class="header-subtitle"></span></div>
+    <nav>
+      <ul class="menu"><li class="menu-item">
+              <a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> Archives</a></li><li class="menu-item">
+              <a class="menu-link" href="/pages/about"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> About</a></li><li class="menu-item">
+              <a class="menu-link" href="https://cv0xttfx.tcpip.net.br" rel="noopener noreferrer" target="_blank"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> CV</a></li><li class="menu-item">
+              <a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> Tags</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+            <input type="text" placeholder="Search titles or contents ..." id="search-input-desktop">
+            <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+              <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+            </a>
+            <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+              <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+            </a>
+            <span class="search-button search-loading" id="search-loading-desktop">
+              <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+            </span>
+          </li><li class="menu-item theme-switch" title="Switch Theme">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header><header class="mobile animate__faster" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title="0xttfx"><img loading="lazy" src="/images/logo.svg" alt="0xttfx" data-title="0xttfx" width="26" height="26" class="logo" style="background: url(/images/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}"/><span class="header-title-text">0xTTFX</span></a><span class="header-subtitle"></span></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li class="search-wrapper">
+            <div class="search mobile" id="search-mobile">
+              <input type="text" placeholder="Search titles or contents ..." id="search-input-mobile">
+              <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+              </a>
+              <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+              </a>
+              <span class="search-button search-loading" id="search-loading-mobile">
+                <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+              </span>
+            </div>
+            <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+              Cancel
+            </a>
+          </li><li class="menu-item"><a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> Archives</a></li><li class="menu-item"><a class="menu-link" href="/pages/about"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> About</a></li><li class="menu-item"><a class="menu-link" href="https://cv0xttfx.tcpip.net.br" rel="noopener noreferrer" target="_blank"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> CV</a></li><li class="menu-item"><a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> Tags</a></li><li class="menu-item menu-system">
+          <span class="menu-system-item theme-switch" title="Switch Theme"><i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i></span></li>
+      </ul>
+    </nav>
+  </div>
+</header><div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+  </div>
+  <div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+  </div><main class="container"><aside class="aside-collection animate__animated animate__fadeIn animate__faster" aria-label="Collections"></aside>
+
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>RTFM &amp; Aleatoriedades - Clima No Terminal</span>
+      </h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/0xttfx" title="Author"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><i class="fa-solid fa-user-circle" aria-hidden="true"></i>
+    Faioli a.k.a 0xttfx</a></span></div><div class="post-meta-line"><span title="published on 2025-01-22 17:13:52"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2025-01-22">2025-01-22</time></span>&nbsp;<span title="Updated on 2025-01-27 11:46:26"><i class="fa-regular fa-calendar-check fa-fw me-1" aria-hidden="true"></i><time datetime="2025-01-27">2025-01-27</time></span>&nbsp;<span title="1892 words"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>About 1900 words</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>9 minutes</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="RTFM &amp; Aleatoriedades - Clima No Terminal"><i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;views
+          </span>&nbsp;</div>
+    </div><div class="details toc" id="toc-static" data-kept="false">
+        <div class="details-summary toc-title">
+          <span>Contents</span>
+          <span><i class="details-icon fa-solid fa-angle-right" aria-hidden="true"></i></span>
+        </div>
+        <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#só-isso-">Só isso ?</a>
+      <ul>
+        <li><a href="#segue-uma-sugestão-de-uso">Segue uma sugestão de uso:</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+      </div><div class="content" id="content"><p><img loading="lazy" src="/images/ClimaCMD/climaNoTerminal.png" alt="climaNoTerminal" srcset="/images/ClimaCMD/climaNoTerminal.png?size=small, /images/ClimaCMD/climaNoTerminal.png?size=medium 1.5x, /images/ClimaCMD/climaNoTerminal.png?size=large 2x" data-title="climaNoTerminal" style="background: url(/images/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}"/></p>
+<p>O <a href="https://github.com/chubin/wttr.in"target="_blank" rel="external nofollow noopener noreferrer">wttr.in</a> é um serviço de previsão meteorológica para console que suporta vários métodos de representação de informações, como códigos de escape ANSI orientados a terminais para clientes HTTP de console (curl, httpie ou wget), HTML para navegadores web ou PNG para visualizadores gráficos.</p>
+<p>Não tem segredo! Basta usar uma tool como <a href="https://curl.se"target="_blank" rel="external nofollow noopener noreferrer">Client URL - curl</a>  para buscar o conteúdo da URL <code>https://wttr.in</code></p>
+<ul>
+<li>Seguindo esse exemplo, a página será renderizada já com os dados de geolocalização do seu IP e a previsão para o dia corrente e os próximos 2:</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ curl https://wttr.in 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Weather report: Belo Horizonte, Brazil
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   _<span class="sb">`</span>/<span class="s2">&#34;&#34;</span>.-.     Shower in vicinity, thunderstorm in vicinity
+</span></span><span class="line"><span class="cl">    ,<span class="se">\_</span><span class="o">(</span>   <span class="o">)</span>.   +27<span class="o">(</span>29<span class="o">)</span> °C     
+</span></span><span class="line"><span class="cl">     /<span class="o">(</span>___<span class="o">(</span>__<span class="o">)</span>  → <span class="m">12</span> km/h      
+</span></span><span class="line"><span class="cl">      ⚡‘‘⚡‘‘  <span class="m">10</span> km          
+</span></span><span class="line"><span class="cl">      ‘ ‘ ‘ ‘   0.4 mm         
+</span></span><span class="line"><span class="cl">                                                       ┌─────────────┐                                                       
+</span></span><span class="line"><span class="cl">┌──────────────────────────────┬───────────────────────┤  Wed <span class="m">22</span> Jan ├───────────────────────┬──────────────────────────────┐
+</span></span><span class="line"><span class="cl">│            Morning           │             Noon      └──────┬──────┘     Evening           │             Night            │
+</span></span><span class="line"><span class="cl">├──────────────────────────────┼──────────────────────────────┼──────────────────────────────┼──────────────────────────────┤
+</span></span><span class="line"><span class="cl">│     <span class="se">\ </span>  /     Sunny          │     <span class="se">\ </span>  /     Sunny          │  _<span class="sb">`</span>/<span class="s2">&#34;&#34;</span>.-.     Patchy light r…│  _<span class="sb">`</span>/<span class="s2">&#34;&#34;</span>.-.     Light rain sho…│
+</span></span><span class="line"><span class="cl">│      .-.      +24<span class="o">(</span>26<span class="o">)</span> °C     │      .-.      +30<span class="o">(</span>32<span class="o">)</span> °C     │   ,<span class="se">\_</span><span class="o">(</span>   <span class="o">)</span>.   +27<span class="o">(</span>30<span class="o">)</span> °C     │   ,<span class="se">\_</span><span class="o">(</span>   <span class="o">)</span>.   <span class="m">19</span> °C          │
+</span></span><span class="line"><span class="cl">│   ― <span class="o">(</span>   <span class="o">)</span> ―   ↖ <span class="m">3</span> km/h       │   ― <span class="o">(</span>   <span class="o">)</span> ―   ↓ <span class="m">3</span> km/h       │    /<span class="o">(</span>___<span class="o">(</span>__<span class="o">)</span>  ↗ 5-8 km/h     │    /<span class="o">(</span>___<span class="o">(</span>__<span class="o">)</span>  ↖ 15-33 km/h   │
+</span></span><span class="line"><span class="cl">│      <span class="sb">`</span>-’      <span class="m">10</span> km          │      <span class="sb">`</span>-’      <span class="m">10</span> km          │     ⚡‘‘⚡‘‘  <span class="m">10</span> km          │      ‘ ‘ ‘ ‘  <span class="m">10</span> km            │
+</span></span><span class="line"><span class="cl">│     /   <span class="se">\ </span>    0.0 mm <span class="p">|</span> 0%    │     /   <span class="se">\ </span>    0.0 mm <span class="p">|</span> 0%    │     ‘ ‘ ‘ ‘   1.4 mm <span class="p">|</span> 100%  │     ‘ ‘ ‘ ‘   1.3 mm <span class="p">|</span> 100%  │
+</span></span><span class="line"><span class="cl">└──────────────────────────────┴──────────────────────────────┴──────────────────────────────┴──────────────────────────────┘
+</span></span><span class="line"><span class="cl">                                                       ┌─────────────┐                                                       
+</span></span><span class="line"><span class="cl">┌──────────────────────────────┬───────────────────────┤  Thu <span class="m">23</span> Jan ├───────────────────────┬──────────────────────────────┐
+</span></span><span class="line"><span class="cl">│            Morning           │             Noon      └──────┬──────┘     Evening           │             Night            │
+</span></span><span class="line"><span class="cl">├──────────────────────────────┼──────────────────────────────┼──────────────────────────────┼──────────────────────────────┤
+</span></span><span class="line"><span class="cl">│     <span class="se">\ </span>  /     Sunny          │  _<span class="sb">`</span>/<span class="s2">&#34;&#34;</span>.-.     Thundery outbr…│  _<span class="sb">`</span>/<span class="s2">&#34;&#34;</span>.-.     Patchy light r…│     <span class="se">\ </span>  /     Clear          │
+</span></span><span class="line"><span class="cl">│      .-.      +23<span class="o">(</span>25<span class="o">)</span> °C     │   ,<span class="se">\_</span><span class="o">(</span>   <span class="o">)</span>.   +28<span class="o">(</span>30<span class="o">)</span> °C     │   ,<span class="se">\_</span><span class="o">(</span>   <span class="o">)</span>.   +28<span class="o">(</span>31<span class="o">)</span> °C     │      .-.      +23<span class="o">(</span>25<span class="o">)</span> °C     │
+</span></span><span class="line"><span class="cl">│   ― <span class="o">(</span>   <span class="o">)</span> ―   ← 6-8 km/h     │    /<span class="o">(</span>___<span class="o">(</span>__<span class="o">)</span>  ↙ 8-9 km/h     │    /<span class="o">(</span>___<span class="o">(</span>__<span class="o">)</span>  ← 8-12 km/h    │   ― <span class="o">(</span>   <span class="o">)</span> ―   ← 10-21 km/h   │
+</span></span><span class="line"><span class="cl">│      <span class="sb">`</span>-’      <span class="m">10</span> km          │     ⚡‘‘⚡‘‘  <span class="m">9</span> km           │     ⚡‘‘⚡‘‘  <span class="m">10</span> km          │      <span class="sb">`</span>-’      <span class="m">10</span> km              │
+</span></span><span class="line"><span class="cl">│     /   <span class="se">\ </span>    0.0 mm <span class="p">|</span> 0%    │     ‘ ‘ ‘ ‘   0.0 mm <span class="p">|</span> 76%   │     ‘ ‘ ‘ ‘   0.8 mm <span class="p">|</span> 100%  │     /   <span class="se">\ </span>    0.0 mm <span class="p">|</span> 0%    │
+</span></span><span class="line"><span class="cl">└──────────────────────────────┴──────────────────────────────┴──────────────────────────────┴──────────────────────────────┘
+</span></span><span class="line"><span class="cl">                                                       ┌─────────────┐                                                       
+</span></span><span class="line"><span class="cl">┌──────────────────────────────┬───────────────────────┤  Fri <span class="m">24</span> Jan ├───────────────────────┬──────────────────────────────┐
+</span></span><span class="line"><span class="cl">│            Morning           │             Noon      └──────┬──────┘     Evening           │             Night            │
+</span></span><span class="line"><span class="cl">├──────────────────────────────┼──────────────────────────────┼──────────────────────────────┼──────────────────────────────┤
+</span></span><span class="line"><span class="cl">│     <span class="se">\ </span>  /     Sunny          │     <span class="se">\ </span>  /     Sunny          │     <span class="se">\ </span>  /     Sunny          │     <span class="se">\ </span>  /     Clear          │
+</span></span><span class="line"><span class="cl">│      .-.      <span class="m">22</span> °C          │      .-.      +26<span class="o">(</span>27<span class="o">)</span> °C     │      .-.      +28<span class="o">(</span>30<span class="o">)</span> °C     │      .-.      +22<span class="o">(</span>25<span class="o">)</span> °C     │
+</span></span><span class="line"><span class="cl">│   ― <span class="o">(</span>   <span class="o">)</span> ―   ← 7-10 km/h    │   ― <span class="o">(</span>   <span class="o">)</span> ―   ↙ 9-11 km/h    │   ― <span class="o">(</span>   <span class="o">)</span> ―   ↙ 9-11 km/h    │   ― <span class="o">(</span>   <span class="o">)</span> ―   ← 7-14 km/h    │
+</span></span><span class="line"><span class="cl">│      <span class="sb">`</span>-’      <span class="m">10</span> km          │      <span class="sb">`</span>-’      <span class="m">10</span> km          │      <span class="sb">`</span>-’      <span class="m">10</span> km          │      <span class="sb">`</span>-’      <span class="m">10</span> km          │
+</span></span><span class="line"><span class="cl">│     /   <span class="se">\ </span>    0.0 mm <span class="p">|</span> 0%    │     /   <span class="se">\ </span>    0.0 mm <span class="p">|</span> 0%    │     /   <span class="se">\ </span>    0.0 mm <span class="p">|</span> 0%    │     /   <span class="se">\ </span>    0.0 mm <span class="p">|</span> 0%    │
+</span></span><span class="line"><span class="cl">└──────────────────────────────┴──────────────────────────────┴──────────────────────────────┴──────────────────────────────┘</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>Você pode especificar:
+<ul>
+<li>
+<p>o nome da cidade e quando existir espaços basta usar <code>+</code> e se quiser que o output tenha apenas o dia corrente, use o <code>1</code> precedido pelo sinal de interrogação <code>?</code> que é o delimitador que indica que qualquer coisa logo após, será uma opção de formatação de output&hellip; :</p>
+<ul>
+<li><code>curl wttr.in/Belo+Horizonte</code>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ curl <span class="s1">&#39;wttr.in/Belo+Horizonte?1&#39;</span>
+</span></span><span class="line"><span class="cl">Weather report: Belo+Horizonte
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   _<span class="sb">`</span>/<span class="s2">&#34;&#34;</span>.-.     Thunderstorm, shower in vicinity
+</span></span><span class="line"><span class="cl">    ,<span class="se">\_</span><span class="o">(</span>   <span class="o">)</span>.   +23<span class="o">(</span>25<span class="o">)</span> °C     
+</span></span><span class="line"><span class="cl">     /<span class="o">(</span>___<span class="o">(</span>__<span class="o">)</span>  ↑ <span class="m">9</span> km/h       
+</span></span><span class="line"><span class="cl">      ⚡‘‘⚡‘‘  <span class="m">10</span> km          
+</span></span><span class="line"><span class="cl">      ‘ ‘ ‘ ‘   14.9 mm        
+</span></span><span class="line"><span class="cl">                                                       ┌─────────────┐                                                       
+</span></span><span class="line"><span class="cl">┌──────────────────────────────┬───────────────────────┤  Wed <span class="m">22</span> Jan ├───────────────────────┬──────────────────────────────┐
+</span></span><span class="line"><span class="cl">│            Morning           │             Noon      └──────┬──────┘     Evening           │             Night            │
+</span></span><span class="line"><span class="cl">├──────────────────────────────┼──────────────────────────────┼──────────────────────────────┼──────────────────────────────┤
+</span></span><span class="line"><span class="cl">│     <span class="se">\ </span>  /     Sunny          │  _<span class="sb">`</span>/<span class="s2">&#34;&#34;</span>.-.     Thundery outbr…│  _<span class="sb">`</span>/<span class="s2">&#34;&#34;</span>.-.     Thundery outbr…│    <span class="se">\ </span> /       Partly Cloudy  │
+</span></span><span class="line"><span class="cl">│      .-.      +29<span class="o">(</span>31<span class="o">)</span> °C     │   ,<span class="se">\_</span><span class="o">(</span>   <span class="o">)</span>.   +32<span class="o">(</span>34<span class="o">)</span> °C     │   ,<span class="se">\_</span><span class="o">(</span>   <span class="o">)</span>.   +23<span class="o">(</span>18<span class="o">)</span> °C     │  _ /<span class="s2">&#34;&#34;</span>.-.     <span class="m">19</span> °C          │
+</span></span><span class="line"><span class="cl">│   ― <span class="o">(</span>   <span class="o">)</span> ―   ↘ <span class="m">1</span> km/h       │    /<span class="o">(</span>___<span class="o">(</span>__<span class="o">)</span>  → 7-8 km/h     │    /<span class="o">(</span>___<span class="o">(</span>__<span class="o">)</span>  ↑ 9-20 km/h    │    <span class="se">\_</span><span class="o">(</span>   <span class="o">)</span>.   ↖ 6-13 km/h    │
+</span></span><span class="line"><span class="cl">│      <span class="sb">`</span>-’      <span class="m">10</span> km          │     ⚡‘‘⚡‘‘  <span class="m">9</span> km           │     ⚡‘‘⚡‘‘  <span class="m">10</span> km          │    /<span class="o">(</span>___<span class="o">(</span>__<span class="o">)</span>  <span class="m">10</span> km          │
+</span></span><span class="line"><span class="cl">│     /   <span class="se">\ </span>    0.0 mm <span class="p">|</span> 0%    │     ‘ ‘ ‘ ‘   0.0 mm <span class="p">|</span> 0%    │     ‘ ‘ ‘ ‘   14.9 mm <span class="p">|</span> 100% │               0.0 mm <span class="p">|</span> 0%    │
+</span></span><span class="line"><span class="cl">└──────────────────────────────┴──────────────────────────────┴──────────────────────────────┴──────────────────────────────┘
+</span></span><span class="line"><span class="cl">Location: BH, Microrregião Belo Horizonte, Região Metropolitana de Belo Horizonte, Mesorregião Metropolitana de Belo Horizonte, MG, Região Sudeste, Brasil <span class="o">[</span>-19.9227318,-43.9450948<span class="o">]</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>
+<p>código de aeroportos:</p>
+<ul>
+<li><code>curl wttr.in/bhz</code>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ curl <span class="s1">&#39;wttr.in/bhz?1&#39;</span>
+</span></span><span class="line"><span class="cl">Weather report: bhz
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">       .-.      Light rain
+</span></span><span class="line"><span class="cl">      <span class="o">(</span>   <span class="o">)</span>.    +3<span class="o">(</span>-2<span class="o">)</span> °C      
+</span></span><span class="line"><span class="cl">     <span class="o">(</span>___<span class="o">(</span>__<span class="o">)</span>   ↖ <span class="m">21</span> km/h      
+</span></span><span class="line"><span class="cl">      ‘ ‘ ‘ ‘   <span class="m">10</span> km          
+</span></span><span class="line"><span class="cl">     ‘ ‘ ‘ ‘    0.0 mm         
+</span></span><span class="line"><span class="cl">                                                       ┌─────────────┐                                                       
+</span></span><span class="line"><span class="cl">┌──────────────────────────────┬───────────────────────┤  Thu <span class="m">23</span> Jan ├───────────────────────┬──────────────────────────────┐
+</span></span><span class="line"><span class="cl">│            Morning           │             Noon      └──────┬──────┘     Evening           │             Night            │
+</span></span><span class="line"><span class="cl">├──────────────────────────────┼──────────────────────────────┼──────────────────────────────┼──────────────────────────────┤
+</span></span><span class="line"><span class="cl">│      .-.      Light rain     │  _<span class="sb">`</span>/<span class="s2">&#34;&#34;</span>.-.     Patchy rain ne…│    <span class="se">\ </span> /       Partly Cloudy  │    <span class="se">\ </span> /       Partly Cloudy  │
+</span></span><span class="line"><span class="cl">│     <span class="o">(</span>   <span class="o">)</span>.    +4<span class="o">(</span>-1<span class="o">)</span> °C      │   ,<span class="se">\_</span><span class="o">(</span>   <span class="o">)</span>.   +3<span class="o">(</span>-2<span class="o">)</span> °C      │  _ /<span class="s2">&#34;&#34;</span>.-.     +3<span class="o">(</span>-1<span class="o">)</span> °C      │  _ /<span class="s2">&#34;&#34;</span>.-.     +2<span class="o">(</span>-3<span class="o">)</span> °C      │
+</span></span><span class="line"><span class="cl">│    <span class="o">(</span>___<span class="o">(</span>__<span class="o">)</span>   ↑ 28-42 km/h   │    /<span class="o">(</span>___<span class="o">(</span>__<span class="o">)</span>  ↗ 27-40 km/h   │    <span class="se">\_</span><span class="o">(</span>   <span class="o">)</span>.   ↗ 24-41 km/h   │    <span class="se">\_</span><span class="o">(</span>   <span class="o">)</span>.   ↑ 23-38 km/h   │
+</span></span><span class="line"><span class="cl">│     ‘ ‘ ‘ ‘   <span class="m">9</span> km           │      ‘ ‘ ‘ ‘  <span class="m">10</span> km          │    /<span class="o">(</span>___<span class="o">(</span>__<span class="o">)</span>  <span class="m">10</span> km          │    /<span class="o">(</span>___<span class="o">(</span>__<span class="o">)</span>  <span class="m">10</span> km          │
+</span></span><span class="line"><span class="cl">│    ‘ ‘ ‘ ‘    1.1 mm <span class="p">|</span> 100%  │     ‘ ‘ ‘ ‘   0.0 mm <span class="p">|</span> 65%   │               0.0 mm <span class="p">|</span> 0%    │               0.0 mm <span class="p">|</span> 0%    │
+</span></span><span class="line"><span class="cl">└──────────────────────────────┴──────────────────────────────┴──────────────────────────────┴──────────────────────────────┘
+</span></span><span class="line"><span class="cl">Location: BHZ, Stadtmitte, Ortsbeirat <span class="m">14</span> : Stadtmitte, Rostock, Mecklenburg-Vorpommern, 18055, Deutschland <span class="o">[</span>54.08250825,12.1426316547453<span class="o">]</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>
+<p>o nome de atrações turísticas precedidas por til <code>~</code>:</p>
+<ul>
+<li><code>curl wttr.in/~Cristo+Redentor</code>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ curl wttr.in/~Cristo+Redentor?1
+</span></span><span class="line"><span class="cl">Weather report: Cristo+Redentor
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="se">\ </span>  /     Clear
+</span></span><span class="line"><span class="cl">       .-.      +27<span class="o">(</span>30<span class="o">)</span> °C     
+</span></span><span class="line"><span class="cl">    ― <span class="o">(</span>   <span class="o">)</span> ―   ← <span class="m">5</span> km/h       
+</span></span><span class="line"><span class="cl">       <span class="sb">`</span>-’      <span class="m">10</span> km          
+</span></span><span class="line"><span class="cl">      /   <span class="se">\ </span>    0.0 mm         
+</span></span><span class="line"><span class="cl">                                                       ┌─────────────┐                                                       
+</span></span><span class="line"><span class="cl">┌──────────────────────────────┬───────────────────────┤  Wed <span class="m">22</span> Jan ├───────────────────────┬──────────────────────────────┐
+</span></span><span class="line"><span class="cl">│            Morning           │             Noon      └──────┬──────┘     Evening           │             Night            │
+</span></span><span class="line"><span class="cl">├──────────────────────────────┼──────────────────────────────┼──────────────────────────────┼──────────────────────────────┤
+</span></span><span class="line"><span class="cl">│    <span class="se">\ </span> /       Partly Cloudy  │     <span class="se">\ </span>  /     Sunny          │  _<span class="sb">`</span>/<span class="s2">&#34;&#34;</span>.-.     Patchy rain ne…│     <span class="se">\ </span>  /     Clear          │
+</span></span><span class="line"><span class="cl">│  _ /<span class="s2">&#34;&#34;</span>.-.     +30<span class="o">(</span>34<span class="o">)</span> °C     │      .-.      +32<span class="o">(</span>36<span class="o">)</span> °C     │   ,<span class="se">\_</span><span class="o">(</span>   <span class="o">)</span>.   +28<span class="o">(</span>32<span class="o">)</span> °C     │      .-.      +27<span class="o">(</span>30<span class="o">)</span> °C     │
+</span></span><span class="line"><span class="cl">│    <span class="se">\_</span><span class="o">(</span>   <span class="o">)</span>.   ↓ <span class="m">1</span> km/h       │   ― <span class="o">(</span>   <span class="o">)</span> ―   ↖ 12-15 km/h   │    /<span class="o">(</span>___<span class="o">(</span>__<span class="o">)</span>  ← 9-13 km/h    │   ― <span class="o">(</span>   <span class="o">)</span> ―   ← 5-8 km/h     │
+</span></span><span class="line"><span class="cl">│    /<span class="o">(</span>___<span class="o">(</span>__<span class="o">)</span>  <span class="m">10</span> km          │      <span class="sb">`</span>-’      <span class="m">10</span> km          │      ‘ ‘ ‘ ‘  <span class="m">10</span> km          │      <span class="sb">`</span>-’      <span class="m">10</span> km          │
+</span></span><span class="line"><span class="cl">│               0.0 mm <span class="p">|</span> 0%    │     /   <span class="se">\ </span>    0.0 mm <span class="p">|</span> 0%    │     ‘ ‘ ‘ ‘   0.0 mm <span class="p">|</span> 64%   │     /   <span class="se">\ </span>    0.0 mm <span class="p">|</span> 0%    │
+</span></span><span class="line"><span class="cl">└──────────────────────────────┴──────────────────────────────┴──────────────────────────────┴──────────────────────────────┘
+</span></span><span class="line"><span class="cl">Location: Cristo Redentor, Estrada <span class="k">do</span> Corcovado, Santa Teresa, Zona Central <span class="k">do</span> Rio de Janeiro, Rio de Janeiro, Microrregião Rio de Janeiro, Região Metropolitana <span class="k">do</span> Rio de Janeiro, RJ, Região Sudeste, Brasil <span class="o">[</span>-22.9519069,-43.2108581<span class="o">]</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>
+<p>o nome DNS de domínio ou IP precedidos por arroba <code>@</code>:</p>
+<ul>
+<li><code>curl wttr.in/@tcpip.net.br</code></li>
+<li><code>curl wttr.in/@8.8.8.8</code></li>
+</ul>
+</li>
+<li>
+<p>a unidade meteorológica! Por default USCS é usado para consultas originadas dos USA e o métrico SI para o restante do mundo. Sendo&hellip;</p>
+<ul>
+<li>a interrogação <code>?</code> é o delimitador que indica que qualquer coisa logo após, será uma opção de formatação de output&hellip;
+<ul>
+<li><code>u</code> para USCS:
+<ul>
+<li><code>curl 'wttr.in/Sao+Paulo?u'</code></li>
+</ul>
+</li>
+<li><code>m</code> para SI que é o default fora dos USA:
+<ul>
+<li><code>curl 'wttr.in/Belo+Horizonte?m'</code></li>
+</ul>
+</li>
+<li><code>M</code> para SI porém com a amostragem da velocidade do vento em m/s:
+<ul>
+<li><code>curl 'wttr.in/Belo+Horizonte?M'</code></li>
+</ul>
+</li>
+<li>por padrão, o output sempre será de 3 dias! Caso queira menos dias use qualquer opcção acima seguido de: <code>1</code> para apenas o dia corrente, ou <code>2</code> para dois dias.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>o idioma das legendas</p>
+<ul>
+<li><code>curl 'wttr.in/Belo+Horizonte?lang=pt'</code></li>
+</ul>
+</li>
+<li>
+<p><code>T</code> para forçar a saída em texto plano:</p>
+<ul>
+<li><code>curl wttr.in/Belo+Horizonte?T</code></li>
+</ul>
+</li>
+<li>
+<p><code>d</code> para restringir a saída a glifos disponíveis em fontes padrão do console:</p>
+<ul>
+<li><code>curl wttr.in/Belo+Horizonte?T?d</code></li>
+</ul>
+</li>
+<li>
+<p>a combinação de várias opções separando-as por <code>&amp;</code>:</p>
+<ul>
+<li>aqui estou definindo a velocidade do vento em m/s e o idioma <code>pt</code>:
+<ul>
+<li><code>curl 'wttr.in/Belo+Horizonte?M&amp;lang=pt'</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>saída de apenas uma linha! E que também é útil para integrar na barra de status de programas:</p>
+<ul>
+<li>os formatos pré-configurados disponíveis são: 1, 2, 3, 4
+<ul>
+<li>1: O tempo atual:</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ curl wttr.in/Belo+Horizonte?format<span class="o">=</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl">⛈   +24°C</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>2: o tempo atual com mais detalhes:</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ curl <span class="s1">&#39;wttr.in/Belo+Horizonte?format=2&#39;</span>
+</span></span><span class="line"><span class="cl">⛈   🌡️+24°C 🌬️↖8km/h</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>3: o nome do local e o clima:</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ curl <span class="s1">&#39;wttr.in/Belo+Horizonte?format=3&#39;</span>
+</span></span><span class="line"><span class="cl">Belo+Horizonte: ⛈   +24°C</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>4: o nome do local, tempo atual e velocidade dos ventos:</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ curl <span class="s1">&#39;wttr.in/Belo+Horizonte?format=4&#39;</span>
+</span></span><span class="line"><span class="cl">Belo+Horizonte: ⛈   🌡️+24°C 🌬️↖8km/h</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>Essea são pré-formatados! Mas se preferir, pode usar essas opções para criar o seu:
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">c    Weather condition,
+</span></span><span class="line"><span class="cl">C    Weather condition textual name,
+</span></span><span class="line"><span class="cl">x    Weather condition, plain-text symbol,
+</span></span><span class="line"><span class="cl">h    Humidity,
+</span></span><span class="line"><span class="cl">t    Temperature (Actual),
+</span></span><span class="line"><span class="cl">f    Temperature (Feels Like),
+</span></span><span class="line"><span class="cl">w    Wind,
+</span></span><span class="line"><span class="cl">l    Location,
+</span></span><span class="line"><span class="cl">m    Moon phase 🌑🌒🌓🌔🌕🌖🌗🌘,
+</span></span><span class="line"><span class="cl">M    Moon day,
+</span></span><span class="line"><span class="cl">p    Precipitation (mm/3 hours),
+</span></span><span class="line"><span class="cl">P    Pressure (hPa),
+</span></span><span class="line"><span class="cl">u    UV index (1-12),
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">D    Dawn*,
+</span></span><span class="line"><span class="cl">S    Sunrise*,
+</span></span><span class="line"><span class="cl">z    Zenith*,
+</span></span><span class="line"><span class="cl">s    Sunset*,
+</span></span><span class="line"><span class="cl">d    Dusk*,
+</span></span><span class="line"><span class="cl">T    Current time*,
+</span></span><span class="line"><span class="cl">Z    Local timezone.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">(*times are shown in the local timezone)</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>Segue um exemplo de combinações</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ curl <span class="s1">&#39;wttr.in/Belo+Horizonte?format=&#34;%l:+%t+%m+%p+%P+%w+%h+%c+%C+%T\n&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;Belo+Horizonte: +24°C 🌗 0.7mm 1017hPa ↖8km/h 78% ⛈   Shower in vicinity, thunderstorm in vicinity 20:27:41-0300</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="só-isso-" class="heading-element"><span>Só isso ?</span>
+  <a href="#s%c3%b3-isso-" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><p>Não! RTFM <a href="https://github.com/chubin/wttr.in"target="_blank" rel="external nofollow noopener noreferrer">Wttr</a> para muito mais opções!</p>
+<ul>
+<li>Vou também pode acessar o &ndash;help via <code>curl</code>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">curl wttr.in/:help</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h3 id="segue-uma-sugestão-de-uso" class="heading-element"><span>Segue uma sugestão de uso:</span>
+  <a href="#segue-uma-sugest%c3%a3o-de-uso" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><ul>
+<li>Aqui estamos criando o arquivo <code>meuip_e_clima.sh</code> no diretório <code>~/.bashrc.d</code> para que sempre que abrir um novo terminal:
+<ul>
+<li>seja informado o seu IP de WAN atual.</li>
+<li>o clima do dia e hora corrente.</li>
+<li>e a criação de um alias na seção atual de nome <code>clima</code> que irá imprimir a saída padrão para a geolocalização do seu IP atual.</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">cat <span class="s">&lt;&lt;Uai&gt; ~/.bashrc.d/meuip_e_clima.sh
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">echo &#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">     .... no! ...                  ... mno! ...
+</span></span></span><span class="line"><span class="cl"><span class="s">   ..... mno!! ...................... mnnoo! ...
+</span></span></span><span class="line"><span class="cl"><span class="s"> ..... mmno! ......................... mnnoo!! .
+</span></span></span><span class="line"><span class="cl"><span class="s">.... mnoonnoo!   mmmmmmmmmmpppoii!   mnno!!!! .
+</span></span></span><span class="line"><span class="cl"><span class="s"> ... !o! nno! mmmmmmmmmmmmmpppoooii!! no! ....
+</span></span></span><span class="line"><span class="cl"><span class="s">    ...... ! mmmmmmmmmmmmmppppooooiii! ! ...
+</span></span></span><span class="line"><span class="cl"><span class="s">   ........ mmmmmmmmmmmmpppppooooooii!! .....
+</span></span></span><span class="line"><span class="cl"><span class="s">   ........ mmmmmooooooppppppppoooomii! ...  
+</span></span></span><span class="line"><span class="cl"><span class="s">    ....... mmmmm..    oppmmp    .,omi! ....
+</span></span></span><span class="line"><span class="cl"><span class="s">     ...... mmmm::   o.,opmp,.o   ::i!! ...
+</span></span></span><span class="line"><span class="cl"><span class="s">         .... nnm:::.,,oopm!p,.::::!! ....
+</span></span></span><span class="line"><span class="cl"><span class="s">          .. mmnnnnnoooopmo!!iippo!!o! .....
+</span></span></span><span class="line"><span class="cl"><span class="s">         ... mmmmmnnnnoo:!!:!!ippppoo! ....
+</span></span></span><span class="line"><span class="cl"><span class="s">           .. mmmmmnnoommnniiipppoo!! ......
+</span></span></span><span class="line"><span class="cl"><span class="s">          ...... mmmonnmmnnniiioo!..........
+</span></span></span><span class="line"><span class="cl"><span class="s">       ....... mn mommmnnniiiiio! oo ..........
+</span></span></span><span class="line"><span class="cl"><span class="s">    ......... mno! iiiiiiiiiii oooo ...........
+</span></span></span><span class="line"><span class="cl"><span class="s">  ...... nnn.mno! . o!!!!!!!!!o . oono no! ........
+</span></span></span><span class="line"><span class="cl"><span class="s">   .... mnnnnno! ...ooooooooooo .  mmnnon!........
+</span></span></span><span class="line"><span class="cl"><span class="s">   ...... mnnnno! .. ppppppppp .. mmnon!........
+</span></span></span><span class="line"><span class="cl"><span class="s">      ...... oo! ................. on! .......
+</span></span></span><span class="line"><span class="cl"><span class="s">         ................................
+</span></span></span><span class="line"><span class="cl"><span class="s">&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">echo &#34;&gt;&gt;&gt; Get WAN data &#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s"># usando endpoint =  https://github.com/Fire-man-x/Public-IP-address---Gnome-shell-extension/blob/master/src/extension.js
+</span></span></span><span class="line"><span class="cl"><span class="s">curl -s https://ipv4.lookup.test-ipv6.com | jq &#39;{type,ip,asn,asn_name,country}&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">echo &#34;- - -&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s"># Clima obtido pela geolocalização do seu IP wan
+</span></span></span><span class="line"><span class="cl"><span class="s">echo &#34;&gt;&gt;&gt; Get weather&#34; 
+</span></span></span><span class="line"><span class="cl"><span class="s">curl &#39;wttr.in?format=&#34;%l:+%t+%m+%p+%P+%w+%h+%c+%C+%T\n&#39;
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s"># criando alias &#34;clima&#34; 
+</span></span></span><span class="line"><span class="cl"><span class="s">alias clima=&#34;curl wttr.in&#34; 
+</span></span></span><span class="line"><span class="cl"><span class="s">                                                  
+</span></span></span><span class="line"><span class="cl"><span class="s">echo &#34;&gt;&gt;&gt; May the force be with you ${USER} ...o/&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s">Uai</span></span></span></code></pre></td></tr></table>
+</div>
+</div></div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod">
+        <span title="Updated on 2025-01-27 11:46:26">Updated on 2025-01-27&nbsp;
+                <a class="git-hash" href="https://github.com/0xttfx/commit/4df531e0d13d25c69c8c1d6007709fa90d4ef821" rel="external nofollow noopener noreferrer" target="_blank" title="commit by 0xttfx(thiago.faioli@gmail.com) 4df531e0d13d25c69c8c1d6007709fa90d4ef821: Update - novo tema FixIt"><i class="fa-solid fa-hashtag fa-fw" aria-hidden="true"></i>4df531e</a></span>
+      </div><div class="post-info-license">
+            <span><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a></span>
+          </div></div><div class="post-info-line">
+        <div class="post-info-md"><span><a href="/posts/rtfmaleatoriedades-climanoterminal/index.md" title="Read Markdown" class="link-to-markdown">Read Markdown</a></span><span><a href="https://github.com/0xttfx/blob/main/content/posts/RTFM&amp;Aleatoriedades-ClimaNoTerminal.md?plain=1" title="View source"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-source">View source</a></span><span><a href="https://github.com/0xttfx/edit/main/content/posts/RTFM&amp;Aleatoriedades-ClimaNoTerminal.md" title="Edit this page"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-edit">Edit this page</a></span><span><a href="https://github.com/0xttfx/issues/new?title=[BUG]%20RTFM&#43;%26&#43;Aleatoriedades&#43;-&#43;Clima&#43;No&#43;Terminal&amp;body=%7cField%7cValue%7c%0A%7c-%7c-%7c%0A%7cTitle%7cRTFM&#43;%26&#43;Aleatoriedades&#43;-&#43;Clima&#43;No&#43;Terminal%7c%0A%7cURL%7chttp://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-climanoterminal/%7c%0A%7cFilename%7chttps://github.com/0xttfx/blob/main/content/posts/RTFM&amp;Aleatoriedades-ClimaNoTerminal.md?plain=1%7c" title="Report issue"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-report">Report issue</a></span></div>
+        <div class="post-info-share">
+          <span><a href="javascript:void(0);" title="Share on X" data-sharer="twitter" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-climanoterminal/" data-title="RTFM &amp; Aleatoriedades - Clima No Terminal" data-via="0xttfx" data-hashtags="Linux,CURL,Terminal,Bash,Shell, "><i class="fa-brands fa-x-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-climanoterminal/"><i class="fa-brands fa-linkedin fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-climanoterminal/" data-title="RTFM &amp; Aleatoriedades - Clima No Terminal" data-web><i class="fa-brands fa-whatsapp fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on Reddit" data-sharer="reddit" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-climanoterminal/"><i class="fa-brands fa-reddit fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-climanoterminal/" data-title="RTFM &amp; Aleatoriedades - Clima No Terminal"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  </span>
+        </div>
+      </div></div>
+
+  <div class="post-info-more">
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw me-1" aria-hidden="true"></i><a href="/tags/linux/" class="post-tag" title="Tags - Linux">Linux</a><a href="/tags/curl/" class="post-tag" title="Tags - CURL">CURL</a><a href="/tags/terminal/" class="post-tag" title="Tags - Terminal">Terminal</a><a href="/tags/bash/" class="post-tag" title="Tags - Bash">Bash</a><a href="/tags/shell/" class="post-tag" title="Tags - Shell">Shell</a><a href="/tags/-/" class="post-tag" title="Tags -  "> </a></section>
+    <section>
+      <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+    </section>
+  </div><div class="post-nav"><a href="/posts/rtfmaleatoriedades-literaciaai/" class="post-nav-item" rel="prev" title="RTFM &amp; Aleatoriedades - Literacia Em IA"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>RTFM &amp; Aleatoriedades - Literacia Em IA</a></div>
+</div>
+<div id="comments"></div></article>
+
+  <aside class="toc" id="toc-auto" aria-label="Contents"><h2 class="toc-title">Contents&nbsp;<i class="toc-icon fa-solid fa-angle-down fa-fw" aria-hidden="true"></i></h2>
+      <div class="toc-content" id="toc-content-auto"></div></aside></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
+            <span itemprop="copyrightYear">2024 - 2025</span><span class="author" itemprop="copyrightHolder">
+              <a href="https://github.com/0xttfx"target="_blank" rel="external nofollow noopener noreferrer">Faioli a.k.a 0xttfx</a></span><span class="license footer-divider">BSD-3-Clause</span></div><div class="footer-line statistics"></div><div class="footer-line visitor">
+          <span id="busuanzi_container_site_uv" title='Total visitors'><i class="fa-regular fa-user fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span><span id="busuanzi_container_site_pv" class="footer-divider" title='Total visits'><i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span>
+        </div></div>
+  </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="Back to Top"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric">0%</span>
+        </div><div class="fixed-button view-comments d-none" role="button" aria-label="View Comments"><i class="fa-solid fa-comment fa-fw" aria-hidden="true"></i></div></div><div id="mask"></div><div class="reading-progress-bar" style="left: 0;top: 0;"></div><noscript>
+    <div class="noscript-warning">This website works best with JavaScript enabled.</div>
+  </noscript>
+</div><link rel="preload" href="/lib/katex/katex.min.af6f85907cdfd6ed3e4906d93a8233d91c5638859f744cd1b98c9b1a3ccaab5f231bdcda49f132f6cdfe8cca86ff33ed468affab8a9a502610a664a34f0f0cfa.css" integrity="sha512-r2+FkHzf1u0+SQbZOoIz2RxWOIWfdEzRuYybGjzKq18jG9zaSfEy9s3+jMqG/zPtRor/q4qaUCYQpmSjTw8M+g==" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/katex/katex.min.af6f85907cdfd6ed3e4906d93a8233d91c5638859f744cd1b98c9b1a3ccaab5f231bdcda49f132f6cdfe8cca86ff33ed468affab8a9a502610a664a34f0f0cfa.css" integrity="sha512-r2+FkHzf1u0+SQbZOoIz2RxWOIWfdEzRuYybGjzKq18jG9zaSfEy9s3+jMqG/zPtRor/q4qaUCYQpmSjTw8M+g=="></noscript><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.2d0f7b71a99aaff94e9624ff32a8dc42ce645a0cba433fdc091cf34735027efd1fa2db024c2f591d768f426255f17bbf3d500b7c967b0437b3979956dffa81c6.css" integrity="sha512-LQ97camar/lOliT/MqjcQs5kWgy6Qz/cCRzzRzUCfv0fotsCTC9ZHXaPQmJV8Xu/PVALfJZ7BDezl5lW3/qBxg=="><script src="/lib/autocomplete/autocomplete.min.7e654c67e741180b83f7b4d829967003fea37a5d5014f549f0a3d7f945d2b73e73e22a1dd04a7b68712c846f004232f3030d07305784fab026100af12af8f0ac.js" integrity="sha512-fmVMZ+dBGAuD97TYKZZwA/6jel1QFPVJ8KPX+UXStz5z4iod0Ep7aHEshG8AQjLzAw0HMFeE+rAmEArxKvjwrA==" defer></script><script src="/lib/fuse/fuse.min.36ac35b47de6a5abe46bd71009ce7359611935f20f74e6324058e557536f7e512d434fd723a650f87fc3dd880976a49426530b00f463fe85e56870856c50a3a1.js" integrity="sha512-Nqw1tH3mpavka9cQCc5zWWEZNfIPdOYyQFjlV1NvflEtQ0/XI6ZQ+H/D3YgJdqSUJlMLAPRj/oXlaHCFbFCjoQ==" defer></script><script src="/lib/sharer/sharer.min.94c73c706d26a452277a104d6857c0cb04e816ad61c4163b4e0a135426a7767211e0a27c952ea85e3df25aec941374e21053db0f9e7822af8a2f9c4a8a93c4e3.js" integrity="sha512-lMc8cG0mpFInehBNaFfAywToFq1hxBY7TgoTVCandnIR4KJ8lS6oXj3yWuyUE3TiEFPbD554Iq+KL5xKipPE4w==" async defer></script><script src="/lib/katex/katex.min.20da6cf7343619410c0900fbc626506c65159ea9f312f9729d5cba7aa713707378f9a4222e8f7fb9a42a7240e9749f199b7334401b3e3e4b60e29cf490492552.js" integrity="sha512-INps9zQ2GUEMCQD7xiZQbGUVnqnzEvlynVy6eqcTcHN4+aQiLo9/uaQqckDpdJ8Zm3M0QBs+Pktg4pz0kEklUg==" defer></script><script src="/lib/katex/auto-render.min.6095714e3aadb63b14ddc4af69346ab12974c1b460654345f8d1860a0b68fcc51b22f68b757433193090bb80afc8965b65cb607e5541d0f5f0f4b2e64d69b9ff.js" integrity="sha512-YJVxTjqttjsU3cSvaTRqsSl0wbRgZUNF+NGGCgto/MUbIvaLdXQzGTCQu4CvyJZbZctgflVB0PXw9LLmTWm5/w==" defer></script><script src="/lib/katex/copy-tex.min.895ad99f7d8fdb0683cd271c02584953bd0542c6d4956c9feebaa16673683a45d5884f5253e3db33f8f74a86cc464477497656fb36e96a558137311bdb7f32d6.js" integrity="sha512-iVrZn32P2waDzSccAlhJU70FQsbUlWyf7rqhZnNoOkXViE9SU+PbM/j3SobMRkR3SXZW+zbpalWBNzEb238y1g==" defer></script><script src="/lib/katex/mhchem.min.9b18cdc3fbb5948b050b4f64fee9ec703458de87c860f5456d690ff2c96b78f712dfa86de1dfce67cad1bb9c9d741dae8aa6a385370b0fcfa3ba9396b983de6e.js" integrity="sha512-mxjNw/u1lIsFC09k/unscDRY3ofIYPVFbWkP8slrePcS36ht4d/OZ8rRu5yddB2uiqajhTcLD8+jupOWuYPebg==" defer></script><script src="/lib/cookieconsent/cookieconsent.min.c975ea3858dd8c7347d46343fb510ed236efbde6c0069cc6283eba7639d47e22a560c1391c6314247a0269e1380f93d31b662c4897fa770ab2514bd0bd2d2f68.js" integrity="sha512-yXXqOFjdjHNH1GND+1EO0jbvvebABpzGKD66djnUfiKlYME5HGMUJHoCaeE4D5PTG2YsSJf6dwqyUUvQvS0vaA==" defer></script><script src="https://vercount.one/js" async defer></script><script>window.config={"code":{"copyTitle":"Copy to clipboard","editLockTitle":"Lock editable code block","editUnLockTitle":"Unlock editable code block","editable":true,"maxShownLines":10},"comment":{"enable":true,"expired":false},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/search.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":false,"isCaseSensitive":false,"location":0,"maxResultLength":10,"minMatchCharLength":2,"noResultsFound":"No results found","snippetLength":30,"threshold":0.3,"type":"fuse","useExtendedSearch":false},"version":"v0.3.17-8b402129"};</script><script src="/js/theme.min.9301245cf01fb1ba5f5c15fd31c0d1a45ee2c0db8bff20a52762e159abb3a7737d682d1cf2d148749b1501acebf5db20cb22c07cd44e89051830dcb4223992c7.js" integrity="sha512-kwEkXPAfsbpfXBX9McDRpF7iwNuL/yClJ2LhWauzp3N9aC0c8tFIdJsVAazr9dsgyyLAfNROiQUYMNy0IjmSxw==" defer></script><script>
+      window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+      gtag('config', 'G-RB8T1ZS4FX', { 'anonymize_ip': true });
+    </script><script src="https://www.googletagmanager.com/gtag/js?id=G-RB8T1ZS4FX" async></script><script async defer data-website-id="698d1689-fa78-4bfc-a0f3-9e95bcb884de" src=""  data-host-url="https://cloud.umami.is/script.js"  ></script></body>
+</html>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bash - Tag - 0xttfx</title>
+    <link>http://0xttfx.tcpip.net.br/tags/bash/</link>
+    <description>Vicissitudes e Adjacências</description>
+    <generator>Hugo 0.142.0 &amp; FixIt v0.3.17-8b402129</generator>
+    <language>en</language>
+    <managingEditor>thiago.faioli@gmail.com (Faioli a.k.a 0xttfx)</managingEditor>
+    <webMaster>thiago.faioli@gmail.com (Faioli a.k.a 0xttfx)</webMaster>
+    <copyright>Running on [OpenBSD](https://openbsd.org) and [httpd](https://man.openbsd.org/httpd.8) |  [0xttfx](https://0xttfx.tcpip.net.br) - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)</copyright>
+    <lastBuildDate>Mon, 27 Jan 2025 11:46:26 -0300</lastBuildDate>
+    <atom:link href="http://0xttfx.tcpip.net.br/tags/bash/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>RTFM &amp; Aleatoriedades - Clima No Terminal</title>
+      <link>http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-climanoterminal/</link>
+      <pubDate>Wed, 22 Jan 2025 17:13:52 -0300</pubDate><author>thiago.faioli@gmail.com (Faioli a.k.a 0xttfx)</author>
+      <guid>http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-climanoterminal/</guid>
+      <description>&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;http://0xttfx.tcpip.net.br/images/ClimaCMD/climaNoTerminal.png&#34; alt=&#34;climaNoTerminal&#34; srcset=&#34;http://0xttfx.tcpip.net.br/images/ClimaCMD/climaNoTerminal.png?size=small, http://0xttfx.tcpip.net.br/images/ClimaCMD/climaNoTerminal.png?size=medium 1.5x, http://0xttfx.tcpip.net.br/images/ClimaCMD/climaNoTerminal.png?size=large 2x&#34; data-title=&#34;climaNoTerminal&#34; style=&#34;background: url(/images/loading.min.svg) no-repeat center;&#34; onload=&#34;this.title=this.dataset.title;for(const i of [&#39;style&#39;, &#39;data-title&#39;,&#39;onerror&#39;,&#39;onload&#39;]){this.removeAttribute(i);}this.dataset.lazyloaded=&#39;&#39;;&#34; onerror=&#34;this.title=this.dataset.title;for(const i of [&#39;style&#39;, &#39;data-title&#39;,&#39;onerror&#39;,&#39;onload&#39;]){this.removeAttribute(i);}&#34;/&gt;&lt;/p&gt;&#xA;&lt;p&gt;O &lt;a href=&#34;https://github.com/chubin/wttr.in&#34;target=&#34;_blank&#34; rel=&#34;external nofollow noopener noreferrer&#34;&gt;wttr.in&lt;/a&gt; é um serviço de previsão meteorológica para console que suporta vários métodos de representação de informações, como códigos de escape ANSI orientados a terminais para clientes HTTP de console (curl, httpie ou wget), HTML para navegadores web ou PNG para visualizadores gráficos.&lt;/p&gt;&#xA;&lt;p&gt;Não tem segredo! Basta usar uma tool como &lt;a href=&#34;https://curl.se&#34;target=&#34;_blank&#34; rel=&#34;external nofollow noopener noreferrer&#34;&gt;Client URL - curl&lt;/a&gt;  para buscar o conteúdo da URL &lt;code&gt;https://wttr.in&lt;/code&gt;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

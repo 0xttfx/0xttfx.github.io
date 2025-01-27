@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>KEYCHRON - Tag - 0xttfx</title>
+    <link>http://0xttfx.tcpip.net.br/tags/keychron/</link>
+    <description>Vicissitudes e Adjacências</description>
+    <generator>Hugo 0.142.0 &amp; FixIt v0.3.17-8b402129</generator>
+    <language>en</language>
+    <managingEditor>thiago.faioli@gmail.com (Faioli a.k.a 0xttfx)</managingEditor>
+    <webMaster>thiago.faioli@gmail.com (Faioli a.k.a 0xttfx)</webMaster>
+    <copyright>Running on [OpenBSD](https://openbsd.org) and [httpd](https://man.openbsd.org/httpd.8) |  [0xttfx](https://0xttfx.tcpip.net.br) - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)</copyright>
+    <lastBuildDate>Mon, 27 Jan 2025 11:46:26 -0300</lastBuildDate>
+    <atom:link href="http://0xttfx.tcpip.net.br/tags/keychron/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>RTFM &amp; Aleatoriedades - UDEV_Keychron</title>
+      <link>http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-udev_keychron/</link>
+      <pubDate>Sat, 21 Sep 2024 00:47:01 -0300</pubDate><author>thiago.faioli@gmail.com (Faioli a.k.a 0xttfx)</author>
+      <guid>http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-udev_keychron/</guid>
+      <description>&lt;p&gt;Para explorar as features do teclado V10 é utilizado o software &lt;a href=&#34;https://usevia.app&#34;target=&#34;_blank&#34; rel=&#34;external nofollow noopener noreferrer&#34;&gt;usevia.app&lt;/a&gt; diretamente pelo navegador! E a parte boa é a sua compatibilidade com Linux.&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;meu cenário:&#xA;&lt;ul&gt;&#xA;&lt;li&gt;Fedora release 40 (Forty)&lt;/li&gt;&#xA;&lt;li&gt;Google Chrome&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;/li&gt;&#xA;&lt;li&gt;Basta acessar o link do aplicativo &lt;a href=&#34;https://usevia.app&#34;target=&#34;_blank&#34; rel=&#34;external nofollow noopener noreferrer&#34;&gt;usevia.app&lt;/a&gt; e clicar em &lt;strong&gt;Authorize device&lt;/strong&gt;&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;img loading=&#34;lazy&#34; src=&#34;http://0xttfx.tcpip.net.br/images/UDEV/useviaauthorize.png&#34; alt=&#34;img1&#34; srcset=&#34;http://0xttfx.tcpip.net.br/images/UDEV/useviaauthorize.png?size=small, http://0xttfx.tcpip.net.br/images/UDEV/useviaauthorize.png?size=medium 1.5x, http://0xttfx.tcpip.net.br/images/UDEV/useviaauthorize.png?size=large 2x&#34; data-title=&#34;img1&#34; style=&#34;background: url(/images/loading.min.svg) no-repeat center;&#34; onload=&#34;this.title=this.dataset.title;for(const i of [&#39;style&#39;, &#39;data-title&#39;,&#39;onerror&#39;,&#39;onload&#39;]){this.removeAttribute(i);}this.dataset.lazyloaded=&#39;&#39;;&#34; onerror=&#34;this.title=this.dataset.title;for(const i of [&#39;style&#39;, &#39;data-title&#39;,&#39;onerror&#39;,&#39;onload&#39;]){this.removeAttribute(i);}&#34;/&gt;&lt;/p&gt;&#xA;&lt;div class=&#34;alert alert-warning&#34;&gt;&lt;p class=&#34;alert-title&#34;&gt;&lt;svg class=&#34;icon&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34; viewBox=&#34;0 0 16 16&#34; width=&#34;16&#34; height=&#34;16&#34;&gt;&lt;path d=&#34;M6.457 1.047c.659-1.234 2.427-1.234 3.086.0l6.082 11.378A1.75 1.75.0 0114.082 15H1.918A1.75 1.75.0 01.375 12.425zm1.763.707a.25.25.0 00-.44.0L1.698 13.132a.25.25.0 00.22.368h12.164a.25.25.0 00.22-.368zm.53 3.996v2.5a.75.75.0 01-1.5.0v-2.5a.75.75.0 011.5.0zM9 11a1 1 0 11-2 0 1 1 0 012 0z&#34;/&gt;&lt;/svg&gt;Warning&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

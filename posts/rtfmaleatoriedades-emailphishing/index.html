@@ -1,0 +1,1791 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="en">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <title>RTFM &amp; Aleatoriedades - Email Phishing - 0xttfx</title><meta name="author" content="Faioli a.k.a 0xttfx">
+<meta name="description" content="Analisando E-mail Fishing"><meta name="keywords" content='Linux, Cybersecurity, Pishing, Email, SMTP, IMF, SPF, DKIM'>
+  <meta itemprop="name" content="RTFM & Aleatoriedades - Email Phishing">
+  <meta itemprop="description" content="Analisando E-mail Fishing">
+  <meta itemprop="datePublished" content="2024-12-08T23:22:12-03:00">
+  <meta itemprop="dateModified" content="2025-01-27T11:46:26-03:00">
+  <meta itemprop="wordCount" content="3694">
+  <meta itemprop="image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
+  <meta itemprop="keywords" content="Linux,Cybersecurity,Pishing,Email,SMTP,IMF,SPF,DKIM"><meta property="og:url" content="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-emailphishing/">
+  <meta property="og:site_name" content="0xttfx">
+  <meta property="og:title" content="RTFM & Aleatoriedades - Email Phishing">
+  <meta property="og:description" content="Analisando E-mail Fishing">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-12-08T23:22:12-03:00">
+    <meta property="article:modified_time" content="2025-01-27T11:46:26-03:00">
+    <meta property="article:tag" content="Linux">
+    <meta property="article:tag" content="Cybersecurity">
+    <meta property="article:tag" content="Pishing">
+    <meta property="article:tag" content="Email">
+    <meta property="article:tag" content="SMTP">
+    <meta property="article:tag" content="IMF">
+    <meta property="og:image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
+  <meta name="twitter:title" content="RTFM & Aleatoriedades - Email Phishing">
+  <meta name="twitter:description" content="Analisando E-mail Fishing">
+      <meta name="twitter:site" content="@0xttfx">
+<meta name="twitter:creator" content="@0xttfx" /><meta name="application-name" content="0xttfx">
+<meta name="apple-mobile-web-app-title" content="0xttfx"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" type="text/html" href="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-emailphishing/" title="RTFM &amp; Aleatoriedades - Email Phishing - 0xttfx" /><link rel="prev" type="text/html" href="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-funcaopredict_linearprometheus/" title="RTFM &amp; Aleatoriedades - Função  predict_linear() do Prometheus" /><link rel="next" type="text/html" href="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-literaciaai/" title="RTFM &amp; Aleatoriedades - Literacia em IA" /><link rel="alternate" type="text/markdown" href="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-emailphishing/index.md" title="RTFM & Aleatoriedades - Email Phishing - 0xttfx"><link rel="stylesheet" href="/css/style.min.5fb8636ad8f7ce85ece8cfd1b583385644991297bcabe889a9ed87d9b420dde6722873df084bf070d186b7e8f42529ece5312c08b3912ec100416517af236f51.css" integrity="sha512-X7hjatj3zoXs6M/RtYM4VkSZEpe8q+iJqe2H2bQg3eZyKHPfCEvwcNGGt+j0JSns5TEsCLORLsEAQWUXryNvUQ=="><link rel="preload" href="/lib/fontawesome-free/all.min.e47b37745d8010f92934047b5223876dafa545224d78cd840a4c31508c42d50fc52f27064db35aa565c1e2d3fcf3d9394f926ef1fb386f53f9cff881e2731f49.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.e47b37745d8010f92934047b5223876dafa545224d78cd840a4c31508c42d50fc52f27064db35aa565c1e2d3fcf3d9394f926ef1fb386f53f9cff881e2731f49.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="></noscript><link rel="preload" href="/lib/animate/animate.min.738daa4d2c3fc0f677ff92c1cc3f81c397fb6d2176a31a2eeb011bf88fe5a9e68a57914321f32fbd1a7bef6cb88dc24b2ae1943a96c931d83f053979d1f25803.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw==" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/animate/animate.min.738daa4d2c3fc0f677ff92c1cc3f81c397fb6d2176a31a2eeb011bf88fe5a9e68a57914321f32fbd1a7bef6cb88dc24b2ae1943a96c931d83f053979d1f25803.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw=="></noscript><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "RTFM \u0026 Aleatoriedades - Email Phishing",
+    "inLanguage": "en",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http:\/\/0xttfx.tcpip.net.br\/posts\/rtfmaleatoriedades-emailphishing\/"
+    },"genre": "posts","keywords": "Linux, Cybersecurity, Pishing, Email, SMTP, IMF, SPF, DKIM","wordcount":  3694 ,
+    "url": "http:\/\/0xttfx.tcpip.net.br\/posts\/rtfmaleatoriedades-emailphishing\/","datePublished": "2024-12-08T23:22:12-03:00","dateModified": "2025-01-27T11:46:26-03:00","license": "Running on [OpenBSD](https://openbsd.org) and [httpd](https://man.openbsd.org/httpd.8) |  [0xttfx](https://0xttfx.tcpip.net.br) - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)","publisher": {
+      "@type": "Organization",
+      "name": ""},"author": {
+        "@type": "Person",
+        "name": "Faioli a.k.a 0xttfx"
+      },"description": "Analisando E-mail Fishing"
+  }
+  </script><script src="/js/head/color-scheme.min.e4582484625e45df8e4adbb4cc376382a2cba293ce791cf7e64b7d91903cb3c5ca0e91d3f65981dd654cffb16766c9ba00adc5f156d21c61355858e9efc36d60.js" integrity="sha512-5FgkhGJeRd+OStu0zDdjgqLLopPOeRz35kt9kZA8s8XKDpHT9lmB3WVM/7FnZsm6AK3F8VbSHGE1WFjp78NtYA=="></script></head>
+  <body data-header-desktop="sticky" data-header-mobile="auto"><div class="wrapper" data-page-style="normal"><header class="desktop animate__faster" id="header-desktop">
+  <div class="header-wrapper">
+    <div class="header-title">
+      <a href="/" title="0xttfx"><img loading="lazy" src="/images/logo.svg" alt="0xttfx" data-title="0xttfx" width="26" height="26" class="logo" style="background: url(/images/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}"/><span class="header-title-text">0xTTFX</span></a><span class="header-subtitle"></span></div>
+    <nav>
+      <ul class="menu"><li class="menu-item">
+              <a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> Archives</a></li><li class="menu-item">
+              <a class="menu-link" href="/pages/about"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> About</a></li><li class="menu-item">
+              <a class="menu-link" href="https://cv0xttfx.tcpip.net.br" rel="noopener noreferrer" target="_blank"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> CV</a></li><li class="menu-item">
+              <a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> Tags</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+            <input type="text" placeholder="Search titles or contents ..." id="search-input-desktop">
+            <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+              <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+            </a>
+            <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+              <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+            </a>
+            <span class="search-button search-loading" id="search-loading-desktop">
+              <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+            </span>
+          </li><li class="menu-item theme-switch" title="Switch Theme">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header><header class="mobile animate__faster" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title="0xttfx"><img loading="lazy" src="/images/logo.svg" alt="0xttfx" data-title="0xttfx" width="26" height="26" class="logo" style="background: url(/images/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}"/><span class="header-title-text">0xTTFX</span></a><span class="header-subtitle"></span></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li class="search-wrapper">
+            <div class="search mobile" id="search-mobile">
+              <input type="text" placeholder="Search titles or contents ..." id="search-input-mobile">
+              <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+              </a>
+              <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+              </a>
+              <span class="search-button search-loading" id="search-loading-mobile">
+                <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+              </span>
+            </div>
+            <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+              Cancel
+            </a>
+          </li><li class="menu-item"><a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> Archives</a></li><li class="menu-item"><a class="menu-link" href="/pages/about"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> About</a></li><li class="menu-item"><a class="menu-link" href="https://cv0xttfx.tcpip.net.br" rel="noopener noreferrer" target="_blank"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> CV</a></li><li class="menu-item"><a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> Tags</a></li><li class="menu-item menu-system">
+          <span class="menu-system-item theme-switch" title="Switch Theme"><i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i></span></li>
+      </ul>
+    </nav>
+  </div>
+</header><div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+  </div>
+  <div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+  </div><main class="container"><aside class="aside-collection animate__animated animate__fadeIn animate__faster" aria-label="Collections"></aside>
+
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>RTFM &amp; Aleatoriedades - Email Phishing</span>
+      </h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/0xttfx" title="Author"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><i class="fa-solid fa-user-circle" aria-hidden="true"></i>
+    Faioli a.k.a 0xttfx</a></span></div><div class="post-meta-line"><span title="published on 2024-12-08 23:22:12"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2024-12-08">2024-12-08</time></span>&nbsp;<span title="Updated on 2025-01-27 11:46:26"><i class="fa-regular fa-calendar-check fa-fw me-1" aria-hidden="true"></i><time datetime="2025-01-27">2025-01-27</time></span>&nbsp;<span title="3694 words"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>About 3700 words</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>18 minutes</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="RTFM &amp; Aleatoriedades - Email Phishing"><i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;views
+          </span>&nbsp;</div>
+    </div><div class="details toc" id="toc-static" data-kept="false">
+        <div class="details-summary toc-title">
+          <span>Contents</span>
+          <span><i class="details-icon fa-solid fa-angle-right" aria-hidden="true"></i></span>
+        </div>
+        <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#padrões-fundamentais"><strong>Padrões Fundamentais</strong></a>
+          <ul>
+            <li><a href="#1-transporte-de-mensagens">1. Transporte de Mensagens:</a></li>
+            <li><a href="#2-estrutura-da-mensagem">2. Estrutura da Mensagem:</a></li>
+            <li><a href="#3-protocolos-de-autenticação">3. Protocolos de Autenticação</a></li>
+          </ul>
+        </li>
+        <li><a href="#smtp-imf-e-autenticação">SMTP, IMF e Autenticação</a>
+          <ul>
+            <li><a href="#1-roteamento-e-autenticação">1. Roteamento e Autenticação</a></li>
+            <li><a href="#2-autenticação-dkim-signature">2. Autenticação (DKIM-Signature)</a></li>
+            <li><a href="#3-cabeçalho-da-mensagem-imf---rfc-5322">3. Cabeçalho da Mensagem (IMF - RFC 5322)</a></li>
+            <li><a href="#4-campos-de-formato-e-conteúdo">4. Campos de Formato e Conteúdo</a></li>
+          </ul>
+        </li>
+        <li><a href="#visão">Visão</a></li>
+        <li><a href="#ok-tudo-bonito-mas-e-na-prática-">Ok! Tudo bonito. Mas e na prática ?</a></li>
+        <li><a href="#inspecionar-o-cabeçalho">Inspecionar o Cabeçalho</a>
+          <ul>
+            <li><a href="#1-validando-roteamento">1. Validando roteamento</a></li>
+            <li><a href="#2-validar-spf">2. Validar SPF</a></li>
+            <li><a href="#3-validar-dkim">3. Validar DKIM</a></li>
+            <li><a href="#4-validar-dmarc">4. Validar DMARC</a></li>
+            <li><a href="#5-verificar-urls-e-links">5. Verificar URLs e Links</a></li>
+            <li><a href="#6-verificar-anexos">6. Verificar Anexos</a></li>
+            <li><a href="#7-monitorar-comportamento">7. Monitorar Comportamento</a></li>
+            <li><a href="#8-indicadores-suspeitos">8. Indicadores suspeitos</a></li>
+            <li><a href="#9-conclusão">9. Conclusão</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+      </div><div class="content" id="content"><p>Os e-mails phishing continuam fortes no radar de ameaças no cenário de cibersegurança. Atacantes explorando principalmente <strong>anexos</strong> ou <strong>links</strong> maliciosos como descrito em <a href="https://attack.mitre.org/techniques/T1566/002"target="_blank" rel="external nofollow noopener noreferrer">MITRE ATT&amp;CK</a> nas técnicas aplicadas para forjar comunicações legítimas para roubar credenciais, instalar malware ou realizar outros tipos de fraudes; continuam sendo executados com uma alta taxa de sucesso.</p>
+<p>Apesar do assunto já ter sido amplamente discutido na Internet! Nesse documento eu tento condensar as informações mínimas para um <em>Go Hose</em> um pouco mais descente!rs :)</p>
+<p>Cada e-mail é composto por dois elementos principais:</p>
+<ol>
+<li><strong>Cabeçalhos</strong>: Contêm informações sobre o envio, como remetente, destinatário e servidores envolvidos.</li>
+<li><strong>Corpo da mensagem</strong>: Inclui o conteúdo propriamente dito, que pode ser texto simples, HTML, links ou anexos.</li>
+</ol>
+<p>A inspeção dessas partes é fundamental para identificar indícios de phishing e coletar informações úteis para investigações. Porém, na prática, é necessário compreender quais aspectos devemos aferir e como correlacioná-los com os padrões técnicos que regulamentam a troca de e-mails.</p>
+<h3 id="padrões-fundamentais" class="heading-element"><span><strong>Padrões Fundamentais</strong></span>
+  <a href="#padr%c3%b5es-fundamentais" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><h4 id="1-transporte-de-mensagens" class="heading-element"><span>1. Transporte de Mensagens:</span>
+  <a href="#1-transporte-de-mensagens" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h4><ul>
+<li>SMTP - <a href="https://datatracker.ietf.org/doc/html/rfc5321"target="_blank" rel="external nofollow noopener noreferrer">RFC 5321</a></li>
+</ul>
+<p>O <strong>Simple Mail Transfer Protocol (SMTP)</strong> é responsável pelo envio e roteamento de e-mails entre servidores. Ele opera como um envelope que contém:</p>
+<ul>
+<li><strong>MailFrom</strong>: O endereço do remetente usado para roteamento.</li>
+<li><strong>.RcptTo</strong>: O endereço do destinatár</li>
+<li>Os comandos SMTP (<code>HELO</code>, <code>MAIL FROM</code>, <code>RCPT TO</code>, <code>DATA</code>, etc.) são usados para transferir a mensagem de um servidor para outro.</li>
+<li>E claro a resolução DNS para registros MX (Mail Exchange).</li>
+</ul>
+<h4 id="2-estrutura-da-mensagem" class="heading-element"><span>2. Estrutura da Mensagem:</span>
+  <a href="#2-estrutura-da-mensagem" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h4><ul>
+<li>IMF - <a href="https://datatracker.ietf.org/doc/html/rfc5322"target="_blank" rel="external nofollow noopener noreferrer">RFC 5322</a></li>
+</ul>
+<p>O <strong>Internet Message Format (IMF)</strong>,  define a estrutura interna do e-mail, incluindo:</p>
+<ul>
+<li><strong>Cabeçalhos principais</strong>:
+<ul>
+<li><code>From</code>: Endereço do remetente visível ao destinatário.</li>
+<li><code>To</code>: Endereço do destinatário.</li>
+<li><code>Subject</code>: Assunto do e-mail.</li>
+<li><code>Date</code>: Data e hora de envio.</li>
+</ul>
+</li>
+<li><strong>Corpo da mensagem</strong>:
+<ul>
+<li><code>Body</code>: O conteúdo, que pode ser texto simples ou HTML, conter anexos e geralmente codificados em MIME</li>
+</ul>
+</li>
+</ul>
+<p>Esses dois padrões (RFC 5321 e RFC 5322) operam em conjunto: o <strong>SMTP</strong> cuida do transporte da mensagem, enquanto o <strong>IMF</strong> define como ela é apresentada.</p>
+<h4 id="3-protocolos-de-autenticação" class="heading-element"><span>3. Protocolos de Autenticação</span>
+  <a href="#3-protocolos-de-autentica%c3%a7%c3%a3o" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h4><p>Para combater fraudes e proteger a integridade das mensagens, protocolos adicionais foram criados:</p>
+<p><strong>1. SPF -Sender Policy Framework</strong></p>
+<ul>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc7208"target="_blank" rel="external nofollow noopener noreferrer">RFC7208</a></li>
+<li>Verifica se o servidor que enviou o e-mail está autorizado pelo domínio do remetente.</li>
+<li>Baseia-se em registros DNS TXT, que especificam quais IPs podem enviar e-mails em nome do domínio.</li>
+</ul>
+<p><strong>2. DKIM - DomainKeys Identified Mail</strong>:</p>
+<ul>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc6376"target="_blank" rel="external nofollow noopener noreferrer">RFC6376</a></li>
+<li>Garante que o conteúdo da mensagem (cabeçalhos e corpo) não foi alterado durante o envio.</li>
+<li>Usa uma assinatura criptográfica (<code>DKIM-Signature</code>), validada com uma chave pública armazenada no DNS.</li>
+</ul>
+<p><strong>3. DMARC - Domain-based Message Authentication, Reporting, and Conformance</strong>:</p>
+<ul>
+<li><a href="https://datatracker.ietf.org/doc/html/rfc7489"target="_blank" rel="external nofollow noopener noreferrer">RFC7489</a></li>
+<li>Alinha os resultados de SPF e DKIM com o endereço visível no cabeçalho <code>From</code>.</li>
+<li>Define políticas para lidar com mensagens que falham nas validações (ex.: rejeitar ou colocar em quarentena).</li>
+</ul>
+<h3 id="smtp-imf-e-autenticação" class="heading-element"><span>SMTP, IMF e Autenticação</span>
+  <a href="#smtp-imf-e-autentica%c3%a7%c3%a3o" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><p>Para visualizar melhor como essas partes interagem, considere o seguinte exemplo:</p>
+<ul>
+<li>Header de envio do e-mail
+<ul>
+<li>lembrando que em uma análise comum, você não terá acesso a esse cabeçalho! Pois é restrito ao MUA do usuário que fez o envio do e-mail!</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt"><span class="line"><span class="cl">MIME-Version: 1.0
+</span></span><span class="line"><span class="cl">Date: Sun, 8 Dec 2024 20:03:53 -0300
+</span></span><span class="line"><span class="cl">Message-ID: &lt;CAHExE1hY=_mC8PtrK26nC1EkU059HTBV-wEeQSF-=iq+wOOpqQ@mail.gmail.com&gt;
+</span></span><span class="line"><span class="cl">Subject: E o pe?
+</span></span><span class="line"><span class="cl">From: &#34;Thiago T. Faioli&#34; &lt;thiago.faioli@gmail.com&gt;
+</span></span><span class="line"><span class="cl">To: &#34;thiago.faioli@bsd.com.br&#34; &lt;thiago.faioli@bsd.com.br&gt;
+</span></span><span class="line"><span class="cl">Content-Type: multipart/mixed; boundary=&#34;0000000000002758590628ca43cc&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">--0000000000002758590628ca43cc
+</span></span><span class="line"><span class="cl">Content-Type: multipart/alternative; boundary=&#34;0000000000002758580628ca43ca&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">--0000000000002758580628ca43ca
+</span></span><span class="line"><span class="cl">Content-Type: text/plain; charset=&#34;UTF-8&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Opa, Bao!
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Ja melhorou dos bichos de pe?
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">E nao custa lembrar: cuidado &lt;https://www.youtube.com/watch?v=DlP3FZbAXgI&gt;!
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Abraco do amigo
+</span></span><span class="line"><span class="cl">Faioli
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">--0000000000002758580628ca43ca
+</span></span><span class="line"><span class="cl">Content-Type: text/html; charset=&#34;UTF-8&#34;
+</span></span><span class="line"><span class="cl">Content-Transfer-Encoding: quoted-printable
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">&lt;div dir=3D&#34;ltr&#34;&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;Opa, Bao!&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Ja melho=
+</span></span><span class="line"><span class="cl">rou dos bichos de pe?&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;E nao custa lembrar: &lt;a =
+</span></span><span class="line"><span class="cl">href=3D&#34;https://www.youtube.com/watch?v=3DDlP3FZbAXgI&#34; target=3D&#34;_blank&#34;&gt;cu=
+</span></span><span class="line"><span class="cl">idado&lt;/a&gt;!&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;Abraco do am&lt;font color=3D&#34;#444444&#34;&gt;igo&lt;/font&gt;=
+</span></span><span class="line"><span class="cl">&lt;/div&gt;&lt;font color=3D&#34;#888888&#34;&gt;&lt;div&gt;&lt;font color=3D&#34;#444444&#34;&gt;Faioli&lt;/font&gt;&lt;sp=
+</span></span><span class="line"><span class="cl">an style=3D&#34;color:rgb(0,0,0);font-size:10pt&#34;&gt; &lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;/font&gt;&lt;/div=
+</span></span><span class="line"><span class="cl">&gt;&lt;/div&gt;&lt;div&gt;&lt;div dir=3D&#34;ltr&#34; class=3D&#34;gmail_signature&#34; data-smartmail=3D&#34;gm=
+</span></span><span class="line"><span class="cl">ail_signature&#34;&gt;&lt;div dir=3D&#34;ltr&#34;&gt;&lt;div&gt;&lt;div dir=3D&#34;ltr&#34;&gt;&lt;div dir=3D&#34;ltr&#34;&gt;&lt;div=
+</span></span><span class="line"><span class="cl"> dir=3D&#34;ltr&#34;&gt;&lt;div dir=3D&#34;ltr&#34;&gt;&lt;div&gt;&lt;div style=3D&#34;font-family:arial&#34;&gt;&lt;div st=
+</span></span><span class="line"><span class="cl">yle=3D&#34;font-size:small&#34;&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;=
+</span></span><span class="line"><span class="cl">&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">--0000000000002758580628ca43ca--
+</span></span><span class="line"><span class="cl">--0000000000002758590628ca43cc
+</span></span><span class="line"><span class="cl">Content-Type: application/pdf; name=&#34;Anjali Khatri, Vikram Khatri - Mastering Service Mesh_ Enhance, secure, and observe cloud-native applications with Istio, Linkerd, and Consul-Packt Publishing (2020).pdf&#34;
+</span></span><span class="line"><span class="cl">Content-Disposition: attachment; filename=&#34;Anjali Khatri, Vikram Khatri - Mastering Service Mesh_ Enhance, secure, and observe cloud-native applications with Istio, Linkerd, and Consul-Packt Publishing (2020).pdf&#34;
+</span></span><span class="line"><span class="cl">Content-Transfer-Encoding: base64
+</span></span><span class="line"><span class="cl">X-Attachment-Id: f_m4g7m37i0
+</span></span><span class="line"><span class="cl">Content-ID: &lt;f_m4g7m37i0&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">--0000000000002758590628ca43cc--</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>header do e-mail no MUA do usuário que recebeu o e-mail.
+<ul>
+<li>são esses os dados que teremos para investigação.</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt"><span class="line"><span class="cl">Delivered-To: thiago.faioli@bsd.com.br
+</span></span><span class="line"><span class="cl">Received: by 2002:a05:7110:4344:b0:254:86f7:fd0c with SMTP id g4csp220273gee;
+</span></span><span class="line"><span class="cl">        Sun, 8 Dec 2024 15:04:28 -0800 (PST)
+</span></span><span class="line"><span class="cl">X-Received: by 2002:a17:90b:28d0:b0:2ea:8aac:6aa9 with SMTP id 98e67ed59e1d1-2ef6a6bd802mr15278535a91.21.1733699060421;
+</span></span><span class="line"><span class="cl">        Sun, 08 Dec 2024 15:04:20 -0800 (PST)
+</span></span><span class="line"><span class="cl">ARC-Seal: i=1; a=rsa-sha256; t=1733699060; cv=none;
+</span></span><span class="line"><span class="cl">        d=google.com; s=arc-20240605;
+</span></span><span class="line"><span class="cl">        b=EtZYcJUab+vSEdZhsk/uCg1+PyzpSEmw2aXc8YPvdB2K2WWfzf33QfrV9HP6SHMm80
+</span></span><span class="line"><span class="cl">         IcCwNYfiPDVwkNc6TWi9UKXY5EBm12qxrS3rLwvE+hNWIbQRhlsDo3lE1YaX4yLXxEsv
+</span></span><span class="line"><span class="cl">         WQo6rxzGjTXRDTiGap6CeMm5XLbaZ6RkUVe5tkpok2hcgJ/Njn/aRcUJa+Tz/wKcAu6h
+</span></span><span class="line"><span class="cl">         y9rG56oMa2WZwexukHtHhDbwNn+NZvYYB02WEe8tlNieIzECAjEY+eI14Vt/NJVdf2hR
+</span></span><span class="line"><span class="cl">         hVeYAOqGDy8CLvGCQuiB6eLkD4trwY8nPQka8W5tKHvUGadDOOQcTHQpFbFfURKrajNr
+</span></span><span class="line"><span class="cl">         OJUw==
+</span></span><span class="line"><span class="cl">ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+</span></span><span class="line"><span class="cl">        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+</span></span><span class="line"><span class="cl">        bh=AIDAEBlTTt9xgiNB096cNNX1VJAj2rhMPqxYE23Kufo=;
+</span></span><span class="line"><span class="cl">        fh=Fi9mIQ4POoGfXYmpD5y/vuvHDDd4psKIIeu1RdDwRx4=;
+</span></span><span class="line"><span class="cl">        b=e6ONX6MjloNz1wQ+QbEkuF1wT36cfEIlCch19xZikBGsRpkDmFpymq1HVx/GTOZEGr
+</span></span><span class="line"><span class="cl">         50zYSAIhOoUHWSHytJp0Ges1Z2wtO4PQKG6ZUcGRlzKWCEsh10WG7/wcHbxcuEXZEUJ0
+</span></span><span class="line"><span class="cl">         Nx0WmdZjwzLZXZt7H+5ORr7EgG1ai+ZcMmHvxHULJRjkwLTCgyJSpo7yAHGJupvAygxK
+</span></span><span class="line"><span class="cl">         b43MeJi1tBBN2bIgpU0aZgjkpttMTKzEpT7NZx1LDn4NFiGTmfHWWpOE4Lyz6T4NXAbR
+</span></span><span class="line"><span class="cl">         7gTvqZs9CdO5K3Lst5t/etKBGb4ZrTQnndmOKfYl4e2uvkHrUiLDDGkISXdvYTlxYx6g
+</span></span><span class="line"><span class="cl">         Z1Wg==;
+</span></span><span class="line"><span class="cl">        dara=google.com
+</span></span><span class="line"><span class="cl">ARC-Authentication-Results: i=1; mx.google.com;
+</span></span><span class="line"><span class="cl">       dkim=pass header.i=@gmail.com header.s=20230601 header.b=kM+M4SQb;
+</span></span><span class="line"><span class="cl">       spf=pass (google.com: domain of thiago.faioli@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=thiago.faioli@gmail.com;
+</span></span><span class="line"><span class="cl">       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com;
+</span></span><span class="line"><span class="cl">       dara=neutral header.i=@bsd.com.br
+</span></span><span class="line"><span class="cl">Return-Path: &lt;thiago.faioli@gmail.com&gt;
+</span></span><span class="line"><span class="cl">Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+</span></span><span class="line"><span class="cl">        by mx.google.com with SMTPS id 98e67ed59e1d1-2ef7a4c2a11sor3537848a91.6.2024.12.08.15.04.19
+</span></span><span class="line"><span class="cl">        for &lt;thiago.faioli@bsd.com.br&gt;
+</span></span><span class="line"><span class="cl">        (Google Transport Security);
+</span></span><span class="line"><span class="cl">        Sun, 08 Dec 2024 15:04:19 -0800 (PST)
+</span></span><span class="line"><span class="cl">Received-SPF: pass (google.com: domain of thiago.faioli@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+</span></span><span class="line"><span class="cl">Authentication-Results: mx.google.com;
+</span></span><span class="line"><span class="cl">       dkim=pass header.i=@gmail.com header.s=20230601 header.b=kM+M4SQb;
+</span></span><span class="line"><span class="cl">       spf=pass (google.com: domain of thiago.faioli@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=thiago.faioli@gmail.com;
+</span></span><span class="line"><span class="cl">       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com;
+</span></span><span class="line"><span class="cl">       dara=neutral header.i=@bsd.com.br
+</span></span><span class="line"><span class="cl">DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+</span></span><span class="line"><span class="cl">        d=gmail.com; s=20230601; t=1733699059; x=1734303859; darn=bsd.com.br;
+</span></span><span class="line"><span class="cl">        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+</span></span><span class="line"><span class="cl">         :date:message-id:reply-to;
+</span></span><span class="line"><span class="cl">        bh=AIDAEBlTTt9xgiNB096cNNX1VJAj2rhMPqxYE23Kufo=;
+</span></span><span class="line"><span class="cl">        b=kM+M4SQb7wpOYf9dah/WaTaw2v3ONv+BL3POKNP9468+sZW1vookbtbq1HXV46RZxQ
+</span></span><span class="line"><span class="cl">         jUiOMnWuveBpU0RZ00GlOnxKqk9EkV/F9c++ckbnqmjiKqz0CSHQioZuSLTxE+3LYNK7
+</span></span><span class="line"><span class="cl">         3PQ0iQgC0KzTtCquq17EFXPJN7fqnUYTUsTc7DuukPGadowZ//Bk7hjny580yfaLbNI8
+</span></span><span class="line"><span class="cl">         KKKqOt1g8QKzDW/bJoxAvfqmtBRWl9WNVOoF2nzYD0fMAdvjs9Pak8VcScsa6hS7NZq3
+</span></span><span class="line"><span class="cl">         mVfFdSzEezQpoabXsPuB5kkSNcDYnIp24n4+H999Rk0nXtscfEpkRRlipdpVy9w0ePfd
+</span></span><span class="line"><span class="cl">         RHRQ==
+</span></span><span class="line"><span class="cl">X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+</span></span><span class="line"><span class="cl">        d=1e100.net; s=20230601; t=1733699059; x=1734303859;
+</span></span><span class="line"><span class="cl">        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+</span></span><span class="line"><span class="cl">         :from:to:cc:subject:date:message-id:reply-to;
+</span></span><span class="line"><span class="cl">        bh=AIDAEBlTTt9xgiNB096cNNX1VJAj2rhMPqxYE23Kufo=;
+</span></span><span class="line"><span class="cl">        b=RJg97hgLLFL1LDrNEcv9Zb2xqwaId3PMtx4MyHYgqwBkzgrueOiFHiiMkT2vQXfYhE
+</span></span><span class="line"><span class="cl">         l/UYoADqOdmt6mn4Urc6YUt/NlkQpecb6HL1U9lD22wNu7zQszw5wpGxpaV07Gssx64q
+</span></span><span class="line"><span class="cl">         t7XSLAUxPCrLHrDr8ZcJKgNgwoOqfpMyfTd8ocVODrGKEPv5Xj8qr9x/rAAVgymJV+qc
+</span></span><span class="line"><span class="cl">         uDLweSTqO923yxTYARDMJ4Xxxk2F5i3Nc+52yt0Qrw06G1f0k+2ysmw8KxgNmihr1JxD
+</span></span><span class="line"><span class="cl">         IJO8YTIZhE7gny3eLAtxZoYCQQGfEXMd9vRxLsJfC7k2G57A8cGQ4rc85bJy6Ehvv5nd
+</span></span><span class="line"><span class="cl">         CbdA==
+</span></span><span class="line"><span class="cl">X-Gm-Message-State: AOJu0YzQGaC/YFdJeCJs2/6ut6XitFWInxTlDguCq+7o5DNwqhX0Qied aVSZqtyHDtq8POauNLzOW9QtfNxbJaLRYbdMjb+1Tvq1gnllR1HQVdlVUWvSh7QYOSjXe+uPaXH QLTkcrELGlUKoTVj/Ok6Xc2Byt+Pfi4q2Y9g=
+</span></span><span class="line"><span class="cl">X-Gm-Gg: ASbGncv9NT1Cf3YRMOSTUsJN0TPt+y+/Nxqmc/83GGYyVxVkTa8uQJOPqfj1xSD7Xfy GEa0y3kV7ygFCX/ygf14ZLkORyPl+3w==
+</span></span><span class="line"><span class="cl">X-Google-Smtp-Source: AGHT+IH4nJkPc6OewVhSlQuPT28xp0aTQNlvQa/GeF+4ZfTjHe8Yr2Mru2jbJZ9oTOF4ux9WWy56SUiVp8RbK1GmyOk=
+</span></span><span class="line"><span class="cl">X-Received: by 2002:a17:90b:53ce:b0:2ee:df70:1ff3 with SMTP id 98e67ed59e1d1-2ef69199134mr18507867a91.0.1733699054597; Sun, 08 Dec 2024 15:04:14 -0800 (PST)
+</span></span><span class="line"><span class="cl">MIME-Version: 1.0
+</span></span><span class="line"><span class="cl">From: &#34;Thiago T. Faioli&#34; &lt;thiago.faioli@gmail.com&gt;
+</span></span><span class="line"><span class="cl">Date: Sun, 8 Dec 2024 20:03:53 -0300
+</span></span><span class="line"><span class="cl">Message-ID: &lt;CAHExE1hY=_mC8PtrK26nC1EkU059HTBV-wEeQSF-=iq+wOOpqQ@mail.gmail.com&gt;
+</span></span><span class="line"><span class="cl">Subject: E o pe?
+</span></span><span class="line"><span class="cl">To: &#34;thiago.faioli@bsd.com.br&#34; &lt;thiago.faioli@bsd.com.br&gt;
+</span></span><span class="line"><span class="cl">Content-Type: multipart/mixed; boundary=&#34;0000000000004e955c0628ca440a&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">--0000000000004e955c0628ca440a
+</span></span><span class="line"><span class="cl">Content-Type: multipart/alternative; boundary=&#34;0000000000004e955b0628ca4408&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">--0000000000004e955b0628ca4408
+</span></span><span class="line"><span class="cl">Content-Type: text/plain; charset=&#34;UTF-8&#34;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Opa, Bao!
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Ja melhorou dos bichos de pe?
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">E nao custa lembrar: cuidado &lt;https://www.youtube.com/watch?v=DlP3FZbAXgI&gt;!
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Abraco do amigo
+</span></span><span class="line"><span class="cl">Faioli
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">--0000000000004e955b0628ca4408
+</span></span><span class="line"><span class="cl">Content-Type: text/html; charset=&#34;UTF-8&#34;
+</span></span><span class="line"><span class="cl">Content-Transfer-Encoding: quoted-printable
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">&lt;div dir=3D&#34;ltr&#34;&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;Opa, Bao!&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Ja melho=
+</span></span><span class="line"><span class="cl">rou dos bichos de pe?&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;E nao custa lembrar: &lt;a =
+</span></span><span class="line"><span class="cl">href=3D&#34;https://www.youtube.com/watch?v=3DDlP3FZbAXgI&#34; target=3D&#34;_blank&#34;&gt;cu=
+</span></span><span class="line"><span class="cl">idado&lt;/a&gt;!&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;Abraco do am&lt;font color=3D&#34;#444444&#34;&gt;igo&lt;/font&gt;=
+</span></span><span class="line"><span class="cl">&lt;/div&gt;&lt;font color=3D&#34;#888888&#34;&gt;&lt;div&gt;&lt;font color=3D&#34;#444444&#34;&gt;Faioli&lt;/font&gt;&lt;sp=
+</span></span><span class="line"><span class="cl">an style=3D&#34;color:rgb(0,0,0);font-size:10pt&#34;&gt; &lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;/font&gt;&lt;/div=
+</span></span><span class="line"><span class="cl">&gt;&lt;/div&gt;&lt;div&gt;&lt;div dir=3D&#34;ltr&#34; class=3D&#34;gmail_signature&#34; data-smartmail=3D&#34;gm=
+</span></span><span class="line"><span class="cl">ail_signature&#34;&gt;&lt;div dir=3D&#34;ltr&#34;&gt;&lt;div&gt;&lt;div dir=3D&#34;ltr&#34;&gt;&lt;div dir=3D&#34;ltr&#34;&gt;&lt;div=
+</span></span><span class="line"><span class="cl"> dir=3D&#34;ltr&#34;&gt;&lt;div dir=3D&#34;ltr&#34;&gt;&lt;div&gt;&lt;div style=3D&#34;font-family:arial&#34;&gt;&lt;div st=
+</span></span><span class="line"><span class="cl">yle=3D&#34;font-size:small&#34;&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;=
+</span></span><span class="line"><span class="cl">&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">--0000000000004e955b0628ca4408--
+</span></span><span class="line"><span class="cl">--0000000000004e955c0628ca440a
+</span></span><span class="line"><span class="cl">Content-Type: application/pdf; name=&#34;Anjali Khatri, Vikram Khatri - Mastering Service Mesh_ Enhance, secure, and observe cloud-native applications with Istio, Linkerd, and Consul-Packt Publishing (2020).pdf&#34;
+</span></span><span class="line"><span class="cl">Content-Disposition: attachment; filename=&#34;Anjali Khatri, Vikram Khatri - Mastering Service Mesh_ Enhance, secure, and observe cloud-native applications with Istio, Linkerd, and Consul-Packt Publishing (2020).pdf&#34;
+</span></span><span class="line"><span class="cl">Content-Transfer-Encoding: base64
+</span></span><span class="line"><span class="cl">Content-ID: &lt;f_m4g7m37i0&gt;
+</span></span><span class="line"><span class="cl">X-Attachment-Id: f_m4g7m37i0
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">--0000000000004e955c0628ca440a--</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>Nesse exemplo, eu envio um email  de <code>@gmail.com</code> para <code>@bsd.com.br</code>! E no MUA do usuário, no caso o destinatário, a plataforma GMail do Google, siga esses passos para coletar o header da mensagem recebida:</li>
+</ul>
+<ol>
+<li>Abra o <a href="https://mail.google.com/"target="_blank" rel="external nofollow noopener noreferrer">Gmail</a> no computador.
+<ol>
+<li>Abra o e-mail que você quer analisar.</li>
+<li>Ao lado de Responder
+<ul>
+<li>clique em Mais. 
+- Mostrar original.</li>
+</ul>
+</li>
+<li>O cabeçalho completo será exibido em uma nova janela.</li>
+<li>Clique em <strong>Copiar para a área de transferência</strong>.</li>
+<li>E para esse tutorial, vamos salvar esse conteúdo no arquivo: <strong>header_bichodepe.eml</strong></li>
+</ol>
+</li>
+</ol>
+<h4 id="1-roteamento-e-autenticação" class="heading-element"><span>1. Roteamento e Autenticação</span>
+  <a href="#1-roteamento-e-autentica%c3%a7%c3%a3o" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h4><ol>
+<li><strong><code>Return-Path</code>:</strong>
+<ul>
+<li>Indica o endereço usado para retorno de mensagens (bounce).</li>
+<li>Geralmente corresponde ao <code>MailFrom</code> (SMTP Envelope) no protocolo RFC 5321.</li>
+</ul>
+</li>
+<li><strong><code>Received</code>:</strong>
+<ul>
+<li>Lista os servidores que manipularam a mensagem durante o envio, incluindo informações como o hostname (<code>mail-sor-f41.google.com</code>), IP (<code>209.85.220.41</code>) e timestamp.</li>
+<li>Crucial para rastrear a origem real da mensagem.</li>
+</ul>
+</li>
+<li><strong><code>Received-SPF</code>:</strong>
+<ul>
+<li>Resultado da validação SPF:
+<ul>
+<li><strong>Pass:</strong> O IP está autorizado a enviar mensagens para o domínio.</li>
+<li>Detalha o IP (<code>209.85.220.41</code>)e o domínio validados (<code>google.com</code>).</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong><code>Authentication-Results</code>:</strong>
+<ul>
+<li>Contém os resultados de autenticação para <strong>SPF</strong>, <strong>DKIM</strong> e <strong>DMARC</strong>:
+<ul>
+<li><strong>SPF:</strong> Validação do IP (<code>209.85.220.41</code>) como remetente do (<code>smtp.mailfrom=thiago.faioli@gmail.com</code>).</li>
+<li><strong>DKIM:</strong> Verificação da assinatura criptográfica (<code>header.i=gmail.com</code>).</li>
+<li><strong>DMARC:</strong> Confirma alinhamento do domínio <code>From</code> com SPF/DKIM.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="2-autenticação-dkim-signature" class="heading-element"><span>2. Autenticação (DKIM-Signature)</span>
+  <a href="#2-autentica%c3%a7%c3%a3o-dkim-signature" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h4><ol>
+<li><strong><code>DKIM-Signature</code>:</strong>
+<ul>
+<li>Assinatura criptográfica que valida a integridade da mensagem:
+<ul>
+<li><strong><code>d</code>:</strong> Domínio do remetente (<code>gmail.com</code>).</li>
+<li><strong><code>s</code>:</strong> Selector usado para localizar a chave pública no DNS (<code>20230601</code>).</li>
+<li><strong><code>h</code>:</strong> Campos assinados (<code>from</code>, <code>to</code>, <code>subject</code>, etc.).</li>
+<li><strong><code>b</code>:</strong> Assinatura gerada.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="3-cabeçalho-da-mensagem-imf---rfc-5322" class="heading-element"><span>3. Cabeçalho da Mensagem (IMF - RFC 5322)</span>
+  <a href="#3-cabe%c3%a7alho-da-mensagem-imf---rfc-5322" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h4><ol>
+<li><strong><code>From</code>:</strong>
+<ul>
+<li>Endereço do remetente exibido ao destinatário (<code>thiago.faioli@gmail.com</code>).</li>
+</ul>
+</li>
+<li><strong><code>To</code>:</strong>
+<ul>
+<li>Endereço do destinatário (<code>thiago.faioli@bsd.com.br</code>).</li>
+</ul>
+</li>
+<li><strong><code>Subject</code>:</strong>
+<ul>
+<li>Assunto do e-mail.</li>
+</ul>
+</li>
+<li><strong><code>Date</code>:</strong>
+<ul>
+<li>Data e hora de envio.</li>
+</ul>
+</li>
+<li><strong><code>Message-ID</code>:</strong>
+<ul>
+<li>Identificador único da mensagem, usado para rastreamento e respostas.</li>
+</ul>
+</li>
+</ol>
+<h4 id="4-campos-de-formato-e-conteúdo" class="heading-element"><span>4. Campos de Formato e Conteúdo</span>
+  <a href="#4-campos-de-formato-e-conte%c3%bado" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h4><ol>
+<li><strong><code>MIME-Version</code>:</strong>
+<ul>
+<li>Indica a versão do MIME usada na mensagem.</li>
+</ul>
+</li>
+<li><strong><code>Content-Type</code>:</strong>
+<ul>
+<li>Especifica o tipo de conteúdo da mensagem, aqui como multipart/alternative (pode conter texto e HTML).</li>
+</ul>
+</li>
+</ol>
+<h3 id="visão" class="heading-element"><span>Visão</span>
+  <a href="#vis%c3%a3o" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><p>Segue um diagrama pra conseguirmos tridimensionalizar todos os aspectos que vimos até aqui</p>
+<p><img loading="lazy" src="/images/EmailFishing/email-diagram.svg" alt="EmailDiagram" srcset="/images/EmailFishing/email-diagram.svg?size=small, /images/EmailFishing/email-diagram.svg?size=medium 1.5x, /images/EmailFishing/email-diagram.svg?size=large 2x" data-title="EmailDiagram" class="suffix-invalid suffix-invalid__small suffix-invalid__large" style="background: url(/images/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}"/></p>
+<h3 id="ok-tudo-bonito-mas-e-na-prática-" class="heading-element"><span>Ok! Tudo bonito. Mas e na prática ?</span>
+  <a href="#ok-tudo-bonito-mas-e-na-pr%c3%a1tica-" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><p>Vou tentar demonstrar uma análise prática usando ferramentas Unix&amp;Linux ;)</p>
+<h3 id="inspecionar-o-cabeçalho" class="heading-element"><span>Inspecionar o Cabeçalho</span>
+  <a href="#inspecionar-o-cabe%c3%a7alho" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><ol>
+<li>Extraia os cabeçalhos completos do e-mail:
+<ul>
+<li>Em clientes de e-mail, use as opções para exibir o &ldquo;código-fonte&rdquo;, &ldquo;Mostrar original&rdquo; ou &ldquo;cabeçalhos completos&rdquo; etc&hellip;
+<ul>
+<li>salve em um arquivo normalmente em <code>.eml</code>. Aqui em nosso exemplo será: <code>header_bichodepe.eml</code>.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Verifique inconsistências como por exemplo em:
+<ul>
+<li><code>From</code>: Analise se o domínio está alinhado com os campos SPF/DKIM.</li>
+<li><code>Received</code>: Confirme a origem do servidor e as etapas de entrega.</li>
+<li><code>Reply-To</code>: Pode ser usado para redirecionar respostas para um endereço diferente do <code>From</code>.</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>aqui estou fazendo um grep para trazer os dados que mais nos interessa</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">grep -iE <span class="s2">&#34;from:|to:|subject:|received:|spf|dkim|dmarc|authentication-results&#34;</span> header_bichodepe.eml
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Delivered-To: thiago.faioli@bsd.com.br
+</span></span><span class="line"><span class="cl">Received: by 2002:a05:7110:4344:b0:254:86f7:fd0c with SMTP id g4csp220273gee<span class="p">;</span>
+</span></span><span class="line"><span class="cl">X-Received: by 2002:a17:90b:28d0:b0:2ea:8aac:6aa9 with SMTP id 98e67ed59e1d1-2ef6a6bd802mr15278535a91.21.1733699060421<span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">h</span><span class="o">=</span>to:subject:message-id:date:from:mime-version:dkim-signature<span class="p">;</span>
+</span></span><span class="line"><span class="cl">ARC-Authentication-Results: <span class="nv">i</span><span class="o">=</span>1<span class="p">;</span> mx.google.com<span class="p">;</span>
+</span></span><span class="line"><span class="cl">       <span class="nv">dkim</span><span class="o">=</span>pass header.i<span class="o">=</span>@gmail.com header.s<span class="o">=</span><span class="m">20230601</span> header.b<span class="o">=</span>kM+M4SQb<span class="p">;</span>
+</span></span><span class="line"><span class="cl">       <span class="nv">spf</span><span class="o">=</span>pass <span class="o">(</span>google.com: domain of thiago.faioli@gmail.com designates 209.85.220.41 as permitted sender<span class="o">)</span> smtp.mailfrom<span class="o">=</span>thiago.faioli@gmail.com<span class="p">;</span>
+</span></span><span class="line"><span class="cl">       <span class="nv">dmarc</span><span class="o">=</span>pass <span class="o">(</span><span class="nv">p</span><span class="o">=</span>NONE <span class="nv">sp</span><span class="o">=</span>QUARANTINE <span class="nv">dis</span><span class="o">=</span>NONE<span class="o">)</span> header.from<span class="o">=</span>gmail.com<span class="p">;</span>
+</span></span><span class="line"><span class="cl">Received: from mail-sor-f41.google.com <span class="o">(</span>mail-sor-f41.google.com. <span class="o">[</span>209.85.220.41<span class="o">])</span>
+</span></span><span class="line"><span class="cl">Received-SPF: pass <span class="o">(</span>google.com: domain of thiago.faioli@gmail.com designates 209.85.220.41 as permitted sender<span class="o">)</span> client-ip<span class="o">=</span>209.85.220.41<span class="p">;</span>
+</span></span><span class="line"><span class="cl">Authentication-Results: mx.google.com<span class="p">;</span>
+</span></span><span class="line"><span class="cl">       <span class="nv">dkim</span><span class="o">=</span>pass header.i<span class="o">=</span>@gmail.com header.s<span class="o">=</span><span class="m">20230601</span> header.b<span class="o">=</span>kM+M4SQb<span class="p">;</span>
+</span></span><span class="line"><span class="cl">       <span class="nv">spf</span><span class="o">=</span>pass <span class="o">(</span>google.com: domain of thiago.faioli@gmail.com designates 209.85.220.41 as permitted sender<span class="o">)</span> smtp.mailfrom<span class="o">=</span>thiago.faioli@gmail.com<span class="p">;</span>
+</span></span><span class="line"><span class="cl">       <span class="nv">dmarc</span><span class="o">=</span>pass <span class="o">(</span><span class="nv">p</span><span class="o">=</span>NONE <span class="nv">sp</span><span class="o">=</span>QUARANTINE <span class="nv">dis</span><span class="o">=</span>NONE<span class="o">)</span> header.from<span class="o">=</span>gmail.com<span class="p">;</span>
+</span></span><span class="line"><span class="cl">DKIM-Signature: <span class="nv">v</span><span class="o">=</span>1<span class="p">;</span> <span class="nv">a</span><span class="o">=</span>rsa-sha256<span class="p">;</span> <span class="nv">c</span><span class="o">=</span>relaxed/relaxed<span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">h</span><span class="o">=</span>to:subject:message-id:date:from:mime-version:from:to:cc:subject
+</span></span><span class="line"><span class="cl">X-Google-DKIM-Signature: <span class="nv">v</span><span class="o">=</span>1<span class="p">;</span> <span class="nv">a</span><span class="o">=</span>rsa-sha256<span class="p">;</span> <span class="nv">c</span><span class="o">=</span>relaxed/relaxed<span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">h</span><span class="o">=</span>to:subject:message-id:date:from:mime-version:x-gm-message-state
+</span></span><span class="line"><span class="cl">         :from:to:cc:subject:date:message-id:reply-to<span class="p">;</span>
+</span></span><span class="line"><span class="cl">X-Received: by 2002:a17:90b:53ce:b0:2ee:df70:1ff3 with SMTP id 98e67ed59e1d1-2ef69199134mr18507867a91.0.1733699054597<span class="p">;</span> Sun, <span class="m">08</span> Dec <span class="m">2024</span> 15:04:14 -0800 <span class="o">(</span>PST<span class="o">)</span>
+</span></span><span class="line"><span class="cl">From: <span class="s2">&#34;Thiago T. Faioli&#34;</span> &lt;thiago.faioli@gmail.com&gt;
+</span></span><span class="line"><span class="cl">Subject: E o pe?
+</span></span><span class="line"><span class="cl">To: <span class="s2">&#34;thiago.faioli@bsd.com.br&#34;</span> &lt;thiago.faioli@bsd.com.br&gt;</span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="1-validando-roteamento" class="heading-element"><span>1. Validando roteamento</span>
+  <a href="#1-validando-roteamento" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h4><ul>
+<li>Verificando os campos <code>Received:</code></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ grep -A1 -i ^<span class="s2">&#34;received:&#34;</span> header_bichodepe.eml
+</span></span><span class="line"><span class="cl">Received: by 2002:a05:7110:4344:b0:254:86f7:fd0c with SMTP id g4csp220273gee<span class="p">;</span>
+</span></span><span class="line"><span class="cl">        Sun, <span class="m">8</span> Dec <span class="m">2024</span> 15:04:28 -0800 <span class="o">(</span>PST<span class="o">)</span>
+</span></span><span class="line"><span class="cl">--
+</span></span><span class="line"><span class="cl">Received: from mail-sor-f41.google.com <span class="o">(</span>mail-sor-f41.google.com. <span class="o">[</span>209.85.220.41<span class="o">])</span>
+</span></span><span class="line"><span class="cl">        by mx.google.com with SMTPS id 98e67ed59e1d1-2ef7a4c2a11sor3537848a91.6.2024.12.08.15.04.19</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>Agora verificamos o IP do servidor remetente
+<ul>
+<li>Que deve resolver para <code>mail-sor-f41.google.com</code></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ host 209.85.220.41
+</span></span><span class="line"><span class="cl">41.220.85.209.in-addr.arpa domain name pointer mail-sor-f41.google.com.</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>Aqui validamos que o IP resolve para o domain esperado!
+<ul>
+<li>Tudo ok!</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-validar-spf" class="heading-element"><span>2. Validar SPF</span>
+  <a href="#2-validar-spf" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h4><ol>
+<li>Validando campo <code>Received-SPF</code>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ grep -i received-spf header_bichodepe.eml
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Received-SPF: pass <span class="o">(</span>google.com: domain of thiago.faioli@gmail.com designates 209.85.220.41 as permitted sender<span class="o">)</span> client-ip<span class="o">=</span>209.85.220.41<span class="p">;</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>Aqui validação do remetente gmail.com para o servidor de envio designado é <code>PASS</code>.
+<ul>
+<li>Tudo ok!</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Localize o <code>include</code> do registro SPF do domínio remetente (DNS TXT)
+<ul>
+<li>Nós queremos validar o domínio do remetente (<code>gmail.com</code>) e o IP (<code>209.85.220.41</code>)
+<ul>
+<li>vamos então procurar pelo IP do servidor de envio na lista do registro SPF
+<ul>
+<li>e se essa validação <strong>falhar</strong>: é um potencial spoofing.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Extraindo dados
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ dig gmail.com TXT +noall +answer <span class="p">|</span>grep spf
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">gmail.com.		281	IN	TXT	<span class="s2">&#34;v=spf1 redirect=_spf.google.com&#34;</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>Identificamos que o registro <strong>SPF</strong> do <strong>gmail.com</strong> é um <strong>redirect</strong> para <strong>google.com</strong>.
+<ul>
+<li><strong>redirect</strong> é um ponteiro para outro nome de domínio que hospeda uma política SPF.
+<ul>
+<li>Consultando o registro
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ dig _spf.google.com TXT +noall +answer
+</span></span><span class="line"><span class="cl">_spf.google.com.	111	IN	TXT	<span class="s2">&#34;v=spf1 include:_netblocks.google.com include:_netblocks2.google.com include:_netblocks3.google.com ~all&#34;</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>Identificamos que o registro tem 3 <code>include</code>!
+<ul>
+<li><strong>include</strong> é um ponteiro para um domínio com registros SPF que serão consultados sobre IPs permitidos.</li>
+<li>E esperamos que o nosso IP <code>209.85.220.41</code> que resolve para <code>mail-sor-f41.google.com</code> esteja contido em um range (CIDR) ou ser ele mesmo em algum desses registros que encontramos&hellip;
+<ul>
+<li><code>_netblocks.google.com</code>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ dig _netblocks.google.com TXT +short <span class="p">|</span>tr <span class="s1">&#39;[:blank:]&#39;</span> <span class="s1">&#39;\n&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;v=spf1
+</span></span></span><span class="line"><span class="cl"><span class="s2">ip4:35.190.247.0/24
+</span></span></span><span class="line"><span class="cl"><span class="s2">ip4:64.233.160.0/19
+</span></span></span><span class="line"><span class="cl"><span class="s2">ip4:66.102.0.0/20
+</span></span></span><span class="line"><span class="cl"><span class="s2">ip4:66.249.80.0/20
+</span></span></span><span class="line"><span class="cl"><span class="s2">ip4:72.14.192.0/18
+</span></span></span><span class="line"><span class="cl"><span class="s2">ip4:74.125.0.0/16
+</span></span></span><span class="line"><span class="cl"><span class="s2">ip4:108.177.8.0/21
+</span></span></span><span class="line"><span class="cl"><span class="s2">ip4:173.194.0.0/16
+</span></span></span><span class="line"><span class="cl"><span class="s2">ip4:209.85.128.0/17
+</span></span></span><span class="line"><span class="cl"><span class="s2">ip4:216.58.192.0/19
+</span></span></span><span class="line"><span class="cl"><span class="s2">ip4:216.239.32.0/19
+</span></span></span><span class="line"><span class="cl"><span class="s2">~all&#34;</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li><code>_netblocks2.google.com</code>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ dig _netblocks2.google.com TXT +short <span class="p">|</span>tr <span class="s1">&#39;[:blank:]&#39;</span> <span class="s1">&#39;\n&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;v=spf1
+</span></span></span><span class="line"><span class="cl"><span class="s2">ip6:2001:4860:4000::/36
+</span></span></span><span class="line"><span class="cl"><span class="s2">ip6:2404:6800:4000::/36
+</span></span></span><span class="line"><span class="cl"><span class="s2">ip6:2607:f8b0:4000::/36
+</span></span></span><span class="line"><span class="cl"><span class="s2">ip6:2800:3f0:4000::/36
+</span></span></span><span class="line"><span class="cl"><span class="s2">ip6:2a00:1450:4000::/36
+</span></span></span><span class="line"><span class="cl"><span class="s2">ip6:2c0f:fb50:4000::/36
+</span></span></span><span class="line"><span class="cl"><span class="s2">~all&#34;</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li><code>_netblocks3.google.com</code>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ dig _netblocks3.google.com TXT +short <span class="p">|</span>tr <span class="s1">&#39;[:blank:]&#39;</span> <span class="s1">&#39;\n&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;v=spf1
+</span></span></span><span class="line"><span class="cl"><span class="s2">ip4:172.217.0.0/19
+</span></span></span><span class="line"><span class="cl"><span class="s2">ip4:172.217.32.0/20
+</span></span></span><span class="line"><span class="cl"><span class="s2">ip4:172.217.128.0/19
+</span></span></span><span class="line"><span class="cl"><span class="s2">ip4:172.217.160.0/20
+</span></span></span><span class="line"><span class="cl"><span class="s2">ip4:172.217.192.0/19
+</span></span></span><span class="line"><span class="cl"><span class="s2">ip4:172.253.56.0/21
+</span></span></span><span class="line"><span class="cl"><span class="s2">ip4:172.253.112.0/20
+</span></span></span><span class="line"><span class="cl"><span class="s2">ip4:108.177.96.0/19
+</span></span></span><span class="line"><span class="cl"><span class="s2">ip4:35.191.0.0/16
+</span></span></span><span class="line"><span class="cl"><span class="s2">ip4:130.211.0.0/22
+</span></span></span><span class="line"><span class="cl"><span class="s2">~all&#34;</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Vamos verificar à quem foi concedido o nosso IP</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ whois 209.85.220.41 <span class="p">|</span>grep -Ei <span class="s2">&#34;cidr|range|originas|netname&#34;</span>
+</span></span><span class="line"><span class="cl">NetRange:       209.85.128.0 - 209.85.255.255
+</span></span><span class="line"><span class="cl">CIDR:           209.85.128.0/17
+</span></span><span class="line"><span class="cl">NetName:        GOOGLE
+</span></span><span class="line"><span class="cl">OriginAS:       </span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>Aqui já conseguimos validar que:
+<ul>
+<li>o IP do server remetente pertence ao Google</li>
+<li>o IP está contido na rede <code>ip4:209.85.128.0/17</code> do include  <code>_netblocks.google.com</code>.</li>
+<li>o IP pertence à rede <code>209.85.128.0/17</code>
+<ul>
+<li>Seguro morre de velho né! Podemos usar o <code>ipcalc</code> pra mais um check.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ ipcalc 209.85.220.41/17
+</span></span><span class="line"><span class="cl">Address:	209.85.220.41
+</span></span><span class="line"><span class="cl">Network:	209.85.128.0/17
+</span></span><span class="line"><span class="cl">Netmask:	255.255.128.0 <span class="o">=</span> <span class="m">17</span>
+</span></span><span class="line"><span class="cl">Broadcast:	209.85.255.255
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Address space:	Internet
+</span></span><span class="line"><span class="cl">HostMin:	209.85.128.1
+</span></span><span class="line"><span class="cl">HostMax:	209.85.255.254
+</span></span><span class="line"><span class="cl">Hosts/Net:	<span class="m">32766</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>Como esperado: tudo ok!</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Agora podemos fazer um double check ;)
+<ul>
+<li>com a ferramenta <strong>sfpquery</strong>.</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ spfquery --ip<span class="o">=</span>209.85.220.41 --mfrom<span class="o">=</span>thiago.faioli@gmail.com
+</span></span><span class="line"><span class="cl">pass
+</span></span><span class="line"><span class="cl">gmail.com ... _spf.google.com: Sender is authorized to use <span class="s1">&#39;thiago.faioli@gmail.com&#39;</span> in <span class="s1">&#39;mfrom&#39;</span> identity <span class="o">(</span>mechanism <span class="s1">&#39;include:_netblocks.google.com&#39;</span> matched<span class="o">)</span>
+</span></span><span class="line"><span class="cl">gmail.com ... _spf.google.com: Sender is authorized to use <span class="s1">&#39;thiago.faioli@gmail.com&#39;</span> in <span class="s1">&#39;mfrom&#39;</span> identity <span class="o">(</span>mechanism <span class="s1">&#39;include:_netblocks.google.com&#39;</span> matched<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Received-SPF: pass <span class="o">(</span>gmail.com ... _spf.google.com: Sender is authorized to use <span class="s1">&#39;thiago.faioli@gmail.com&#39;</span> in <span class="s1">&#39;mfrom&#39;</span> identity <span class="o">(</span>mechanism <span class="s1">&#39;include:_netblocks.google.com&#39;</span> matched<span class="o">))</span> <span class="nv">receiver</span><span class="o">=</span>ctsme0<span class="p">;</span> <span class="nv">identity</span><span class="o">=</span>mailfrom<span class="p">;</span> envelope-from<span class="o">=</span>  <span class="s2">&#34;thiago.faioli@gmail.com&#34;</span><span class="p">;</span> client-ip<span class="o">=</span>209.85.220.41</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<h4 id="3-validar-dkim" class="heading-element"><span>3. Validar DKIM</span>
+  <a href="#3-validar-dkim" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h4><ol>
+<li>Verifique o cabeçalho <code>DKIM-Signature</code>.</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ grep -A10 -Ei ^dkim-signature header_bichodepe.eml 
+</span></span><span class="line"><span class="cl">DKIM-Signature: <span class="nv">v</span><span class="o">=</span>1<span class="p">;</span> <span class="nv">a</span><span class="o">=</span>rsa-sha256<span class="p">;</span> <span class="nv">c</span><span class="o">=</span>relaxed/relaxed<span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">d</span><span class="o">=</span>gmail.com<span class="p">;</span> <span class="nv">s</span><span class="o">=</span>20230601<span class="p">;</span> <span class="nv">t</span><span class="o">=</span>1733580554<span class="p">;</span> <span class="nv">x</span><span class="o">=</span>1734185354<span class="p">;</span> <span class="nv">darn</span><span class="o">=</span>bsd.com.br<span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">h</span><span class="o">=</span>to:subject:message-id:date:from:mime-version:from:to:cc:subject
+</span></span><span class="line"><span class="cl">         :date:message-id:reply-to<span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">bh</span><span class="o">=</span>2nLYWHA/hakwaoiHgM1K0wkbXqpu1yJbyP+j2RaZ4XE<span class="o">=</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">b</span><span class="o">=</span>Ycbqe8w6ViHgyjCXGbc33lxvv5Gyx9Y4bwO69eoqoADUdiHtzfLcwmVCsONnYrD5hT
+</span></span><span class="line"><span class="cl">         7h2h6KPRmYpPNIPKuWb5yOkXIYF9GIGopQobBJ8eOdBn/JhZVx1nPWZVnZkk6TQQLCQK
+</span></span><span class="line"><span class="cl">         kRZ06W6o2JluhFk/a/RXy/5Ahu+G+92YHxUn5zwZf4ILjBgnQSjSPaLouvbqtYm8fu1O
+</span></span><span class="line"><span class="cl">         6iTaHhmYs6QLcWxbiUqjjhrPNlEwQXfo+D+f496t0Xj9SjKWebAXVxmeGc0VXExjrtRE
+</span></span><span class="line"><span class="cl">         1QEDXvVZjPwpo62q+59ZPou8kpGoexLGO7HsQ+0h2sn2EUwMfK6bmf1aS5QFjEMRrVLQ
+</span></span><span class="line"><span class="cl">         <span class="nv">5R4Q</span><span class="o">==</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>Aqui nos interessa os seletores
+<ul>
+<li><code>s=20230601</code> que corresponde ao remetente</li>
+<li><code>d=gmail.com</code> que corresponde ao domínio assinado.</li>
+</ul>
+</li>
+<li>Que nos permite
+<ul>
+<li>testar a chave pública
+<ul>
+<li>Vamos usar a tool <strong>opendkim-testkey</strong>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># opendkim-testkey -d &#39;gmail.com&#39; -s &#39;20230601&#39; -vvv</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">opendkim-testkey: checking key <span class="s1">&#39;20230601._domainkey.gmail.com&#39;</span>
+</span></span><span class="line"><span class="cl">opendkim-testkey: key not secure
+</span></span><span class="line"><span class="cl">opendkim-testkey: key OK</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><code>Key not secure</code> não é um ponto de atenção para os nossos testes! Provavelmente trata-se do DNSSEC não verificado pelos registros <code>DNSKEY</code>, <code>RRSIG</code>, <code>DS</code> e <code>NSEC</code>&hellip;
+<ul>
+<li>E o resultado final é <strong>key ok</strong> o que indica estar tudo ok com o nosso remetente sobre a assinatura da mensagem.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Consultar a chave pública para validação do remetente
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ dig txt 20230601._domainkey.gmail.com  +noall +answer
+</span></span><span class="line"><span class="cl">20230601._domainkey.gmail.com. <span class="m">3600</span> IN	TXT	<span class="s2">&#34;v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAntvSKT1hkqhKe0xcaZ0......aKUABGu4NTbR2fDKnYwiq5jQyBkLWP+LgGOgfUF4T4HZb2&#34;</span> <span class="s2">&#34;PY2bQtEP6QeqOtcW4rrsH24L7XhD+.....7tEDNmrZ5XUwQYUUADBOu7t1niwXwIDAQAB&#34;</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>salva-la em um arquivo
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">dig txt 20230601._domainkey.gmail.com  +short &gt; gmail-dkimkey.pub</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li>Por último</li>
+</ol>
+<ul>
+<li>podemos fazer uma segunda validação usando a ferramenta <code>opendkim-testmsg</code> de duas maneiras:
+<ol>
+<li>usando o operador de redirecionamento de input <code>&lt;</code> enviando o header para o comando:</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ opendkim-testmsg &lt; header_bichodepe.eml</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>copie todo o conteúdo do nosso <code>header_bichodepe.eml</code>
+<ol>
+<li>execute o <strong>opendkim-testmsg</strong> sem argumentos</li>
+<li>cole o conteúdo <code>CRTL-V</code> ou <code>SHIFT-ins</code> `</li>
+<li>em seguida termine com <code>CTRL-D</code>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ opendkim-testmsg
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">&lt;CTRL-D&gt;</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<ul>
+<li>Note que não obtivemos nenhuma output!
+<ul>
+<li>O que significa que a assinatura foi verificada corretamente e está: tudo ok!</li>
+</ul>
+</li>
+<li>Mas se existir uma output parecido com
+<ul>
+<li><code>opendkim-testmsg: dkim_eom(): Unable to verify</code></li>
+<li><code>opendkim-testmsg: dkim_chunk(): No signature</code>
+<ul>
+<li>então temos algo suspeito&hellip;</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<h4 id="4-validar-dmarc" class="heading-element"><span>4. Validar DMARC</span>
+  <a href="#4-validar-dmarc" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h4><ol>
+<li>Confirmando o alinhamento.</li>
+</ol>
+<ul>
+<li>O domínio <code>From</code> deve corresponder ao domínio autenticado por SPF/DKIM.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ grep -iE ^<span class="s2">&#34;from:&#34;</span> header_bichodepe.eml
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">From: <span class="s2">&#34;Thiago T. Faioli&#34;</span> &lt;thiago.faioli@gmail.com&gt;</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>aqui precisamos identificar o domínio que é <code>gmail.com</code>
+<ul>
+<li>
+<p>Então usamos essa informação para verificar o registro DMARC e a política (None, Quarantine, Reject).</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ dig TXT _dmarc.gmail.com +noall +answer
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">_dmarc.gmail.com.	11	IN	TXT	<span class="s2">&#34;v=DMARC1; p=none; sp=quarantine; rua=mailto:mailauth-reports@google.com&#34;</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>legenda</li>
+</ul>
+<table>
+  <thead>
+      <tr>
+          <th>Tag</th>
+          <th>Purpose</th>
+          <th>Sample</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>v</td>
+          <td>Protocol version</td>
+          <td>v=DMARC1</td>
+      </tr>
+      <tr>
+          <td>pct</td>
+          <td>Percentage of messages subjected to filtering</td>
+          <td>pct=</td>
+      </tr>
+      <tr>
+          <td>ruf</td>
+          <td>Reporting URI for forensic reports</td>
+          <td>ruf=</td>
+      </tr>
+      <tr>
+          <td>rua</td>
+          <td>Reporting URI of aggregate reports</td>
+          <td>rua=mailto:mailauth-reports@google.com</td>
+      </tr>
+      <tr>
+          <td>p</td>
+          <td>Policy for organizational domain</td>
+          <td>p=none</td>
+      </tr>
+      <tr>
+          <td>sp</td>
+          <td>Policy for subdomains of the OD</td>
+          <td>sp=quarantine</td>
+      </tr>
+      <tr>
+          <td>adkim</td>
+          <td>Alignment mode for DKIM</td>
+          <td>adkim=</td>
+      </tr>
+      <tr>
+          <td>aspf</td>
+          <td>Alignment mode for SPF</td>
+          <td>aspf=</td>
+      </tr>
+      <tr>
+          <td>ri</td>
+          <td>Reporting interval of aggregate reports (default &ldquo;86400&rdquo; ; often disregarded to default value)</td>
+          <td>ri=</td>
+      </tr>
+      <tr>
+          <td>fo</td>
+          <td>Forensic report options (default &ldquo;0&rdquo;)</td>
+          <td>fo=</td>
+      </tr>
+  </tbody>
+</table>
+<pre><code>  - The alignment modes for DKIM and SPF can be:
+  	- &quot;s&quot; for strict: means &quot;strict&quot;. Domains from From: shall match DKIM/SPF identifier.
+  	- &quot;r&quot; for relaxed: means &quot;relaxed&quot;. Organizational domains from From: and DKIM/SPF shall match.
+  - The domain policy (p) and subdomain policy (sp) might be one of:
+  	- &quot;none&quot; (for monitor mode)get at
+  	- &quot;quarantine&quot;
+  	- &quot;reject&quot;
+  - The forensic report options are:
+  	- &quot;0&quot; to generate reports if all underlying authentication mechanisms (SPF and DKIM) fail to produce a DMARC pass result
+  	- &quot;1&quot; to generate reports if any mechanisms (SPF or DKIM) fail
+  	- &quot;d&quot; to generate report if the DKIM signature failed to verify
+  	- &quot;s&quot; if SPF failed.
+</code></pre>
+</li>
+<li>
+<p>Para então validar o resultado do alinhamento DMARC  no cabeçalho <code>Authentication-Results</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ grep -A4 -Ei ^<span class="s1">&#39;authentication-results:&#39;</span> header_bichodepe.eml <span class="p">|</span>grep dmarc
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">dmarc</span><span class="o">=</span>pass <span class="o">(</span><span class="nv">p</span><span class="o">=</span>NONE <span class="nv">sp</span><span class="o">=</span>QUARANTINE <span class="nv">dis</span><span class="o">=</span>NONE<span class="o">)</span> header.from<span class="o">=</span>gmail.com<span class="p">;</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li>Agora podemos fazer um double check
+<ul>
+<li>Usando a tool <strong>opendmarc-check</strong> que consulta o registro DMARC traduzindo o conteúdo em formulário legível por humanos.
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ opendmarc-check gmail.com
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">DMARC record <span class="k">for</span> gmail.com:
+</span></span><span class="line"><span class="cl">Sample percentage: <span class="m">100</span>
+</span></span><span class="line"><span class="cl">DKIM alignment: relaxed
+</span></span><span class="line"><span class="cl">SPF alignment: relaxed
+</span></span><span class="line"><span class="cl">Domain policy: none
+</span></span><span class="line"><span class="cl">Subdomain policy: quarantine
+</span></span><span class="line"><span class="cl">Aggregate report URIs:
+</span></span><span class="line"><span class="cl">	mailto:mailauth-reports@google.com
+</span></span><span class="line"><span class="cl">Failure report URIs:
+</span></span><span class="line"><span class="cl"><span class="o">(</span>none<span class="o">)</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+</ol>
+<h4 id="5-verificar-urls-e-links" class="heading-element"><span>5. Verificar URLs e Links</span>
+  <a href="#5-verificar-urls-e-links" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h4><ol>
+<li>Inspecione todos os links no corpo da mensagem:
+<ul>
+<li><strong>Procure por domínios falsos</strong> como por exemplo: <code>amaz0n.com</code> em vez de <code>amazon.com</code> etc&hellip;</li>
+<li>Extraindo links</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ grep -oP <span class="s1">&#39;(http|https)://[^\s]+&#39;</span> header_bichodepe.eml
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">https://www.youtube.com/watch?v<span class="o">=</span>DlP3FZbAXgI&gt;!
+</span></span><span class="line"><span class="cl">https://www.youtube.com/watch?v<span class="o">=</span>3DDlP3FZbAXgI</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>Procurar pro redirecionamentos usando o <strong>curl</strong></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ curl -I https://www.youtube.com/watch?v<span class="o">=</span>DlP3FZbAXgI
+</span></span><span class="line"><span class="cl">HTTP/2 <span class="m">200</span> 
+</span></span><span class="line"><span class="cl">content-type: text/html<span class="p">;</span> <span class="nv">charset</span><span class="o">=</span>utf-8
+</span></span><span class="line"><span class="cl">x-content-type-options: nosniff
+</span></span><span class="line"><span class="cl">cache-control: no-cache, no-store, max-age<span class="o">=</span>0, must-revalidate
+</span></span><span class="line"><span class="cl">pragma: no-cache
+</span></span><span class="line"><span class="cl">expires: Mon, <span class="m">01</span> Jan <span class="m">1990</span> 00:00:00 GMT
+</span></span><span class="line"><span class="cl">date: Sun, <span class="m">08</span> Dec <span class="m">2024</span> 21:59:59 GMT
+</span></span><span class="line"><span class="cl">content-length: <span class="m">814649</span>
+</span></span><span class="line"><span class="cl">strict-transport-security: max-age<span class="o">=</span><span class="m">31536000</span>
+</span></span><span class="line"><span class="cl">x-frame-options: SAMEORIGIN
+</span></span><span class="line"><span class="cl">permissions-policy: ch-ua-arch<span class="o">=</span>*, ch-ua-bitness<span class="o">=</span>*, ch-ua-full-version<span class="o">=</span>*, ch-ua-full-version-list<span class="o">=</span>*, ch-ua-model<span class="o">=</span>*, ch-ua-wow64<span class="o">=</span>*, ch-ua-form-factors<span class="o">=</span>*, ch-ua-platform<span class="o">=</span>*, ch-ua-platform-version<span class="o">=</span>*
+</span></span><span class="line"><span class="cl">origin-trial: AmhMBR6zCLzDDxpW+HfpP67BqwIknWnyMOXOQGfzYswFmJe+fgaI6X......dxQ4AAAB4eyJvcmlnaW4iOiJodHRwczovL3lvdXR1YmUuY29tOjQ0MyIsImZlYXR1cmUiOiJXZWJWaWV3WFJlcXVlc3RlZFdpdGhEZXByZWNhdGlvbiIsImV4cGlyeSI6MTc1ODA2NzE5OSwiaXNTdWJkb21haW4iOnRydWV9
+</span></span><span class="line"><span class="cl">cross-origin-opener-policy: same-origin-allow-popups<span class="p">;</span> report-to<span class="o">=</span><span class="s2">&#34;youtube_main&#34;</span>
+</span></span><span class="line"><span class="cl">content-security-policy: require-trusted-types-for <span class="s1">&#39;script&#39;</span>
+</span></span><span class="line"><span class="cl">report-to: <span class="o">{</span><span class="s2">&#34;group&#34;</span>:<span class="s2">&#34;youtube_main&#34;</span>,<span class="s2">&#34;max_age&#34;</span>:2592000,<span class="s2">&#34;endpoints&#34;</span>:<span class="o">[{</span><span class="s2">&#34;url&#34;</span>:<span class="s2">&#34;https://csp.withgoogle.com/csp/report-to/youtube_main&#34;</span><span class="o">}]}</span>
+</span></span><span class="line"><span class="cl">p3p: <span class="nv">CP</span><span class="o">=</span><span class="s2">&#34;This is not a P3P policy! See http://support.google.com/accounts/answer/151657?hl=en for more info.&#34;</span>
+</span></span><span class="line"><span class="cl">server: ESF
+</span></span><span class="line"><span class="cl">x-xss-protection: <span class="m">0</span>
+</span></span><span class="line"><span class="cl">set-cookie: <span class="nv">GPS</span><span class="o">=</span>1<span class="p">;</span> <span class="nv">Domain</span><span class="o">=</span>.youtube.com<span class="p">;</span> <span class="nv">Expires</span><span class="o">=</span>Sun, 08-Dec-2024 22:29:59 GMT<span class="p">;</span> <span class="nv">Path</span><span class="o">=</span>/<span class="p">;</span> Secure<span class="p">;</span> HttpOnly
+</span></span><span class="line"><span class="cl">set-cookie: <span class="nv">YSC</span><span class="o">=</span>TMzezdpwE9k<span class="p">;</span> <span class="nv">Domain</span><span class="o">=</span>.youtube.com<span class="p">;</span> <span class="nv">Path</span><span class="o">=</span>/<span class="p">;</span> Secure<span class="p">;</span> HttpOnly<span class="p">;</span> <span class="nv">SameSite</span><span class="o">=</span>none
+</span></span><span class="line"><span class="cl">set-cookie: <span class="nv">VISITOR_INFO1_LIVE</span><span class="o">=</span>eZKVIcLVEqU<span class="p">;</span> <span class="nv">Domain</span><span class="o">=</span>.youtube.com<span class="p">;</span> <span class="nv">Expires</span><span class="o">=</span>Fri, 06-Jun-2025 21:59:59 GMT<span class="p">;</span> <span class="nv">Path</span><span class="o">=</span>/<span class="p">;</span> Secure<span class="p">;</span> HttpOnly<span class="p">;</span> <span class="nv">SameSite</span><span class="o">=</span>none
+</span></span><span class="line"><span class="cl">set-cookie: <span class="nv">VISITOR_PRIVACY_METADATA</span><span class="o">=</span>CgJVUxIEGgAgWQ%3D%3D<span class="p">;</span> <span class="nv">Domain</span><span class="o">=</span>.youtube.com<span class="p">;</span> <span class="nv">Expires</span><span class="o">=</span>Fri, 06-Jun-2025 21:59:59 GMT<span class="p">;</span> <span class="nv">Path</span><span class="o">=</span>/<span class="p">;</span> Secure<span class="p">;</span> HttpOnly<span class="p">;</span> <span class="nv">SameSite</span><span class="o">=</span>none
+</span></span><span class="line"><span class="cl">alt-svc: <span class="nv">h3</span><span class="o">=</span><span class="s2">&#34;:443&#34;</span><span class="p">;</span> <span class="nv">ma</span><span class="o">=</span>2592000,h3-29<span class="o">=</span><span class="s2">&#34;:443&#34;</span><span class="p">;</span> <span class="nv">ma</span><span class="o">=</span><span class="m">2592000</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>Podemos verificar o link com VirusTotal</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">URL</span><span class="o">=</span><span class="s2">&#34;https://www.youtube.com/watch?v=DlP3FZbAXgI&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">APIKEY</span><span class="o">=</span><span class="s2">&#34;?&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ curl --request POST <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span> --url https://www.virustotal.com/api/v3/urls <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span> --header <span class="s1">&#39;accept: application/json&#39;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span> --header <span class="s1">&#39;content-type: application/x-www-form-urlencoded&#39;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span> --header <span class="s1">&#39;x-apikey: ${APIKEY}&#39;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span> --data <span class="s1">&#39;url=${URL}&#39;</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+<h4 id="6-verificar-anexos" class="heading-element"><span>6. Verificar Anexos</span>
+  <a href="#6-verificar-anexos" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h4><ul>
+<li>
+<p>Analise os anexos para detectar possíveis malwares:</p>
+<ul>
+<li>use sandbox ou ferramentas de análise (ex.: <a href="https://cuckoosandbox.org/about.html"target="_blank" rel="external nofollow noopener noreferrer">Cuckoo Sandbox</a>).</li>
+</ul>
+</li>
+<li>
+<p>Bloqueie arquivos executáveis (.exe, .js, .bat)</p>
+<ul>
+<li>mesmo que estejam compactados.</li>
+</ul>
+</li>
+<li>
+<p>Para essa tarefa, podemos usar a ferramenta de análise <a href="https://github.com/keraattin/EmailAnalyzer"target="_blank" rel="external nofollow noopener noreferrer">email-analyses</a></p>
+<ul>
+<li>procurando por arquivos</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ python3 EmailAnalyzer/email-analyzer.py -a -f header_bichodepe.eml 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"> █████╗ ████████╗████████╗ █████╗  ██████╗██╗  ██╗███████╗
+</span></span><span class="line"><span class="cl">██╔══██╗╚══██╔══╝╚══██╔══╝██╔══██╗██╔════╝██║  ██║██╔════╝
+</span></span><span class="line"><span class="cl">███████║   ██║      ██║   ███████║██║     ███████║███████╗
+</span></span><span class="line"><span class="cl">██╔══██║   ██║      ██║   ██╔══██║██║     ██╔══██║╚════██║
+</span></span><span class="line"><span class="cl">██║  ██║   ██║      ██║   ██║  ██║╚██████╗██║  ██║███████║
+</span></span><span class="line"><span class="cl">╚═╝  ╚═╝   ╚═╝      ╚═╝   ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚══════╝
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>1<span class="o">]</span>-&gt;Anjali Khatri, Vikram Khatri - Mastering Service Mesh_ Enhance, secure, and observe cloud-native applications with Istio, Linkerd, and Consul-Packt Publishing <span class="o">(</span>2020<span class="o">)</span>.pdf</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>procurando arquivos anexos e analisando-o quando encontrado.</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ python3 EmailAnalyzer/email-analyzer.py -f header_bichodepe.eml --attachments --investigate  
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="o">[</span>1<span class="o">]</span>-&gt;Anjali Khatri, Vikram Khatri - Mastering Service Mesh_ Enhance, secure, and observe cloud-native applications with Istio, Linkerd, and Consul-Packt Publishing <span class="o">(</span>2020<span class="o">)</span>.pdf
+</span></span><span class="line"><span class="cl"> █████╗ ███╗   ██╗ █████╗ ██╗  ██╗   ██╗███████╗██╗███████╗
+</span></span><span class="line"><span class="cl">██╔══██╗████╗  ██║██╔══██╗██║  ╚██╗ ██╔╝██╔════╝██║██╔════╝
+</span></span><span class="line"><span class="cl">███████║██╔██╗ ██║███████║██║   ╚████╔╝ ███████╗██║███████╗
+</span></span><span class="line"><span class="cl">██╔══██║██║╚██╗██║██╔══██║██║    ╚██╔╝  ╚════██║██║╚════██║
+</span></span><span class="line"><span class="cl">██║  ██║██║ ╚████║██║  ██║███████╗██║   ███████║██║███████║
+</span></span><span class="line"><span class="cl">╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝╚═╝   ╚══════╝╚═╝╚══════╝
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">- Anjali Khatri, Vikram Khatri - Mastering Service Mesh_ Enhance, secure, and observe cloud-native applications with Istio, Linkerd, and Consul-Packt Publishing <span class="o">(</span>2020<span class="o">)</span>.pdf
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Virustotal:
+</span></span><span class="line"><span class="cl"><span class="o">[</span>Name Search<span class="o">]</span>-&gt;https://www.virustotal.com/gui/search/Anjali Khatri, Vikram Khatri - Mastering Service Mesh_ Enhance, secure, and observe cloud-native applications with Istio, Linkerd, and Consul-Packt Publishing <span class="o">(</span>2020<span class="o">)</span>.pdf
+</span></span><span class="line"><span class="cl"><span class="o">[</span>MD5<span class="o">]</span>-&gt;https://www.virustotal.com/gui/search/d41d8cd98f00b204e9800998ecf8427e
+</span></span><span class="line"><span class="cl"><span class="o">[</span>SHA1<span class="o">]</span>-&gt;https://www.virustotal.com/gui/search/da39a3ee5e6b4b0d3255bfef95601890afd80709
+</span></span><span class="line"><span class="cl"><span class="o">[</span>SHA256<span class="o">]</span>-&gt;https://www.virustotal.com/gui/search/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Verificando o arquivo PDF</p>
+<ul>
+<li>com a tool <a href="https://gitlab.com/kalilinux/packages/pdfid"target="_blank" rel="external nofollow noopener noreferrer">PDFid</a>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ python pdfid.py <span class="s2">&#34;Anjali Khatri, Vikram Khatri - Mastering Service Mesh_ Enhance, secure, and observe cloud-native applications with Istio, Linkerd, and Consul-Packt Publishing (2020).pdf&#34;</span>
+</span></span><span class="line"><span class="cl">PDFiD 0.2.7 Anjali Khatri, Vikram Khatri - Mastering Service Mesh_ Enhance, secure, and observe cloud-native applications with Istio, Linkerd, and Consul-Packt Publishing <span class="o">(</span>2020<span class="o">)</span>.pdf
+</span></span><span class="line"><span class="cl"> PDF Header: %PDF-1.4
+</span></span><span class="line"><span class="cl"> obj                 <span class="m">8562</span>
+</span></span><span class="line"><span class="cl"> endobj              <span class="m">8562</span>
+</span></span><span class="line"><span class="cl"> stream               <span class="m">934</span>
+</span></span><span class="line"><span class="cl"> endstream            <span class="m">934</span>
+</span></span><span class="line"><span class="cl"> xref                   <span class="m">2</span>
+</span></span><span class="line"><span class="cl"> trailer                <span class="m">2</span>
+</span></span><span class="line"><span class="cl"> startxref              <span class="m">2</span>
+</span></span><span class="line"><span class="cl"> /Page                <span class="m">611</span>
+</span></span><span class="line"><span class="cl"> /Encrypt               <span class="m">0</span>
+</span></span><span class="line"><span class="cl"> /ObjStm                <span class="m">0</span>
+</span></span><span class="line"><span class="cl"> /JS                    <span class="m">0</span>
+</span></span><span class="line"><span class="cl"> /JavaScript            <span class="m">0</span>
+</span></span><span class="line"><span class="cl"> /AA                    <span class="m">0</span>
+</span></span><span class="line"><span class="cl"> /OpenAction            <span class="m">2</span>
+</span></span><span class="line"><span class="cl"> /AcroForm              <span class="m">1</span>
+</span></span><span class="line"><span class="cl"> /JBIG2Decode           <span class="m">0</span>
+</span></span><span class="line"><span class="cl"> /RichMedia             <span class="m">0</span>
+</span></span><span class="line"><span class="cl"> /Launch                <span class="m">0</span>
+</span></span><span class="line"><span class="cl"> /EmbeddedFile          <span class="m">0</span>
+</span></span><span class="line"><span class="cl"> /XFA                   <span class="m">0</span>
+</span></span><span class="line"><span class="cl"> /Colors &gt; 2^24         <span class="m">0</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+</ul>
+<h4 id="7-monitorar-comportamento" class="heading-element"><span>7. Monitorar Comportamento</span>
+  <a href="#7-monitorar-comportamento" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h4><ol>
+<li>Registre todas as interações relacionadas ao e-mail (ex.: cliques em links).</li>
+<li>Use logs de servidores e ferramentas de monitoramento para identificar atividades suspeitas.</li>
+</ol>
+<h4 id="8-indicadores-suspeitos" class="heading-element"><span>8. Indicadores suspeitos</span>
+  <a href="#8-indicadores-suspeitos" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h4><ul>
+<li><strong>Falhas em SPF, DKIM ou DMARC</strong>:
+<ul>
+<li>IP não autorizado, assinaturas inválidas ou falha no alinhamento DMARC.</li>
+</ul>
+</li>
+<li><strong>Domínios suspeitos</strong>:
+<ul>
+<li>Domínios recém-registrados ou inconsistentes com o remetente.</li>
+</ul>
+</li>
+<li><strong>URLs encurtadas ou mascaradas</strong>:
+<ul>
+<li>Ex.: <code>bit.ly/suspeito</code>.</li>
+</ul>
+</li>
+<li><strong>Linguagem e gramática incomuns</strong>:
+<ul>
+<li>Erros ortográficos ou solicitações urgentes e atípicas.</li>
+</ul>
+</li>
+<li><strong>Anexos inesperados</strong>:
+<ul>
+<li>Especialmente se solicitarem execução.</li>
+<li>Arquivos do Microsoft Office</li>
+<li>PDFs</li>
+<li>.ZIP e .RAR</li>
+<li>.ISO e .IMG</li>
+</ul>
+</li>
+</ul>
+<h4 id="9-conclusão" class="heading-element"><span>9. Conclusão</span>
+  <a href="#9-conclus%c3%a3o" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h4><p>Se seguir esses passos, você terá uma abordagem estruturada para detectar e-mails maliciosos e mitigar riscos analisando e-mails utilizando padrões como <strong>SPF</strong>, <strong>DKIM</strong> e <strong>DMARC</strong> é essencial para identificar fraudes e prevenir incidentes de segurança e o processo deve ser complementado com ferramentas de análise automatizada e uma política de conscientização para usuários.</p>
+<hr>
+<p>[&hellip;em breve melhorias no how to]</p>
+</div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod">
+        <span title="Updated on 2025-01-27 11:46:26">Updated on 2025-01-27&nbsp;
+                <a class="git-hash" href="https://github.com/0xttfx/commit/4df531e0d13d25c69c8c1d6007709fa90d4ef821" rel="external nofollow noopener noreferrer" target="_blank" title="commit by 0xttfx(thiago.faioli@gmail.com) 4df531e0d13d25c69c8c1d6007709fa90d4ef821: Update - novo tema FixIt"><i class="fa-solid fa-hashtag fa-fw" aria-hidden="true"></i>4df531e</a></span>
+      </div><div class="post-info-license">
+            <span><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a></span>
+          </div></div><div class="post-info-line">
+        <div class="post-info-md"><span><a href="/posts/rtfmaleatoriedades-emailphishing/index.md" title="Read Markdown" class="link-to-markdown">Read Markdown</a></span><span><a href="https://github.com/0xttfx/blob/main/content/posts/RTFM&amp;Aleatoriedades-EmailPhishing.md?plain=1" title="View source"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-source">View source</a></span><span><a href="https://github.com/0xttfx/edit/main/content/posts/RTFM&amp;Aleatoriedades-EmailPhishing.md" title="Edit this page"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-edit">Edit this page</a></span><span><a href="https://github.com/0xttfx/issues/new?title=[BUG]%20RTFM&#43;%26&#43;Aleatoriedades&#43;-&#43;Email&#43;Phishing&amp;body=%7cField%7cValue%7c%0A%7c-%7c-%7c%0A%7cTitle%7cRTFM&#43;%26&#43;Aleatoriedades&#43;-&#43;Email&#43;Phishing%7c%0A%7cURL%7chttp://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-emailphishing/%7c%0A%7cFilename%7chttps://github.com/0xttfx/blob/main/content/posts/RTFM&amp;Aleatoriedades-EmailPhishing.md?plain=1%7c" title="Report issue"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-report">Report issue</a></span></div>
+        <div class="post-info-share">
+          <span><a href="javascript:void(0);" title="Share on X" data-sharer="twitter" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-emailphishing/" data-title="RTFM &amp; Aleatoriedades - Email Phishing" data-via="0xttfx" data-hashtags="Linux,Cybersecurity,Pishing,Email,SMTP,IMF,SPF,DKIM"><i class="fa-brands fa-x-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-emailphishing/"><i class="fa-brands fa-linkedin fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-emailphishing/" data-title="RTFM &amp; Aleatoriedades - Email Phishing" data-web><i class="fa-brands fa-whatsapp fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on Reddit" data-sharer="reddit" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-emailphishing/"><i class="fa-brands fa-reddit fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-emailphishing/" data-title="RTFM &amp; Aleatoriedades - Email Phishing"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  </span>
+        </div>
+      </div></div>
+
+  <div class="post-info-more">
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw me-1" aria-hidden="true"></i><a href="/tags/linux/" class="post-tag" title="Tags - Linux">Linux</a><a href="/tags/cybersecurity/" class="post-tag" title="Tags - Cybersecurity">Cybersecurity</a><a href="/tags/pishing/" class="post-tag" title="Tags - Pishing">Pishing</a><a href="/tags/email/" class="post-tag" title="Tags - Email">Email</a><a href="/tags/smtp/" class="post-tag" title="Tags - SMTP">SMTP</a><a href="/tags/imf/" class="post-tag" title="Tags - IMF">IMF</a><a href="/tags/spf/" class="post-tag" title="Tags - SPF">SPF</a><a href="/tags/dkim/" class="post-tag" title="Tags - DKIM">DKIM</a></section>
+    <section>
+      <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+    </section>
+  </div><div class="post-nav"><a href="/posts/rtfmaleatoriedades-funcaopredict_linearprometheus/" class="post-nav-item" rel="prev" title="RTFM &amp; Aleatoriedades - Função  Predict_linear() Do Prometheus"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>RTFM &amp; Aleatoriedades - Função  Predict_linear() Do Prometheus</a><a href="/posts/rtfmaleatoriedades-literaciaai/" class="post-nav-item" rel="next" title="RTFM &amp; Aleatoriedades - Literacia Em IA">RTFM &amp; Aleatoriedades - Literacia Em IA<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+<div id="comments"></div></article>
+
+  <aside class="toc" id="toc-auto" aria-label="Contents"><h2 class="toc-title">Contents&nbsp;<i class="toc-icon fa-solid fa-angle-down fa-fw" aria-hidden="true"></i></h2>
+      <div class="toc-content" id="toc-content-auto"></div></aside></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
+            <span itemprop="copyrightYear">2024 - 2025</span><span class="author" itemprop="copyrightHolder">
+              <a href="https://github.com/0xttfx"target="_blank" rel="external nofollow noopener noreferrer">Faioli a.k.a 0xttfx</a></span><span class="license footer-divider">BSD-3-Clause</span></div><div class="footer-line statistics"></div><div class="footer-line visitor">
+          <span id="busuanzi_container_site_uv" title='Total visitors'><i class="fa-regular fa-user fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span><span id="busuanzi_container_site_pv" class="footer-divider" title='Total visits'><i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span>
+        </div></div>
+  </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="Back to Top"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric">0%</span>
+        </div><div class="fixed-button view-comments d-none" role="button" aria-label="View Comments"><i class="fa-solid fa-comment fa-fw" aria-hidden="true"></i></div></div><div id="mask"></div><div class="reading-progress-bar" style="left: 0;top: 0;"></div><noscript>
+    <div class="noscript-warning">This website works best with JavaScript enabled.</div>
+  </noscript>
+</div><link rel="preload" href="/lib/katex/katex.min.af6f85907cdfd6ed3e4906d93a8233d91c5638859f744cd1b98c9b1a3ccaab5f231bdcda49f132f6cdfe8cca86ff33ed468affab8a9a502610a664a34f0f0cfa.css" integrity="sha512-r2+FkHzf1u0+SQbZOoIz2RxWOIWfdEzRuYybGjzKq18jG9zaSfEy9s3+jMqG/zPtRor/q4qaUCYQpmSjTw8M+g==" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/katex/katex.min.af6f85907cdfd6ed3e4906d93a8233d91c5638859f744cd1b98c9b1a3ccaab5f231bdcda49f132f6cdfe8cca86ff33ed468affab8a9a502610a664a34f0f0cfa.css" integrity="sha512-r2+FkHzf1u0+SQbZOoIz2RxWOIWfdEzRuYybGjzKq18jG9zaSfEy9s3+jMqG/zPtRor/q4qaUCYQpmSjTw8M+g=="></noscript><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.2d0f7b71a99aaff94e9624ff32a8dc42ce645a0cba433fdc091cf34735027efd1fa2db024c2f591d768f426255f17bbf3d500b7c967b0437b3979956dffa81c6.css" integrity="sha512-LQ97camar/lOliT/MqjcQs5kWgy6Qz/cCRzzRzUCfv0fotsCTC9ZHXaPQmJV8Xu/PVALfJZ7BDezl5lW3/qBxg=="><script src="/lib/autocomplete/autocomplete.min.7e654c67e741180b83f7b4d829967003fea37a5d5014f549f0a3d7f945d2b73e73e22a1dd04a7b68712c846f004232f3030d07305784fab026100af12af8f0ac.js" integrity="sha512-fmVMZ+dBGAuD97TYKZZwA/6jel1QFPVJ8KPX+UXStz5z4iod0Ep7aHEshG8AQjLzAw0HMFeE+rAmEArxKvjwrA==" defer></script><script src="/lib/fuse/fuse.min.36ac35b47de6a5abe46bd71009ce7359611935f20f74e6324058e557536f7e512d434fd723a650f87fc3dd880976a49426530b00f463fe85e56870856c50a3a1.js" integrity="sha512-Nqw1tH3mpavka9cQCc5zWWEZNfIPdOYyQFjlV1NvflEtQ0/XI6ZQ+H/D3YgJdqSUJlMLAPRj/oXlaHCFbFCjoQ==" defer></script><script src="/lib/sharer/sharer.min.94c73c706d26a452277a104d6857c0cb04e816ad61c4163b4e0a135426a7767211e0a27c952ea85e3df25aec941374e21053db0f9e7822af8a2f9c4a8a93c4e3.js" integrity="sha512-lMc8cG0mpFInehBNaFfAywToFq1hxBY7TgoTVCandnIR4KJ8lS6oXj3yWuyUE3TiEFPbD554Iq+KL5xKipPE4w==" async defer></script><script src="/lib/katex/katex.min.20da6cf7343619410c0900fbc626506c65159ea9f312f9729d5cba7aa713707378f9a4222e8f7fb9a42a7240e9749f199b7334401b3e3e4b60e29cf490492552.js" integrity="sha512-INps9zQ2GUEMCQD7xiZQbGUVnqnzEvlynVy6eqcTcHN4+aQiLo9/uaQqckDpdJ8Zm3M0QBs+Pktg4pz0kEklUg==" defer></script><script src="/lib/katex/auto-render.min.6095714e3aadb63b14ddc4af69346ab12974c1b460654345f8d1860a0b68fcc51b22f68b757433193090bb80afc8965b65cb607e5541d0f5f0f4b2e64d69b9ff.js" integrity="sha512-YJVxTjqttjsU3cSvaTRqsSl0wbRgZUNF+NGGCgto/MUbIvaLdXQzGTCQu4CvyJZbZctgflVB0PXw9LLmTWm5/w==" defer></script><script src="/lib/katex/copy-tex.min.895ad99f7d8fdb0683cd271c02584953bd0542c6d4956c9feebaa16673683a45d5884f5253e3db33f8f74a86cc464477497656fb36e96a558137311bdb7f32d6.js" integrity="sha512-iVrZn32P2waDzSccAlhJU70FQsbUlWyf7rqhZnNoOkXViE9SU+PbM/j3SobMRkR3SXZW+zbpalWBNzEb238y1g==" defer></script><script src="/lib/katex/mhchem.min.9b18cdc3fbb5948b050b4f64fee9ec703458de87c860f5456d690ff2c96b78f712dfa86de1dfce67cad1bb9c9d741dae8aa6a385370b0fcfa3ba9396b983de6e.js" integrity="sha512-mxjNw/u1lIsFC09k/unscDRY3ofIYPVFbWkP8slrePcS36ht4d/OZ8rRu5yddB2uiqajhTcLD8+jupOWuYPebg==" defer></script><script src="/lib/cookieconsent/cookieconsent.min.c975ea3858dd8c7347d46343fb510ed236efbde6c0069cc6283eba7639d47e22a560c1391c6314247a0269e1380f93d31b662c4897fa770ab2514bd0bd2d2f68.js" integrity="sha512-yXXqOFjdjHNH1GND+1EO0jbvvebABpzGKD66djnUfiKlYME5HGMUJHoCaeE4D5PTG2YsSJf6dwqyUUvQvS0vaA==" defer></script><script src="https://vercount.one/js" async defer></script><script>window.config={"code":{"copyTitle":"Copy to clipboard","editLockTitle":"Lock editable code block","editUnLockTitle":"Unlock editable code block","editable":true,"maxShownLines":10},"comment":{"enable":true,"expired":false},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/search.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":false,"isCaseSensitive":false,"location":0,"maxResultLength":10,"minMatchCharLength":2,"noResultsFound":"No results found","snippetLength":30,"threshold":0.3,"type":"fuse","useExtendedSearch":false},"version":"v0.3.17-8b402129"};</script><script src="/js/theme.min.9301245cf01fb1ba5f5c15fd31c0d1a45ee2c0db8bff20a52762e159abb3a7737d682d1cf2d148749b1501acebf5db20cb22c07cd44e89051830dcb4223992c7.js" integrity="sha512-kwEkXPAfsbpfXBX9McDRpF7iwNuL/yClJ2LhWauzp3N9aC0c8tFIdJsVAazr9dsgyyLAfNROiQUYMNy0IjmSxw==" defer></script><script>
+      window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+      gtag('config', 'G-RB8T1ZS4FX', { 'anonymize_ip': true });
+    </script><script src="https://www.googletagmanager.com/gtag/js?id=G-RB8T1ZS4FX" async></script><script async defer data-website-id="698d1689-fa78-4bfc-a0f3-9e95bcb884de" src=""  data-host-url="https://cloud.umami.is/script.js"  ></script></body>
+</html>
