@@ -1,6 +1,8 @@
 # IP DOK Set or Drop Sec Group AWS EC2 RDS
 
 
+![DO-AWS](/images/IPDO/docean_aws.png)
+
 # ipdo-awsrds
 
 ## Função
