@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Bash - Tag - 0xttfx</title>
-    <link>http://0xttfx.tcpip.net.br/tags/bash/</link>
+    <title>Linux - Category - 0xttfx</title>
+    <link>http://0xttfx.tcpip.net.br/categories/linux/</link>
     <description>Vicissitudes e Adjacências</description>
     <generator>Hugo 0.142.0 &amp; FixIt v0.3.17-8b402129</generator>
     <language>en</language>
@@ -10,7 +10,7 @@
     <webMaster>thiago.faioli@gmail.com (Faioli a.k.a 0xttfx)</webMaster>
     <copyright>Running on [OpenBSD](https://openbsd.org) and [httpd](https://man.openbsd.org/httpd.8) |  [0xttfx](https://0xttfx.tcpip.net.br) - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)</copyright>
     <lastBuildDate>Mon, 27 Jan 2025 11:46:26 -0300</lastBuildDate>
-    <atom:link href="http://0xttfx.tcpip.net.br/tags/bash/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://0xttfx.tcpip.net.br/categories/linux/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>RTFM &amp; Aleatoriedades - Clima No Terminal</title>
       <link>http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-climanoterminal/</link>
