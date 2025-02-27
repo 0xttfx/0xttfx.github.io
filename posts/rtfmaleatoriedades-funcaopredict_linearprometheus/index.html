@@ -11,7 +11,7 @@
   <meta itemprop="description" content="Desc Text.">
   <meta itemprop="datePublished" content="2024-11-27T21:59:52-03:00">
   <meta itemprop="dateModified" content="2025-01-27T11:46:26-03:00">
-  <meta itemprop="wordCount" content="826">
+  <meta itemprop="wordCount" content="1050">
   <meta itemprop="image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
   <meta itemprop="keywords" content="Linux,DevOps,SRE,Observabilidade,Prometheus,PromQL,Alertmanager"><meta property="og:url" content="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-funcaopredict_linearprometheus/">
   <meta property="og:site_name" content="0xttfx">
@@ -49,7 +49,7 @@
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "http:\/\/0xttfx.tcpip.net.br\/posts\/rtfmaleatoriedades-funcaopredict_linearprometheus\/"
-    },"genre": "posts","keywords": "Linux, DevOps, SRE, Observabilidade, Prometheus, PromQL, Alertmanager","wordcount":  826 ,
+    },"genre": "posts","keywords": "Linux, DevOps, SRE, Observabilidade, Prometheus, PromQL, Alertmanager","wordcount":  1050 ,
     "url": "http:\/\/0xttfx.tcpip.net.br\/posts\/rtfmaleatoriedades-funcaopredict_linearprometheus\/","datePublished": "2024-11-27T21:59:52-03:00","dateModified": "2025-01-27T11:46:26-03:00","license": "Running on [OpenBSD](https://openbsd.org) and [httpd](https://man.openbsd.org/httpd.8) |  [0xttfx](https://0xttfx.tcpip.net.br) - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -125,7 +125,7 @@
     <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>RTFM &amp; Aleatoriedades - Função  Predict_linear() Do Prometheus</span>
       </h1></div><div class="post-meta">
       <div class="post-meta-line"><span class="post-author"><a href="https://github.com/0xttfx" title="Author"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><i class="fa-solid fa-user-circle" aria-hidden="true"></i>
-    Faioli a.k.a 0xttfx</a></span></div><div class="post-meta-line"><span title="published on 2024-11-27 21:59:52"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2024-11-27">2024-11-27</time></span>&nbsp;<span title="Updated on 2025-01-27 11:46:26"><i class="fa-regular fa-calendar-check fa-fw me-1" aria-hidden="true"></i><time datetime="2025-01-27">2025-01-27</time></span>&nbsp;<span title="826 words"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>About 900 words</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>4 minutes</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="RTFM &amp; Aleatoriedades - Função  Predict_linear() Do Prometheus"><i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;views
+    Faioli a.k.a 0xttfx</a></span></div><div class="post-meta-line"><span title="published on 2024-11-27 21:59:52"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2024-11-27">2024-11-27</time></span>&nbsp;<span title="Updated on 2025-01-27 11:46:26"><i class="fa-regular fa-calendar-check fa-fw me-1" aria-hidden="true"></i><time datetime="2025-01-27">2025-01-27</time></span>&nbsp;<span title="1050 words"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>About 1100 words</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>5 minutes</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="RTFM &amp; Aleatoriedades - Função  Predict_linear() Do Prometheus"><i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;views
           </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
         <div class="details-summary toc-title">
@@ -135,6 +135,7 @@
         <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
   <ul>
     <li><a href="#tá-mas-e-na-prática">Tá, mas e na prática?</a></li>
+    <li><a href="#tips">Tips</a></li>
   </ul>
 </nav></div>
       </div><div class="content" id="content"><p>A função <a href="https://prometheus.io/docs/prometheus/latest/querying/functions/#predict_linear"target="_blank" rel="external nofollow noopener noreferrer">predict_linear()</a> do Prometheus permite prever o valor futuro de uma série temporal com base em uma regressão linear simples dos dados históricos. Isso é especialmente útil para antecipar tendências e comportamentos futuros de métricas monitoradas, auxiliando na detecção proativa de possíveis problemas.</p>
@@ -336,7 +337,48 @@
 </ul>
 </li>
 </ul>
-<p>Essa e o método que me permitiu sair dos alarmes de limiares fixos que não atendem de maneira satisfatória crescimentos tão velozes que, no momento do disparo do do alerta, o tempo é tao curto ou tarde demais para uma atuação técnica&hellip;</p>
+<h2 id="tips" class="heading-element"><span>Tips</span>
+  <a href="#tips" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><p>Ao fazer uso dos exemplos supracitados você irá notar que as <code>rules</code> irão triggar diversos filesystens como <code>tmpfs</code> e mountpoint <code>/run/*</code>, <code>vfat</code> e <code>/boot/efi</code> e todo sistema de arquivos que tenha espaço livre inferior ao threshold definido de <strong>10GB</strong>, independente se a taxa de escrita é alta ou baixa!</p>
+<ul>
+<li>Esse comportamento ocorre porque, mesmo com uma taxa de escrita baixa, o valor atual de bytes livres já é inferior ao threshold definido de <strong>10 GB</strong>. O comportamento do <code>predict_linear</code> é extrapolar a partir do valor atual que já é crítico, independentemente da taxa de variação de escrita.</li>
+</ul>
+<p>Segue uma modo simples de contornar esse cenário:</p>
+<ul>
+<li>Que é ajustando a regra de previsão para considerar somente pontos de montagens de sistemas de arquivos com espaço livre acima do limiar configurado.
+<ul>
+<li>Com por exemplo uma condição adicional como essa: <code>node_filesystem_free_bytes &gt; 10 * 1024^3</code> que garante que servidores que já estão abaixo de 10GB (mas estáveis) não dispararão o alerta.</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl">- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">disk_alerts</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">rules</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">alert</span><span class="p">:</span><span class="w"> </span><span class="l">SistemaDeArquivosCriticamenteBaixoEm4Horas</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="l">node_filesystem_free_bytes &gt; 10 * 1024^3 and predict_linear(node_filesystem_free_bytes[1h], 4 * 3600) &lt; 10 * 1024^3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">for</span><span class="p">:</span><span class="w"> </span><span class="l">10m</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">severity</span><span class="p">:</span><span class="w"> </span><span class="l">warning</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">annotations</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">summary</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;A treta será doida em 4 horas&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;O sistema de arquivos no servidor {{ $labels.instance }} terá menos de 20 GBytes disponíveis em 4 horas.&#34;</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>Essa e o método que me permitiu sair dos alarmes de limiares fixos que não atendem de maneira satisfatória crescimentos tão velozes que, no momento do disparo do do alerta, o tempo é tao curto ou tarde demais para uma atuação técnica&hellip;</p>
 </div><div class="post-footer" id="post-footer">
   <div class="post-info">
     <div class="post-info-line">
