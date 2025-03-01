@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/WebPage" lang="en">
+  <head>
+    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+    <meta name="robots" content="noodp" />
+    <title>XDP &amp; EBPF Block DDoS - 0xttfx</title><meta name="author" content="Faioli a.k.a 0xttfx">
+<meta name="description" content="Segue um delírio pra esboçar um delírio idealiza a pretensão de uma solução funcional que combina um programa XDP/eBPF em C com um script em Bash(antes de usar Go) para monitorar o tráfego e atualizar dinamicamente um map eBPF com sources IPs que devem ser bloqueados quando idenficado um possível ataque de negação.
+Nesse cenário, o programa XDP já está instalado na interface de rede e bloqueia pacotes provenientes de IPs listados no map. O script em Bash monitora o arquivo de subsistema de rastreamento conntrack do Netfilter /proc/net/nf_conntrack determinar se o número de conexões ativas ultrapassou o threshold configurado, que ao ser atingido: um log gerado por regras específicas nftables é analisado para identificar com base em uma &ldquo;janela&rdquo; de tempo, qual source IP ultrapassou o limite de conexões: indicando ser um possível ataque DoS: que então é inserido no map eBPF, fazendo com que o programa XDP passe a descartar os pacotes desses endereços. 1. Pré-requisitos Kernel Linux com suporte a eBPF e XDP
+Certifique-se de utilizar uma distribuição com kernel moderno (&gt;= 4.18, de preferência 5.x ou superior). clang llvm gcc libbpf libbpf-devel libxdp libxdp-devel xdp-tools bpftool kernel-headers iperf 2. Programa XDP/eBPF O programa utiliza um map eBPF do tipo HASH para armazenar os IPs que devem ser bloqueados. E para cada pacote recebido, é verificado se source IP consta no mapa. Se sim, o pacote é descartado (XDP_DROP); caso contrário, ele é encaminhado normalmente (XDP_PASS).
+"><meta name="keywords" content='XDP, eBPF, Bash, Linux, nftables'>
+  <meta itemprop="name" content="XDP & eBPF Block DDoS">
+  <meta itemprop="description" content="Segue um delírio pra esboçar um delírio idealiza a pretensão de uma solução funcional que combina um programa XDP/eBPF em C com um script em Bash(antes de usar Go) para monitorar o tráfego e atualizar dinamicamente um map eBPF com sources IPs que devem ser bloqueados quando idenficado um possível ataque de negação.
+Nesse cenário, o programa XDP já está instalado na interface de rede e bloqueia pacotes provenientes de IPs listados no map. O script em Bash monitora o arquivo de subsistema de rastreamento conntrack do Netfilter /proc/net/nf_conntrack determinar se o número de conexões ativas ultrapassou o threshold configurado, que ao ser atingido: um log gerado por regras específicas nftables é analisado para identificar com base em uma “janela” de tempo, qual source IP ultrapassou o limite de conexões: indicando ser um possível ataque DoS: que então é inserido no map eBPF, fazendo com que o programa XDP passe a descartar os pacotes desses endereços. 1. Pré-requisitos Kernel Linux com suporte a eBPF e XDP
+Certifique-se de utilizar uma distribuição com kernel moderno (&gt;= 4.18, de preferência 5.x ou superior). clang llvm gcc libbpf libbpf-devel libxdp libxdp-devel xdp-tools bpftool kernel-headers iperf 2. Programa XDP/eBPF O programa utiliza um map eBPF do tipo HASH para armazenar os IPs que devem ser bloqueados. E para cada pacote recebido, é verificado se source IP consta no mapa. Se sim, o pacote é descartado (XDP_DROP); caso contrário, ele é encaminhado normalmente (XDP_PASS).">
+  <meta itemprop="datePublished" content="2025-01-22T17:13:52-03:00">
+  <meta itemprop="dateModified" content="2025-03-01T15:05:21-03:00">
+  <meta itemprop="wordCount" content="2618">
+  <meta itemprop="image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
+  <meta itemprop="keywords" content="XDP,EBPF,Bash,Linux,Nftables"><meta property="og:url" content="http://0xttfx.tcpip.net.br/posts/xdpebpf-block-ddos/">
+  <meta property="og:site_name" content="0xttfx">
+  <meta property="og:title" content="XDP & eBPF Block DDoS">
+  <meta property="og:description" content="Segue um delírio pra esboçar um delírio idealiza a pretensão de uma solução funcional que combina um programa XDP/eBPF em C com um script em Bash(antes de usar Go) para monitorar o tráfego e atualizar dinamicamente um map eBPF com sources IPs que devem ser bloqueados quando idenficado um possível ataque de negação.
+Nesse cenário, o programa XDP já está instalado na interface de rede e bloqueia pacotes provenientes de IPs listados no map. O script em Bash monitora o arquivo de subsistema de rastreamento conntrack do Netfilter /proc/net/nf_conntrack determinar se o número de conexões ativas ultrapassou o threshold configurado, que ao ser atingido: um log gerado por regras específicas nftables é analisado para identificar com base em uma “janela” de tempo, qual source IP ultrapassou o limite de conexões: indicando ser um possível ataque DoS: que então é inserido no map eBPF, fazendo com que o programa XDP passe a descartar os pacotes desses endereços. 1. Pré-requisitos Kernel Linux com suporte a eBPF e XDP
+Certifique-se de utilizar uma distribuição com kernel moderno (&gt;= 4.18, de preferência 5.x ou superior). clang llvm gcc libbpf libbpf-devel libxdp libxdp-devel xdp-tools bpftool kernel-headers iperf 2. Programa XDP/eBPF O programa utiliza um map eBPF do tipo HASH para armazenar os IPs que devem ser bloqueados. E para cada pacote recebido, é verificado se source IP consta no mapa. Se sim, o pacote é descartado (XDP_DROP); caso contrário, ele é encaminhado normalmente (XDP_PASS).">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2025-01-22T17:13:52-03:00">
+    <meta property="article:modified_time" content="2025-03-01T15:05:21-03:00">
+    <meta property="article:tag" content="XDP">
+    <meta property="article:tag" content="EBPF">
+    <meta property="article:tag" content="Bash">
+    <meta property="article:tag" content="Linux">
+    <meta property="article:tag" content="Nftables">
+    <meta property="og:image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
+  <meta name="twitter:title" content="XDP & eBPF Block DDoS">
+  <meta name="twitter:description" content="Segue um delírio pra esboçar um delírio idealiza a pretensão de uma solução funcional que combina um programa XDP/eBPF em C com um script em Bash(antes de usar Go) para monitorar o tráfego e atualizar dinamicamente um map eBPF com sources IPs que devem ser bloqueados quando idenficado um possível ataque de negação.
+Nesse cenário, o programa XDP já está instalado na interface de rede e bloqueia pacotes provenientes de IPs listados no map. O script em Bash monitora o arquivo de subsistema de rastreamento conntrack do Netfilter /proc/net/nf_conntrack determinar se o número de conexões ativas ultrapassou o threshold configurado, que ao ser atingido: um log gerado por regras específicas nftables é analisado para identificar com base em uma “janela” de tempo, qual source IP ultrapassou o limite de conexões: indicando ser um possível ataque DoS: que então é inserido no map eBPF, fazendo com que o programa XDP passe a descartar os pacotes desses endereços. 1. Pré-requisitos Kernel Linux com suporte a eBPF e XDP
+Certifique-se de utilizar uma distribuição com kernel moderno (&gt;= 4.18, de preferência 5.x ou superior). clang llvm gcc libbpf libbpf-devel libxdp libxdp-devel xdp-tools bpftool kernel-headers iperf 2. Programa XDP/eBPF O programa utiliza um map eBPF do tipo HASH para armazenar os IPs que devem ser bloqueados. E para cada pacote recebido, é verificado se source IP consta no mapa. Se sim, o pacote é descartado (XDP_DROP); caso contrário, ele é encaminhado normalmente (XDP_PASS).">
+      <meta name="twitter:site" content="@0xttfx">
+<meta name="twitter:creator" content="@0xttfx" /><meta name="application-name" content="0xttfx">
+<meta name="apple-mobile-web-app-title" content="0xttfx"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" type="text/html" href="http://0xttfx.tcpip.net.br/posts/xdpebpf-block-ddos/" title="XDP &amp; eBPF Block DDoS - 0xttfx" /><link rel="prev" type="text/html" href="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-literaciaai/" title="RTFM &amp; Aleatoriedades - Literacia em IA" /><link rel="next" type="text/html" href="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-climanoterminal/" title="RTFM &amp; Aleatoriedades - Clima No Terminal" /><link rel="alternate" type="text/markdown" href="http://0xttfx.tcpip.net.br/posts/xdpebpf-block-ddos/index.md" title="XDP & eBPF Block DDoS - 0xttfx"><link rel="stylesheet" href="/css/style.min.5fb8636ad8f7ce85ece8cfd1b583385644991297bcabe889a9ed87d9b420dde6722873df084bf070d186b7e8f42529ece5312c08b3912ec100416517af236f51.css" integrity="sha512-X7hjatj3zoXs6M/RtYM4VkSZEpe8q+iJqe2H2bQg3eZyKHPfCEvwcNGGt+j0JSns5TEsCLORLsEAQWUXryNvUQ=="><link rel="preload" href="/lib/fontawesome-free/all.min.e47b37745d8010f92934047b5223876dafa545224d78cd840a4c31508c42d50fc52f27064db35aa565c1e2d3fcf3d9394f926ef1fb386f53f9cff881e2731f49.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.e47b37745d8010f92934047b5223876dafa545224d78cd840a4c31508c42d50fc52f27064db35aa565c1e2d3fcf3d9394f926ef1fb386f53f9cff881e2731f49.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="></noscript><link rel="preload" href="/lib/animate/animate.min.738daa4d2c3fc0f677ff92c1cc3f81c397fb6d2176a31a2eeb011bf88fe5a9e68a57914321f32fbd1a7bef6cb88dc24b2ae1943a96c931d83f053979d1f25803.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw==" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/animate/animate.min.738daa4d2c3fc0f677ff92c1cc3f81c397fb6d2176a31a2eeb011bf88fe5a9e68a57914321f32fbd1a7bef6cb88dc24b2ae1943a96c931d83f053979d1f25803.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw=="></noscript><script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "XDP \u0026 eBPF Block DDoS",
+    "inLanguage": "en",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "http:\/\/0xttfx.tcpip.net.br\/posts\/xdpebpf-block-ddos\/"
+    },"genre": "posts","keywords": "XDP, eBPF, Bash, Linux, nftables","wordcount":  2618 ,
+    "url": "http:\/\/0xttfx.tcpip.net.br\/posts\/xdpebpf-block-ddos\/","datePublished": "2025-01-22T17:13:52-03:00","dateModified": "2025-03-01T15:05:21-03:00","license": "Running on [OpenBSD](https://openbsd.org) and [httpd](https://man.openbsd.org/httpd.8) |  [0xttfx](https://0xttfx.tcpip.net.br) - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)","publisher": {
+      "@type": "Organization",
+      "name": ""},"author": {
+        "@type": "Person",
+        "name": "Faioli a.k.a 0xttfx"
+      },"description": ""
+  }
+  </script><script src="/js/head/color-scheme.min.e4582484625e45df8e4adbb4cc376382a2cba293ce791cf7e64b7d91903cb3c5ca0e91d3f65981dd654cffb16766c9ba00adc5f156d21c61355858e9efc36d60.js" integrity="sha512-5FgkhGJeRd+OStu0zDdjgqLLopPOeRz35kt9kZA8s8XKDpHT9lmB3WVM/7FnZsm6AK3F8VbSHGE1WFjp78NtYA=="></script></head>
+  <body data-header-desktop="sticky" data-header-mobile="auto"><div class="wrapper" data-page-style="normal"><header class="desktop animate__faster" id="header-desktop">
+  <div class="header-wrapper">
+    <div class="header-title">
+      <a href="/" title="0xttfx"><img loading="lazy" src="/images/logo.svg" alt="0xttfx" data-title="0xttfx" width="26" height="26" class="logo" style="background: url(/images/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}"/><span class="header-title-text">0xTTFX</span></a><span class="header-subtitle"></span></div>
+    <nav>
+      <ul class="menu"><li class="menu-item">
+              <a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> Archives</a></li><li class="menu-item">
+              <a class="menu-link" href="/pages/about"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> About</a></li><li class="menu-item">
+              <a class="menu-link" href="https://cv0xttfx.tcpip.net.br" rel="noopener noreferrer" target="_blank"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> CV</a></li><li class="menu-item">
+              <a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> Tags</a></li><li class="menu-item delimiter"></li><li class="menu-item search" id="search-desktop">
+            <input type="text" placeholder="Search titles or contents ..." id="search-input-desktop">
+            <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-desktop" title="Search">
+              <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+            </a>
+            <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-desktop" title="Clear">
+              <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+            </a>
+            <span class="search-button search-loading" id="search-loading-desktop">
+              <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+            </span>
+          </li><li class="menu-item theme-switch" title="Switch Theme">
+          <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+        </li></ul>
+    </nav>
+  </div>
+</header><header class="mobile animate__faster" id="header-mobile">
+  <div class="header-container">
+    <div class="header-wrapper">
+      <div class="header-title">
+        <a href="/" title="0xttfx"><img loading="lazy" src="/images/logo.svg" alt="0xttfx" data-title="0xttfx" width="26" height="26" class="logo" style="background: url(/images/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}"/><span class="header-title-text">0xTTFX</span></a><span class="header-subtitle"></span></div>
+      <div class="menu-toggle" id="menu-toggle-mobile">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <nav>
+      <ul class="menu" id="menu-mobile"><li class="search-wrapper">
+            <div class="search mobile" id="search-mobile">
+              <input type="text" placeholder="Search titles or contents ..." id="search-input-mobile">
+              <a href="javascript:void(0);" class="search-button search-toggle" id="search-toggle-mobile" title="Search">
+                <i class="fa-solid fa-search fa-fw" aria-hidden="true"></i>
+              </a>
+              <a href="javascript:void(0);" class="search-button search-clear" id="search-clear-mobile" title="Clear">
+                <i class="fa-solid fa-times-circle fa-fw" aria-hidden="true"></i>
+              </a>
+              <span class="search-button search-loading" id="search-loading-mobile">
+                <i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden="true"></i>
+              </span>
+            </div>
+            <a href="javascript:void(0);" class="search-cancel" id="search-cancel-mobile">
+              Cancel
+            </a>
+          </li><li class="menu-item"><a class="menu-link" href="/archives/"><i class="fa-solid fa-archive fa-fw fa-sm" aria-hidden="true"></i> Archives</a></li><li class="menu-item"><a class="menu-link" href="/pages/about"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> About</a></li><li class="menu-item"><a class="menu-link" href="https://cv0xttfx.tcpip.net.br" rel="noopener noreferrer" target="_blank"><i class="fa-solid fa-folder-tree fa-fw fa-sm" aria-hidden="true"></i> CV</a></li><li class="menu-item"><a class="menu-link" href="/tags/"><i class="fa-solid fa-tags fa-fw fa-sm" aria-hidden="true"></i> Tags</a></li><li class="menu-item menu-system">
+          <span class="menu-system-item theme-switch" title="Switch Theme"><i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i></span></li>
+      </ul>
+    </nav>
+  </div>
+</header><div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+  </div>
+  <div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+  </div><main class="container"><aside class="aside-collection animate__animated animate__fadeIn animate__faster" aria-label="Collections"></aside>
+
+  <article class="page single">
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>XDP &amp; EBPF Block DDoS</span>
+      </h1></div><div class="post-meta">
+      <div class="post-meta-line"><span class="post-author"><a href="https://github.com/0xttfx" title="Author"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><i class="fa-solid fa-user-circle" aria-hidden="true"></i>
+    Faioli a.k.a 0xttfx</a></span><span class="post-included-in">&nbsp;included in <a href="/categories/networking/" class="post-category" title="Category - Networking"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Networking</a> and <a href="/collections/getting-started/" class="post-collection" title="Collection - Getting Started"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> Getting Started</a></span></div><div class="post-meta-line"><span title="published on 2025-01-22 17:13:52"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2025-01-22">2025-01-22</time></span>&nbsp;<span title="Updated on 2025-03-01 15:05:21"><i class="fa-regular fa-calendar-check fa-fw me-1" aria-hidden="true"></i><time datetime="2025-03-01">2025-03-01</time></span>&nbsp;<span title="2618 words"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>About 2700 words</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>13 minutes</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="XDP &amp; EBPF Block DDoS"><i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;views
+          </span>&nbsp;</div>
+    </div><div class="details toc" id="toc-static" data-kept="false">
+        <div class="details-summary toc-title">
+          <span>Contents</span>
+          <span><i class="details-icon fa-solid fa-angle-right" aria-hidden="true"></i></span>
+        </div>
+        <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-pré-requisitos">1. Pré-requisitos</a></li>
+    <li><a href="#2-programa-xdpebpf">2. Programa XDP/eBPF</a>
+      <ul>
+        <li><a href="#detalhes-técnicos">Detalhes Técnicos</a></li>
+        <li><a href="#compilando">Compilando</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-carregando-na-interface-de-rede">3. Carregando na Interface de Rede</a></li>
+    <li><a href="#4-script-bash-para-monitoramento-e-atualização-do-mapa">4. Script Bash para Monitoramento e Atualização do Mapa</a>
+      <ul>
+        <li><a href="#detalhes-técnicos-1">Detalhes Técnicos</a></li>
+      </ul>
+    </li>
+    <li><a href="#5-regras-e-o-log-nftables">5. Regras e o Log nftables</a>
+      <ul>
+        <li><a href="#regras-nftables">Regras nftables</a></li>
+        <li><a href="#configurar-o-log">Configurar o Log</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+      </div><div class="content" id="content"><p>Segue  um delírio pra esboçar um delírio idealiza a pretensão de uma solução funcional que combina um programa <a href="https://prototype-kernel.readthedocs.io/en/latest/networking/XDP/introduction.html#what-is-xdp"target="_blank" rel="external nofollow noopener noreferrer">XDP</a>/<a href="https://ebpf.io/"target="_blank" rel="external nofollow noopener noreferrer">eBPF</a> em C com um script em Bash(antes de usar Go)  para monitorar o tráfego e atualizar dinamicamente um <a href="https://docs.cilium.io/en/latest/reference-guides/bpf/architecture/#maps"target="_blank" rel="external nofollow noopener noreferrer">map</a> <a href="https://ebpf.io/"target="_blank" rel="external nofollow noopener noreferrer">eBPF</a> com sources IPs que devem ser bloqueados quando idenficado um possível ataque de negação.</p>
+<ul>
+<li>Nesse cenário, o programa XDP já está instalado na interface de rede e bloqueia pacotes provenientes de IPs listados no <a href="https://docs.cilium.io/en/latest/reference-guides/bpf/architecture/#maps"target="_blank" rel="external nofollow noopener noreferrer"><code>map</code></a>.</li>
+<li>O script em Bash monitora  o arquivo de subsistema de rastreamento <code>conntrack</code> do Netfilter <code>/proc/net/nf_conntrack</code> determinar se o número de conexões ativas ultrapassou o threshold configurado, que ao ser atingido:
+<ul>
+<li>um log gerado por regras específicas <code>nftables</code> é analisado para identificar com base em uma &ldquo;janela&rdquo; de tempo, qual source IP ultrapassou o limite de conexões: indicando ser um possível ataque DoS:
+<ul>
+<li>que então é inserido no <code>map</code> eBPF, fazendo com que o programa XDP passe a descartar os pacotes desses endereços.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="1-pré-requisitos" class="heading-element"><span>1. Pré-requisitos</span>
+  <a href="#1-pr%c3%a9-requisitos" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><ul>
+<li>Kernel Linux com suporte a <a href="https://docs.cilium.io/en/latest/reference-guides/bpf/index.html#bpf-and-xdp-reference-guide"target="_blank" rel="external nofollow noopener noreferrer">eBPF e XDP</a><br>
+Certifique-se de utilizar uma distribuição com kernel moderno (&gt;= 4.18, de preferência 5.x ou superior).</li>
+<li>clang</li>
+<li>llvm</li>
+<li>gcc</li>
+<li>libbpf</li>
+<li>libbpf-devel</li>
+<li>libxdp</li>
+<li>libxdp-devel</li>
+<li>xdp-tools</li>
+<li>bpftool kernel-headers</li>
+<li>iperf</li>
+</ul>
+<h2 id="2-programa-xdpebpf" class="heading-element"><span>2. Programa XDP/eBPF</span>
+  <a href="#2-programa-xdpebpf" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><p>O programa utiliza um <a href="https://docs.cilium.io/en/latest/reference-guides/bpf/architecture/#maps"target="_blank" rel="external nofollow noopener noreferrer"><code>map</code></a> eBPF do tipo HASH para armazenar os IPs que devem ser bloqueados. E para cada pacote recebido, é verificado se source IP consta no mapa. Se sim, o pacote é descartado (<a href="https://prototype-kernel.readthedocs.io/en/latest/networking/XDP/implementation/xdp_actions.html"target="_blank" rel="external nofollow noopener noreferrer">XDP_DROP</a>); caso contrário, ele é encaminhado normalmente (<a href="https://prototype-kernel.readthedocs.io/en/latest/networking/XDP/implementation/xdp_actions.html"target="_blank" rel="external nofollow noopener noreferrer">XDP_PASS</a>).</p>
+<div class="details admonition info open disabled">
+  <div class="details-summary admonition-title"><i class="icon fa-fw fa-solid fa-circle-info" aria-hidden="true"></i>Info</div>
+  <div class="details-content">
+    <div class="admonition-content"><p>Para <strong>RTFM</strong> e código atualizado: <a href="https://github.com/0xttfx/xdp-block-ddos"target="_blank" rel="external nofollow noopener noreferrer">repo Git</a></p></div>
+  </div>
+</div><hr>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;linux/bpf.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;linux/if_ether.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;linux/ip.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;bpf/bpf_helpers.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * Mapa do tipo HASH para armazenar os IPs bloqueados.
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * - Chave: __u32 (IP de origem, em formato de rede, em big-endian)
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * - Valor: __u32 (flag, por exemplo, 1 para indicar bloqueio)
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * - max_entries: define quantos IPs podem ser bloqueados simultaneamente
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="k">struct</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">__uint</span><span class="p">(</span><span class="n">type</span><span class="p">,</span> <span class="n">BPF_MAP_TYPE_HASH</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">__uint</span><span class="p">(</span><span class="n">max_entries</span><span class="p">,</span> <span class="mi">1024</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">__type</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">__u32</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">__type</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">__u32</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">blocked_ips</span> <span class="nf">SEC</span><span class="p">(</span><span class="s">&#34;.maps&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="cm">/*
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * Programa XDP para bloquear pacotes provenientes de IPs listados no mapa.
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * Fluxo do programa:
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *   1. Obtém os ponteiros para o início e fim dos dados do pacote.
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *   2. Valida a presença completa do cabeçalho Ethernet.
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *   3. Processa somente pacotes IPv4.
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *   4. Valida a presença do cabeçalho IP completo e a integridade do campo IHL.
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *   5. Extrai o IP de origem (localizado nos primeiros 20 bytes do cabeçalho IP).
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *   6. Consulta o mapa &#39;blocked_ips&#39; e, se o IP estiver bloqueado, retorna XDP_DROP.
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *      Caso contrário, o pacote segue normalmente (XDP_PASS).
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *
+</span></span></span><span class="line"><span class="cl"><span class="cm"> * Detalhes de performance:
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *   - A execução ocorre no caminho de dados (driver) com alta performance e baixa latência.
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *   - As verificações de limites são essenciais para satisfazer o verificador do eBPF.
+</span></span></span><span class="line"><span class="cl"><span class="cm"> *   - A lógica foi mantida mínima, sem operações adicionais, para otimizar o tempo de execução.
+</span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
+</span></span><span class="line"><span class="cl"><span class="nf">SEC</span><span class="p">(</span><span class="s">&#34;xdp&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">xdp_ddos_blocker</span><span class="p">(</span><span class="k">struct</span> <span class="n">xdp_md</span> <span class="o">*</span><span class="n">ctx</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Obtém os ponteiros para os dados do pacote
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">void</span> <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)(</span><span class="kt">long</span><span class="p">)</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="o">*</span><span class="n">data_end</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)(</span><span class="kt">long</span><span class="p">)</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">data_end</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Verifica se o cabeçalho Ethernet está completo
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">struct</span> <span class="n">ethhdr</span> <span class="o">*</span><span class="n">eth</span> <span class="o">=</span> <span class="n">data</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">((</span><span class="kt">void</span> <span class="o">*</span><span class="p">)(</span><span class="n">eth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">data_end</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">XDP_PASS</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Processa somente pacotes IPv4
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="nf">bpf_ntohs</span><span class="p">(</span><span class="n">eth</span><span class="o">-&gt;</span><span class="n">h_proto</span><span class="p">)</span> <span class="o">!=</span> <span class="n">ETH_P_IP</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">XDP_PASS</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Calcula o início do cabeçalho IP (logo após o cabeçalho Ethernet)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">struct</span> <span class="n">iphdr</span> <span class="o">*</span><span class="n">ip</span> <span class="o">=</span> <span class="n">data</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">eth</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1">// Verifica se pelo menos os 20 bytes mínimos do cabeçalho IP estão presentes.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">((</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">ip</span> <span class="o">+</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">iphdr</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">data_end</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">XDP_PASS</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Valida o campo IHL: deve ser pelo menos 5 (5 * 4 = 20 bytes).
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">(</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">ihl</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">XDP_PASS</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1">// Opcional: verificação completa do cabeçalho IP, considerando opções se presentes.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">if</span> <span class="p">((</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">ip</span> <span class="o">+</span> <span class="p">(</span><span class="n">ip</span><span class="o">-&gt;</span><span class="n">ihl</span> <span class="o">*</span> <span class="mi">4</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">data_end</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">XDP_PASS</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Extrai o IP de origem (localizado nos primeiros 20 bytes e sempre presente se ip-&gt;ihl &gt;= 5)
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">__u32</span> <span class="n">src_ip</span> <span class="o">=</span> <span class="n">ip</span><span class="o">-&gt;</span><span class="n">saddr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">// Consulta no mapa: se o IP de origem estiver presente, descarta o pacote.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">__u32</span> <span class="o">*</span><span class="n">blocked</span> <span class="o">=</span> <span class="nf">bpf_map_lookup_elem</span><span class="p">(</span><span class="o">&amp;</span><span class="n">blocked_ips</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">src_ip</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="n">blocked</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">XDP_DROP</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">XDP_PASS</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// Obrigatório: licença do programa eBPF, necessária para que o kernel aceite o carregamento.
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="kt">char</span> <span class="n">_license</span><span class="p">[]</span> <span class="nf">SEC</span><span class="p">(</span><span class="s">&#34;license&#34;</span><span class="p">)</span> <span class="o">=</span> <span class="s">&#34;GPL&#34;</span><span class="p">;</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="detalhes-técnicos" class="heading-element"><span>Detalhes Técnicos</span>
+  <a href="#detalhes-t%c3%a9cnicos" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><ol>
+<li>
+<p><strong>Verificações de Segurança e Integridade:</strong></p>
+<ul>
+<li><strong>Cabeçalho Ethernet:</strong><br>
+O código garante que o cabeçalho Ethernet completo esteja presente, comparando o ponteiro para o fim do cabeçalho com <code>data_end</code>.</li>
+<li><strong>Cabeçalho IP:</strong>
+<ul>
+<li>É verificado se pelo menos 20 bytes (o tamanho mínimo do cabeçalho IP) estão disponíveis.</li>
+<li>Verificação para o campo <code>ihl</code> (Internet Header Length), garantindo que seja maior ou igual a 5.</li>
+<li>Se o IP possuir opções (quando <code>ihl &gt; 5</code>), o código valida que o cabeçalho completo (tamanho <code>ip-&gt;ihl * 4</code>) está dentro dos limites do buffer.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Extração do IP de Origem:</strong></p>
+<ul>
+<li>O IP de origem (<code>ip-&gt;saddr</code>) é extraído sem necessidade de cálculos adicionais, pois ele sempre se encontra nos primeiros 20 bytes do cabeçalho IP.</li>
+</ul>
+</li>
+<li>
+<p><strong>Consulta no Mapa eBPF:</strong></p>
+<ul>
+<li>O mapa <code>blocked_ips</code> é consultado utilizando o helper <code>bpf_map_lookup_elem</code>.</li>
+<li>Se o ponteiro retornado for não nulo, isso indica que o IP está bloqueado e, consequentemente, o pacote é descartado com <code>XDP_DROP</code>.</li>
+<li>Essa operação é extremamente rápida, pois o mapa foi definido para ter um acesso em tempo O(1) (tabela hash).</li>
+</ul>
+</li>
+<li>
+<p><strong>Performance e Considerações de Otimização:</strong></p>
+<ul>
+<li><strong>Execução no XDP:</strong><br>
+O programa é executado no XDP, logo na entrada dos pacotes, o que garante baixa latência e alta performance.</li>
+<li><strong>Minimalismo:</strong><br>
+A lógica foi mantida mínima para reduzir o número de instruções e evitar qualquer latência adicional.</li>
+<li><strong>Verificador eBPF:</strong><br>
+As verificações de limites são necessárias para passar pelo verificador do kernel, garantindo que o programa seja seguro e não acesse memória fora dos limites.</li>
+<li><strong>Possíveis Micro-Otimizações:</strong><br>
+Em cenários mais avançados, técnicas como <em>branch prediction hints</em> (por meio de macros como <code>__builtin_expect</code>) podem ser consideradas, mas normalmente o compilador BPF já otimiza o código de forma eficaz.</li>
+</ul>
+</li>
+<li>
+<p><strong>Licenciamento:</strong></p>
+<ul>
+<li>A inclusão da string de licença <code>&quot;GPL&quot;</code> é obrigatória para o carregamento do programa no kernel.</li>
+</ul>
+</li>
+</ol>
+<h3 id="compilando" class="heading-element"><span>Compilando</span>
+  <a href="#compilando" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><p>Utilize o clang para compilar para o formato eBPF:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">clang -O2 -target bpf -c xdp_ddos_blocker.c -o xdp_ddos_blocker.o</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="3-carregando-na-interface-de-rede" class="heading-element"><span>3. Carregando na Interface de Rede</span>
+  <a href="#3-carregando-na-interface-de-rede" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><p>Para carregar o programa na interface, vamos usar  o comando  <a href="https://man7.org/linux/man-pages/man8/ip.8.html"target="_blank" rel="external nofollow noopener noreferrer"><code>ip</code></a> do <a href="https://wiki.linuxfoundation.org/networking/iproute2"target="_blank" rel="external nofollow noopener noreferrer">iproute2</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ip link <span class="nb">set</span> dev eth0 xdp obj xdp_ddos_blocker.o sec xdp</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Para verificar se o programa foi carregado corretamente, utilize:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ip -details link show dev eth0</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Se necessário, para remover o programa:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ip link <span class="nb">set</span> dev eth0 xdp off</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="4-script-bash-para-monitoramento-e-atualização-do-mapa" class="heading-element"><span>4. Script Bash para Monitoramento e Atualização do Mapa</span>
+  <a href="#4-script-bash-para-monitoramento-e-atualiza%c3%a7%c3%a3o-do-mapa" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><p>Segue script em Bash que implementa uma abordagem híbrida para detectar um ataque DDoS:</p>
+<ul>
+<li>
+<p>Monitorando o número de conexões em <code>/proc/net/nf_conntrack</code>.</p>
+</li>
+<li>
+<p>E existindo um pico suspeito, analisa os logs do <code>nftables</code> para identificar IPs suspeitos devido a sua alta frequência.</p>
+</li>
+<li>
+<p>Para então atualizar o mapa eBPF (fixado em um caminho configurável) para bloquear os IPs suspeitos.</p>
+</li>
+</ul>
+<div class="details admonition info open disabled">
+  <div class="details-summary admonition-title"><i class="icon fa-fw fa-solid fa-circle-info" aria-hidden="true"></i>Para <strong>RTFM</strong> e código atualizado: <a href="https://github.com/0xttfx/monitor_ddos"target="_blank" rel="external nofollow noopener noreferrer">repo Git</a></div>
+  <div class="details-content">
+    <div class="admonition-content"></div>
+  </div>
+</div><hr>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1"># monitor_ddos_hybrid.sh</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Abordagem híbrida para detectar ataques DDoS:</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 1. Monitora /proc/net/nf_conntrack para identificar picos no número de conexões.</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 2. Se houver pico, analisa os logs do nftables para extrair IPs com alta frequência.</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 3. Atualiza o mapa eBPF (pinado em MAP_PIN) para bloquear os IPs suspeitos.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># OBSERVAÇÕES TÉCNICAS:</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># - Certifique-se de que o módulo nf_conntrack esteja carregado e que o arquivo /proc/net/nf_conntrack exista.</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># - O log do nftables deve estar configurado corretamente; muitas vezes o kernel envia esses logs para syslog,</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#   então pode ser necessário ajustar o caminho.</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># - O script deve ser executado com privilégios de root para acesso aos arquivos e atualização do mapa eBPF via bpftool.</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># - O programa XDP e o mapa eBPF devem estar previamente carregados na interface de rede.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Valores padrões</span>
+</span></span><span class="line"><span class="cl"><span class="nv">MAP_PIN_DEFAULT</span><span class="o">=</span><span class="s2">&#34;/sys/fs/bpf/blocked_ips&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">THRESHOLD_CONN_DEFAULT</span><span class="o">=</span><span class="m">2000</span>
+</span></span><span class="line"><span class="cl"><span class="nv">LOG_THRESHOLD_DEFAULT</span><span class="o">=</span><span class="m">5</span>
+</span></span><span class="line"><span class="cl"><span class="nv">INTERVAL_DEFAULT</span><span class="o">=</span><span class="m">10</span>
+</span></span><span class="line"><span class="cl"><span class="nv">LOG_FILE_DEFAULT</span><span class="o">=</span><span class="s2">&#34;/var/log/nftables.log&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Inicializa variáveis com os valores padrão</span>
+</span></span><span class="line"><span class="cl"><span class="nv">MAP_PIN</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$MAP_PIN_DEFAULT</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">THRESHOLD_CONN</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$THRESHOLD_CONN_DEFAULT</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">LOG_THRESHOLD</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$LOG_THRESHOLD_DEFAULT</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">INTERVAL</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$INTERVAL_DEFAULT</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">LOG_FILE</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$LOG_FILE_DEFAULT</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Função para exibir a mensagem de ajuda</span>
+</span></span><span class="line"><span class="cl">usage<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    cat <span class="s">&lt;&lt; EOF
+</span></span></span><span class="line"><span class="cl"><span class="s">Uso: $(basename &#34;$0&#34;) [opções]
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">Opções:
+</span></span></span><span class="line"><span class="cl"><span class="s">  -m MAP_PIN         Caminho do mapa eBPF pinado (padrão: $MAP_PIN_DEFAULT)
+</span></span></span><span class="line"><span class="cl"><span class="s">  -c THRESHOLD_CONN  Número de conexões para acionar análise (padrão: $THRESHOLD_CONN_DEFAULT)
+</span></span></span><span class="line"><span class="cl"><span class="s">  -l LOG_THRESHOLD   Número mínimo de ocorrências de um IP nos logs para bloqueá-lo (padrão: $LOG_THRESHOLD_DEFAULT)
+</span></span></span><span class="line"><span class="cl"><span class="s">  -i INTERVAL        Intervalo de tempo para verificação em segundos (padrão: $INTERVAL_DEFAULT)
+</span></span></span><span class="line"><span class="cl"><span class="s">  -f LOG_FILE        Caminho para o arquivo de log do nftables (padrão: $LOG_FILE_DEFAULT)
+</span></span></span><span class="line"><span class="cl"><span class="s">  -h                 Exibe esta mensagem de ajuda e sai
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">Exemplo:
+</span></span></span><span class="line"><span class="cl"><span class="s">  sudo $(basename &#34;$0&#34;) -m /sys/fs/bpf/blocked_ips -c 1500 -l 10 -i 15 -f /var/log/nftables.log
+</span></span></span><span class="line"><span class="cl"><span class="s">
+</span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Processa as opções de linha de comando</span>
+</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="nb">getopts</span> <span class="s2">&#34;m:c:l:i:f:h&#34;</span> opt<span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">    <span class="k">case</span> <span class="s2">&#34;</span><span class="nv">$opt</span><span class="s2">&#34;</span> in
+</span></span><span class="line"><span class="cl">        m<span class="o">)</span> <span class="nv">MAP_PIN</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$OPTARG</span><span class="s2">&#34;</span> <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">        c<span class="o">)</span> <span class="nv">THRESHOLD_CONN</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$OPTARG</span><span class="s2">&#34;</span> <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">        l<span class="o">)</span> <span class="nv">LOG_THRESHOLD</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$OPTARG</span><span class="s2">&#34;</span> <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">        i<span class="o">)</span> <span class="nv">INTERVAL</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$OPTARG</span><span class="s2">&#34;</span> <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">        f<span class="o">)</span> <span class="nv">LOG_FILE</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$OPTARG</span><span class="s2">&#34;</span> <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">        h<span class="o">)</span>
+</span></span><span class="line"><span class="cl">            usage
+</span></span><span class="line"><span class="cl">            <span class="nb">exit</span> <span class="m">0</span>
+</span></span><span class="line"><span class="cl">            <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">        ?<span class="o">)</span>
+</span></span><span class="line"><span class="cl">            usage
+</span></span><span class="line"><span class="cl">            <span class="nb">exit</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">            <span class="p">;;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">esac</span>
+</span></span><span class="line"><span class="cl"><span class="k">done</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;Configurações utilizadas:&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;  MAP_PIN:         </span><span class="nv">$MAP_PIN</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;  THRESHOLD_CONN:  </span><span class="nv">$THRESHOLD_CONN</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;  LOG_THRESHOLD:   </span><span class="nv">$LOG_THRESHOLD</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;  INTERVAL:        </span><span class="nv">$INTERVAL</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;  LOG_FILE:        </span><span class="nv">$LOG_FILE</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Função: Converte um IP (formato x.x.x.x) para valor hexadecimal (big-endian)</span>
+</span></span><span class="line"><span class="cl">ip_to_hex<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">local</span> <span class="nv">ip</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">IFS</span><span class="o">=</span><span class="s1">&#39;.&#39;</span> <span class="nb">read</span> -r a b c d <span class="o">&lt;&lt;&lt;</span> <span class="s2">&#34;</span><span class="nv">$ip</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">printf</span> <span class="s2">&#34;0x%02X%02X%02X%02X&#34;</span> <span class="s2">&#34;</span><span class="nv">$a</span><span class="s2">&#34;</span> <span class="s2">&#34;</span><span class="nv">$b</span><span class="s2">&#34;</span> <span class="s2">&#34;</span><span class="nv">$c</span><span class="s2">&#34;</span> <span class="s2">&#34;</span><span class="nv">$d</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Função: Atualiza o mapa eBPF para bloquear um IP específico</span>
+</span></span><span class="line"><span class="cl">block_ip<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">local</span> <span class="nv">ip</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">local</span> key_hex
+</span></span><span class="line"><span class="cl">    <span class="nv">key_hex</span><span class="o">=</span><span class="k">$(</span>ip_to_hex <span class="s2">&#34;</span><span class="nv">$ip</span><span class="s2">&#34;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;Bloqueando IP suspeito: </span><span class="nv">$ip</span><span class="s2"> (chave: </span><span class="nv">$key_hex</span><span class="s2">)&#34;</span>
+</span></span><span class="line"><span class="cl">    bpftool map update pinned <span class="s2">&#34;</span><span class="nv">$MAP_PIN</span><span class="s2">&#34;</span> key <span class="s2">&#34;</span><span class="nv">$key_hex</span><span class="s2">&#34;</span> value 0x1 2&gt;/dev/null
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Função: Retorna a contagem de conexões em /proc/net/nf_conntrack</span>
+</span></span><span class="line"><span class="cl">get_conn_count<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">[</span> -f /proc/net/nf_conntrack <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">        wc -l &lt; /proc/net/nf_conntrack
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;0&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Loop principal de monitoramento</span>
+</span></span><span class="line"><span class="cl"><span class="k">while</span> true<span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">conn_count</span><span class="o">=</span><span class="k">$(</span>get_conn_count<span class="k">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;Conexões atuais: </span><span class="nv">$conn_count</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$conn_count</span><span class="s2">&#34;</span> -gt <span class="s2">&#34;</span><span class="nv">$THRESHOLD_CONN</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;Alerta: Pico de conexões detectado (</span><span class="nv">$conn_count</span><span class="s2"> &gt; </span><span class="nv">$THRESHOLD_CONN</span><span class="s2">).&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;Analisando os logs do nftables para identificar IPs suspeitos...&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># Captura uma janela de logs do nftables durante o intervalo definido.</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># &#39;timeout&#39; limita a execução do tail, &#39;grep&#39; filtra linhas com &#34;SRC=&#34;,</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># &#39;sed&#39; extrai o IP, e &#39;awk&#39; seleciona IPs com ocorrências acima do limite.</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">suspicious_ips</span><span class="o">=</span><span class="k">$(</span>timeout <span class="s2">&#34;</span><span class="nv">$INTERVAL</span><span class="s2">&#34;</span> tail -n <span class="m">1000</span> <span class="s2">&#34;</span><span class="nv">$LOG_FILE</span><span class="s2">&#34;</span> 2&gt;/dev/null <span class="p">|</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>            grep <span class="s2">&#34;SRC=&#34;</span> <span class="p">|</span> sed -n <span class="s1">&#39;s/.*SRC=\([0-9.]\+\).*/\1/p&#39;</span> <span class="p">|</span> sort <span class="p">|</span> uniq -c <span class="p">|</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>            awk -v <span class="nv">thresh</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$LOG_THRESHOLD</span><span class="s2">&#34;</span> <span class="s1">&#39;$1 &gt;= thresh {print $2}&#39;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> ip in <span class="nv">$suspicious_ips</span><span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">            block_ip <span class="s2">&#34;</span><span class="nv">$ip</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">done</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;Número de conexões dentro do esperado.&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    sleep <span class="s2">&#34;</span><span class="nv">$INTERVAL</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">done</span></span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h3 id="detalhes-técnicos-1" class="heading-element"><span>Detalhes Técnicos</span>
+  <a href="#detalhes-t%c3%a9cnicos-1" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><ol>
+<li>
+<p><strong>Interface de Configuração via Linha de Comando:</strong></p>
+<ul>
+<li>O script utiliza o <code>getopts</code> para permitir a configuração de parâmetros essenciais:
+<ul>
+<li><strong>-m:</strong> Caminho do mapa eBPF pinado (ex.: <code>/sys/fs/bpf/blocked_ips</code>).</li>
+<li><strong>-c:</strong> Limite de conexões para acionar a análise (usando <code>/proc/net/nf_conntrack</code>).</li>
+<li><strong>-l:</strong> Número mínimo de ocorrências de um IP nos logs para considerá-lo suspeito.</li>
+<li><strong>-i:</strong> Intervalo de tempo (em segundos) para cada verificação.</li>
+<li><strong>-f:</strong> Caminho para o arquivo de log do nftables.</li>
+<li><strong>-h:</strong> Exibe a mensagem de ajuda.</li>
+</ul>
+</li>
+<li>Essa abordagem torna o script flexível e adaptável a diferentes ambientes.</li>
+</ul>
+</li>
+<li>
+<p><strong>Pinagem Automática do Mapa:</strong></p>
+<ul>
+<li>
+<p>A função <code>auto_pin_map()</code> verifica se o arquivo especificado em <code>MAP_PIN</code> existe. Se não existir, ela usa o <code>bpftool map show</code> para procurar uma linha contendo &ldquo;blocked_ips&rdquo; e extrai o ID do mapa.</p>
+</li>
+<li>
+<p>Em seguida, utiliza o comando <code>bpftool map pin id</code> para fixar o mapa no caminho desejado.</p>
+</li>
+<li>
+<p>Essa automação elimina a necessidade de pinagem manual e garante que o script e o programa XDP trabalhem com o mesmo mapa.</p>
+<ol>
+<li>
+<p><strong>Conversão de IP para Hexadecimal:</strong></p>
+<ul>
+<li>A função <code>ip_to_hex</code> divide o endereço IP em seus quatro octetos e formata cada um com dois dígitos em hexadecimal, gerando uma chave compatível com o formato esperado pelo mapa eBPF.</li>
+</ul>
+</li>
+<li>
+<p><strong>Monitoramento de Conexões:</strong></p>
+<ul>
+<li>O script lê <code>/proc/net/nf_conntrack</code> para determinar o número de conexões ativas.</li>
+<li>Se o número de conexões ultrapassar o valor definido em <code>THRESHOLD_CONN</code>, ele aciona a análise dos logs do nftables.</li>
+</ul>
+</li>
+<li>
+<p><strong>Análise dos Logs do nftables:</strong></p>
+<ul>
+<li>Utiliza <code>tail</code> com <code>timeout</code> para ler uma janela de logs por um período determinado.</li>
+<li>A filtragem com <code>grep</code> e <code>sed</code> extrai os IPs a partir de linhas que contêm <code>SRC=</code>.</li>
+<li>O <code>awk</code> conta as ocorrências e filtra somente os IPs que ultrapassam o limite definido em <code>LOG_THRESHOLD</code>.</li>
+</ul>
+</li>
+<li>
+<p><strong>Atualização do Mapa eBPF:</strong></p>
+<ul>
+<li>Para cada IP suspeito identificado, o script utiliza o comando <code>bpftool</code> para inserir o IP no mapa eBPF, fazendo com que o programa XDP bloqueie os pacotes oriundos desse IP.</li>
+</ul>
+</li>
+<li>
+<p><strong>Considerações Gerais:</strong></p>
+<ul>
+<li>Verifique se os caminhos configurados (para o mapa e o log) estão corretos e se os módulos necessários (como nf_conntrack) estão carregados.</li>
+<li>Teste a porra toda né! Sou péssimo programador!</li>
+<li>O script deve ser executado com privilégios para acessar <code>/proc</code>, os logs e atualizar o mapa eBPF.</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="5-regras-e-o-log-nftables" class="heading-element"><span>5. Regras e o Log nftables</span>
+  <a href="#5-regras-e-o-log-nftables" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><p>Geralmente, o nftables envia os logs para o kernel, e com o rsyslog podemos filtrar essas mensagens e gravá-las em um arquivo dedicado.</p>
+<h3 id="regras-nftables" class="heading-element"><span>Regras nftables</span>
+  <a href="#regras-nftables" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><p>Segue um exemplo de regras específicas para a solução e que gerará um Log com prefixo <code>DDoS_ALERT: SRC=</code> definido:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">table inet ddos_filter {
+</span></span><span class="line"><span class="cl">    chain input {
+</span></span><span class="line"><span class="cl">        type filter hook input priority 0; policy accept;
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        ip protocol tcp ct state new limit rate 10/second burst 20 packets \
+</span></span><span class="line"><span class="cl">            log prefix &#34;DDoS_ALERT: SRC=&#34; flags all
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        ip protocol udp ct state new limit rate 10/second burst 20 packets \
+</span></span><span class="line"><span class="cl">            log prefix &#34;DDoS_ALERT: SRC=&#34; flags all
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        ip protocol icmp ct state new limit rate 5/second burst 10 packets \
+</span></span><span class="line"><span class="cl">            log prefix &#34;DDoS_ALERT: SRC=&#34; flags all
+</span></span><span class="line"><span class="cl">    }
+</span></span><span class="line"><span class="cl">}</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>Com essa configuração, os eventos de log contendo <code>&quot;DDoS_ALERT: SRC=&quot;</code> serão redirecionados para o arquivo <code>/var/log/nftables.log</code>, permitindo que o script extraia os IPs suspeitos&hellip;</li>
+</ul>
+<h3 id="configurar-o-log" class="heading-element"><span>Configurar o Log</span>
+  <a href="#configurar-o-log" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><ol>
+<li>
+<p><strong>Garanta que o serviço esteja rodando</strong><br>
+No Fedora, ambiente de teste usado, o <code>rsyslog</code> geralmente vem instalado, mas certifique-se de que ele está em execução:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo systemctl status rsyslog</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>Filtrando os Logs</strong><br>
+Crie um arquivo de configuração para o rsyslog que irá filtrar nosso log</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">touch /etc/rsyslog.d/nftables.conf</span></span></code></pre></td></tr></table>
+</div>
+</div><ol>
+<li>
+<p>E adicione uma regra para filtrar as mensagens que contenham o prefixo  <code>&quot;DDoS_ALERT: SRC=&quot;</code>.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="c1"># Filtra mensagens que contenham &#34;DDoS_ALERT:&#34; e as grava em /var/log/nftables.log</span>
+</span></span><span class="line"><span class="cl"><span class="p">:</span><span class="n">msg</span><span class="p">,</span> <span class="n">contains</span><span class="p">,</span> <span class="s2">&#34;DDoS_ALERT:&#34;</span> <span class="o">-/</span><span class="k">var</span><span class="o">/</span><span class="nb">log</span><span class="o">/</span><span class="n">nftables</span><span class="o">.</span><span class="n">log</span>
+</span></span><span class="line"><span class="cl"><span class="o">&amp;</span> <span class="o">~</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>A primeira linha diz ao rsyslog: se a mensagem contiver o texto <code>&quot;DDoS_ALERT:&quot;</code>, envie-a para o arquivo <code>/var/log/nftables.log</code>. O hífen (<code>-</code>) antes do caminho indica gravação assíncrona, reduzindo o overhead.</li>
+<li>A linha <code>&amp; ~</code> impede que essas mensagens sejam processadas por outras regras, evitando duplicidade.</li>
+</ul>
+</li>
+<li>
+<p><strong>Reinicie o serviço</strong></p>
+</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo systemctl restart rsyslog</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>(Opcional) Configure o systemd-journald para encaminhar os logs ao rsyslog:</strong><br>
+No Fedora, o <code>journald</code> já encaminha as mensagens para o <code>rsyslog</code> por padrão, mas se necessário, verifique o arquivo <code>/etc/systemd/journald.conf</code> e certifique-se de que a linha abaixo esteja configurada:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">ForwardToSyslog</span><span class="o">=</span>yes</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>Verifique se os logs estão sendo gravados:</strong><br>
+Após aplicar a configuração e reiniciar o rsyslog, você pode testar sua configuração gerando uma mensagem de log (por exemplo, criando um evento com nftables) e verificando o conteúdo do arquivo:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo tail -f /var/log/nftables.log</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+</div><div class="post-footer" id="post-footer">
+  <div class="post-info">
+    <div class="post-info-line">
+      <div class="post-info-mod">
+        <span title="Updated on 2025-03-01 15:05:21">Updated on 2025-03-01&nbsp;
+                <a class="git-hash" href="https://github.com/0xttfx/commit/46ff24d7f86beb1cb2ebdc899450b191df695aea" rel="external nofollow noopener noreferrer" target="_blank" title="commit by 0xttfx(thiago.faioli@gmail.com) 46ff24d7f86beb1cb2ebdc899450b191df695aea: novo post XDP &amp; eBPF Block DDoS"><i class="fa-solid fa-hashtag fa-fw" aria-hidden="true"></i>46ff24d</a></span>
+      </div><div class="post-info-license">
+            <span><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a></span>
+          </div></div><div class="post-info-line">
+        <div class="post-info-md"><span><a href="/posts/xdpebpf-block-ddos/index.md" title="Read Markdown" class="link-to-markdown">Read Markdown</a></span><span><a href="https://github.com/0xttfx/blob/main/content/posts/XDP&amp;eBPF-Block-DDoS.md?plain=1" title="View source"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-source">View source</a></span><span><a href="https://github.com/0xttfx/edit/main/content/posts/XDP&amp;eBPF-Block-DDoS.md" title="Edit this page"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-edit">Edit this page</a></span><span><a href="https://github.com/0xttfx/issues/new?title=[BUG]%20XDP&#43;%26&#43;eBPF&#43;Block&#43;DDoS&amp;body=%7cField%7cValue%7c%0A%7c-%7c-%7c%0A%7cTitle%7cXDP&#43;%26&#43;eBPF&#43;Block&#43;DDoS%7c%0A%7cURL%7chttp://0xttfx.tcpip.net.br/posts/xdpebpf-block-ddos/%7c%0A%7cFilename%7chttps://github.com/0xttfx/blob/main/content/posts/XDP&amp;eBPF-Block-DDoS.md?plain=1%7c" title="Report issue"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-report">Report issue</a></span></div>
+        <div class="post-info-share">
+          <span><a href="javascript:void(0);" title="Share on X" data-sharer="twitter" data-url="http://0xttfx.tcpip.net.br/posts/xdpebpf-block-ddos/" data-title="XDP &amp; EBPF Block DDoS" data-via="0xttfx" data-hashtags="XDP,eBPF,Bash,Linux,nftables"><i class="fa-brands fa-x-twitter fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://0xttfx.tcpip.net.br/posts/xdpebpf-block-ddos/"><i class="fa-brands fa-linkedin fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="http://0xttfx.tcpip.net.br/posts/xdpebpf-block-ddos/" data-title="XDP &amp; EBPF Block DDoS" data-web><i class="fa-brands fa-whatsapp fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on Reddit" data-sharer="reddit" data-url="http://0xttfx.tcpip.net.br/posts/xdpebpf-block-ddos/"><i class="fa-brands fa-reddit fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="http://0xttfx.tcpip.net.br/posts/xdpebpf-block-ddos/" data-title="XDP &amp; EBPF Block DDoS"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  </span>
+        </div>
+      </div></div>
+
+  <div class="post-info-more">
+    <section class="post-tags"><i class="fa-solid fa-tags fa-fw me-1" aria-hidden="true"></i><a href="/tags/xdp/" class="post-tag" title="Tags - XDP">XDP</a><a href="/tags/ebpf/" class="post-tag" title="Tags - EBPF">EBPF</a><a href="/tags/bash/" class="post-tag" title="Tags - Bash">Bash</a><a href="/tags/linux/" class="post-tag" title="Tags - Linux">Linux</a><a href="/tags/nftables/" class="post-tag" title="Tags - Nftables">Nftables</a></section>
+    <section>
+      <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+    </section>
+  </div><div class="post-nav"><a href="/posts/rtfmaleatoriedades-literaciaai/" class="post-nav-item" rel="prev" title="RTFM &amp; Aleatoriedades - Literacia Em IA"><i class="fa-solid fa-angle-left fa-fw" aria-hidden="true"></i>RTFM &amp; Aleatoriedades - Literacia Em IA</a><a href="/posts/rtfmaleatoriedades-climanoterminal/" class="post-nav-item" rel="next" title="RTFM &amp; Aleatoriedades - Clima No Terminal">RTFM &amp; Aleatoriedades - Clima No Terminal<i class="fa-solid fa-angle-right fa-fw" aria-hidden="true"></i></a></div>
+</div>
+<div id="comments"></div></article>
+
+  <aside class="toc" id="toc-auto" aria-label="Contents"><h2 class="toc-title">Contents&nbsp;<i class="toc-icon fa-solid fa-angle-down fa-fw" aria-hidden="true"></i></h2>
+      <div class="toc-content" id="toc-content-auto"></div></aside></main><footer class="footer">
+    <div class="footer-container"><div class="footer-line copyright" itemscope itemtype="http://schema.org/CreativeWork"><i class="fa-regular fa-copyright fa-fw" aria-hidden="true"></i>
+            <span itemprop="copyrightYear">2024 - 2025</span><span class="author" itemprop="copyrightHolder">
+              <a href="https://github.com/0xttfx"target="_blank" rel="external nofollow noopener noreferrer">Faioli a.k.a 0xttfx</a></span><span class="license footer-divider">BSD-3-Clause</span></div><div class="footer-line statistics"></div><div class="footer-line visitor">
+          <span id="busuanzi_container_site_uv" title='Total visitors'><i class="fa-regular fa-user fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span><span id="busuanzi_container_site_pv" class="footer-divider" title='Total visits'><i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin fa-fw" aria-hidden="true"></i></span></span>
+        </div></div>
+  </footer></div><div class="widgets"><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role="button" aria-label="Back to Top"><i class="fa-solid fa-arrow-up fa-fw" aria-hidden="true"></i><span class="variant-numeric">0%</span>
+        </div><div class="fixed-button view-comments d-none" role="button" aria-label="View Comments"><i class="fa-solid fa-comment fa-fw" aria-hidden="true"></i></div></div><div id="mask"></div><div class="reading-progress-bar" style="left: 0;top: 0;"></div><noscript>
+    <div class="noscript-warning">This website works best with JavaScript enabled.</div>
+  </noscript>
+</div><link rel="preload" href="/lib/katex/katex.min.af6f85907cdfd6ed3e4906d93a8233d91c5638859f744cd1b98c9b1a3ccaab5f231bdcda49f132f6cdfe8cca86ff33ed468affab8a9a502610a664a34f0f0cfa.css" integrity="sha512-r2+FkHzf1u0+SQbZOoIz2RxWOIWfdEzRuYybGjzKq18jG9zaSfEy9s3+jMqG/zPtRor/q4qaUCYQpmSjTw8M+g==" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/lib/katex/katex.min.af6f85907cdfd6ed3e4906d93a8233d91c5638859f744cd1b98c9b1a3ccaab5f231bdcda49f132f6cdfe8cca86ff33ed468affab8a9a502610a664a34f0f0cfa.css" integrity="sha512-r2+FkHzf1u0+SQbZOoIz2RxWOIWfdEzRuYybGjzKq18jG9zaSfEy9s3+jMqG/zPtRor/q4qaUCYQpmSjTw8M+g=="></noscript><link rel="stylesheet" href="/lib/cookieconsent/cookieconsent.min.2d0f7b71a99aaff94e9624ff32a8dc42ce645a0cba433fdc091cf34735027efd1fa2db024c2f591d768f426255f17bbf3d500b7c967b0437b3979956dffa81c6.css" integrity="sha512-LQ97camar/lOliT/MqjcQs5kWgy6Qz/cCRzzRzUCfv0fotsCTC9ZHXaPQmJV8Xu/PVALfJZ7BDezl5lW3/qBxg=="><script src="/lib/autocomplete/autocomplete.min.7e654c67e741180b83f7b4d829967003fea37a5d5014f549f0a3d7f945d2b73e73e22a1dd04a7b68712c846f004232f3030d07305784fab026100af12af8f0ac.js" integrity="sha512-fmVMZ+dBGAuD97TYKZZwA/6jel1QFPVJ8KPX+UXStz5z4iod0Ep7aHEshG8AQjLzAw0HMFeE+rAmEArxKvjwrA==" defer></script><script src="/lib/fuse/fuse.min.36ac35b47de6a5abe46bd71009ce7359611935f20f74e6324058e557536f7e512d434fd723a650f87fc3dd880976a49426530b00f463fe85e56870856c50a3a1.js" integrity="sha512-Nqw1tH3mpavka9cQCc5zWWEZNfIPdOYyQFjlV1NvflEtQ0/XI6ZQ+H/D3YgJdqSUJlMLAPRj/oXlaHCFbFCjoQ==" defer></script><script src="/lib/sharer/sharer.min.94c73c706d26a452277a104d6857c0cb04e816ad61c4163b4e0a135426a7767211e0a27c952ea85e3df25aec941374e21053db0f9e7822af8a2f9c4a8a93c4e3.js" integrity="sha512-lMc8cG0mpFInehBNaFfAywToFq1hxBY7TgoTVCandnIR4KJ8lS6oXj3yWuyUE3TiEFPbD554Iq+KL5xKipPE4w==" async defer></script><script src="/lib/katex/katex.min.20da6cf7343619410c0900fbc626506c65159ea9f312f9729d5cba7aa713707378f9a4222e8f7fb9a42a7240e9749f199b7334401b3e3e4b60e29cf490492552.js" integrity="sha512-INps9zQ2GUEMCQD7xiZQbGUVnqnzEvlynVy6eqcTcHN4+aQiLo9/uaQqckDpdJ8Zm3M0QBs+Pktg4pz0kEklUg==" defer></script><script src="/lib/katex/auto-render.min.6095714e3aadb63b14ddc4af69346ab12974c1b460654345f8d1860a0b68fcc51b22f68b757433193090bb80afc8965b65cb607e5541d0f5f0f4b2e64d69b9ff.js" integrity="sha512-YJVxTjqttjsU3cSvaTRqsSl0wbRgZUNF+NGGCgto/MUbIvaLdXQzGTCQu4CvyJZbZctgflVB0PXw9LLmTWm5/w==" defer></script><script src="/lib/katex/copy-tex.min.895ad99f7d8fdb0683cd271c02584953bd0542c6d4956c9feebaa16673683a45d5884f5253e3db33f8f74a86cc464477497656fb36e96a558137311bdb7f32d6.js" integrity="sha512-iVrZn32P2waDzSccAlhJU70FQsbUlWyf7rqhZnNoOkXViE9SU+PbM/j3SobMRkR3SXZW+zbpalWBNzEb238y1g==" defer></script><script src="/lib/katex/mhchem.min.9b18cdc3fbb5948b050b4f64fee9ec703458de87c860f5456d690ff2c96b78f712dfa86de1dfce67cad1bb9c9d741dae8aa6a385370b0fcfa3ba9396b983de6e.js" integrity="sha512-mxjNw/u1lIsFC09k/unscDRY3ofIYPVFbWkP8slrePcS36ht4d/OZ8rRu5yddB2uiqajhTcLD8+jupOWuYPebg==" defer></script><script src="/lib/cookieconsent/cookieconsent.min.c975ea3858dd8c7347d46343fb510ed236efbde6c0069cc6283eba7639d47e22a560c1391c6314247a0269e1380f93d31b662c4897fa770ab2514bd0bd2d2f68.js" integrity="sha512-yXXqOFjdjHNH1GND+1EO0jbvvebABpzGKD66djnUfiKlYME5HGMUJHoCaeE4D5PTG2YsSJf6dwqyUUvQvS0vaA==" defer></script><script src="https://vercount.one/js" async defer></script><script>window.config={"code":{"copyTitle":"Copy to clipboard","editLockTitle":"Lock editable code block","editUnLockTitle":"Unlock editable code block","editable":true,"maxShownLines":10},"comment":{"enable":true,"expired":false},"cookieconsent":{"content":{"dismiss":"Got it!","link":"Learn more","message":"This website uses Cookies to improve your experience."},"enable":true,"palette":{"button":{"background":"#f0f0f0"},"popup":{"background":"#1aa3ff"}},"theme":"edgeless"},"math":{"delimiters":[{"display":true,"left":"$$","right":"$$"},{"display":true,"left":"\\[","right":"\\]"},{"display":true,"left":"\\begin{equation}","right":"\\end{equation}"},{"display":true,"left":"\\begin{equation*}","right":"\\end{equation*}"},{"display":true,"left":"\\begin{align}","right":"\\end{align}"},{"display":true,"left":"\\begin{align*}","right":"\\end{align*}"},{"display":true,"left":"\\begin{alignat}","right":"\\end{alignat}"},{"display":true,"left":"\\begin{alignat*}","right":"\\end{alignat*}"},{"display":true,"left":"\\begin{gather}","right":"\\end{gather}"},{"display":true,"left":"\\begin{CD}","right":"\\end{CD}"},{"display":false,"left":"$","right":"$"},{"display":false,"left":"\\(","right":"\\)"}],"strict":false},"search":{"distance":100,"findAllMatches":false,"fuseIndexURL":"/search.json","highlightTag":"em","ignoreFieldNorm":false,"ignoreLocation":false,"isCaseSensitive":false,"location":0,"maxResultLength":10,"minMatchCharLength":2,"noResultsFound":"No results found","snippetLength":30,"threshold":0.3,"type":"fuse","useExtendedSearch":false},"version":"v0.3.17-8b402129"};</script><script src="/js/theme.min.9301245cf01fb1ba5f5c15fd31c0d1a45ee2c0db8bff20a52762e159abb3a7737d682d1cf2d148749b1501acebf5db20cb22c07cd44e89051830dcb4223992c7.js" integrity="sha512-kwEkXPAfsbpfXBX9McDRpF7iwNuL/yClJ2LhWauzp3N9aC0c8tFIdJsVAazr9dsgyyLAfNROiQUYMNy0IjmSxw==" defer></script><script>
+      window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());
+      gtag('config', 'G-RB8T1ZS4FX', { 'anonymize_ip': true });
+    </script><script src="https://www.googletagmanager.com/gtag/js?id=G-RB8T1ZS4FX" async></script><script async defer data-website-id="698d1689-fa78-4bfc-a0f3-9e95bcb884de" src=""  data-host-url="https://cloud.umami.is/script.js"  ></script></body>
+</html>

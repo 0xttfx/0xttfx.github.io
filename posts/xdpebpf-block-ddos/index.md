@@ -1,0 +1,461 @@
+# XDP &amp; EBPF Block DDoS
+
+
+Segue  um delírio pra esboçar um delírio idealiza a pretensão de uma solução funcional que combina um programa [XDP](https://prototype-kernel.readthedocs.io/en/latest/networking/XDP/introduction.html#what-is-xdp)/[eBPF](https://ebpf.io/) em C com um script em Bash(antes de usar Go)  para monitorar o tráfego e atualizar dinamicamente um [map](https://docs.cilium.io/en/latest/reference-guides/bpf/architecture/#maps) [eBPF](https://ebpf.io/) com sources IPs que devem ser bloqueados quando idenficado um possível ataque de negação. 
+
+- Nesse cenário, o programa XDP já está instalado na interface de rede e bloqueia pacotes provenientes de IPs listados no [`map`](https://docs.cilium.io/en/latest/reference-guides/bpf/architecture/#maps). 
+- O script em Bash monitora  o arquivo de subsistema de rastreamento `conntrack` do Netfilter `/proc/net/nf_conntrack` determinar se o número de conexões ativas ultrapassou o threshold configurado, que ao ser atingido:
+	- um log gerado por regras específicas `nftables` é analisado para identificar com base em uma &#34;janela&#34; de tempo, qual source IP ultrapassou o limite de conexões: indicando ser um possível ataque DoS:
+		- que então é inserido no `map` eBPF, fazendo com que o programa XDP passe a descartar os pacotes desses endereços.
+
+
+
+## 1. Pré-requisitos
+
+- Kernel Linux com suporte a [eBPF e XDP](https://docs.cilium.io/en/latest/reference-guides/bpf/index.html#bpf-and-xdp-reference-guide)  
+    Certifique-se de utilizar uma distribuição com kernel moderno (&gt;= 4.18, de preferência 5.x ou superior).
+- clang
+- llvm
+- gcc
+- libbpf
+- libbpf-devel 
+- libxdp 
+- libxdp-devel 
+- xdp-tools 
+- bpftool kernel-headers
+- iperf
+
+
+## 2. Programa XDP/eBPF
+
+O programa utiliza um [`map`](https://docs.cilium.io/en/latest/reference-guides/bpf/architecture/#maps) eBPF do tipo HASH para armazenar os IPs que devem ser bloqueados. E para cada pacote recebido, é verificado se source IP consta no mapa. Se sim, o pacote é descartado ([XDP_DROP](https://prototype-kernel.readthedocs.io/en/latest/networking/XDP/implementation/xdp_actions.html)); caso contrário, ele é encaminhado normalmente ([XDP_PASS](https://prototype-kernel.readthedocs.io/en/latest/networking/XDP/implementation/xdp_actions.html)).
+
+&gt;[!INFO]
+&gt;Para **RTFM** e código atualizado: [repo Git](https://github.com/0xttfx/xdp-block-ddos)
+
+---
+
+```c
+#include &lt;linux/bpf.h&gt;
+#include &lt;linux/if_ether.h&gt;
+#include &lt;linux/ip.h&gt;
+#include &lt;bpf/bpf_helpers.h&gt;
+
+/*
+ * Mapa do tipo HASH para armazenar os IPs bloqueados.
+ * - Chave: __u32 (IP de origem, em formato de rede, em big-endian)
+ * - Valor: __u32 (flag, por exemplo, 1 para indicar bloqueio)
+ * - max_entries: define quantos IPs podem ser bloqueados simultaneamente
+ */
+struct {
+    __uint(type, BPF_MAP_TYPE_HASH);
+    __uint(max_entries, 1024);
+    __type(key, __u32);
+    __type(value, __u32);
+} blocked_ips SEC(&#34;.maps&#34;);
+
+/*
+ * Programa XDP para bloquear pacotes provenientes de IPs listados no mapa.
+ *
+ * Fluxo do programa:
+ *   1. Obtém os ponteiros para o início e fim dos dados do pacote.
+ *   2. Valida a presença completa do cabeçalho Ethernet.
+ *   3. Processa somente pacotes IPv4.
+ *   4. Valida a presença do cabeçalho IP completo e a integridade do campo IHL.
+ *   5. Extrai o IP de origem (localizado nos primeiros 20 bytes do cabeçalho IP).
+ *   6. Consulta o mapa &#39;blocked_ips&#39; e, se o IP estiver bloqueado, retorna XDP_DROP.
+ *      Caso contrário, o pacote segue normalmente (XDP_PASS).
+ *
+ * Detalhes de performance:
+ *   - A execução ocorre no caminho de dados (driver) com alta performance e baixa latência.
+ *   - As verificações de limites são essenciais para satisfazer o verificador do eBPF.
+ *   - A lógica foi mantida mínima, sem operações adicionais, para otimizar o tempo de execução.
+ */
+SEC(&#34;xdp&#34;)
+int xdp_ddos_blocker(struct xdp_md *ctx)
+{
+    // Obtém os ponteiros para os dados do pacote
+    void *data = (void *)(long)ctx-&gt;data;
+    void *data_end = (void *)(long)ctx-&gt;data_end;
+
+    // Verifica se o cabeçalho Ethernet está completo
+    struct ethhdr *eth = data;
+    if ((void *)(eth &#43; 1) &gt; data_end)
+        return XDP_PASS;
+
+    // Processa somente pacotes IPv4
+    if (bpf_ntohs(eth-&gt;h_proto) != ETH_P_IP)
+        return XDP_PASS;
+
+    // Calcula o início do cabeçalho IP (logo após o cabeçalho Ethernet)
+    struct iphdr *ip = data &#43; sizeof(*eth);
+    
+    // Verifica se pelo menos os 20 bytes mínimos do cabeçalho IP estão presentes.
+    if ((void *)ip &#43; sizeof(struct iphdr) &gt; data_end)
+        return XDP_PASS;
+
+    // Valida o campo IHL: deve ser pelo menos 5 (5 * 4 = 20 bytes).
+    if (ip-&gt;ihl &lt; 5)
+        return XDP_PASS;
+    
+    // Opcional: verificação completa do cabeçalho IP, considerando opções se presentes.
+    if ((void *)ip &#43; (ip-&gt;ihl * 4) &gt; data_end)
+        return XDP_PASS;
+
+    // Extrai o IP de origem (localizado nos primeiros 20 bytes e sempre presente se ip-&gt;ihl &gt;= 5)
+    __u32 src_ip = ip-&gt;saddr;
+
+    // Consulta no mapa: se o IP de origem estiver presente, descarta o pacote.
+    __u32 *blocked = bpf_map_lookup_elem(&amp;blocked_ips, &amp;src_ip);
+    if (blocked)
+        return XDP_DROP;
+
+    return XDP_PASS;
+}
+
+// Obrigatório: licença do programa eBPF, necessária para que o kernel aceite o carregamento.
+char _license[] SEC(&#34;license&#34;) = &#34;GPL&#34;;
+
+```
+
+### Detalhes Técnicos
+
+1. **Verificações de Segurança e Integridade:**
+    
+    - **Cabeçalho Ethernet:**  
+        O código garante que o cabeçalho Ethernet completo esteja presente, comparando o ponteiro para o fim do cabeçalho com `data_end`.
+    - **Cabeçalho IP:**
+        - É verificado se pelo menos 20 bytes (o tamanho mínimo do cabeçalho IP) estão disponíveis.
+        - Verificação para o campo `ihl` (Internet Header Length), garantindo que seja maior ou igual a 5.
+        - Se o IP possuir opções (quando `ihl &gt; 5`), o código valida que o cabeçalho completo (tamanho `ip-&gt;ihl * 4`) está dentro dos limites do buffer.
+
+
+2. **Extração do IP de Origem:**
+    
+    - O IP de origem (`ip-&gt;saddr`) é extraído sem necessidade de cálculos adicionais, pois ele sempre se encontra nos primeiros 20 bytes do cabeçalho IP.
+
+3. **Consulta no Mapa eBPF:**
+    
+    - O mapa `blocked_ips` é consultado utilizando o helper `bpf_map_lookup_elem`.
+    - Se o ponteiro retornado for não nulo, isso indica que o IP está bloqueado e, consequentemente, o pacote é descartado com `XDP_DROP`.
+    - Essa operação é extremamente rápida, pois o mapa foi definido para ter um acesso em tempo O(1) (tabela hash).
+
+4. **Performance e Considerações de Otimização:**
+    
+    - **Execução no XDP:**  
+        O programa é executado no XDP, logo na entrada dos pacotes, o que garante baixa latência e alta performance.
+    - **Minimalismo:**  
+        A lógica foi mantida mínima para reduzir o número de instruções e evitar qualquer latência adicional.
+    - **Verificador eBPF:**  
+        As verificações de limites são necessárias para passar pelo verificador do kernel, garantindo que o programa seja seguro e não acesse memória fora dos limites.
+    - **Possíveis Micro-Otimizações:**  
+        Em cenários mais avançados, técnicas como _branch prediction hints_ (por meio de macros como `__builtin_expect`) podem ser consideradas, mas normalmente o compilador BPF já otimiza o código de forma eficaz.
+
+5. **Licenciamento:**
+    
+    - A inclusão da string de licença `&#34;GPL&#34;` é obrigatória para o carregamento do programa no kernel.
+
+
+### Compilando
+
+Utilize o clang para compilar para o formato eBPF:
+
+```bash
+clang -O2 -target bpf -c xdp_ddos_blocker.c -o xdp_ddos_blocker.o
+```
+
+
+## 3. Carregando na Interface de Rede
+
+Para carregar o programa na interface, vamos usar  o comando  [`ip`](https://man7.org/linux/man-pages/man8/ip.8.html) do [iproute2](https://wiki.linuxfoundation.org/networking/iproute2)
+
+```bash
+ip link set dev eth0 xdp obj xdp_ddos_blocker.o sec xdp
+```
+
+Para verificar se o programa foi carregado corretamente, utilize:
+
+```bash
+ip -details link show dev eth0
+```
+
+Se necessário, para remover o programa:
+
+```bash
+ip link set dev eth0 xdp off
+```
+
+
+
+## 4. Script Bash para Monitoramento e Atualização do Mapa
+Segue script em Bash que implementa uma abordagem híbrida para detectar um ataque DDoS: 
+
+- Monitorando o número de conexões em `/proc/net/nf_conntrack`.
+
+- E existindo um pico suspeito, analisa os logs do `nftables` para identificar IPs suspeitos devido a sua alta frequência.
+
+- Para então atualizar o mapa eBPF (fixado em um caminho configurável) para bloquear os IPs suspeitos.
+
+&gt;[!INFO] Para **RTFM** e código atualizado: [repo Git](https://github.com/0xttfx/monitor_ddos)
+
+---
+
+```bash
+#!/bin/bash
+# monitor_ddos_hybrid.sh
+# Abordagem híbrida para detectar ataques DDoS:
+# 1. Monitora /proc/net/nf_conntrack para identificar picos no número de conexões.
+# 2. Se houver pico, analisa os logs do nftables para extrair IPs com alta frequência.
+# 3. Atualiza o mapa eBPF (pinado em MAP_PIN) para bloquear os IPs suspeitos.
+#
+# OBSERVAÇÕES TÉCNICAS:
+# - Certifique-se de que o módulo nf_conntrack esteja carregado e que o arquivo /proc/net/nf_conntrack exista.
+# - O log do nftables deve estar configurado corretamente; muitas vezes o kernel envia esses logs para syslog,
+#   então pode ser necessário ajustar o caminho.
+# - O script deve ser executado com privilégios de root para acesso aos arquivos e atualização do mapa eBPF via bpftool.
+# - O programa XDP e o mapa eBPF devem estar previamente carregados na interface de rede.
+#
+
+# Valores padrões
+MAP_PIN_DEFAULT=&#34;/sys/fs/bpf/blocked_ips&#34;
+THRESHOLD_CONN_DEFAULT=2000
+LOG_THRESHOLD_DEFAULT=5
+INTERVAL_DEFAULT=10
+LOG_FILE_DEFAULT=&#34;/var/log/nftables.log&#34;
+
+# Inicializa variáveis com os valores padrão
+MAP_PIN=&#34;$MAP_PIN_DEFAULT&#34;
+THRESHOLD_CONN=&#34;$THRESHOLD_CONN_DEFAULT&#34;
+LOG_THRESHOLD=&#34;$LOG_THRESHOLD_DEFAULT&#34;
+INTERVAL=&#34;$INTERVAL_DEFAULT&#34;
+LOG_FILE=&#34;$LOG_FILE_DEFAULT&#34;
+
+# Função para exibir a mensagem de ajuda
+usage() {
+    cat &lt;&lt; EOF
+Uso: $(basename &#34;$0&#34;) [opções]
+
+Opções:
+  -m MAP_PIN         Caminho do mapa eBPF pinado (padrão: $MAP_PIN_DEFAULT)
+  -c THRESHOLD_CONN  Número de conexões para acionar análise (padrão: $THRESHOLD_CONN_DEFAULT)
+  -l LOG_THRESHOLD   Número mínimo de ocorrências de um IP nos logs para bloqueá-lo (padrão: $LOG_THRESHOLD_DEFAULT)
+  -i INTERVAL        Intervalo de tempo para verificação em segundos (padrão: $INTERVAL_DEFAULT)
+  -f LOG_FILE        Caminho para o arquivo de log do nftables (padrão: $LOG_FILE_DEFAULT)
+  -h                 Exibe esta mensagem de ajuda e sai
+
+Exemplo:
+  sudo $(basename &#34;$0&#34;) -m /sys/fs/bpf/blocked_ips -c 1500 -l 10 -i 15 -f /var/log/nftables.log
+
+EOF
+}
+
+# Processa as opções de linha de comando
+while getopts &#34;m:c:l:i:f:h&#34; opt; do
+    case &#34;$opt&#34; in
+        m) MAP_PIN=&#34;$OPTARG&#34; ;;
+        c) THRESHOLD_CONN=&#34;$OPTARG&#34; ;;
+        l) LOG_THRESHOLD=&#34;$OPTARG&#34; ;;
+        i) INTERVAL=&#34;$OPTARG&#34; ;;
+        f) LOG_FILE=&#34;$OPTARG&#34; ;;
+        h)
+            usage
+            exit 0
+            ;;
+        ?)
+            usage
+            exit 1
+            ;;
+    esac
+done
+
+echo &#34;Configurações utilizadas:&#34;
+echo &#34;  MAP_PIN:         $MAP_PIN&#34;
+echo &#34;  THRESHOLD_CONN:  $THRESHOLD_CONN&#34;
+echo &#34;  LOG_THRESHOLD:   $LOG_THRESHOLD&#34;
+echo &#34;  INTERVAL:        $INTERVAL&#34;
+echo &#34;  LOG_FILE:        $LOG_FILE&#34;
+echo
+
+# Função: Converte um IP (formato x.x.x.x) para valor hexadecimal (big-endian)
+ip_to_hex() {
+    local ip=&#34;$1&#34;
+    IFS=&#39;.&#39; read -r a b c d &lt;&lt;&lt; &#34;$ip&#34;
+    printf &#34;0x%02X%02X%02X%02X&#34; &#34;$a&#34; &#34;$b&#34; &#34;$c&#34; &#34;$d&#34;
+}
+
+# Função: Atualiza o mapa eBPF para bloquear um IP específico
+block_ip() {
+    local ip=&#34;$1&#34;
+    local key_hex
+    key_hex=$(ip_to_hex &#34;$ip&#34;)
+    echo &#34;Bloqueando IP suspeito: $ip (chave: $key_hex)&#34;
+    bpftool map update pinned &#34;$MAP_PIN&#34; key &#34;$key_hex&#34; value 0x1 2&gt;/dev/null
+}
+
+# Função: Retorna a contagem de conexões em /proc/net/nf_conntrack
+get_conn_count() {
+    if [ -f /proc/net/nf_conntrack ]; then
+        wc -l &lt; /proc/net/nf_conntrack
+    else
+        echo &#34;0&#34;
+    fi
+}
+
+# Loop principal de monitoramento
+while true; do
+    conn_count=$(get_conn_count)
+    echo &#34;Conexões atuais: $conn_count&#34;
+
+    if [ &#34;$conn_count&#34; -gt &#34;$THRESHOLD_CONN&#34; ]; then
+        echo &#34;Alerta: Pico de conexões detectado ($conn_count &gt; $THRESHOLD_CONN).&#34;
+        echo &#34;Analisando os logs do nftables para identificar IPs suspeitos...&#34;
+
+        # Captura uma janela de logs do nftables durante o intervalo definido.
+        # &#39;timeout&#39; limita a execução do tail, &#39;grep&#39; filtra linhas com &#34;SRC=&#34;,
+        # &#39;sed&#39; extrai o IP, e &#39;awk&#39; seleciona IPs com ocorrências acima do limite.
+        suspicious_ips=$(timeout &#34;$INTERVAL&#34; tail -n 1000 &#34;$LOG_FILE&#34; 2&gt;/dev/null | \
+            grep &#34;SRC=&#34; | sed -n &#39;s/.*SRC=\([0-9.]\&#43;\).*/\1/p&#39; | sort | uniq -c | \
+            awk -v thresh=&#34;$LOG_THRESHOLD&#34; &#39;$1 &gt;= thresh {print $2}&#39;)
+
+        for ip in $suspicious_ips; do
+            block_ip &#34;$ip&#34;
+        done
+    else
+        echo &#34;Número de conexões dentro do esperado.&#34;
+    fi
+
+    sleep &#34;$INTERVAL&#34;
+done
+```
+
+---
+
+### Detalhes Técnicos
+
+1. **Interface de Configuração via Linha de Comando:**
+    
+    - O script utiliza o `getopts` para permitir a configuração de parâmetros essenciais:
+        - **-m:** Caminho do mapa eBPF pinado (ex.: `/sys/fs/bpf/blocked_ips`).
+        - **-c:** Limite de conexões para acionar a análise (usando `/proc/net/nf_conntrack`).
+        - **-l:** Número mínimo de ocorrências de um IP nos logs para considerá-lo suspeito.
+        - **-i:** Intervalo de tempo (em segundos) para cada verificação.
+        - **-f:** Caminho para o arquivo de log do nftables.
+        - **-h:** Exibe a mensagem de ajuda.
+    - Essa abordagem torna o script flexível e adaptável a diferentes ambientes.
+
+2. **Pinagem Automática do Mapa:**
+
+	- A função `auto_pin_map()` verifica se o arquivo especificado em `MAP_PIN` existe. Se não existir, ela usa o `bpftool map show` para procurar uma linha contendo &#34;blocked_ips&#34; e extrai o ID do mapa.
+	- Em seguida, utiliza o comando `bpftool map pin id` para fixar o mapa no caminho desejado.
+	- Essa automação elimina a necessidade de pinagem manual e garante que o script e o programa XDP trabalhem com o mesmo mapa.
+	
+		1. **Conversão de IP para Hexadecimal:**
+    
+		    - A função `ip_to_hex` divide o endereço IP em seus quatro octetos e formata cada um com dois dígitos em hexadecimal, gerando uma chave compatível com o formato esperado pelo mapa eBPF.
+
+		2. **Monitoramento de Conexões:**
+    
+		    - O script lê `/proc/net/nf_conntrack` para determinar o número de conexões ativas.
+		    - Se o número de conexões ultrapassar o valor definido em `THRESHOLD_CONN`, ele aciona a análise dos logs do nftables.
+
+		3. **Análise dos Logs do nftables:**
+    
+		    - Utiliza `tail` com `timeout` para ler uma janela de logs por um período determinado.
+		    - A filtragem com `grep` e `sed` extrai os IPs a partir de linhas que contêm `SRC=`.
+		    - O `awk` conta as ocorrências e filtra somente os IPs que ultrapassam o limite definido em `LOG_THRESHOLD`.
+
+		4. **Atualização do Mapa eBPF:**
+    
+		    - Para cada IP suspeito identificado, o script utiliza o comando `bpftool` para inserir o IP no mapa eBPF, fazendo com que o programa XDP bloqueie os pacotes oriundos desse IP.
+
+		5. **Considerações Gerais:**
+    
+		    - Verifique se os caminhos configurados (para o mapa e o log) estão corretos e se os módulos necessários (como nf_conntrack) estão carregados.
+		    - Teste a porra toda né! Sou péssimo programador!
+		    - O script deve ser executado com privilégios para acessar `/proc`, os logs e atualizar o mapa eBPF.
+
+
+
+## 5. Regras e o Log nftables
+Geralmente, o nftables envia os logs para o kernel, e com o rsyslog podemos filtrar essas mensagens e gravá-las em um arquivo dedicado.
+
+### Regras nftables
+
+Segue um exemplo de regras específicas para a solução e que gerará um Log com prefixo `DDoS_ALERT: SRC=` definido:
+
+```nft
+table inet ddos_filter {
+    chain input {
+        type filter hook input priority 0; policy accept;
+        
+        ip protocol tcp ct state new limit rate 10/second burst 20 packets \
+            log prefix &#34;DDoS_ALERT: SRC=&#34; flags all
+
+        ip protocol udp ct state new limit rate 10/second burst 20 packets \
+            log prefix &#34;DDoS_ALERT: SRC=&#34; flags all
+
+        ip protocol icmp ct state new limit rate 5/second burst 10 packets \
+            log prefix &#34;DDoS_ALERT: SRC=&#34; flags all
+    }
+}
+```
+
+- Com essa configuração, os eventos de log contendo `&#34;DDoS_ALERT: SRC=&#34;` serão redirecionados para o arquivo `/var/log/nftables.log`, permitindo que o script extraia os IPs suspeitos...
+
+
+### Configurar o Log
+
+1. **Garanta que o serviço esteja rodando**  
+    No Fedora, ambiente de teste usado, o `rsyslog` geralmente vem instalado, mas certifique-se de que ele está em execução:
+    
+    ```bash
+    sudo systemctl status rsyslog
+    ```
+    
+2. **Filtrando os Logs**  
+    Crie um arquivo de configuração para o rsyslog que irá filtrar nosso log
+     
+   ```bash
+   touch /etc/rsyslog.d/nftables.conf
+   ```
+	
+	1. E adicione uma regra para filtrar as mensagens que contenham o prefixo  `&#34;DDoS_ALERT: SRC=&#34;`.
+		```rsyslog
+	    # Filtra mensagens que contenham &#34;DDoS_ALERT:&#34; e as grava em /var/log/nftables.log
+	    :msg, contains, &#34;DDoS_ALERT:&#34; -/var/log/nftables.log
+	    &amp; ~
+	    ```
+		- A primeira linha diz ao rsyslog: se a mensagem contiver o texto `&#34;DDoS_ALERT:&#34;`, envie-a para o arquivo `/var/log/nftables.log`. O hífen (`-`) antes do caminho indica gravação assíncrona, reduzindo o overhead.
+		- A linha `&amp; ~` impede que essas mensagens sejam processadas por outras regras, evitando duplicidade.
+	
+	2. **Reinicie o serviço**
+	 ```bash
+     sudo systemctl restart rsyslog
+     ```
+    
+3. **(Opcional) Configure o systemd-journald para encaminhar os logs ao rsyslog:**  
+    No Fedora, o `journald` já encaminha as mensagens para o `rsyslog` por padrão, mas se necessário, verifique o arquivo `/etc/systemd/journald.conf` e certifique-se de que a linha abaixo esteja configurada:
+    
+    ```bash
+    ForwardToSyslog=yes
+    ```
+    
+4. **Verifique se os logs estão sendo gravados:**  
+    Após aplicar a configuração e reiniciar o rsyslog, você pode testar sua configuração gerando uma mensagem de log (por exemplo, criando um evento com nftables) e verificando o conteúdo do arquivo:
+    
+    ```bash
+    sudo tail -f /var/log/nftables.log
+    ```
+
+
+
+
+
+
+
+
+---
+
+> Author: [Faioli a.k.a 0xttfx](https://github.com/0xttfx)  
+> URL: http://0xttfx.tcpip.net.br/posts/xdpebpf-block-ddos/  
+

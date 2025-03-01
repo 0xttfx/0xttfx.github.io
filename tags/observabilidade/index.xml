@@ -9,7 +9,7 @@
     <managingEditor>thiago.faioli@gmail.com (Faioli a.k.a 0xttfx)</managingEditor>
     <webMaster>thiago.faioli@gmail.com (Faioli a.k.a 0xttfx)</webMaster>
     <copyright>Running on [OpenBSD](https://openbsd.org) and [httpd](https://man.openbsd.org/httpd.8) |  [0xttfx](https://0xttfx.tcpip.net.br) - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)</copyright>
-    <lastBuildDate>Mon, 27 Jan 2025 11:46:26 -0300</lastBuildDate>
+    <lastBuildDate>Thu, 27 Feb 2025 20:41:06 -0300</lastBuildDate>
     <atom:link href="http://0xttfx.tcpip.net.br/tags/observabilidade/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>RTFM &amp; Aleatoriedades - Função  predict_linear() do Prometheus</title>
