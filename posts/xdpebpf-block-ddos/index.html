@@ -5,25 +5,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
     <meta name="robots" content="noodp" />
-    <title>XDP &amp; EBPF Block DDoS - 0xttfx</title><meta name="author" content="Faioli a.k.a 0xttfx">
-<meta name="description" content="Segue um delírio pra esboçar um delírio idealiza a pretensão de uma solução funcional que combina um programa XDP/eBPF em C com um script em Bash(antes de usar Go) para monitorar o tráfego e atualizar dinamicamente um map eBPF com sources IPs que devem ser bloqueados quando idenficado um possível ataque de negação.
-Nesse cenário, o programa XDP já está instalado na interface de rede e bloqueia pacotes provenientes de IPs listados no map. O script em Bash monitora o arquivo de subsistema de rastreamento conntrack do Netfilter /proc/net/nf_conntrack determinar se o número de conexões ativas ultrapassou o threshold configurado, que ao ser atingido: um log gerado por regras específicas nftables é analisado para identificar com base em uma &ldquo;janela&rdquo; de tempo, qual source IP ultrapassou o limite de conexões: indicando ser um possível ataque DoS: que então é inserido no map eBPF, fazendo com que o programa XDP passe a descartar os pacotes desses endereços. 1. Pré-requisitos Kernel Linux com suporte a eBPF e XDP
-Certifique-se de utilizar uma distribuição com kernel moderno (&gt;= 4.18, de preferência 5.x ou superior). clang llvm gcc libbpf libbpf-devel libxdp libxdp-devel xdp-tools bpftool kernel-headers iperf 2. Programa XDP/eBPF O programa utiliza um map eBPF do tipo HASH para armazenar os IPs que devem ser bloqueados. E para cada pacote recebido, é verificado se source IP consta no mapa. Se sim, o pacote é descartado (XDP_DROP); caso contrário, ele é encaminhado normalmente (XDP_PASS).
+    <title>XDP &amp; EBPF Block DoS - 0xttfx</title><meta name="author" content="Faioli a.k.a 0xttfx">
+<meta name="description" content="
+Segue um esboço de uma solução funcional que combina um programa XDP/eBPF em C com um script em Bash(antes de usar Go) para monitorar o tráfego e atualizar dinamicamente um map eBPF com sources IPs que devem ser bloqueados quando idenficado um possível ataque DoS.
 "><meta name="keywords" content='XDP, eBPF, Bash, Linux, nftables'>
-  <meta itemprop="name" content="XDP & eBPF Block DDoS">
-  <meta itemprop="description" content="Segue um delírio pra esboçar um delírio idealiza a pretensão de uma solução funcional que combina um programa XDP/eBPF em C com um script em Bash(antes de usar Go) para monitorar o tráfego e atualizar dinamicamente um map eBPF com sources IPs que devem ser bloqueados quando idenficado um possível ataque de negação.
-Nesse cenário, o programa XDP já está instalado na interface de rede e bloqueia pacotes provenientes de IPs listados no map. O script em Bash monitora o arquivo de subsistema de rastreamento conntrack do Netfilter /proc/net/nf_conntrack determinar se o número de conexões ativas ultrapassou o threshold configurado, que ao ser atingido: um log gerado por regras específicas nftables é analisado para identificar com base em uma “janela” de tempo, qual source IP ultrapassou o limite de conexões: indicando ser um possível ataque DoS: que então é inserido no map eBPF, fazendo com que o programa XDP passe a descartar os pacotes desses endereços. 1. Pré-requisitos Kernel Linux com suporte a eBPF e XDP
-Certifique-se de utilizar uma distribuição com kernel moderno (&gt;= 4.18, de preferência 5.x ou superior). clang llvm gcc libbpf libbpf-devel libxdp libxdp-devel xdp-tools bpftool kernel-headers iperf 2. Programa XDP/eBPF O programa utiliza um map eBPF do tipo HASH para armazenar os IPs que devem ser bloqueados. E para cada pacote recebido, é verificado se source IP consta no mapa. Se sim, o pacote é descartado (XDP_DROP); caso contrário, ele é encaminhado normalmente (XDP_PASS).">
+  <meta itemprop="name" content="XDP & eBPF Block DoS">
+  <meta itemprop="description" content="Segue um esboço de uma solução funcional que combina um programa XDP/eBPF em C com um script em Bash(antes de usar Go) para monitorar o tráfego e atualizar dinamicamente um map eBPF com sources IPs que devem ser bloqueados quando idenficado um possível ataque DoS.">
   <meta itemprop="datePublished" content="2025-01-22T17:13:52-03:00">
   <meta itemprop="dateModified" content="2025-03-01T15:05:21-03:00">
-  <meta itemprop="wordCount" content="2618">
+  <meta itemprop="wordCount" content="2619">
   <meta itemprop="image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
   <meta itemprop="keywords" content="XDP,EBPF,Bash,Linux,Nftables"><meta property="og:url" content="http://0xttfx.tcpip.net.br/posts/xdpebpf-block-ddos/">
   <meta property="og:site_name" content="0xttfx">
-  <meta property="og:title" content="XDP & eBPF Block DDoS">
-  <meta property="og:description" content="Segue um delírio pra esboçar um delírio idealiza a pretensão de uma solução funcional que combina um programa XDP/eBPF em C com um script em Bash(antes de usar Go) para monitorar o tráfego e atualizar dinamicamente um map eBPF com sources IPs que devem ser bloqueados quando idenficado um possível ataque de negação.
-Nesse cenário, o programa XDP já está instalado na interface de rede e bloqueia pacotes provenientes de IPs listados no map. O script em Bash monitora o arquivo de subsistema de rastreamento conntrack do Netfilter /proc/net/nf_conntrack determinar se o número de conexões ativas ultrapassou o threshold configurado, que ao ser atingido: um log gerado por regras específicas nftables é analisado para identificar com base em uma “janela” de tempo, qual source IP ultrapassou o limite de conexões: indicando ser um possível ataque DoS: que então é inserido no map eBPF, fazendo com que o programa XDP passe a descartar os pacotes desses endereços. 1. Pré-requisitos Kernel Linux com suporte a eBPF e XDP
-Certifique-se de utilizar uma distribuição com kernel moderno (&gt;= 4.18, de preferência 5.x ou superior). clang llvm gcc libbpf libbpf-devel libxdp libxdp-devel xdp-tools bpftool kernel-headers iperf 2. Programa XDP/eBPF O programa utiliza um map eBPF do tipo HASH para armazenar os IPs que devem ser bloqueados. E para cada pacote recebido, é verificado se source IP consta no mapa. Se sim, o pacote é descartado (XDP_DROP); caso contrário, ele é encaminhado normalmente (XDP_PASS).">
+  <meta property="og:title" content="XDP & eBPF Block DoS">
+  <meta property="og:description" content="Segue um esboço de uma solução funcional que combina um programa XDP/eBPF em C com um script em Bash(antes de usar Go) para monitorar o tráfego e atualizar dinamicamente um map eBPF com sources IPs que devem ser bloqueados quando idenficado um possível ataque DoS.">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
@@ -38,26 +33,24 @@ Certifique-se de utilizar uma distribuição com kernel moderno (&gt;= 4.18, de 
 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
-  <meta name="twitter:title" content="XDP & eBPF Block DDoS">
-  <meta name="twitter:description" content="Segue um delírio pra esboçar um delírio idealiza a pretensão de uma solução funcional que combina um programa XDP/eBPF em C com um script em Bash(antes de usar Go) para monitorar o tráfego e atualizar dinamicamente um map eBPF com sources IPs que devem ser bloqueados quando idenficado um possível ataque de negação.
-Nesse cenário, o programa XDP já está instalado na interface de rede e bloqueia pacotes provenientes de IPs listados no map. O script em Bash monitora o arquivo de subsistema de rastreamento conntrack do Netfilter /proc/net/nf_conntrack determinar se o número de conexões ativas ultrapassou o threshold configurado, que ao ser atingido: um log gerado por regras específicas nftables é analisado para identificar com base em uma “janela” de tempo, qual source IP ultrapassou o limite de conexões: indicando ser um possível ataque DoS: que então é inserido no map eBPF, fazendo com que o programa XDP passe a descartar os pacotes desses endereços. 1. Pré-requisitos Kernel Linux com suporte a eBPF e XDP
-Certifique-se de utilizar uma distribuição com kernel moderno (&gt;= 4.18, de preferência 5.x ou superior). clang llvm gcc libbpf libbpf-devel libxdp libxdp-devel xdp-tools bpftool kernel-headers iperf 2. Programa XDP/eBPF O programa utiliza um map eBPF do tipo HASH para armazenar os IPs que devem ser bloqueados. E para cada pacote recebido, é verificado se source IP consta no mapa. Se sim, o pacote é descartado (XDP_DROP); caso contrário, ele é encaminhado normalmente (XDP_PASS).">
+  <meta name="twitter:title" content="XDP & eBPF Block DoS">
+  <meta name="twitter:description" content="Segue um esboço de uma solução funcional que combina um programa XDP/eBPF em C com um script em Bash(antes de usar Go) para monitorar o tráfego e atualizar dinamicamente um map eBPF com sources IPs que devem ser bloqueados quando idenficado um possível ataque DoS.">
       <meta name="twitter:site" content="@0xttfx">
 <meta name="twitter:creator" content="@0xttfx" /><meta name="application-name" content="0xttfx">
 <meta name="apple-mobile-web-app-title" content="0xttfx"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" type="text/html" href="http://0xttfx.tcpip.net.br/posts/xdpebpf-block-ddos/" title="XDP &amp; eBPF Block DDoS - 0xttfx" /><link rel="prev" type="text/html" href="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-literaciaai/" title="RTFM &amp; Aleatoriedades - Literacia em IA" /><link rel="next" type="text/html" href="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-climanoterminal/" title="RTFM &amp; Aleatoriedades - Clima No Terminal" /><link rel="alternate" type="text/markdown" href="http://0xttfx.tcpip.net.br/posts/xdpebpf-block-ddos/index.md" title="XDP & eBPF Block DDoS - 0xttfx"><link rel="stylesheet" href="/css/style.min.5fb8636ad8f7ce85ece8cfd1b583385644991297bcabe889a9ed87d9b420dde6722873df084bf070d186b7e8f42529ece5312c08b3912ec100416517af236f51.css" integrity="sha512-X7hjatj3zoXs6M/RtYM4VkSZEpe8q+iJqe2H2bQg3eZyKHPfCEvwcNGGt+j0JSns5TEsCLORLsEAQWUXryNvUQ=="><link rel="preload" href="/lib/fontawesome-free/all.min.e47b37745d8010f92934047b5223876dafa545224d78cd840a4c31508c42d50fc52f27064db35aa565c1e2d3fcf3d9394f926ef1fb386f53f9cff881e2731f49.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5"><link rel="canonical" type="text/html" href="http://0xttfx.tcpip.net.br/posts/xdpebpf-block-ddos/" title="XDP &amp; eBPF Block DoS - 0xttfx" /><link rel="prev" type="text/html" href="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-literaciaai/" title="RTFM &amp; Aleatoriedades - Literacia em IA" /><link rel="next" type="text/html" href="http://0xttfx.tcpip.net.br/posts/rtfmaleatoriedades-climanoterminal/" title="RTFM &amp; Aleatoriedades - Clima No Terminal" /><link rel="alternate" type="text/markdown" href="http://0xttfx.tcpip.net.br/posts/xdpebpf-block-ddos/index.md" title="XDP & eBPF Block DoS - 0xttfx"><link rel="stylesheet" href="/css/style.min.5fb8636ad8f7ce85ece8cfd1b583385644991297bcabe889a9ed87d9b420dde6722873df084bf070d186b7e8f42529ece5312c08b3912ec100416517af236f51.css" integrity="sha512-X7hjatj3zoXs6M/RtYM4VkSZEpe8q+iJqe2H2bQg3eZyKHPfCEvwcNGGt+j0JSns5TEsCLORLsEAQWUXryNvUQ=="><link rel="preload" href="/lib/fontawesome-free/all.min.e47b37745d8010f92934047b5223876dafa545224d78cd840a4c31508c42d50fc52f27064db35aa565c1e2d3fcf3d9394f926ef1fb386f53f9cff881e2731f49.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="/lib/fontawesome-free/all.min.e47b37745d8010f92934047b5223876dafa545224d78cd840a4c31508c42d50fc52f27064db35aa565c1e2d3fcf3d9394f926ef1fb386f53f9cff881e2731f49.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="></noscript><link rel="preload" href="/lib/animate/animate.min.738daa4d2c3fc0f677ff92c1cc3f81c397fb6d2176a31a2eeb011bf88fe5a9e68a57914321f32fbd1a7bef6cb88dc24b2ae1943a96c931d83f053979d1f25803.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw==" as="style" onload="this.removeAttribute('onload');this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="/lib/animate/animate.min.738daa4d2c3fc0f677ff92c1cc3f81c397fb6d2176a31a2eeb011bf88fe5a9e68a57914321f32fbd1a7bef6cb88dc24b2ae1943a96c931d83f053979d1f25803.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw=="></noscript><script type="application/ld+json">
   {
     "@context": "http://schema.org",
     "@type": "BlogPosting",
-    "headline": "XDP \u0026 eBPF Block DDoS",
+    "headline": "XDP \u0026 eBPF Block DoS",
     "inLanguage": "en",
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "http:\/\/0xttfx.tcpip.net.br\/posts\/xdpebpf-block-ddos\/"
-    },"genre": "posts","keywords": "XDP, eBPF, Bash, Linux, nftables","wordcount":  2618 ,
+    },"genre": "posts","keywords": "XDP, eBPF, Bash, Linux, nftables","wordcount":  2619 ,
     "url": "http:\/\/0xttfx.tcpip.net.br\/posts\/xdpebpf-block-ddos\/","datePublished": "2025-01-22T17:13:52-03:00","dateModified": "2025-03-01T15:05:21-03:00","license": "Running on [OpenBSD](https://openbsd.org) and [httpd](https://man.openbsd.org/httpd.8) |  [0xttfx](https://0xttfx.tcpip.net.br) - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
@@ -130,10 +123,10 @@ Certifique-se de utilizar uma distribuição com kernel moderno (&gt;= 4.18, de 
   </div><main class="container"><aside class="aside-collection animate__animated animate__fadeIn animate__faster" aria-label="Collections"></aside>
 
   <article class="page single">
-    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>XDP &amp; EBPF Block DDoS</span>
+    <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>XDP &amp; EBPF Block DoS</span>
       </h1></div><div class="post-meta">
       <div class="post-meta-line"><span class="post-author"><a href="https://github.com/0xttfx" title="Author"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><i class="fa-solid fa-user-circle" aria-hidden="true"></i>
-    Faioli a.k.a 0xttfx</a></span><span class="post-included-in">&nbsp;included in <a href="/categories/networking/" class="post-category" title="Category - Networking"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Networking</a> and <a href="/collections/getting-started/" class="post-collection" title="Collection - Getting Started"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> Getting Started</a></span></div><div class="post-meta-line"><span title="published on 2025-01-22 17:13:52"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2025-01-22">2025-01-22</time></span>&nbsp;<span title="Updated on 2025-03-01 15:05:21"><i class="fa-regular fa-calendar-check fa-fw me-1" aria-hidden="true"></i><time datetime="2025-03-01">2025-03-01</time></span>&nbsp;<span title="2618 words"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>About 2700 words</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>13 minutes</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="XDP &amp; EBPF Block DDoS"><i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;views
+    Faioli a.k.a 0xttfx</a></span><span class="post-included-in">&nbsp;included in <a href="/categories/networking/" class="post-category" title="Category - Networking"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Networking</a> and <a href="/collections/getting-started/" class="post-collection" title="Collection - Getting Started"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> Getting Started</a></span></div><div class="post-meta-line"><span title="published on 2025-01-22 17:13:52"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2025-01-22">2025-01-22</time></span>&nbsp;<span title="Updated on 2025-03-01 15:05:21"><i class="fa-regular fa-calendar-check fa-fw me-1" aria-hidden="true"></i><time datetime="2025-03-01">2025-03-01</time></span>&nbsp;<span title="2619 words"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>About 2700 words</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>13 minutes</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="XDP &amp; EBPF Block DoS"><i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;views
           </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
         <div class="details-summary toc-title">
@@ -161,14 +154,16 @@ Certifique-se de utilizar uma distribuição com kernel moderno (&gt;= 4.18, de 
         <li><a href="#configurar-o-log">Configurar o Log</a></li>
       </ul>
     </li>
+    <li><a href="#6-testes-de-validação">6. Testes de Validação</a></li>
   </ul>
 </nav></div>
-      </div><div class="content" id="content"><p>Segue  um delírio pra esboçar um delírio idealiza a pretensão de uma solução funcional que combina um programa <a href="https://prototype-kernel.readthedocs.io/en/latest/networking/XDP/introduction.html#what-is-xdp"target="_blank" rel="external nofollow noopener noreferrer">XDP</a>/<a href="https://ebpf.io/"target="_blank" rel="external nofollow noopener noreferrer">eBPF</a> em C com um script em Bash(antes de usar Go)  para monitorar o tráfego e atualizar dinamicamente um <a href="https://docs.cilium.io/en/latest/reference-guides/bpf/architecture/#maps"target="_blank" rel="external nofollow noopener noreferrer">map</a> <a href="https://ebpf.io/"target="_blank" rel="external nofollow noopener noreferrer">eBPF</a> com sources IPs que devem ser bloqueados quando idenficado um possível ataque de negação.</p>
+      </div><div class="content" id="content"><p><img loading="lazy" src="/img/XDPeBPFDoS/eBPF.png" alt="Netfilter-packet-flow" srcset="/img/XDPeBPFDoS/eBPF.png?size=small, /img/XDPeBPFDoS/eBPF.png?size=medium 1.5x, /img/XDPeBPFDoS/eBPF.png?size=large 2x" data-title="Netfilter-packet-flow" style="background: url(/images/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}"/></p>
+<p>Segue um esboço de uma solução funcional que combina um programa <a href="https://prototype-kernel.readthedocs.io/en/latest/networking/XDP/introduction.html#what-is-xdp"target="_blank" rel="external nofollow noopener noreferrer">XDP</a>/<a href="https://ebpf.io/"target="_blank" rel="external nofollow noopener noreferrer">eBPF</a> em C com um script em Bash(antes de usar Go)  para monitorar o tráfego e atualizar dinamicamente um <a href="https://docs.cilium.io/en/latest/reference-guides/bpf/architecture/#maps"target="_blank" rel="external nofollow noopener noreferrer">map</a> <a href="https://ebpf.io/"target="_blank" rel="external nofollow noopener noreferrer">eBPF</a> com sources IPs que devem ser bloqueados quando idenficado um possível ataque <a href="https://attack.mitre.org/techniques/T0814/"target="_blank" rel="external nofollow noopener noreferrer">DoS</a>.</p>
 <ul>
-<li>Nesse cenário, o programa XDP já está instalado na interface de rede e bloqueia pacotes provenientes de IPs listados no <a href="https://docs.cilium.io/en/latest/reference-guides/bpf/architecture/#maps"target="_blank" rel="external nofollow noopener noreferrer"><code>map</code></a>.</li>
-<li>O script em Bash monitora  o arquivo de subsistema de rastreamento <code>conntrack</code> do Netfilter <code>/proc/net/nf_conntrack</code> determinar se o número de conexões ativas ultrapassou o threshold configurado, que ao ser atingido:
+<li>Nesse cenário, o programa XDP/eBPF já está instalado na interface de rede e bloqueia pacotes provenientes de IPs listados no <a href="https://docs.cilium.io/en/latest/reference-guides/bpf/architecture/#maps"target="_blank" rel="external nofollow noopener noreferrer">map</a>.</li>
+<li>O script em Bash monitora  o arquivo de subsistema de rastreamento <a href="https://conntrack-tools.netfilter.org"target="_blank" rel="external nofollow noopener noreferrer">conntrack</a> do <a href="https://www.netfilter.org/"target="_blank" rel="external nofollow noopener noreferrer">Netfilter</a> <a href="https://conntrack-tools.netfilter.org/manual.html#conntrack"target="_blank" rel="external nofollow noopener noreferrer">/proc/net/nf_conntrack</a> para determinar se o número de conexões ativas ultrapassou o threshold configurado, e que ao ser atingido:
 <ul>
-<li>um log gerado por regras específicas <code>nftables</code> é analisado para identificar com base em uma &ldquo;janela&rdquo; de tempo, qual source IP ultrapassou o limite de conexões: indicando ser um possível ataque DoS:
+<li>um log gerado por regras específicas <a href="https://www.netfilter.org/projects/nftables/index.html"target="_blank" rel="external nofollow noopener noreferrer">nftables</a> é analisado para identificar com base em uma &ldquo;janela&rdquo; de tempo, qual source IP ultrapassou o limite de conexões: indicando ser um possível ataque DoS:
 <ul>
 <li>que então é inserido no <code>map</code> eBPF, fazendo com que o programa XDP passe a descartar os pacotes desses endereços.</li>
 </ul>
@@ -192,17 +187,19 @@ Certifique-se de utilizar uma distribuição com kernel moderno (&gt;= 4.18, de 
 <li>libxdp-devel</li>
 <li>xdp-tools</li>
 <li>bpftool kernel-headers</li>
-<li>iperf</li>
+<li>perf</li>
+<li>nftables</li>
+<li>iproute2</li>
 </ul>
 <h2 id="2-programa-xdpebpf" class="heading-element"><span>2. Programa XDP/eBPF</span>
   <a href="#2-programa-xdpebpf" class="heading-mark">
     <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
   </a>
-</h2><p>O programa utiliza um <a href="https://docs.cilium.io/en/latest/reference-guides/bpf/architecture/#maps"target="_blank" rel="external nofollow noopener noreferrer"><code>map</code></a> eBPF do tipo HASH para armazenar os IPs que devem ser bloqueados. E para cada pacote recebido, é verificado se source IP consta no mapa. Se sim, o pacote é descartado (<a href="https://prototype-kernel.readthedocs.io/en/latest/networking/XDP/implementation/xdp_actions.html"target="_blank" rel="external nofollow noopener noreferrer">XDP_DROP</a>); caso contrário, ele é encaminhado normalmente (<a href="https://prototype-kernel.readthedocs.io/en/latest/networking/XDP/implementation/xdp_actions.html"target="_blank" rel="external nofollow noopener noreferrer">XDP_PASS</a>).</p>
+</h2><p>O programa utiliza um <a href="https://docs.cilium.io/en/latest/reference-guides/bpf/architecture/#maps"target="_blank" rel="external nofollow noopener noreferrer">map</a> eBPF do tipo HASH para armazenar os IPs que devem ser bloqueados. E para cada pacote recebido, é verificado se source IP consta no mapa. Se sim, o pacote é descartado (<a href="https://prototype-kernel.readthedocs.io/en/latest/networking/XDP/implementation/xdp_actions.html"target="_blank" rel="external nofollow noopener noreferrer">XDP_DROP</a>); caso contrário, ele é encaminhado normalmente (<a href="https://prototype-kernel.readthedocs.io/en/latest/networking/XDP/implementation/xdp_actions.html"target="_blank" rel="external nofollow noopener noreferrer">XDP_PASS</a>).</p>
 <div class="details admonition info open disabled">
-  <div class="details-summary admonition-title"><i class="icon fa-fw fa-solid fa-circle-info" aria-hidden="true"></i>Info</div>
+  <div class="details-summary admonition-title"><i class="icon fa-fw fa-solid fa-circle-info" aria-hidden="true"></i><strong>RTFM</strong> e código atualizado: <a href="https://github.com/0xttfx/xdp-block-ddos"target="_blank" rel="external nofollow noopener noreferrer">repo Git</a></div>
   <div class="details-content">
-    <div class="admonition-content"><p>Para <strong>RTFM</strong> e código atualizado: <a href="https://github.com/0xttfx/xdp-block-ddos"target="_blank" rel="external nofollow noopener noreferrer">repo Git</a></p></div>
+    <div class="admonition-content"></div>
   </div>
 </div><hr>
 <div class="highlight"><div class="chroma">
@@ -468,7 +465,7 @@ Em cenários mais avançados, técnicas como <em>branch prediction hints</em> (p
 </h2><p>Segue script em Bash que implementa uma abordagem híbrida para detectar um ataque DDoS:</p>
 <ul>
 <li>
-<p>Monitorando o número de conexões em <code>/proc/net/nf_conntrack</code>.</p>
+<p>Monitorando o número de conexões em <a href="https://conntrack-tools.netfilter.org/manual.html#conntrack"target="_blank" rel="external nofollow noopener noreferrer">/proc/net/nf_conntrack</a>.</p>
 </li>
 <li>
 <p>E existindo um pico suspeito, analisa os logs do <code>nftables</code> para identificar IPs suspeitos devido a sua alta frequência.</p>
@@ -478,7 +475,7 @@ Em cenários mais avançados, técnicas como <em>branch prediction hints</em> (p
 </li>
 </ul>
 <div class="details admonition info open disabled">
-  <div class="details-summary admonition-title"><i class="icon fa-fw fa-solid fa-circle-info" aria-hidden="true"></i>Para <strong>RTFM</strong> e código atualizado: <a href="https://github.com/0xttfx/monitor_ddos"target="_blank" rel="external nofollow noopener noreferrer">repo Git</a></div>
+  <div class="details-summary admonition-title"><i class="icon fa-fw fa-solid fa-circle-info" aria-hidden="true"></i><strong>RTFM</strong> e código atualizado: <a href="https://github.com/0xttfx/monitor_ddos"target="_blank" rel="external nofollow noopener noreferrer">repo Git</a></div>
   <div class="details-content">
     <div class="admonition-content"></div>
   </div>
@@ -938,6 +935,11 @@ Após aplicar a configuração e reiniciar o rsyslog, você pode testar sua conf
 </div>
 </div></li>
 </ol>
+<h2 id="6-testes-de-validação" class="heading-element"><span>6. Testes de Validação</span>
+  <a href="#6-testes-de-valida%c3%a7%c3%a3o" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><p>&hellip; calma! To fazendo</p>
 </div><div class="post-footer" id="post-footer">
   <div class="post-info">
     <div class="post-info-line">
@@ -947,13 +949,13 @@ Após aplicar a configuração e reiniciar o rsyslog, você pode testar sua conf
       </div><div class="post-info-license">
             <span><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a></span>
           </div></div><div class="post-info-line">
-        <div class="post-info-md"><span><a href="/posts/xdpebpf-block-ddos/index.md" title="Read Markdown" class="link-to-markdown">Read Markdown</a></span><span><a href="https://github.com/0xttfx/blob/main/content/posts/XDP&amp;eBPF-Block-DDoS.md?plain=1" title="View source"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-source">View source</a></span><span><a href="https://github.com/0xttfx/edit/main/content/posts/XDP&amp;eBPF-Block-DDoS.md" title="Edit this page"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-edit">Edit this page</a></span><span><a href="https://github.com/0xttfx/issues/new?title=[BUG]%20XDP&#43;%26&#43;eBPF&#43;Block&#43;DDoS&amp;body=%7cField%7cValue%7c%0A%7c-%7c-%7c%0A%7cTitle%7cXDP&#43;%26&#43;eBPF&#43;Block&#43;DDoS%7c%0A%7cURL%7chttp://0xttfx.tcpip.net.br/posts/xdpebpf-block-ddos/%7c%0A%7cFilename%7chttps://github.com/0xttfx/blob/main/content/posts/XDP&amp;eBPF-Block-DDoS.md?plain=1%7c" title="Report issue"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-report">Report issue</a></span></div>
+        <div class="post-info-md"><span><a href="/posts/xdpebpf-block-ddos/index.md" title="Read Markdown" class="link-to-markdown">Read Markdown</a></span><span><a href="https://github.com/0xttfx/blob/main/content/posts/XDP&amp;eBPF-Block-DDoS.md?plain=1" title="View source"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-source">View source</a></span><span><a href="https://github.com/0xttfx/edit/main/content/posts/XDP&amp;eBPF-Block-DDoS.md" title="Edit this page"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-edit">Edit this page</a></span><span><a href="https://github.com/0xttfx/issues/new?title=[BUG]%20XDP&#43;%26&#43;eBPF&#43;Block&#43;DoS&amp;body=%7cField%7cValue%7c%0A%7c-%7c-%7c%0A%7cTitle%7cXDP&#43;%26&#43;eBPF&#43;Block&#43;DoS%7c%0A%7cURL%7chttp://0xttfx.tcpip.net.br/posts/xdpebpf-block-ddos/%7c%0A%7cFilename%7chttps://github.com/0xttfx/blob/main/content/posts/XDP&amp;eBPF-Block-DDoS.md?plain=1%7c" title="Report issue"target="_blank" rel="external nofollow noopener noreferrer" class="link-to-report">Report issue</a></span></div>
         <div class="post-info-share">
-          <span><a href="javascript:void(0);" title="Share on X" data-sharer="twitter" data-url="http://0xttfx.tcpip.net.br/posts/xdpebpf-block-ddos/" data-title="XDP &amp; EBPF Block DDoS" data-via="0xttfx" data-hashtags="XDP,eBPF,Bash,Linux,nftables"><i class="fa-brands fa-x-twitter fa-fw" aria-hidden="true"></i></a>
+          <span><a href="javascript:void(0);" title="Share on X" data-sharer="twitter" data-url="http://0xttfx.tcpip.net.br/posts/xdpebpf-block-ddos/" data-title="XDP &amp; EBPF Block DoS" data-via="0xttfx" data-hashtags="XDP,eBPF,Bash,Linux,nftables"><i class="fa-brands fa-x-twitter fa-fw" aria-hidden="true"></i></a>
   <a href="javascript:void(0);" title="Share on Linkedin" data-sharer="linkedin" data-url="http://0xttfx.tcpip.net.br/posts/xdpebpf-block-ddos/"><i class="fa-brands fa-linkedin fa-fw" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="http://0xttfx.tcpip.net.br/posts/xdpebpf-block-ddos/" data-title="XDP &amp; EBPF Block DDoS" data-web><i class="fa-brands fa-whatsapp fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on WhatsApp" data-sharer="whatsapp" data-url="http://0xttfx.tcpip.net.br/posts/xdpebpf-block-ddos/" data-title="XDP &amp; EBPF Block DoS" data-web><i class="fa-brands fa-whatsapp fa-fw" aria-hidden="true"></i></a>
   <a href="javascript:void(0);" title="Share on Reddit" data-sharer="reddit" data-url="http://0xttfx.tcpip.net.br/posts/xdpebpf-block-ddos/"><i class="fa-brands fa-reddit fa-fw" aria-hidden="true"></i></a>
-  <a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="http://0xttfx.tcpip.net.br/posts/xdpebpf-block-ddos/" data-title="XDP &amp; EBPF Block DDoS"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
+  <a href="javascript:void(0);" title="Share on 微博" data-sharer="weibo" data-url="http://0xttfx.tcpip.net.br/posts/xdpebpf-block-ddos/" data-title="XDP &amp; EBPF Block DoS"><i class="fa-brands fa-weibo fa-fw" aria-hidden="true"></i></a>
   </span>
         </div>
       </div></div>
