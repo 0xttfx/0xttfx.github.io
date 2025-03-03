@@ -7,23 +7,23 @@
     <meta name="robots" content="noodp" />
     <title>XDP &amp; EBPF Block DoS - 0xttfx</title><meta name="author" content="Faioli a.k.a 0xttfx">
 <meta name="description" content="
-Segue um esboço de uma solução funcional que combina um programa XDP/eBPF em C com um script em Bash(antes de usar Go) para monitorar o tráfego e atualizar dinamicamente um map eBPF com sources IPs que devem ser bloqueados quando idenficado um possível ataque DoS.
+Segue um teste para aplicar os conceitos de eBPF! É um esboço de uma solução que espera ser funcional e que combina um programa XDP/eBPF em C com um script em Bash(antes de usar Go) para monitorar o tráfego e atualizar dinamicamente um map eBPF com sources IPs que devem ser bloqueados quando idenficado um possível ataque DoS.
 "><meta name="keywords" content='XDP, eBPF, Bash, Linux, nftables'>
   <meta itemprop="name" content="XDP & eBPF Block DoS">
-  <meta itemprop="description" content="Segue um esboço de uma solução funcional que combina um programa XDP/eBPF em C com um script em Bash(antes de usar Go) para monitorar o tráfego e atualizar dinamicamente um map eBPF com sources IPs que devem ser bloqueados quando idenficado um possível ataque DoS.">
+  <meta itemprop="description" content="Segue um teste para aplicar os conceitos de eBPF! É um esboço de uma solução que espera ser funcional e que combina um programa XDP/eBPF em C com um script em Bash(antes de usar Go) para monitorar o tráfego e atualizar dinamicamente um map eBPF com sources IPs que devem ser bloqueados quando idenficado um possível ataque DoS.">
   <meta itemprop="datePublished" content="2025-01-22T17:13:52-03:00">
-  <meta itemprop="dateModified" content="2025-03-01T15:05:21-03:00">
-  <meta itemprop="wordCount" content="2619">
+  <meta itemprop="dateModified" content="2025-03-01T18:54:06-03:00">
+  <meta itemprop="wordCount" content="3174">
   <meta itemprop="image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
   <meta itemprop="keywords" content="XDP,EBPF,Bash,Linux,Nftables"><meta property="og:url" content="http://0xttfx.tcpip.net.br/posts/xdpebpf-block-ddos/">
   <meta property="og:site_name" content="0xttfx">
   <meta property="og:title" content="XDP & eBPF Block DoS">
-  <meta property="og:description" content="Segue um esboço de uma solução funcional que combina um programa XDP/eBPF em C com um script em Bash(antes de usar Go) para monitorar o tráfego e atualizar dinamicamente um map eBPF com sources IPs que devem ser bloqueados quando idenficado um possível ataque DoS.">
+  <meta property="og:description" content="Segue um teste para aplicar os conceitos de eBPF! É um esboço de uma solução que espera ser funcional e que combina um programa XDP/eBPF em C com um script em Bash(antes de usar Go) para monitorar o tráfego e atualizar dinamicamente um map eBPF com sources IPs que devem ser bloqueados quando idenficado um possível ataque DoS.">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
     <meta property="article:published_time" content="2025-01-22T17:13:52-03:00">
-    <meta property="article:modified_time" content="2025-03-01T15:05:21-03:00">
+    <meta property="article:modified_time" content="2025-03-01T18:54:06-03:00">
     <meta property="article:tag" content="XDP">
     <meta property="article:tag" content="EBPF">
     <meta property="article:tag" content="Bash">
@@ -34,7 +34,7 @@ Segue um esboço de uma solução funcional que combina um programa XDP/eBPF em 
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
   <meta name="twitter:title" content="XDP & eBPF Block DoS">
-  <meta name="twitter:description" content="Segue um esboço de uma solução funcional que combina um programa XDP/eBPF em C com um script em Bash(antes de usar Go) para monitorar o tráfego e atualizar dinamicamente um map eBPF com sources IPs que devem ser bloqueados quando idenficado um possível ataque DoS.">
+  <meta name="twitter:description" content="Segue um teste para aplicar os conceitos de eBPF! É um esboço de uma solução que espera ser funcional e que combina um programa XDP/eBPF em C com um script em Bash(antes de usar Go) para monitorar o tráfego e atualizar dinamicamente um map eBPF com sources IPs que devem ser bloqueados quando idenficado um possível ataque DoS.">
       <meta name="twitter:site" content="@0xttfx">
 <meta name="twitter:creator" content="@0xttfx" /><meta name="application-name" content="0xttfx">
 <meta name="apple-mobile-web-app-title" content="0xttfx"><meta name="theme-color" data-light="#f8f8f8" data-dark="#252627" content="#f8f8f8"><meta name="msapplication-TileColor" content="#da532c"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
@@ -50,8 +50,8 @@ Segue um esboço de uma solução funcional que combina um programa XDP/eBPF em 
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "http:\/\/0xttfx.tcpip.net.br\/posts\/xdpebpf-block-ddos\/"
-    },"genre": "posts","keywords": "XDP, eBPF, Bash, Linux, nftables","wordcount":  2619 ,
-    "url": "http:\/\/0xttfx.tcpip.net.br\/posts\/xdpebpf-block-ddos\/","datePublished": "2025-01-22T17:13:52-03:00","dateModified": "2025-03-01T15:05:21-03:00","license": "Running on [OpenBSD](https://openbsd.org) and [httpd](https://man.openbsd.org/httpd.8) |  [0xttfx](https://0xttfx.tcpip.net.br) - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)","publisher": {
+    },"genre": "posts","keywords": "XDP, eBPF, Bash, Linux, nftables","wordcount":  3174 ,
+    "url": "http:\/\/0xttfx.tcpip.net.br\/posts\/xdpebpf-block-ddos\/","datePublished": "2025-01-22T17:13:52-03:00","dateModified": "2025-03-01T18:54:06-03:00","license": "Running on [OpenBSD](https://openbsd.org) and [httpd](https://man.openbsd.org/httpd.8) |  [0xttfx](https://0xttfx.tcpip.net.br) - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
         "@type": "Person",
@@ -126,7 +126,7 @@ Segue um esboço de uma solução funcional que combina um programa XDP/eBPF em 
     <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>XDP &amp; EBPF Block DoS</span>
       </h1></div><div class="post-meta">
       <div class="post-meta-line"><span class="post-author"><a href="https://github.com/0xttfx" title="Author"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><i class="fa-solid fa-user-circle" aria-hidden="true"></i>
-    Faioli a.k.a 0xttfx</a></span><span class="post-included-in">&nbsp;included in <a href="/categories/networking/" class="post-category" title="Category - Networking"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Networking</a> and <a href="/collections/getting-started/" class="post-collection" title="Collection - Getting Started"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> Getting Started</a></span></div><div class="post-meta-line"><span title="published on 2025-01-22 17:13:52"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2025-01-22">2025-01-22</time></span>&nbsp;<span title="Updated on 2025-03-01 15:05:21"><i class="fa-regular fa-calendar-check fa-fw me-1" aria-hidden="true"></i><time datetime="2025-03-01">2025-03-01</time></span>&nbsp;<span title="2619 words"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>About 2700 words</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>13 minutes</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="XDP &amp; EBPF Block DoS"><i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;views
+    Faioli a.k.a 0xttfx</a></span><span class="post-included-in">&nbsp;included in <a href="/categories/networking/" class="post-category" title="Category - Networking"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Networking</a> and <a href="/collections/getting-started/" class="post-collection" title="Collection - Getting Started"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> Getting Started</a></span></div><div class="post-meta-line"><span title="published on 2025-01-22 17:13:52"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2025-01-22">2025-01-22</time></span>&nbsp;<span title="Updated on 2025-03-01 18:54:06"><i class="fa-regular fa-calendar-check fa-fw me-1" aria-hidden="true"></i><time datetime="2025-03-01">2025-03-01</time></span>&nbsp;<span title="3174 words"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>About 3200 words</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>15 minutes</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="XDP &amp; EBPF Block DoS"><i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;views
           </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
         <div class="details-summary toc-title">
@@ -136,6 +136,7 @@ Segue um esboço de uma solução funcional que combina um programa XDP/eBPF em 
         <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
   <ul>
     <li><a href="#1-pré-requisitos">1. Pré-requisitos</a></li>
+    <li><a href="#considrações-e-limitações">Considrações e Limitações</a></li>
     <li><a href="#2-programa-xdpebpf">2. Programa XDP/eBPF</a>
       <ul>
         <li><a href="#detalhes-técnicos">Detalhes Técnicos</a></li>
@@ -143,9 +144,16 @@ Segue um esboço de uma solução funcional que combina um programa XDP/eBPF em 
       </ul>
     </li>
     <li><a href="#3-carregando-na-interface-de-rede">3. Carregando na Interface de Rede</a></li>
-    <li><a href="#4-script-bash-para-monitoramento-e-atualização-do-mapa">4. Script Bash para Monitoramento e Atualização do Mapa</a>
+    <li><a href="#4-script-bash-para-monitoramento-e-atualização-do-mapa">4. Script Bash para Monitoramento e Atualização do Mapa</a></li>
+    <li><a href="#detalhes-técnicos-1">Detalhes técnicos</a>
       <ul>
-        <li><a href="#detalhes-técnicos-1">Detalhes Técnicos</a></li>
+        <li><a href="#1-inicialização-de-variáveis-e-processamento-de-opções">1. Inicialização de Variáveis e Processamento de Opções</a></li>
+        <li><a href="#2-função-auto_pin_map">2. Função <code>auto_pin_map</code></a></li>
+        <li><a href="#3-função-ip_to_hex">3. Função <code>ip_to_hex</code></a></li>
+        <li><a href="#4-função-block_ip">4. Função <code>block_ip</code></a></li>
+        <li><a href="#5-função-get_conn_count">5. Função <code>get_conn_count</code></a></li>
+        <li><a href="#6--função-main">6.  Função <code>main</code></a></li>
+        <li><a href="#8-execução-condicional">8. Execução Condicional</a></li>
       </ul>
     </li>
     <li><a href="#5-regras-e-o-log-nftables">5. Regras e o Log nftables</a>
@@ -158,7 +166,7 @@ Segue um esboço de uma solução funcional que combina um programa XDP/eBPF em 
   </ul>
 </nav></div>
       </div><div class="content" id="content"><p><img loading="lazy" src="/img/XDPeBPFDoS/eBPF.png" alt="Netfilter-packet-flow" srcset="/img/XDPeBPFDoS/eBPF.png?size=small, /img/XDPeBPFDoS/eBPF.png?size=medium 1.5x, /img/XDPeBPFDoS/eBPF.png?size=large 2x" data-title="Netfilter-packet-flow" style="background: url(/images/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}"/></p>
-<p>Segue um esboço de uma solução funcional que combina um programa <a href="https://prototype-kernel.readthedocs.io/en/latest/networking/XDP/introduction.html#what-is-xdp"target="_blank" rel="external nofollow noopener noreferrer">XDP</a>/<a href="https://ebpf.io/"target="_blank" rel="external nofollow noopener noreferrer">eBPF</a> em C com um script em Bash(antes de usar Go)  para monitorar o tráfego e atualizar dinamicamente um <a href="https://docs.cilium.io/en/latest/reference-guides/bpf/architecture/#maps"target="_blank" rel="external nofollow noopener noreferrer">map</a> <a href="https://ebpf.io/"target="_blank" rel="external nofollow noopener noreferrer">eBPF</a> com sources IPs que devem ser bloqueados quando idenficado um possível ataque <a href="https://attack.mitre.org/techniques/T0814/"target="_blank" rel="external nofollow noopener noreferrer">DoS</a>.</p>
+<p>Segue um teste para aplicar os conceitos de eBPF! É um esboço de uma solução que espera ser funcional e que combina um programa <a href="https://prototype-kernel.readthedocs.io/en/latest/networking/XDP/introduction.html#what-is-xdp"target="_blank" rel="external nofollow noopener noreferrer">XDP</a>/<a href="https://ebpf.io/"target="_blank" rel="external nofollow noopener noreferrer">eBPF</a> em C com um script em Bash(antes de usar Go) para monitorar o tráfego e atualizar dinamicamente um <a href="https://docs.cilium.io/en/latest/reference-guides/bpf/architecture/#maps"target="_blank" rel="external nofollow noopener noreferrer">map</a> <a href="https://ebpf.io/"target="_blank" rel="external nofollow noopener noreferrer">eBPF</a> com sources IPs que devem ser bloqueados quando idenficado um possível ataque <a href="https://attack.mitre.org/techniques/T0814/"target="_blank" rel="external nofollow noopener noreferrer">DoS</a>.</p>
 <ul>
 <li>Nesse cenário, o programa XDP/eBPF já está instalado na interface de rede e bloqueia pacotes provenientes de IPs listados no <a href="https://docs.cilium.io/en/latest/reference-guides/bpf/architecture/#maps"target="_blank" rel="external nofollow noopener noreferrer">map</a>.</li>
 <li>O script em Bash monitora  o arquivo de subsistema de rastreamento <a href="https://conntrack-tools.netfilter.org"target="_blank" rel="external nofollow noopener noreferrer">conntrack</a> do <a href="https://www.netfilter.org/"target="_blank" rel="external nofollow noopener noreferrer">Netfilter</a> <a href="https://conntrack-tools.netfilter.org/manual.html#conntrack"target="_blank" rel="external nofollow noopener noreferrer">/proc/net/nf_conntrack</a> para determinar se o número de conexões ativas ultrapassou o threshold configurado, e que ao ser atingido:
@@ -190,6 +198,39 @@ Certifique-se de utilizar uma distribuição com kernel moderno (&gt;= 4.18, de 
 <li>perf</li>
 <li>nftables</li>
 <li>iproute2</li>
+</ul>
+<h2 id="considrações-e-limitações" class="heading-element"><span>Considrações e Limitações</span>
+  <a href="#considra%c3%a7%c3%b5es-e-limita%c3%a7%c3%b5es" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><ul>
+<li>
+<p>Rastreamento de Conexões:</p>
+<ul>
+<li><strong>Real time</strong></li>
+</ul>
+<p>O <code>nf_conntrack</code> é atualizado dinamicamente pelo kernel, oferecendo um “instantâneo” do estado atual das conexões, possibilitando a detecção rápida de mudanças no tráfego.</p>
+<ul>
+<li><strong>Stateful</strong></li>
+</ul>
+<p>O <code>nf_conntrack</code> dá uma visão de conexões <code>stateful</code> ativas e seus estados (NEW, ESTABLISHED, RELATED e FIN_WAIT…). Cada linha em   <code>/proc/net/nf_conntrack</code> representa uma entrada que pode conter informações detalhadas, como endereços IP de origem/destino, portas, protocolos e o estado da conexão. Comprometendo a detecção de protocolos stateless&hellip;</p>
+<ul>
+<li><strong>Tabela conntrack</strong></li>
+</ul>
+<p>Tem tamanho limitado e, em condições normais, é dimensionada para o tráfego esperado. Mas em ataques volumétricos, o número de conexões satura a tabela, impedindo que novas conexões sejam registradas. Isso não só prejudica a detecção como pode impactar a disponibilidade do serviço, mesmo para tráfego legítimo.</p>
+<ul>
+<li><strong>Falsos Positivos</strong></li>
+</ul>
+<p>Em ambientes com tráfego elevado – por exemplo, servidores com muitos clientes reais ou aplicações que abrem múltiplas conexões simultâneas – um pico pode ocorrer de forma legítima. Sem uma correlação com outros indicadores (como análise de logs ou métricas de latência), o sistema pode interpretar um aumento repentino de conexões como um ataque.</p>
+<ul>
+<li><strong>Complementaridade</strong></li>
+</ul>
+<p>Para uma detecção mais robusta, é recomendável combinar a análise de diversas fontes de dados.</p>
+<ul>
+<li><strong>Latência na Atualização</strong></li>
+</ul>
+<p>O método de contagem, que usa wc -l para contar linhas, pode não refletir exatamente a taxa de chegada de novas conexões, especialmente em sistemas de alta performance, onde as entradas podem ser criadas e removidas em milissegundos.</p>
+</li>
 </ul>
 <h2 id="2-programa-xdpebpf" class="heading-element"><span>2. Programa XDP/eBPF</span>
   <a href="#2-programa-xdpebpf" class="heading-mark">
@@ -283,12 +324,14 @@ Certifique-se de utilizar uma distribuição com kernel moderno (&gt;= 4.18, de 
 </span><span class="lnt">77
 </span><span class="lnt">78
 </span><span class="lnt">79
+</span><span class="lnt">80
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;linux/bpf.h&gt;</span><span class="cp">
 </span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;linux/if_ether.h&gt;</span><span class="cp">
 </span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;linux/ip.h&gt;</span><span class="cp">
 </span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;bpf/bpf_helpers.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;bpf/bpf_endian.h&gt;</span><span class="cp">
 </span></span></span><span class="line"><span class="cl"><span class="cp"></span>
 </span></span><span class="line"><span class="cl"><span class="cm">/*
 </span></span></span><span class="line"><span class="cl"><span class="cm"> * Mapa do tipo HASH para armazenar os IPs bloqueados.
@@ -321,7 +364,7 @@ Certifique-se de utilizar uma distribuição com kernel moderno (&gt;= 4.18, de 
 </span></span></span><span class="line"><span class="cl"><span class="cm"> *   - A lógica foi mantida mínima, sem operações adicionais, para otimizar o tempo de execução.
 </span></span></span><span class="line"><span class="cl"><span class="cm"> */</span>
 </span></span><span class="line"><span class="cl"><span class="nf">SEC</span><span class="p">(</span><span class="s">&#34;xdp&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">xdp_ddos_blocker</span><span class="p">(</span><span class="k">struct</span> <span class="n">xdp_md</span> <span class="o">*</span><span class="n">ctx</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">xdp_block_dos</span><span class="p">(</span><span class="k">struct</span> <span class="n">xdp_md</span> <span class="o">*</span><span class="n">ctx</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">// Obtém os ponteiros para os dados do pacote
 </span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">void</span> <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)(</span><span class="kt">long</span><span class="p">)</span><span class="n">ctx</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">;</span>
@@ -428,27 +471,38 @@ Em cenários mais avançados, técnicas como <em>branch prediction hints</em> (p
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">clang -O2 -target bpf -c xdp_ddos_blocker.c -o xdp_ddos_blocker.o</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">clang -O2 -g -target bpf -c -Wall -Werror src/xdp-block-dos-0.1.0.c -o xdp-block-dos.o</span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="3-carregando-na-interface-de-rede" class="heading-element"><span>3. Carregando na Interface de Rede</span>
   <a href="#3-carregando-na-interface-de-rede" class="heading-mark">
     <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
   </a>
-</h2><p>Para carregar o programa na interface, vamos usar  o comando  <a href="https://man7.org/linux/man-pages/man8/ip.8.html"target="_blank" rel="external nofollow noopener noreferrer"><code>ip</code></a> do <a href="https://wiki.linuxfoundation.org/networking/iproute2"target="_blank" rel="external nofollow noopener noreferrer">iproute2</a></p>
+</h2><p>Para carregar o programa na interface, vamos usar  o comando  <a href="https://man7.org/linux/man-pages/man8/ip.8.html"target="_blank" rel="external nofollow noopener noreferrer">ip</a> do <a href="https://wiki.linuxfoundation.org/networking/iproute2"target="_blank" rel="external nofollow noopener noreferrer">iproute2</a></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ip link <span class="nb">set</span> dev eth0 xdp obj xdp_ddos_blocker.o sec xdp</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo ip link <span class="nb">set</span> dev &lt;?&gt; xdp obj xdp-block-dos.o sec xdp</span></span></code></pre></td></tr></table>
 </div>
 </div><p>Para verificar se o programa foi carregado corretamente, utilize:</p>
+<ul>
+<li>note a anotação <code>prog/xdp id 87 name xdp_block_dos ...</code></li>
+</ul>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ip -details link show dev eth0</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo ip -details link show dev enp1s0
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">2: enp1s0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="m">1500</span> xdp qdisc fq_codel state UP mode DEFAULT group default qlen <span class="m">1000</span>
+</span></span><span class="line"><span class="cl">    link/ether 52:54:00:9a:8d:fd brd ff:ff:ff:ff:ff:ff promiscuity <span class="m">0</span> allmulti <span class="m">0</span> minmtu <span class="m">68</span> maxmtu <span class="m">65535</span> numtxqueues <span class="m">1</span> numrxqueues <span class="m">1</span> gso_max_size <span class="m">65536</span> gso_max_segs <span class="m">65535</span> tso_max_size <span class="m">65536</span> tso_max_segs <span class="m">65535</span> gro_max_size <span class="m">65536</span> gso_ipv4_max_size <span class="m">65536</span> gro_ipv4_max_size <span class="m">65536</span> parentbus virtio parentdev virtio1 
+</span></span><span class="line"><span class="cl">    prog/xdp id <span class="m">87</span> name xdp_block_dos tag 20447cf6515f37e3 jited load_time <span class="m">53777200546280</span> created_by_uid <span class="m">0</span> btf_id <span class="m">150</span> </span></span></code></pre></td></tr></table>
 </div>
 </div><p>Se necessário, para remover o programa:</p>
 <div class="highlight"><div class="chroma">
@@ -456,7 +510,7 @@ Em cenários mais avançados, técnicas como <em>branch prediction hints</em> (p
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">ip link <span class="nb">set</span> dev eth0 xdp off</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo ip link <span class="nb">set</span> dev &lt;?&gt; xdp off</span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="4-script-bash-para-monitoramento-e-atualização-do-mapa" class="heading-element"><span>4. Script Bash para Monitoramento e Atualização do Mapa</span>
   <a href="#4-script-bash-para-monitoramento-e-atualiza%c3%a7%c3%a3o-do-mapa" class="heading-mark">
@@ -594,36 +648,10 @@ Em cenários mais avançados, técnicas como <em>branch prediction hints</em> (p
 </span><span class="lnt">110
 </span><span class="lnt">111
 </span><span class="lnt">112
-</span><span class="lnt">113
-</span><span class="lnt">114
-</span><span class="lnt">115
-</span><span class="lnt">116
-</span><span class="lnt">117
-</span><span class="lnt">118
-</span><span class="lnt">119
-</span><span class="lnt">120
-</span><span class="lnt">121
-</span><span class="lnt">122
-</span><span class="lnt">123
-</span><span class="lnt">124
-</span><span class="lnt">125
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1"># monitor_ddos_hybrid.sh</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># Abordagem híbrida para detectar ataques DDoS:</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 1. Monitora /proc/net/nf_conntrack para identificar picos no número de conexões.</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 2. Se houver pico, analisa os logs do nftables para extrair IPs com alta frequência.</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 3. Atualiza o mapa eBPF (pinado em MAP_PIN) para bloquear os IPs suspeitos.</span>
-</span></span><span class="line"><span class="cl"><span class="c1">#</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># OBSERVAÇÕES TÉCNICAS:</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># - Certifique-se de que o módulo nf_conntrack esteja carregado e que o arquivo /proc/net/nf_conntrack exista.</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># - O log do nftables deve estar configurado corretamente; muitas vezes o kernel envia esses logs para syslog,</span>
-</span></span><span class="line"><span class="cl"><span class="c1">#   então pode ser necessário ajustar o caminho.</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># - O script deve ser executado com privilégios de root para acesso aos arquivos e atualização do mapa eBPF via bpftool.</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># - O programa XDP e o mapa eBPF devem estar previamente carregados na interface de rede.</span>
-</span></span><span class="line"><span class="cl"><span class="c1">#</span>
-</span></span><span class="line"><span class="cl">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
 </span></span><span class="line"><span class="cl"><span class="c1"># Valores padrões</span>
 </span></span><span class="line"><span class="cl"><span class="nv">MAP_PIN_DEFAULT</span><span class="o">=</span><span class="s2">&#34;/sys/fs/bpf/blocked_ips&#34;</span>
 </span></span><span class="line"><span class="cl"><span class="nv">THRESHOLD_CONN_DEFAULT</span><span class="o">=</span><span class="m">2000</span>
@@ -631,7 +659,7 @@ Em cenários mais avançados, técnicas como <em>branch prediction hints</em> (p
 </span></span><span class="line"><span class="cl"><span class="nv">INTERVAL_DEFAULT</span><span class="o">=</span><span class="m">10</span>
 </span></span><span class="line"><span class="cl"><span class="nv">LOG_FILE_DEFAULT</span><span class="o">=</span><span class="s2">&#34;/var/log/nftables.log&#34;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># Inicializa variáveis com os valores padrão</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Inicializa variáveis com os valores padrões</span>
 </span></span><span class="line"><span class="cl"><span class="nv">MAP_PIN</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$MAP_PIN_DEFAULT</span><span class="s2">&#34;</span>
 </span></span><span class="line"><span class="cl"><span class="nv">THRESHOLD_CONN</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$THRESHOLD_CONN_DEFAULT</span><span class="s2">&#34;</span>
 </span></span><span class="line"><span class="cl"><span class="nv">LOG_THRESHOLD</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$LOG_THRESHOLD_DEFAULT</span><span class="s2">&#34;</span>
@@ -646,13 +674,13 @@ Em cenários mais avançados, técnicas como <em>branch prediction hints</em> (p
 </span></span></span><span class="line"><span class="cl"><span class="s">Opções:
 </span></span></span><span class="line"><span class="cl"><span class="s">  -m MAP_PIN         Caminho do mapa eBPF pinado (padrão: $MAP_PIN_DEFAULT)
 </span></span></span><span class="line"><span class="cl"><span class="s">  -c THRESHOLD_CONN  Número de conexões para acionar análise (padrão: $THRESHOLD_CONN_DEFAULT)
-</span></span></span><span class="line"><span class="cl"><span class="s">  -l LOG_THRESHOLD   Número mínimo de ocorrências de um IP nos logs para bloqueá-lo (padrão: $LOG_THRESHOLD_DEFAULT)
+</span></span></span><span class="line"><span class="cl"><span class="s">  -l LOG_THRESHOLD   Número de ocorrências de um IP nos logs para bloqueá-lo (padrão: $LOG_THRESHOLD_DEFAULT)
 </span></span></span><span class="line"><span class="cl"><span class="s">  -i INTERVAL        Intervalo de tempo para verificação em segundos (padrão: $INTERVAL_DEFAULT)
 </span></span></span><span class="line"><span class="cl"><span class="s">  -f LOG_FILE        Caminho para o arquivo de log do nftables (padrão: $LOG_FILE_DEFAULT)
 </span></span></span><span class="line"><span class="cl"><span class="s">  -h                 Exibe esta mensagem de ajuda e sai
 </span></span></span><span class="line"><span class="cl"><span class="s">
 </span></span></span><span class="line"><span class="cl"><span class="s">Exemplo:
-</span></span></span><span class="line"><span class="cl"><span class="s">  sudo $(basename &#34;$0&#34;) -m /sys/fs/bpf/blocked_ips -c 1500 -l 10 -i 15 -f /var/log/nftables.log
+</span></span></span><span class="line"><span class="cl"><span class="s">  sudo $(basename &#34;$0&#34;) -m /sys/fs/bpf/blocked_ips -c 500 -l 10 -i 15 -f /var/log/nftables.log
 </span></span></span><span class="line"><span class="cl"><span class="s">
 </span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
@@ -736,79 +764,232 @@ Em cenários mais avançados, técnicas como <em>branch prediction hints</em> (p
 </span></span><span class="line"><span class="cl"><span class="k">done</span></span></span></code></pre></td></tr></table>
 </div>
 </div><hr>
-<h3 id="detalhes-técnicos-1" class="heading-element"><span>Detalhes Técnicos</span>
+<h2 id="detalhes-técnicos-1" class="heading-element"><span>Detalhes técnicos</span>
   <a href="#detalhes-t%c3%a9cnicos-1" class="heading-mark">
     <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
   </a>
-</h3><ol>
+</h2><h3 id="1-inicialização-de-variáveis-e-processamento-de-opções" class="heading-element"><span>1. Inicialização de Variáveis e Processamento de Opções</span>
+  <a href="#1-inicializa%c3%a7%c3%a3o-de-vari%c3%a1veis-e-processamento-de-op%c3%a7%c3%b5es" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><ul>
 <li>
-<p><strong>Interface de Configuração via Linha de Comando:</strong></p>
+<p><strong>Definição de Valores Padrão:</strong><br>
+O script já define valores padrões para as variáveis:</p>
 <ul>
-<li>O script utiliza o <code>getopts</code> para permitir a configuração de parâmetros essenciais:
-<ul>
-<li><strong>-m:</strong> Caminho do mapa eBPF pinado (ex.: <code>/sys/fs/bpf/blocked_ips</code>).</li>
-<li><strong>-c:</strong> Limite de conexões para acionar a análise (usando <code>/proc/net/nf_conntrack</code>).</li>
-<li><strong>-l:</strong> Número mínimo de ocorrências de um IP nos logs para considerá-lo suspeito.</li>
-<li><strong>-i:</strong> Intervalo de tempo (em segundos) para cada verificação.</li>
-<li><strong>-f:</strong> Caminho para o arquivo de log do nftables.</li>
-<li><strong>-h:</strong> Exibe a mensagem de ajuda.</li>
+<li><code>MAP_PIN_DEFAULT</code>           → <code>/sys/fs/bpf/blocked_ips</code></li>
+<li><code>THRESHOLD_CONN_DEFAULT</code>    → 2000 (número de conexões para acionar a análise)</li>
+<li><code>LOG_THRESHOLD_DEFAULT</code>     → 5 (ocorrências para considerar um IP suspeito)</li>
+<li><code>INTERVAL_DEFAULT</code>          → 10 segundos (intervalo de verificação)</li>
+<li><code>LOG_FILE_DEFAULT</code>          → <code>/var/log/nftables.log</code></li>
 </ul>
 </li>
-<li>Essa abordagem torna o script flexível e adaptável a diferentes ambientes.</li>
+<li>
+<p><strong>Processamento com <code>getopts</code>:</strong><br>
+Utilizando <code>getopts</code>, o script permite sobrescrever os valores padrões:</p>
+<ul>
+<li><code>-m</code> para o caminho do mapa eBPF;</li>
+<li><code>-c</code> para o limite de conexões;</li>
+<li><code>-l</code> para o limite de ocorrências de um IP nos logs;</li>
+<li><code>-i</code> para o intervalo de tempo;</li>
+<li><code>-f</code> para o caminho do log do nftables;</li>
+<li><code>-h</code> exibi ajuda e sai &hellip;o/</li>
 </ul>
 </li>
-<li>
-<p><strong>Pinagem Automática do Mapa:</strong></p>
+</ul>
+<p><em>Após processar os argumentos, os valores configurados são informados</em></p>
+<hr>
+<h3 id="2-função-auto_pin_map" class="heading-element"><span>2. Função <code>auto_pin_map</code></span>
+  <a href="#2-fun%c3%a7%c3%a3o-auto_pin_map" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><p>Essa função garante que o mapa eBPF esteja “pinado” no caminho especificado.</p>
 <ul>
-<li>
-<p>A função <code>auto_pin_map()</code> verifica se o arquivo especificado em <code>MAP_PIN</code> existe. Se não existir, ela usa o <code>bpftool map show</code> para procurar uma linha contendo &ldquo;blocked_ips&rdquo; e extrai o ID do mapa.</p>
+<li><strong>Funcionamento:</strong>
+<ol>
+<li><strong>Verificação da Existência:</strong>
+<ul>
+<li>Se o arquivo definido por <code>MAP_PIN</code> não existir, o script tenta localizar o mapa “blocked_ips” usando o comando:
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bpftool map show 2&gt;/dev/null <span class="p">|</span> grep -m1 <span class="s2">&#34;blocked_ips&#34;</span> <span class="p">|</span> awk <span class="s1">&#39;{print $1}&#39;</span> <span class="p">|</span> tr -d <span class="s1">&#39;:&#39;</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>Esse comando busca na saída do <code>bpftool map show</code> a linha que contenha “blocked_ips” e extrai o ID do mapa.</li>
+</ul>
 </li>
-<li>
-<p>Em seguida, utiliza o comando <code>bpftool map pin id</code> para fixar o mapa no caminho desejado.</p>
+<li><strong>Pinagem do Mapa:</strong>
+<ul>
+<li>Se o ID for encontrado, o script utiliza:
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bpftool map pin id <span class="s2">&#34;</span><span class="nv">$map_id</span><span class="s2">&#34;</span> <span class="s2">&#34;</span><span class="nv">$MAP_PIN</span><span class="s2">&#34;</span></span></span></code></pre></td></tr></table>
+</div>
+</div>para fixar o mapa no caminho desejado.</li>
+</ul>
 </li>
+<li><strong>Verificação de Erro:</strong>
+<ul>
+<li>Caso a pinagem falhe ou o mapa não seja encontrado, o script exibe uma mensagem de erro e encerra a execução.</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h3 id="3-função-ip_to_hex" class="heading-element"><span>3. Função <code>ip_to_hex</code></span>
+  <a href="#3-fun%c3%a7%c3%a3o-ip_to_hex" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><p>Converte o IP no formato decimal (ex.: <code>192.168.0.1</code>) para uma representação hexadecimal em big-endian, que é o formato esperado pela chave no mapa eBPF.</p>
+<ul>
+<li><strong>Como Funciona:</strong>
+<ul>
+<li>O comando <code>IFS='.' read -r a b c d &lt;&lt;&lt; &quot;$ip&quot;</code> divide o IP nos seus quatro octetos.</li>
+<li>O <code>printf &quot;0x%02X%02X%02X%02X&quot;</code> formata cada octeto em dois dígitos hexadecimais e os concatena.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="4-função-block_ip" class="heading-element"><span>4. Função <code>block_ip</code></span>
+  <a href="#4-fun%c3%a7%c3%a3o-block_ip" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><p>Inserir no mapa eBPF (pinado em <code>MAP_PIN</code>) a chave correspondente a um IP suspeito.</p>
+<ul>
+<li><strong>Como Funciona:</strong>
+<ol>
+<li>Converte o IP para hexadecimal utilizando <code>ip_to_hex</code>.</li>
+<li>Exibe uma mensagem indicando que o IP está sendo bloqueado, junto com sua chave hexadecimal.</li>
+<li>Utiliza o comando:
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bpftool map update pinned <span class="s2">&#34;</span><span class="nv">$MAP_PIN</span><span class="s2">&#34;</span> key <span class="s2">&#34;</span><span class="nv">$key_hex</span><span class="s2">&#34;</span> value 0x1 2&gt;/dev/null</span></span></code></pre></td></tr></table>
+</div>
+</div>para atualizar o mapa eBPF, inserindo a chave e definindo o valor (neste caso, <code>0x1</code> indica o bloqueio).</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h3 id="5-função-get_conn_count" class="heading-element"><span>5. Função <code>get_conn_count</code></span>
+  <a href="#5-fun%c3%a7%c3%a3o-get_conn_count" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><p>Conta o número de linhas em <code>/proc/net/nf_conntrack</code>, que corresponde ao número de conexões rastreadas pelo sistema.</p>
+<ul>
+<li><strong>Como Funciona:</strong>
+<ul>
+<li>Se o arquivo existe, o comando <code>wc -l</code> é utilizado para contar as linhas.</li>
+<li>Caso o arquivo não exista, a função retorna “0”.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="6--função-main" class="heading-element"><span>6.  Função <code>main</code></span>
+  <a href="#6--fun%c3%a7%c3%a3o-main" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><ul>
 <li>
-<p>Essa automação elimina a necessidade de pinagem manual e garante que o script e o programa XDP trabalhem com o mesmo mapa.</p>
+<p><strong>Fluxo do Loop:</strong></p>
 <ol>
 <li>
-<p><strong>Conversão de IP para Hexadecimal:</strong></p>
+<p><strong>Leitura do Número de Conexões:</strong></p>
 <ul>
-<li>A função <code>ip_to_hex</code> divide o endereço IP em seus quatro octetos e formata cada um com dois dígitos em hexadecimal, gerando uma chave compatível com o formato esperado pelo mapa eBPF.</li>
+<li>A função <code>get_conn_count</code> é chamada para obter o número atual de conexões.</li>
+<li>É exibida uma mensagem com o número de conexões.</li>
 </ul>
 </li>
 <li>
-<p><strong>Monitoramento de Conexões:</strong></p>
+<p><strong>Verificação de Pico de Conexões:</strong></p>
 <ul>
-<li>O script lê <code>/proc/net/nf_conntrack</code> para determinar o número de conexões ativas.</li>
-<li>Se o número de conexões ultrapassar o valor definido em <code>THRESHOLD_CONN</code>, ele aciona a análise dos logs do nftables.</li>
+<li>Se o número de conexões ultrapassa o limite definido por <code>THRESHOLD_CONN</code>, o script:
+<ul>
+<li>Exibe um alerta indicando que houve um pico.</li>
+<li>Inicia a análise dos logs do nftables para identificar IPs suspeitos.</li>
+</ul>
+</li>
 </ul>
 </li>
 <li>
 <p><strong>Análise dos Logs do nftables:</strong></p>
 <ul>
-<li>Utiliza <code>tail</code> com <code>timeout</code> para ler uma janela de logs por um período determinado.</li>
-<li>A filtragem com <code>grep</code> e <code>sed</code> extrai os IPs a partir de linhas que contêm <code>SRC=</code>.</li>
-<li>O <code>awk</code> conta as ocorrências e filtra somente os IPs que ultrapassam o limite definido em <code>LOG_THRESHOLD</code>.</li>
+<li>Utiliza uma cadeia de comandos para extrair os IPs:
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nv">suspicious_ips</span><span class="o">=</span><span class="k">$(</span>timeout <span class="s2">&#34;</span><span class="nv">$INTERVAL</span><span class="s2">&#34;</span> tail -n <span class="m">1000</span> <span class="s2">&#34;</span><span class="nv">$LOG_FILE</span><span class="s2">&#34;</span> 2&gt;/dev/null <span class="p">|</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    grep <span class="s2">&#34;SRC=&#34;</span> <span class="p">|</span> sed -n <span class="s1">&#39;s/.*SRC=\([0-9.]\+\).*/\1/p&#39;</span> <span class="p">|</span> sort <span class="p">|</span> uniq -c <span class="p">|</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>    awk -v <span class="nv">thresh</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$LOG_THRESHOLD</span><span class="s2">&#34;</span> <span class="s1">&#39;$1 &gt;= thresh {print $2}&#39;</span><span class="k">)</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><strong>Passo a passo da cadeia:</strong>
+<ul>
+<li><code>tail -n 1000 &quot;$LOG_FILE&quot;</code>: Obtém as últimas 1000 linhas do log.</li>
+<li><code>timeout &quot;$INTERVAL&quot;</code>: Garante que a leitura não ultrapasse o intervalo definido.</li>
+<li><code>grep &quot;SRC=&quot;</code>: Filtra as linhas que contêm a string “SRC=”, que indica a presença de um endereço IP de origem.</li>
+<li><code>sed -n 's/.*SRC=\([0-9.]\+\).*/\1/p'</code>: Extrai o endereço IP dessas linhas.</li>
+<li><code>sort | uniq -c</code>: Ordena os IPs e conta as ocorrências de cada um.</li>
+<li><code>awk -v thresh=&quot;$LOG_THRESHOLD&quot; '$1 &gt;= thresh {print $2}'</code>: Filtra apenas os IPs cuja contagem seja maior ou igual ao valor definido em <code>LOG_THRESHOLD</code>.</li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li>
-<p><strong>Atualização do Mapa eBPF:</strong></p>
+<p><strong>Bloqueio dos IPs Suspeitos:</strong></p>
 <ul>
-<li>Para cada IP suspeito identificado, o script utiliza o comando <code>bpftool</code> para inserir o IP no mapa eBPF, fazendo com que o programa XDP bloqueie os pacotes oriundos desse IP.</li>
+<li>Para cada IP identificado como suspeito na etapa anterior, a função <code>block_ip</code> é chamada para inserir o IP no mapa eBPF.</li>
 </ul>
 </li>
 <li>
-<p><strong>Considerações Gerais:</strong></p>
+<p><strong>Intervalo de Espera:</strong></p>
 <ul>
-<li>Verifique se os caminhos configurados (para o mapa e o log) estão corretos e se os módulos necessários (como nf_conntrack) estão carregados.</li>
-<li>Teste a porra toda né! Sou péssimo programador!</li>
-<li>O script deve ser executado com privilégios para acessar <code>/proc</code>, os logs e atualizar o mapa eBPF.</li>
+<li>Ao final de cada iteração, o script aguarda o número de segundos definido por <code>INTERVAL</code> antes de iniciar a próxima verificação.</li>
 </ul>
 </li>
 </ol>
 </li>
-</ul>
+<li>
+<p><strong>Loop:</strong><br>
+O <code>while true; do ... done</code> mantém o monitoramento contínuo, permitindo uma resposta dinâmica a picos de tráfego.</p>
 </li>
-</ol>
+</ul>
+<hr>
+<h3 id="8-execução-condicional" class="heading-element"><span>8. Execução Condicional</span>
+  <a href="#8-execu%c3%a7%c3%a3o-condicional" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><ul>
+<li><strong>Execução Direta:</strong><br>
+O trecho final:
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">BASH_SOURCE</span><span class="p">[0]</span><span class="si">}</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="s2">&#34;</span><span class="nv">$0</span><span class="s2">&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">    main
+</span></span><span class="line"><span class="cl"><span class="k">fi</span></span></span></code></pre></td></tr></table>
+</div>
+</div>Garante que o loop principal só seja iniciado se o script for executado diretamente</li>
+</ul>
 <h2 id="5-regras-e-o-log-nftables" class="heading-element"><span>5. Regras e o Log nftables</span>
   <a href="#5-regras-e-o-log-nftables" class="heading-mark">
     <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
@@ -944,8 +1125,8 @@ Após aplicar a configuração e reiniciar o rsyslog, você pode testar sua conf
   <div class="post-info">
     <div class="post-info-line">
       <div class="post-info-mod">
-        <span title="Updated on 2025-03-01 15:05:21">Updated on 2025-03-01&nbsp;
-                <a class="git-hash" href="https://github.com/0xttfx/commit/46ff24d7f86beb1cb2ebdc899450b191df695aea" rel="external nofollow noopener noreferrer" target="_blank" title="commit by 0xttfx(thiago.faioli@gmail.com) 46ff24d7f86beb1cb2ebdc899450b191df695aea: novo post XDP &amp; eBPF Block DDoS"><i class="fa-solid fa-hashtag fa-fw" aria-hidden="true"></i>46ff24d</a></span>
+        <span title="Updated on 2025-03-01 18:54:06">Updated on 2025-03-01&nbsp;
+                <a class="git-hash" href="https://github.com/0xttfx/commit/166071c7438e73b0e6d383c245783c8b4cb1805b" rel="external nofollow noopener noreferrer" target="_blank" title="commit by 0xttfx(thiago.faioli@gmail.com) 166071c7438e73b0e6d383c245783c8b4cb1805b: XDP eBPF Stop DoS Attack"><i class="fa-solid fa-hashtag fa-fw" aria-hidden="true"></i>166071c</a></span>
       </div><div class="post-info-license">
             <span><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a></span>
           </div></div><div class="post-info-line">
