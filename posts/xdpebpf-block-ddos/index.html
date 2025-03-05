@@ -12,8 +12,8 @@ Segue um teste para aplicar os conceitos de eBPF! É um esboço de uma solução
   <meta itemprop="name" content="XDP & eBPF Block DoS">
   <meta itemprop="description" content="Segue um teste para aplicar os conceitos de eBPF! É um esboço de uma solução que espera ser funcional e que combina um programa XDP/eBPF em C com um script em Bash(antes de usar Go) para monitorar o tráfego e atualizar dinamicamente um map eBPF com sources IPs que devem ser bloqueados quando idenficado um possível ataque DoS.">
   <meta itemprop="datePublished" content="2025-01-22T17:13:52-03:00">
-  <meta itemprop="dateModified" content="2025-03-01T18:54:06-03:00">
-  <meta itemprop="wordCount" content="3174">
+  <meta itemprop="dateModified" content="2025-03-05T19:36:14-03:00">
+  <meta itemprop="wordCount" content="4393">
   <meta itemprop="image" content="http://0xttfx.tcpip.net.br/images/thiago_11.png">
   <meta itemprop="keywords" content="XDP,EBPF,Bash,Linux,Nftables"><meta property="og:url" content="http://0xttfx.tcpip.net.br/posts/xdpebpf-block-ddos/">
   <meta property="og:site_name" content="0xttfx">
@@ -23,7 +23,7 @@ Segue um teste para aplicar os conceitos de eBPF! É um esboço de uma solução
   <meta property="og:type" content="article">
     <meta property="article:section" content="posts">
     <meta property="article:published_time" content="2025-01-22T17:13:52-03:00">
-    <meta property="article:modified_time" content="2025-03-01T18:54:06-03:00">
+    <meta property="article:modified_time" content="2025-03-05T19:36:14-03:00">
     <meta property="article:tag" content="XDP">
     <meta property="article:tag" content="EBPF">
     <meta property="article:tag" content="Bash">
@@ -50,8 +50,8 @@ Segue um teste para aplicar os conceitos de eBPF! É um esboço de uma solução
     "mainEntityOfPage": {
       "@type": "WebPage",
       "@id": "http:\/\/0xttfx.tcpip.net.br\/posts\/xdpebpf-block-ddos\/"
-    },"genre": "posts","keywords": "XDP, eBPF, Bash, Linux, nftables","wordcount":  3174 ,
-    "url": "http:\/\/0xttfx.tcpip.net.br\/posts\/xdpebpf-block-ddos\/","datePublished": "2025-01-22T17:13:52-03:00","dateModified": "2025-03-01T18:54:06-03:00","license": "Running on [OpenBSD](https://openbsd.org) and [httpd](https://man.openbsd.org/httpd.8) |  [0xttfx](https://0xttfx.tcpip.net.br) - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)","publisher": {
+    },"genre": "posts","keywords": "XDP, eBPF, Bash, Linux, nftables","wordcount":  4393 ,
+    "url": "http:\/\/0xttfx.tcpip.net.br\/posts\/xdpebpf-block-ddos\/","datePublished": "2025-01-22T17:13:52-03:00","dateModified": "2025-03-05T19:36:14-03:00","license": "Running on [OpenBSD](https://openbsd.org) and [httpd](https://man.openbsd.org/httpd.8) |  [0xttfx](https://0xttfx.tcpip.net.br) - [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause)","publisher": {
       "@type": "Organization",
       "name": ""},"author": {
         "@type": "Person",
@@ -126,7 +126,7 @@ Segue um teste para aplicar os conceitos de eBPF! É um esboço de uma solução
     <div class="header"><h1 class="single-title animate__animated animate__flipInX"><span>XDP &amp; EBPF Block DoS</span>
       </h1></div><div class="post-meta">
       <div class="post-meta-line"><span class="post-author"><a href="https://github.com/0xttfx" title="Author"target="_blank" rel="external nofollow noopener noreferrer author" class="author"><i class="fa-solid fa-user-circle" aria-hidden="true"></i>
-    Faioli a.k.a 0xttfx</a></span><span class="post-included-in">&nbsp;included in <a href="/categories/networking/" class="post-category" title="Category - Networking"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Networking</a> and <a href="/collections/getting-started/" class="post-collection" title="Collection - Getting Started"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> Getting Started</a></span></div><div class="post-meta-line"><span title="published on 2025-01-22 17:13:52"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2025-01-22">2025-01-22</time></span>&nbsp;<span title="Updated on 2025-03-01 18:54:06"><i class="fa-regular fa-calendar-check fa-fw me-1" aria-hidden="true"></i><time datetime="2025-03-01">2025-03-01</time></span>&nbsp;<span title="3174 words"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>About 3200 words</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>15 minutes</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="XDP &amp; EBPF Block DoS"><i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;views
+    Faioli a.k.a 0xttfx</a></span><span class="post-included-in">&nbsp;included in <a href="/categories/networking/" class="post-category" title="Category - Networking"><i class="fa-regular fa-folder fa-fw" aria-hidden="true"></i> Networking</a> and <a href="/collections/getting-started/" class="post-collection" title="Collection - Getting Started"><i class="fa-solid fa-layer-group fa-fw" aria-hidden="true"></i> Getting Started</a></span></div><div class="post-meta-line"><span title="published on 2025-01-22 17:13:52"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden="true"></i><time datetime="2025-01-22">2025-01-22</time></span>&nbsp;<span title="Updated on 2025-03-05 19:36:14"><i class="fa-regular fa-calendar-check fa-fw me-1" aria-hidden="true"></i><time datetime="2025-03-05">2025-03-05</time></span>&nbsp;<span title="4393 words"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden="true"></i>About 4400 words</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden="true"></i>21 minutes</span>&nbsp;<span id="busuanzi_container_page_pv" class="busuanzi_visitors comment-visitors" data-flag-title="XDP &amp; EBPF Block DoS"><i class="fa-regular fa-eye fa-fw me-1" aria-hidden="true"></i><span id="busuanzi_value_page_pv">-</span>&nbsp;views
           </span>&nbsp;</div>
     </div><div class="details toc" id="toc-static" data-kept="false">
         <div class="details-summary toc-title">
@@ -163,9 +163,17 @@ Segue um teste para aplicar os conceitos de eBPF! É um esboço de uma solução
       </ul>
     </li>
     <li><a href="#6-testes-de-validação">6. Testes de Validação</a></li>
+    <li><a href="#1-preparação-do-ambiente">1. Preparação do Ambiente</a></li>
+    <li><a href="#2-testando-individualmente-cada-componente">2. Testando Individualmente Cada Componente</a>
+      <ul>
+        <li><a href="#21-programa-xdpebpf">2.1. Programa XDP/eBPF</a></li>
+        <li><a href="#22-configuração-do-nftables-e-logs">2.2. Configuração do nftables e Logs</a></li>
+      </ul>
+    </li>
   </ul>
 </nav></div>
       </div><div class="content" id="content"><p><img loading="lazy" src="/img/XDPeBPFDoS/eBPF.png" alt="Netfilter-packet-flow" srcset="/img/XDPeBPFDoS/eBPF.png?size=small, /img/XDPeBPFDoS/eBPF.png?size=medium 1.5x, /img/XDPeBPFDoS/eBPF.png?size=large 2x" data-title="Netfilter-packet-flow" style="background: url(/images/loading.min.svg) no-repeat center;" onload="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}this.dataset.lazyloaded='';" onerror="this.title=this.dataset.title;for(const i of ['style', 'data-title','onerror','onload']){this.removeAttribute(i);}"/></p>
+<hr>
 <p>Segue um teste para aplicar os conceitos de eBPF! É um esboço de uma solução que espera ser funcional e que combina um programa <a href="https://prototype-kernel.readthedocs.io/en/latest/networking/XDP/introduction.html#what-is-xdp"target="_blank" rel="external nofollow noopener noreferrer">XDP</a>/<a href="https://ebpf.io/"target="_blank" rel="external nofollow noopener noreferrer">eBPF</a> em C com um script em Bash(antes de usar Go) para monitorar o tráfego e atualizar dinamicamente um <a href="https://docs.cilium.io/en/latest/reference-guides/bpf/architecture/#maps"target="_blank" rel="external nofollow noopener noreferrer">map</a> <a href="https://ebpf.io/"target="_blank" rel="external nofollow noopener noreferrer">eBPF</a> com sources IPs que devem ser bloqueados quando idenficado um possível ataque <a href="https://attack.mitre.org/techniques/T0814/"target="_blank" rel="external nofollow noopener noreferrer">DoS</a>.</p>
 <ul>
 <li>Nesse cenário, o programa XDP/eBPF já está instalado na interface de rede e bloqueia pacotes provenientes de IPs listados no <a href="https://docs.cilium.io/en/latest/reference-guides/bpf/architecture/#maps"target="_blank" rel="external nofollow noopener noreferrer">map</a>.</li>
@@ -230,6 +238,11 @@ Certifique-se de utilizar uma distribuição com kernel moderno (&gt;= 4.18, de 
 <li><strong>Latência na Atualização</strong></li>
 </ul>
 <p>O método de contagem, que usa wc -l para contar linhas, pode não refletir exatamente a taxa de chegada de novas conexões, especialmente em sistemas de alta performance, onde as entradas podem ser criadas e removidas em milissegundos.</p>
+<p>O uso de um script em Bash para monitorar o arquivo de conntrack e processar logs introduzir latência. Em um cenário de ataque DoS, a rapidez na detecção e na inserção do IP no map é crucial para minimizar o impacto do ataque.</p>
+<p>A comunicação entre a camada de monitoramento em user space e o programa eBPF no kernel tem atrasos, permitindo que pacotes passem antes da inserção no map.</p>
+<p>O arquivo /proc/net/nf_conntrack pode não refletir com precisão o estado em tempo real das conexões, especialmente em ambientes com alto volume de tráfego.</p>
+<p>Basear a detecção apenas em logs e conexões pode gerar falsos positivos ou, inversamente, deixar passar ataques se a janela de tempo não for bem ajustada.</p>
+<p>Usar <strong>tracepoints e perf events</strong>  definitivamente é melhor, principalmente por estar em kernel space. Mas fica para outro post. Por agora, vale chamar a atenção para os recursos usados&hellip;</p>
 </li>
 </ul>
 <h2 id="2-programa-xdpebpf" class="heading-element"><span>2. Programa XDP/eBPF</span>
@@ -238,7 +251,7 @@ Certifique-se de utilizar uma distribuição com kernel moderno (&gt;= 4.18, de 
   </a>
 </h2><p>O programa utiliza um <a href="https://docs.cilium.io/en/latest/reference-guides/bpf/architecture/#maps"target="_blank" rel="external nofollow noopener noreferrer">map</a> eBPF do tipo HASH para armazenar os IPs que devem ser bloqueados. E para cada pacote recebido, é verificado se source IP consta no mapa. Se sim, o pacote é descartado (<a href="https://prototype-kernel.readthedocs.io/en/latest/networking/XDP/implementation/xdp_actions.html"target="_blank" rel="external nofollow noopener noreferrer">XDP_DROP</a>); caso contrário, ele é encaminhado normalmente (<a href="https://prototype-kernel.readthedocs.io/en/latest/networking/XDP/implementation/xdp_actions.html"target="_blank" rel="external nofollow noopener noreferrer">XDP_PASS</a>).</p>
 <div class="details admonition info open disabled">
-  <div class="details-summary admonition-title"><i class="icon fa-fw fa-solid fa-circle-info" aria-hidden="true"></i><strong>RTFM</strong> e código atualizado: <a href="https://github.com/0xttfx/xdp-block-ddos"target="_blank" rel="external nofollow noopener noreferrer">repo Git</a></div>
+  <div class="details-summary admonition-title"><i class="icon fa-fw fa-solid fa-circle-info" aria-hidden="true"></i><strong>RTFM</strong> e código atualizado: <a href="https://github.com/0xttfx/xdp-block-dos"target="_blank" rel="external nofollow noopener noreferrer">repo Git</a></div>
   <div class="details-content">
     <div class="admonition-content"></div>
   </div>
@@ -529,7 +542,7 @@ Em cenários mais avançados, técnicas como <em>branch prediction hints</em> (p
 </li>
 </ul>
 <div class="details admonition info open disabled">
-  <div class="details-summary admonition-title"><i class="icon fa-fw fa-solid fa-circle-info" aria-hidden="true"></i><strong>RTFM</strong> e código atualizado: <a href="https://github.com/0xttfx/monitor_ddos"target="_blank" rel="external nofollow noopener noreferrer">repo Git</a></div>
+  <div class="details-summary admonition-title"><i class="icon fa-fw fa-solid fa-circle-info" aria-hidden="true"></i><strong>RTFM</strong> e código atualizado: <a href="https://github.com/0xttfx/monitor-dos"target="_blank" rel="external nofollow noopener noreferrer">repo Git</a></div>
   <div class="details-content">
     <div class="admonition-content"></div>
   </div>
@@ -648,10 +661,51 @@ Em cenários mais avançados, técnicas como <em>branch prediction hints</em> (p
 </span><span class="lnt">110
 </span><span class="lnt">111
 </span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#!/bin/bash</span>
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># Valores padrões</span>
 </span></span><span class="line"><span class="cl"><span class="nv">MAP_PIN_DEFAULT</span><span class="o">=</span><span class="s2">&#34;/sys/fs/bpf/blocked_ips&#34;</span>
 </span></span><span class="line"><span class="cl"><span class="nv">THRESHOLD_CONN_DEFAULT</span><span class="o">=</span><span class="m">2000</span>
@@ -659,7 +713,7 @@ Em cenários mais avançados, técnicas como <em>branch prediction hints</em> (p
 </span></span><span class="line"><span class="cl"><span class="nv">INTERVAL_DEFAULT</span><span class="o">=</span><span class="m">10</span>
 </span></span><span class="line"><span class="cl"><span class="nv">LOG_FILE_DEFAULT</span><span class="o">=</span><span class="s2">&#34;/var/log/nftables.log&#34;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># Inicializa variáveis com os valores padrões</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Inicializa variáveis com os valores padrão</span>
 </span></span><span class="line"><span class="cl"><span class="nv">MAP_PIN</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$MAP_PIN_DEFAULT</span><span class="s2">&#34;</span>
 </span></span><span class="line"><span class="cl"><span class="nv">THRESHOLD_CONN</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$THRESHOLD_CONN_DEFAULT</span><span class="s2">&#34;</span>
 </span></span><span class="line"><span class="cl"><span class="nv">LOG_THRESHOLD</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$LOG_THRESHOLD_DEFAULT</span><span class="s2">&#34;</span>
@@ -674,13 +728,13 @@ Em cenários mais avançados, técnicas como <em>branch prediction hints</em> (p
 </span></span></span><span class="line"><span class="cl"><span class="s">Opções:
 </span></span></span><span class="line"><span class="cl"><span class="s">  -m MAP_PIN         Caminho do mapa eBPF pinado (padrão: $MAP_PIN_DEFAULT)
 </span></span></span><span class="line"><span class="cl"><span class="s">  -c THRESHOLD_CONN  Número de conexões para acionar análise (padrão: $THRESHOLD_CONN_DEFAULT)
-</span></span></span><span class="line"><span class="cl"><span class="s">  -l LOG_THRESHOLD   Número de ocorrências de um IP nos logs para bloqueá-lo (padrão: $LOG_THRESHOLD_DEFAULT)
+</span></span></span><span class="line"><span class="cl"><span class="s">  -l LOG_THRESHOLD   Número mínimo de ocorrências de um IP nos logs para bloqueá-lo (padrão: $LOG_THRESHOLD_DEFAULT)
 </span></span></span><span class="line"><span class="cl"><span class="s">  -i INTERVAL        Intervalo de tempo para verificação em segundos (padrão: $INTERVAL_DEFAULT)
 </span></span></span><span class="line"><span class="cl"><span class="s">  -f LOG_FILE        Caminho para o arquivo de log do nftables (padrão: $LOG_FILE_DEFAULT)
 </span></span></span><span class="line"><span class="cl"><span class="s">  -h                 Exibe esta mensagem de ajuda e sai
 </span></span></span><span class="line"><span class="cl"><span class="s">
 </span></span></span><span class="line"><span class="cl"><span class="s">Exemplo:
-</span></span></span><span class="line"><span class="cl"><span class="s">  sudo $(basename &#34;$0&#34;) -m /sys/fs/bpf/blocked_ips -c 500 -l 10 -i 15 -f /var/log/nftables.log
+</span></span></span><span class="line"><span class="cl"><span class="s">  sudo $(basename &#34;$0&#34;) -m /sys/fs/bpf/blocked_ips -c 1500 -l 10 -i 15 -f /var/log/nftables.log
 </span></span></span><span class="line"><span class="cl"><span class="s">
 </span></span></span><span class="line"><span class="cl"><span class="s">EOF</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
@@ -712,6 +766,35 @@ Em cenários mais avançados, técnicas como <em>branch prediction hints</em> (p
 </span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;  LOG_FILE:        </span><span class="nv">$LOG_FILE</span><span class="s2">&#34;</span>
 </span></span><span class="line"><span class="cl"><span class="nb">echo</span>
 </span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Função para pinagem automática do mapa eBPF se ainda não estiver pinado.</span>
+</span></span><span class="line"><span class="cl">auto_pin_map<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">[</span> ! -e <span class="s2">&#34;</span><span class="nv">$MAP_PIN</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;O mapa eBPF não está pinado em </span><span class="nv">$MAP_PIN</span><span class="s2">. Tentando pinar automaticamente...&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># Procura o mapa &#34;blocked_ips&#34; usando bpftool.</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># O comando bpftool map show normalmente lista linhas como:</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># &#34;1: map 0 pinned /sys/fs/bpf/blocked_ips  ... blocked_ips&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># Aqui, usamos grep para encontrar a linha que contenha &#34;blocked_ips&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">map_id</span><span class="o">=</span><span class="k">$(</span>bpftool map show 2&gt;/dev/null <span class="p">|</span> grep -m1 <span class="s2">&#34;blocked_ips&#34;</span> <span class="p">|</span> awk <span class="s1">&#39;{print $1}&#39;</span> <span class="p">|</span> tr -d <span class="s1">&#39;:&#39;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">[</span> -n <span class="s2">&#34;</span><span class="nv">$map_id</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">            bpftool map pin id <span class="s2">&#34;</span><span class="nv">$map_id</span><span class="s2">&#34;</span> <span class="s2">&#34;</span><span class="nv">$MAP_PIN</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="o">[</span> <span class="nv">$?</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">echo</span> <span class="s2">&#34;Mapa &#39;blocked_ips&#39; (ID: </span><span class="nv">$map_id</span><span class="s2">) pinado com sucesso em </span><span class="nv">$MAP_PIN</span><span class="s2">.&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">else</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">echo</span> <span class="s2">&#34;Erro ao piná-lo. Verifique as permissões e a existência do mapa.&#34;</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">exit</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">            <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">echo</span> <span class="s2">&#34;Erro: não foi possível encontrar o mapa &#39;blocked_ips&#39;.&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">exit</span> <span class="m">1</span>
+</span></span><span class="line"><span class="cl">        <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;Mapa eBPF já está pinado em </span><span class="nv">$MAP_PIN</span><span class="s2">.&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">fi</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Executa a pinagem automática do mapa</span>
+</span></span><span class="line"><span class="cl">auto_pin_map
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># Função: Converte um IP (formato x.x.x.x) para valor hexadecimal (big-endian)</span>
 </span></span><span class="line"><span class="cl">ip_to_hex<span class="o">()</span> <span class="o">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nb">local</span> <span class="nv">ip</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span>
@@ -724,8 +807,13 @@ Em cenários mais avançados, técnicas como <em>branch prediction hints</em> (p
 </span></span><span class="line"><span class="cl">    <span class="nb">local</span> <span class="nv">ip</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span>
 </span></span><span class="line"><span class="cl">    <span class="nb">local</span> key_hex
 </span></span><span class="line"><span class="cl">    <span class="nv">key_hex</span><span class="o">=</span><span class="k">$(</span>ip_to_hex <span class="s2">&#34;</span><span class="nv">$ip</span><span class="s2">&#34;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1"># Converte a string hexadecimal em bytes separados por espaços</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">local</span> key_bytes
+</span></span><span class="line"><span class="cl">    <span class="nv">key_bytes</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$key_hex</span><span class="s2">&#34;</span> <span class="p">|</span> sed <span class="s1">&#39;s/\(..\)/\1 /g&#39;</span> <span class="p">|</span> tr <span class="s1">&#39;[:upper:]&#39;</span> <span class="s1">&#39;[:lower:]&#39;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">    
 </span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;Bloqueando IP suspeito: </span><span class="nv">$ip</span><span class="s2"> (chave: </span><span class="nv">$key_hex</span><span class="s2">)&#34;</span>
-</span></span><span class="line"><span class="cl">    bpftool map update pinned <span class="s2">&#34;</span><span class="nv">$MAP_PIN</span><span class="s2">&#34;</span> key <span class="s2">&#34;</span><span class="nv">$key_hex</span><span class="s2">&#34;</span> value 0x1 2&gt;/dev/null
+</span></span><span class="line"><span class="cl">    bpftool map update pinned <span class="s2">&#34;</span><span class="nv">$MAP_PIN</span><span class="s2">&#34;</span> key hex <span class="nv">$key_bytes</span> value hex <span class="m">01</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> 2&gt;/dev/null
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># Função: Retorna a contagem de conexões em /proc/net/nf_conntrack</span>
@@ -737,31 +825,36 @@ Em cenários mais avançados, técnicas como <em>branch prediction hints</em> (p
 </span></span><span class="line"><span class="cl">    <span class="k">fi</span>
 </span></span><span class="line"><span class="cl"><span class="o">}</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># Loop principal de monitoramento</span>
-</span></span><span class="line"><span class="cl"><span class="k">while</span> true<span class="p">;</span> <span class="k">do</span>
-</span></span><span class="line"><span class="cl">    <span class="nv">conn_count</span><span class="o">=</span><span class="k">$(</span>get_conn_count<span class="k">)</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;Conexões atuais: </span><span class="nv">$conn_count</span><span class="s2">&#34;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$conn_count</span><span class="s2">&#34;</span> -gt <span class="s2">&#34;</span><span class="nv">$THRESHOLD_CONN</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;Alerta: Pico de conexões detectado (</span><span class="nv">$conn_count</span><span class="s2"> &gt; </span><span class="nv">$THRESHOLD_CONN</span><span class="s2">).&#34;</span>
-</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;Analisando os logs do nftables para identificar IPs suspeitos...&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Função: Loop principal de monitoramento</span>
+</span></span><span class="line"><span class="cl">main<span class="o">()</span> <span class="o">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> true<span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">        <span class="nv">conn_count</span><span class="o">=</span><span class="k">$(</span>get_conn_count<span class="k">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;Conexões atuais: </span><span class="nv">$conn_count</span><span class="s2">&#34;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="c1"># Captura uma janela de logs do nftables durante o intervalo definido.</span>
-</span></span><span class="line"><span class="cl">        <span class="c1"># &#39;timeout&#39; limita a execução do tail, &#39;grep&#39; filtra linhas com &#34;SRC=&#34;,</span>
-</span></span><span class="line"><span class="cl">        <span class="c1"># &#39;sed&#39; extrai o IP, e &#39;awk&#39; seleciona IPs com ocorrências acima do limite.</span>
-</span></span><span class="line"><span class="cl">        <span class="nv">suspicious_ips</span><span class="o">=</span><span class="k">$(</span>timeout <span class="s2">&#34;</span><span class="nv">$INTERVAL</span><span class="s2">&#34;</span> tail -n <span class="m">1000</span> <span class="s2">&#34;</span><span class="nv">$LOG_FILE</span><span class="s2">&#34;</span> 2&gt;/dev/null <span class="p">|</span> <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>            grep <span class="s2">&#34;SRC=&#34;</span> <span class="p">|</span> sed -n <span class="s1">&#39;s/.*SRC=\([0-9.]\+\).*/\1/p&#39;</span> <span class="p">|</span> sort <span class="p">|</span> uniq -c <span class="p">|</span> <span class="se">\
-</span></span></span><span class="line"><span class="cl"><span class="se"></span>            awk -v <span class="nv">thresh</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$LOG_THRESHOLD</span><span class="s2">&#34;</span> <span class="s1">&#39;$1 &gt;= thresh {print $2}&#39;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$conn_count</span><span class="s2">&#34;</span> -gt <span class="s2">&#34;</span><span class="nv">$THRESHOLD_CONN</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">echo</span> <span class="s2">&#34;Alerta: Pico de conexões detectado (</span><span class="nv">$conn_count</span><span class="s2"> &gt; </span><span class="nv">$THRESHOLD_CONN</span><span class="s2">).&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">echo</span> <span class="s2">&#34;Analisando os logs do nftables para identificar IPs suspeitos...&#34;</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">        <span class="k">for</span> ip in <span class="nv">$suspicious_ips</span><span class="p">;</span> <span class="k">do</span>
-</span></span><span class="line"><span class="cl">            block_ip <span class="s2">&#34;</span><span class="nv">$ip</span><span class="s2">&#34;</span>
-</span></span><span class="line"><span class="cl">        <span class="k">done</span>
-</span></span><span class="line"><span class="cl">    <span class="k">else</span>
-</span></span><span class="line"><span class="cl">        <span class="nb">echo</span> <span class="s2">&#34;Número de conexões dentro do esperado.&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">            <span class="nv">suspicious_ips</span><span class="o">=</span><span class="k">$(</span>timeout <span class="s2">&#34;</span><span class="nv">$INTERVAL</span><span class="s2">&#34;</span> tail -n <span class="m">1000</span> <span class="s2">&#34;</span><span class="nv">$LOG_FILE</span><span class="s2">&#34;</span> 2&gt;/dev/null <span class="p">|</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>                grep <span class="s2">&#34;SRC=&#34;</span> <span class="p">|</span> sed -n <span class="s1">&#39;s/.*SRC=\([0-9.]\+\).*/\1/p&#39;</span> <span class="p">|</span> sort <span class="p">|</span> uniq -c <span class="p">|</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>                awk -v <span class="nv">thresh</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$LOG_THRESHOLD</span><span class="s2">&#34;</span> <span class="s1">&#39;$1 &gt;= thresh {print $2}&#39;</span><span class="k">)</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    sleep <span class="s2">&#34;</span><span class="nv">$INTERVAL</span><span class="s2">&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="k">done</span></span></span></code></pre></td></tr></table>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> ip in <span class="nv">$suspicious_ips</span><span class="p">;</span> <span class="k">do</span>
+</span></span><span class="line"><span class="cl">                block_ip <span class="s2">&#34;</span><span class="nv">$ip</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">done</span>
+</span></span><span class="line"><span class="cl">        <span class="k">else</span>
+</span></span><span class="line"><span class="cl">            <span class="nb">echo</span> <span class="s2">&#34;Número de conexões dentro do esperado.&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        sleep <span class="s2">&#34;</span><span class="nv">$INTERVAL</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">done</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Executa o loop principal somente se o script estiver sendo chamado diretamente</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[[</span> <span class="s2">&#34;</span><span class="si">${</span><span class="nv">BASH_SOURCE</span><span class="p">[0]</span><span class="si">}</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="s2">&#34;</span><span class="nv">$0</span><span class="s2">&#34;</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">    main
+</span></span><span class="line"><span class="cl"><span class="k">fi</span></span></span></code></pre></td></tr></table>
 </div>
 </div><hr>
 <h2 id="detalhes-técnicos-1" class="heading-element"><span>Detalhes técnicos</span>
@@ -873,9 +966,9 @@ Utilizando <code>getopts</code>, o script permite sobrescrever os valores padrõ
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bpftool map update pinned <span class="s2">&#34;</span><span class="nv">$MAP_PIN</span><span class="s2">&#34;</span> key <span class="s2">&#34;</span><span class="nv">$key_hex</span><span class="s2">&#34;</span> value 0x1 2&gt;/dev/null</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">bpftool map update pinned <span class="s2">&#34;</span><span class="nv">$MAP_PIN</span><span class="s2">&#34;</span> key hex <span class="nv">$key_bytes</span> value hex <span class="m">01</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> 2&gt;/dev/null</span></span></code></pre></td></tr></table>
 </div>
-</div>para atualizar o mapa eBPF, inserindo a chave e definindo o valor (neste caso, <code>0x1</code> indica o bloqueio).</li>
+</div>para atualizar o mapa eBPF, inserindo a chave e definindo o valor (neste caso, <code>01</code> indica o bloqueio).</li>
 </ol>
 </li>
 </ul>
@@ -1120,13 +1213,473 @@ Após aplicar a configuração e reiniciar o rsyslog, você pode testar sua conf
   <a href="#6-testes-de-valida%c3%a7%c3%a3o" class="heading-mark">
     <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
   </a>
-</h2><p>&hellip; calma! To fazendo</p>
+</h2><p>Para validar a solução. você pode seguir uma série de testes que abrangem cada componente e a integração completa. Abaixo, segue um passo a passo detalhado com sugestões de ferramentas e métodos:</p>
+<h2 id="1-preparação-do-ambiente" class="heading-element"><span>1. Preparação do Ambiente</span>
+  <a href="#1-prepara%c3%a7%c3%a3o-do-ambiente" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><ul>
+<li>
+<p><strong>Requisitos:</strong></p>
+<ul>
+<li>02 VMs Linux Fedora 41.</li>
+<li>Ferramentas instaladas:
+<ul>
+<li>clang/llvm,</li>
+<li>bpftool,</li>
+<li>nftables,</li>
+<li>rsyslog,</li>
+<li>tcpdump,</li>
+<li>hping3 ou scapy.</li>
+</ul>
+</li>
+<li>SUDO para realizar os passos que exijam privilégio root.</li>
+</ul>
+</li>
+</ul>
+<h2 id="2-testando-individualmente-cada-componente" class="heading-element"><span>2. Testando Individualmente Cada Componente</span>
+  <a href="#2-testando-individualmente-cada-componente" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h2><h3 id="21-programa-xdpebpf" class="heading-element"><span>2.1. Programa XDP/eBPF</span>
+  <a href="#21-programa-xdpebpf" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><ol>
+<li><strong>Diretório de teste</strong></li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ mkdir /tmp/src <span class="o">&amp;&amp;</span> <span class="nb">cd</span> /tmp/src</span></span></code></pre></td></tr></table>
+</div>
+</div><ol>
+<li>
+<p><strong>Compilação e Carregamento:</strong></p>
+<ul>
+<li>
+<p>Compile o programa:</p>
+<ul>
+<li>Clone o repositório</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ git clone https://github.com/0xttfx/xdp-block-dos.git</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Compile o código</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ make all
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">clang -O2 -g -target bpf -c -Wall -Werror src/xdp-block-dos-0.1.0.c -o xdp-block-dos.o</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>Carregue o programa na interface de rede (supondo <code>eth0</code>):</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo ip link <span class="nb">set</span> dev eth0 xdp obj xdp_ddos_blocker.o sec xdp</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>
+<p><strong>Verificação:</strong></p>
+<ul>
+<li>Verifique se o programa está carregado:</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ sudo ip -details link show dev enp1s0
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">2: enp1s0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu <span class="m">1500</span> xdp qdisc fq_codel state UP mode DEFAULT group default qlen <span class="m">1000</span>
+</span></span><span class="line"><span class="cl">	    link/ether 52:54:00:9a:8d:fd brd ff:ff:ff:ff:ff:ff promiscuity <span class="m">0</span> allmulti <span class="m">0</span> minmtu <span class="m">68</span> maxmtu <span class="m">65535</span> numtxqueues <span class="m">1</span> numrxqueues <span class="m">1</span> gso_max_size <span class="m">65536</span> gso_max_segs <span class="m">65535</span> tso_max_size <span class="m">65536</span> tso_max_segs <span class="m">65535</span> gro_max_size <span class="m">65536</span> gso_ipv4_max_size <span class="m">65536</span> gro_ipv4_max_size <span class="m">65536</span> parentbus virtio parentdev virtio1 
+</span></span><span class="line"><span class="cl">prog/xdp id <span class="m">92</span> name xdp_block_dos tag 20447cf6515f37e3 jited load_time <span class="m">2787963305254</span> created_by_uid <span class="m">0</span> btf_id <span class="m">140</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>Veja se o mapa foi criado e colete o ID</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ sudo bpftool map show 2&gt;/dev/null <span class="p">|</span> grep -m1 <span class="s2">&#34;blocked_ips&#34;</span> <span class="p">|</span> awk <span class="s1">&#39;{print $1}&#39;</span> <span class="p">|</span> tr -d <span class="s1">&#39;:&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="m">22</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>Pine o arquivo <code>map</code></li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ sudo bpftool map pin id <span class="s2">&#34;22&#34;</span> <span class="s2">&#34;/sys/fs/bpf/blocked_ips&#34;</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>Use o <code>bpftool</code> para fazer um dump do <code>map</code> eBPF</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ sudo bpftool map dump pinned /sys/fs/bpf/blocked_ips
+</span></span><span class="line"><span class="cl"><span class="o">[]</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>Teste Funcional:</strong></p>
+<ul>
+<li>Gere tráfego a partir de uma máquina ou usando ferramentas como <code>hping3</code> de um IP que não esteja bloqueado
+<ul>
+<li>
+<p>Verifique que os pacotes seguem normalmente (XDP_PASS).</p>
+<ul>
+<li>Em seguida, adicione manualmente o IP ao mapa (usando o bpftool)
+<ul>
+<li>E verifique se os pacotes são descartados (XDP_DROP).</li>
+</ul>
+</li>
+</ul>
+<ol>
+<li>Converta o IP da VM que está disparando o tráfego, para hexadecima</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$  <span class="nv">ip</span><span class="o">=</span><span class="s2">&#34;192.168.0.115&#34;</span><span class="p">;</span> <span class="nv">IFS</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">;</span> <span class="nb">read</span> -r a b c d <span class="o">&lt;&lt;&lt;</span> <span class="s2">&#34;</span><span class="nv">$ip</span><span class="s2">&#34;</span><span class="p">;</span> <span class="nb">printf</span> <span class="s2">&#34;%02X%02X%02X%02X\n&#34;</span> <span class="s2">&#34;</span><span class="nv">$a</span><span class="s2">&#34;</span> <span class="s2">&#34;</span><span class="nv">$b</span><span class="s2">&#34;</span> <span class="s2">&#34;</span><span class="nv">$c</span><span class="s2">&#34;</span> <span class="s2">&#34;</span><span class="nv">$d</span><span class="s2">&#34;</span> <span class="p">|</span> sed <span class="s1">&#39;s/\(..\)/\1 /g&#39;</span> <span class="p">|</span> tr <span class="s1">&#39;[:upper:]&#39;</span> <span class="s1">&#39;[:lower:]&#39;</span>
+</span></span><span class="line"><span class="cl">c0 a8 <span class="m">00</span> <span class="m">73</span> </span></span></code></pre></td></tr></table>
+</div>
+</div><ol>
+<li>Agora insira o ip no <code>map</code> eBPF</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ sudo bpftool map update pinned <span class="s1">&#39;/sys/fs/bpf/blocked_ips&#39;</span> key hex C0 A8 <span class="m">00</span> <span class="m">73</span> value hex <span class="m">01</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ol>
+<li>E faça um dump do <code>map</code>para verificar se a insserçã́o ocorreu</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ sudo bpftool map dump pinned /sys/fs/bpf/blocked_ips
+</span></span><span class="line"><span class="cl"><span class="o">[{</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;key&#34;</span>: 1929423040,
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;value&#34;</span>: <span class="m">1</span>
+</span></span><span class="line"><span class="cl">    <span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">]</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ol>
+<li>E para quando for preciso. Esse é o comando para remover a entrada que criamos</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo bpftool map delete pinned <span class="s1">&#39;/sys/fs/bpf/blocked_ips&#39;</span> key hex c0 a8 <span class="m">00</span> <span class="m">73</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Evidências</strong></p>
+</li>
+</ol>
+<style>
+  .video-container {
+    max-width: 100%;
+    height: auto;
+  }
+</style>
+<video class="video-container" controls>
+  <source src="/img/XDPeBPFDoS/evidencia-1.mp4" type="video/mp4">
+  Seu navegador não suporta o elemento de vídeo.
+</video>
+<h3 id="22-configuração-do-nftables-e-logs" class="heading-element"><span>2.2. Configuração do nftables e Logs</span>
+  <a href="#22-configura%c3%a7%c3%a3o-do-nftables-e-logs" class="heading-mark">
+    <svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+  </a>
+</h3><ol>
+<li><strong>Diretório de teste</strong>
+<ol>
+<li>Acesse ou crie o diretório&hellip;</li>
+</ol>
+</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ mkdir /tmp/src <span class="o">&amp;&amp;</span> <span class="nb">cd</span> /tmp/src</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>
+<p><strong>Regras nftables</strong></p>
+<ol>
+<li>Crie o arquivos <code>dos.nft</code></li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">cat &lt;&lt;Uai&gt; /tmp/src/dos.nft
+</span></span><span class="line"><span class="cl">table inet dos_filter {
+</span></span><span class="line"><span class="cl">	chain input {
+</span></span><span class="line"><span class="cl">		type filter hook input priority 0; policy accept;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		ip protocol tcp ct state new limit rate 10/second burst 20 packets \
+</span></span><span class="line"><span class="cl">			log prefix &#34;DDoS_ALERT: SRC=&#34; flags all
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">		ip protocol udp ct state new limit rate 10/second burst 20 packets \
+</span></span><span class="line"><span class="cl">			log prefix &#34;DDoS_ALERT: SRC=&#34; flags all
+</span></span><span class="line"><span class="cl">	}
+</span></span><span class="line"><span class="cl">}
+</span></span><span class="line"><span class="cl">Uai</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>Carregue as regras</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo nft -f ddos.nft</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="3">
+<li>Verifique as regras da table criada</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ sudo nft list table inet dos_filter
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">table inet dos_filter <span class="o">{</span>
+</span></span><span class="line"><span class="cl">	chain input <span class="o">{</span>
+</span></span><span class="line"><span class="cl">		<span class="nb">type</span> filter hook input priority filter<span class="p">;</span> policy accept<span class="p">;</span>
+</span></span><span class="line"><span class="cl">		ip protocol tcp ct state new limit rate 10/second burst <span class="m">20</span> packets log prefix <span class="s2">&#34;DDoS_ALERT: SRC=&#34;</span> flags all
+</span></span><span class="line"><span class="cl">		ip protocol udp ct state new limit rate 10/second burst <span class="m">20</span> packets log prefix <span class="s2">&#34;DDoS_ALERT: SRC=&#34;</span> flags all
+</span></span><span class="line"><span class="cl">	<span class="o">}</span>
+</span></span><span class="line"><span class="cl"><span class="o">}</span></span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>Rsyslog:</strong></p>
+<ol>
+<li>Crie o arquivo de configuração em <code>/etc/rsyslog.d/nftables.conf</code></li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">sudo su -c &#39;cat &lt;&lt;Uai&gt; /etc/rsyslog.d/dos_nftables.conf
+</span></span><span class="line"><span class="cl"># Filtra mensagens que contenham &#34;DDoS_ALERT:&#34; e as grava em /var/log/dos_nftables.log
+</span></span><span class="line"><span class="cl">:msg, contains, &#34;DDoS_ALERT:&#34; -/var/log/dos_nftables.log
+</span></span><span class="line"><span class="cl">&amp; stop
+</span></span><span class="line"><span class="cl">Uai&#39;</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>Recarregue as confs para o systemd</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo systemctl daemon-reload</span></span></code></pre></td></tr></table>
+</div>
+</div><ol>
+<li>Reinicie o rsyslog:</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo systemctl restart rsyslog</span></span></code></pre></td></tr></table>
+</div>
+</div><ol>
+<li>Visualize os logs para confirmar que as entradas com prefixo &ldquo;DDoS_ALERT: SRC=&rdquo; estão sendo gravadas em <code>/var/log/dos_nftables.log</code>:</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo tail -f /var/log/dos_nftables.log</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>Geração de Logs:</strong></p>
+<ul>
+<li>Para testar, você pode simular novos fluxos TCP, UDP com<code>hping3</code>.</li>
+</ul>
+<ol>
+<li>
+<p>Para ver o comportamento para protocolo UDP</p>
+<ol>
+<li>na VM 1: crie um servidor UDP</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">cat &lt;&lt;Uai&gt; /tmp/src/srv-udp.py
+</span></span><span class="line"><span class="cl">import socket
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">UDP_IP = &#34;0.0.0.0&#34;
+</span></span><span class="line"><span class="cl">UDP_PORT = 9999
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+</span></span><span class="line"><span class="cl">sock.bind((UDP_IP, UDP_PORT))
+</span></span><span class="line"><span class="cl">print(&#34;Servidor UDP escutando na porta&#34;, UDP_PORT)
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">while True:
+</span></span><span class="line"><span class="cl">    data, addr = sock.recvfrom(1024)  # Buffer de 1024 bytes
+</span></span><span class="line"><span class="cl">    print(&#34;Recebido:&#34;, data.decode(), &#34;de&#34;, addr)
+</span></span><span class="line"><span class="cl">Uai</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>e execute o server</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo python3 srv-udp.py</span></span></code></pre></td></tr></table>
+</div>
+</div><ol>
+<li>Na VM2, dispare contra a porta 9999 UDP</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo hping3 -2 -p <span class="m">9999</span> -i u10000 192.168.0.114</span></span></code></pre></td></tr></table>
+</div>
+</div><ol>
+<li>
+<p>Na VM1, observe os logs em</p>
+<ol>
+<li>nf_conntrack</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo watch -n1 tail -f /proc/net/nf_conntrack</span></span></code></pre></td></tr></table>
+</div>
+</div><ol>
+<li>dos_nftables.log</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo tail -f /var/log/dos_nftables.log</span></span></code></pre></td></tr></table>
+</div>
+</div></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
 </div><div class="post-footer" id="post-footer">
   <div class="post-info">
     <div class="post-info-line">
       <div class="post-info-mod">
-        <span title="Updated on 2025-03-01 18:54:06">Updated on 2025-03-01&nbsp;
-                <a class="git-hash" href="https://github.com/0xttfx/commit/166071c7438e73b0e6d383c245783c8b4cb1805b" rel="external nofollow noopener noreferrer" target="_blank" title="commit by 0xttfx(thiago.faioli@gmail.com) 166071c7438e73b0e6d383c245783c8b4cb1805b: XDP eBPF Stop DoS Attack"><i class="fa-solid fa-hashtag fa-fw" aria-hidden="true"></i>166071c</a></span>
+        <span title="Updated on 2025-03-05 19:36:14">Updated on 2025-03-05&nbsp;
+                <a class="git-hash" href="https://github.com/0xttfx/commit/ad7027dcfbb450cfab1a16d76d02763b6d2c9d6e" rel="external nofollow noopener noreferrer" target="_blank" title="commit by 0xttfx(thiago.faioli@gmail.com) ad7027dcfbb450cfab1a16d76d02763b6d2c9d6e: Update"><i class="fa-solid fa-hashtag fa-fw" aria-hidden="true"></i>ad7027d</a></span>
       </div><div class="post-info-license">
             <span><a rel="license external nofollow noopener noreferrer" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a></span>
           </div></div><div class="post-info-line">
