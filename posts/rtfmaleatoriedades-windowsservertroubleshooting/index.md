@@ -141,6 +141,24 @@ Logo em seguida, repassei essa investigação para as equipes de SegInfo e Micro
 &lt;https://community.mcafee.com/t5/Endpoint-Security-ENS/Nonpaged-pool-memory-leak-mfeavfk-sys-on-multiple-windows-server/td-p/617169&gt;
 &lt;https://docs.microsoft.com/en-us/windows-hardware/drivers/ifs/filter-manager-concepts&gt;
 
+---
+&lt;script src=&#34;https://giscus.app/client.js&#34;
+        data-repo=&#34;0xttfx/0xttfx.github.io&#34;
+        data-repo-id=&#34;R_kgDOK3wAHw&#34;
+        data-category=&#34;BlogPostComments&#34;
+        data-category-id=&#34;DIC_kwDOK3wAH84Cnmtb&#34;
+        data-mapping=&#34;pathname&#34;
+        data-strict=&#34;1&#34;
+        data-reactions-enabled=&#34;1&#34;
+        data-emit-metadata=&#34;0&#34;
+        data-input-position=&#34;top&#34;
+        data-theme=&#34;preferred_color_scheme&#34;
+        data-lang=&#34;en&#34;
+        data-loading=&#34;lazy&#34;
+        crossorigin=&#34;anonymous&#34;
+        async&gt;
+&lt;/script&gt;
+
 
 
 ---

@@ -187,6 +187,25 @@ As sessões cliente com processamento de OCSP habilitado podem solicitar a sess�
 - A sessão cliente processa a resposta do OCSP stapling no servidor, eliminando a necessidade do cliente consultar um do *OCSP responder* para o status de revogação de certificado. 
 - Uma sessão do servidor também deve ativar o processamento de solicitação de status do certificado, para suportar o stapling do OCSP quando solicitado por um software cliente.
 
+---
+&lt;script src=&#34;https://giscus.app/client.js&#34;
+        data-repo=&#34;0xttfx/0xttfx.github.io&#34;
+        data-repo-id=&#34;R_kgDOK3wAHw&#34;
+        data-category=&#34;BlogPostComments&#34;
+        data-category-id=&#34;DIC_kwDOK3wAH84Cnmtb&#34;
+        data-mapping=&#34;pathname&#34;
+        data-strict=&#34;1&#34;
+        data-reactions-enabled=&#34;1&#34;
+        data-emit-metadata=&#34;0&#34;
+        data-input-position=&#34;top&#34;
+        data-theme=&#34;preferred_color_scheme&#34;
+        data-lang=&#34;en&#34;
+        data-loading=&#34;lazy&#34;
+        crossorigin=&#34;anonymous&#34;
+        async&gt;
+&lt;/script&gt;
+
+
 
 ---
 

@@ -2,10 +2,6 @@
 
 
 
-![Netfilter-packet-flow](/img/XDPeBPFDoS/eBPF.png)
-
----
-
 Segue um teste para aplicar os conceitos de eBPF! É um esboço de uma solução que espera ser funcional e que combina um programa [XDP](https://prototype-kernel.readthedocs.io/en/latest/networking/XDP/introduction.html#what-is-xdp)/[eBPF](https://ebpf.io/) em C com um script em Bash(antes de usar Go) para monitorar o tráfego e atualizar dinamicamente um [map](https://docs.cilium.io/en/latest/reference-guides/bpf/architecture/#maps) [eBPF](https://ebpf.io/) com sources IPs que devem ser bloqueados quando idenficado um possível ataque [DoS](https://attack.mitre.org/techniques/T0814/). 
 
 - Nesse cenário, o programa XDP/eBPF já está instalado na interface de rede e bloqueia pacotes provenientes de IPs listados no [map](https://docs.cilium.io/en/latest/reference-guides/bpf/architecture/#maps). 
@@ -787,7 +783,7 @@ $ mkdir /tmp/src &amp;&amp; cd /tmp/src
 
 	1. Crie o arquivo de configuração em `/etc/rsyslog.d/nftables.conf` 
 	
-	```text
+	```bash
 	sudo su -c &#39;cat &lt;&lt;Uai&gt; /etc/rsyslog.d/dos_nftables.conf
 	# Filtra mensagens que contenham &#34;DDoS_ALERT:&#34; e as grava em /var/log/dos_nftables.log
 	:msg, contains, &#34;DDoS_ALERT:&#34; -/var/log/dos_nftables.log
@@ -815,7 +811,7 @@ $ mkdir /tmp/src &amp;&amp; cd /tmp/src
 
 	1. Para ver o comportamento para protocolo UDP
 		1. na VM 1: crie um servidor UDP
-		```
+		```bash
 		cat &lt;&lt;Uai&gt; /tmp/src/srv-udp.py
 		import socket
 		
@@ -855,6 +851,23 @@ $ mkdir /tmp/src &amp;&amp; cd /tmp/src
 
 
 
+
+&lt;script src=&#34;https://giscus.app/client.js&#34;
+        data-repo=&#34;0xttfx/0xttfx.github.io&#34;
+        data-repo-id=&#34;R_kgDOK3wAHw&#34;
+        data-category=&#34;BlogPostComments&#34;
+        data-category-id=&#34;DIC_kwDOK3wAH84Cnmtb&#34;
+        data-mapping=&#34;pathname&#34;
+        data-strict=&#34;1&#34;
+        data-reactions-enabled=&#34;1&#34;
+        data-emit-metadata=&#34;0&#34;
+        data-input-position=&#34;top&#34;
+        data-theme=&#34;preferred_color_scheme&#34;
+        data-lang=&#34;en&#34;
+        data-loading=&#34;lazy&#34;
+        crossorigin=&#34;anonymous&#34;
+        async&gt;
+&lt;/script&gt;
 
 
 ---
